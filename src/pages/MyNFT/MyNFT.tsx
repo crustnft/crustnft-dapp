@@ -1,10 +1,10 @@
+import { Box, Card, Container, Tab, Tabs } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { capitalCase } from 'change-case';
 import { useState } from 'react';
-import { styled } from '@mui/material/styles';
-import { Tab, Box, Card, Tabs, Container } from '@mui/material';
 import Page from '../../components/Page';
-import ProfileCover from './components/ProfileCover';
 import MyCollections from './components/MyCollections';
+import ProfileCover from './components/ProfileCover';
 
 const TabsWrapperStyle = styled('div')(({ theme }) => ({
   zIndex: 9,
@@ -48,8 +48,13 @@ export default function MyNFT() {
               allowScrollButtonsMobile
               onChange={(e, value) => handleChangeTab(value)}
             >
-              <Tab disableRipple key="nfts" value="nfts" label="NFTs" />
-              <Tab disableRipple key="activity" value="activity" label={capitalCase('activity')} />
+              <Tab disableRipple key="nfts-tab" value="nfts" label="NFTs" />
+              <Tab
+                disableRipple
+                key="activity-tab"
+                value="activity"
+                label={capitalCase('activity')}
+              />
             </Tabs>
           </TabsWrapperStyle>
         </Card>

@@ -1,18 +1,26 @@
-import { Box, Button, ListItemIcon, ListItemText, MenuItem, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  Stack,
+  Typography
+} from '@mui/material';
 import Iconify from 'components/Iconify';
 import Scrollbar from 'components/Scrollbar';
 import useWallet from 'hooks/useWallet';
+import useWeb3 from 'hooks/useWeb3';
 import { useRef, useState } from 'react';
 import MenuPopover from '../../components/MenuPopover';
 import { SUPPORTED_CHAINS } from '../../constants/chains';
-
 const ITEM_HEIGHT = 50;
 
 export default function LanguagePopover() {
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
   const { chain: selectedChain, onNetworkChange } = useWallet();
-
+  const { deactivate } = useWeb3();
   return (
     <>
       <Box
@@ -50,6 +58,11 @@ export default function LanguagePopover() {
               </ListItemText>
             </MenuItem>
           ))}
+          <Stack alignItems="center" sx={{ mt: 2 }}>
+            <Button variant="outlined" size="small" onClick={deactivate}>
+              Reset Wallet
+            </Button>
+          </Stack>
         </Scrollbar>
       </MenuPopover>
     </>

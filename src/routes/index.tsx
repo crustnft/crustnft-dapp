@@ -1,30 +1,21 @@
-import { Suspense, lazy } from 'react';
-import { Navigate, useRoutes, useLocation } from 'react-router-dom';
-// layouts
-import MainLayout from '../layouts/main';
+import { lazy, Suspense } from 'react';
+import { Navigate, useRoutes } from 'react-router-dom';
+import LoadingScreen from '../components/LoadingScreen';
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
-// components
-import LoadingScreen from '../components/LoadingScreen';
-// ----------------------------------------------------------------------
+import MainLayout from '../layouts/main';
 
 const Loadable = (Component: any) => (props: any) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { pathname } = useLocation();
-  const isDashboard = pathname.includes('/dashboard');
-
   return (
     <Suspense
       fallback={
         <LoadingScreen
           sx={{
-            ...(isDashboard && {
-              top: 0,
-              left: 0,
-              width: 1,
-              zIndex: 9999,
-              position: 'fixed'
-            })
+            top: 0,
+            left: 0,
+            width: 1,
+            zIndex: 9999,
+            position: 'fixed'
           }}
         />
       }
@@ -53,7 +44,6 @@ export default function Router() {
         { path: 'create-collection', element: <CreateCollection /> },
         { path: 'my-nft', element: <MyNFT /> },
         { path: 'collection-explore', element: <CollectionsExplorer /> },
-        { path: 'collection-viewer', element: <CollectionViewer /> },
         { path: 'collection/:chain/:contractAddr/:pageNb', element: <CollectionViewer /> },
         {
           path: 'gallery',
