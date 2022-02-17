@@ -12,7 +12,7 @@ const PROD_CHAINS = [
     currencySymbol: 'BNB',
     icon: './static/icons/networks/binance.svg',
     chainId: 56,
-    rpcUrl: '',
+    rpcUrl: 'https://bsc-dataseed.binance.org/',
     blockExplorerUrl: 'https://bscscan.com'
   },
   {

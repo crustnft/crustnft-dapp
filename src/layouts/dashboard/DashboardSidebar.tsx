@@ -1,53 +1,27 @@
-import { useEffect, useState } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
-// material
-import { alpha, styled } from '@mui/material/styles';
-import {
-  Box,
-  Link,
-  Stack,
-  Avatar,
-  Drawer,
-  Tooltip,
-  Typography,
-  CardActionArea
-} from '@mui/material';
-import { MIconButton } from '../../components/@material-extend';
-
-// hooks
-import useCollapseDrawer from '../../hooks/useCollapseDrawer';
-// components
 import { Icon } from '@iconify/react';
-
+import { Avatar, Box, Drawer, Link, Stack, Tooltip, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import Identicons from '@nimiq/identicons';
+import { EMPTY_CHAIN, SUPPORTED_CHAINS } from 'constants/chains';
+import useWallet from 'hooks/useWallet';
+import useWeb3 from 'hooks/useWeb3';
+import React, { useEffect, useState } from 'react';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { MIconButton } from '../../components/@material-extend';
 import Logo from '../../components/Logo';
-import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
-//
-import { MHidden } from '../../components/@material-extend';
+import Scrollbar from '../../components/Scrollbar';
+import { DISCORD, MEDIUM, TELEGRAM, TWITTER } from '../../constants/COMMON_VARIABLES';
+import { Chain } from '../../interfaces/chain';
+import { shortenAddress } from '../../utils/formatAddress';
 import sidebarConfig from './SidebarConfig';
 
-import { shortenAddress } from '../../utils/formatAddress';
-import { DISCORD, TWITTER, TELEGRAM, MEDIUM } from '../../constants/COMMON_VARIABLES';
-
-import Identicons from '@nimiq/identicons';
-
-import React from 'react';
 Identicons.svgPath = './static/identicons.min.svg';
-// ----------------------------------------------------------------------
 
 // const DRAWER_WIDTH = 280;
 // const COLLAPSE_WIDTH = 102;
 const DRAWER_WIDTH = 280;
 const COLLAPSE_WIDTH = 0;
-
-const RootStyle = styled('div')(({ theme }) => ({
-  // [theme.breakpoints.up('lg')]: {
-  //   flexShrink: 0,
-  //   transition: theme.transitions.create('width', {
-  //     duration: theme.transitions.duration.complex
-  //   })
-  // }
-}));
 
 const AccountStyle = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -57,51 +31,6 @@ const AccountStyle = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.grey[500_12]
 }));
 
-// ----------------------------------------------------------------------
-
-type IconCollapseProps = {
-  onToggleCollapse: VoidFunction;
-  collapseClick: boolean;
-};
-
-function IconCollapse({ onToggleCollapse, collapseClick }: IconCollapseProps) {
-  return (
-    <Tooltip title="Mini Menu">
-      <CardActionArea
-        onClick={onToggleCollapse}
-        sx={{
-          width: 18,
-          height: 18,
-          display: 'flex',
-          cursor: 'pointer',
-          borderRadius: '50%',
-          alignItems: 'center',
-          color: 'text.primary',
-          justifyContent: 'center',
-          border: 'solid 1px currentColor',
-          ...(collapseClick && {
-            borderWidth: 2
-          })
-        }}
-      >
-        <Box
-          sx={{
-            width: 8,
-            height: 8,
-            borderRadius: '50%',
-            bgcolor: 'currentColor',
-            transition: (theme) => theme.transitions.create('all'),
-            ...(collapseClick && {
-              width: 0,
-              height: 0
-            })
-          }}
-        />
-      </CardActionArea>
-    </Tooltip>
-  );
-}
-
 type DashboardSidebarProps = {
   isOpenSidebar: boolean;
   onCloseSidebar: VoidFunction;
@@ -109,9 +38,17 @@ type DashboardSidebarProps = {
 
 const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }: DashboardSidebarProps) => {
   const { pathname } = useLocation();
-
-  const { isCollapse, collapseClick, collapseHover, onToggleCollapse, onHoverEnter, onHoverLeave } =
-    useCollapseDrawer();
+  const { chain: selectedChain, selectedWallet } = useWallet();
+  const [network, setNetwork] = useState<Chain>(selectedChain);
+  const { active: walletIsConnected, activate, account, deactivate, connectedChainId } = useWeb3();
+  useEffect(() => {
+    const found = SUPPORTED_CHAINS.find((chain) => chain.chainId === connectedChainId);
+    if (found) {
+      setNetwork(found);
+    } else {
+      setNetwork(EMPTY_CHAIN);
+    }
+  }, [connectedChainId]);
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -124,10 +61,10 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }: DashboardSidebarPro
     return (
       <>
         <Typography variant="subtitle1" noWrap>
-          {shortenAddress('AccountAddress', 5)}
+          {shortenAddress(account || '', 5)}
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-          {'Network Name'}
+          {network.name}
         </Typography>
       </>
     );
@@ -135,10 +72,12 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }: DashboardSidebarPro
 
   const [uniqueIcon, setUniqueIcon] = useState<string>();
   useEffect(() => {
-    Identicons.toDataUrl('Account Address').then((img: string) => {
-      setUniqueIcon(img);
-    });
-  }, []);
+    Identicons.toDataUrl(`${network.currencySymbol.toLowerCase()}:${account}`).then(
+      (img: string) => {
+        setUniqueIcon(img);
+      }
+    );
+  }, [account, network.currencySymbol]);
 
   const renderContent = (
     <Scrollbar
@@ -152,27 +91,15 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }: DashboardSidebarPro
         sx={{
           px: 2.5,
           pt: 3,
-          pb: 2,
-          ...(isCollapse && {
-            alignItems: 'center'
-          })
+          pb: 2
         }}
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
             <Logo />
           </Box>
-
-          <MHidden width="xsUp">
-            {!isCollapse && (
-              <IconCollapse onToggleCollapse={onToggleCollapse} collapseClick={collapseClick} />
-            )}
-          </MHidden>
         </Stack>
-
-        {isCollapse ? (
-          <Avatar alt="My Avatar" src={uniqueIcon} sx={{ mx: 'auto', mb: 2 }} />
-        ) : (
+        {walletIsConnected && (
           <Link underline="none" component={RouterLink} to="#">
             <AccountStyle>
               <Avatar alt="My Avatar" src={uniqueIcon} />
@@ -190,14 +117,13 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }: DashboardSidebarPro
         )}
       </Stack>
 
-      <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
+      <NavSection navConfig={sidebarConfig} />
 
       <Box
-        sx={
-          isCollapse
-            ? { textAlign: 'center', '& > *': { mx: 1, my: 0.5 } }
-            : { pl: 3.5, '& > *': { mx: 0.5, my: 0.5 } }
-        }
+        sx={{
+          pl: 3.5,
+          '& > *': { mx: 0.5, my: 0.5 }
+        }}
       >
         <Tooltip key="discord" title="Discord">
           <MIconButton onClick={() => window.open(DISCORD, '_blank')}>
@@ -224,55 +150,17 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }: DashboardSidebarPro
   );
 
   return (
-    <RootStyle
-      sx={{
-        // width: {
-        //   lg: isCollapse ? COLLAPSE_WIDTH : DRAWER_WIDTH
-        // },
-        ...(collapseClick && {
-          position: 'absolute'
-        })
-      }}
-    >
-      <MHidden width="xsDown">
-        <Drawer
-          open={isOpenSidebar}
-          onClose={onCloseSidebar}
-          PaperProps={{
-            sx: { width: DRAWER_WIDTH }
-          }}
-        >
-          {renderContent}
-        </Drawer>
-      </MHidden>
-
-      {/* <MHidden width="lgDown">
-        <Drawer
-          open
-          variant="persistent"
-          onMouseEnter={onHoverEnter}
-          onMouseLeave={onHoverLeave}
-          PaperProps={{
-            sx: {
-              width: DRAWER_WIDTH,
-              bgcolor: 'background.default',
-              ...(isCollapse && {
-                width: COLLAPSE_WIDTH
-              }),
-              ...(collapseHover && {
-                borderRight: 0,
-                backdropFilter: 'blur(6px)',
-                WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
-                boxShadow: (theme) => theme.customShadows.z20,
-                bgcolor: (theme) => alpha(theme.palette.background.default, 0.88)
-              })
-            }
-          }}
-        >
-          {renderContent}
-        </Drawer>
-      </MHidden> */}
-    </RootStyle>
+    <>
+      <Drawer
+        open={isOpenSidebar}
+        onClose={onCloseSidebar}
+        PaperProps={{
+          sx: { width: DRAWER_WIDTH }
+        }}
+      >
+        {renderContent}
+      </Drawer>
+    </>
   );
 };
 

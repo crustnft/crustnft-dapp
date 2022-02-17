@@ -65,7 +65,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
   const [account, setAccount] = useState<string | undefined>(undefined);
   const [provider, setProvider] = useState<API | undefined>(undefined);
   const [pending, setPending] = useState(false);
-  const [selectedWallet, setSelectedWallet] = useState<null | string>(null);
+  const [modalSelectedWallet, setModalSelectedWallet] = useState<null | string>(null);
   const [connectedChainId, setConnectedChainId] = useState<number | null>(null);
   const [dump, setDump] = useState<any>(null);
   const {
@@ -76,15 +76,15 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
   } = useWallet();
 
   useEffect(() => {
-    if (account && provider && connectedChainId && selectedWallet) {
+    if (account && provider && connectedChainId && modalSelectedWallet) {
       setActive(true);
-      onSelectWallet(selectedWallet);
+      onSelectWallet(modalSelectedWallet);
     } else {
       setActive(false);
     }
     // FIXME: adding onSelectWallet will cause infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, provider, connectedChainId, selectedWallet]);
+  }, [account, provider, connectedChainId, modalSelectedWallet]);
 
   const onboard = useMemo(
     () =>
@@ -100,7 +100,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
             if (wallet.provider) {
               setProvider(wallet.provider);
               setLibrary(new Web3Provider(wallet.provider));
-              setSelectedWallet(wallet.name);
+              setModalSelectedWallet(wallet.name);
             } else {
               setProvider(undefined);
               setLibrary(undefined);
@@ -134,7 +134,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     setPending(true);
     onboard.walletReset();
     onDisconnectWallet();
-    setSelectedWallet(null);
+    setModalSelectedWallet(null);
     onSelectWallet('');
     setPending(false);
     setActive(false);
