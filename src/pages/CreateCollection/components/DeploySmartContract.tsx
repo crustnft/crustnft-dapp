@@ -8,10 +8,10 @@ import {
   Stepper,
   Typography
 } from '@mui/material';
-import { TEST_CONTRACTS } from 'constants/contract';
+import { getContract, setAuthorInfo, setName, setSymbol } from 'constants/contract';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import {
   compileSmartContract,
@@ -26,7 +26,16 @@ export default function DeploySmartContract() {
   const { active, account, library, onboard } = useWeb3();
   const { chain: selectedChain } = useWallet();
   const [activeStep, setActiveStep] = useState(0);
-  const source = TEST_CONTRACTS[0].content;
+  const [source, setSource] = useState('');
+
+  const [name, symbol, authorInfo] = watch(['name', 'symbol', 'authorInfo']);
+
+  useEffect(() => {
+    setName(name);
+    setSymbol(symbol);
+    setAuthorInfo(authorInfo);
+    setSource(getContract());
+  }, [name, symbol, authorInfo]);
 
   const [startedCreation, setStartedCreation] = useState(false);
 
@@ -54,6 +63,7 @@ export default function DeploySmartContract() {
     const compileResult = await compileSmartContract(source);
     setCompiling(false);
 
+    console.log(compileResult);
     if (compileResult) {
       setCompilingSuccess(true);
       await onboard?.walletCheck();

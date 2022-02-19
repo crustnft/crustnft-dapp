@@ -5,7 +5,6 @@ import {
   Chip,
   Divider,
   FormControlLabel,
-  FormGroup,
   Grid,
   Paper,
   Stack,
@@ -104,16 +103,22 @@ export default function ConfigureSmartContract({ handleNextButtonClick }: Handle
               />
 
               <Divider sx={{ my: 3 }} />
-              <Typography
-                variant="overline"
-                sx={{ mb: 2, display: 'block', color: 'text.secondary' }}
-              >
-                Features
+              <Typography variant="overline" sx={{ display: 'block', color: 'text.secondary' }}>
+                Additional info (optional)
               </Typography>
-              <FormGroup>
-                <FormControlLabel control={<Checkbox defaultChecked />} label="Enumerable" />
-                <FormControlLabel control={<Checkbox />} label="Burnable" />
-              </FormGroup>
+              <Controller
+                control={control}
+                name="authorInfo"
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Author"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                  />
+                )}
+              />
             </Paper>
           </Grid>
           <Grid item xs={12} md={6}>

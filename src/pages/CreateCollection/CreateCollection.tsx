@@ -10,13 +10,15 @@ import Introduction from './components/Introduction';
 type FormSmartContractConfig = {
   name: string;
   symbol: string;
+  authorInfo: string;
 };
 
 const FormSmartContractSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
   symbol: Yup.string()
     .required('Symbol is required')
-    .transform((value) => value.toUpperCase())
+    .transform((value) => value.toUpperCase()),
+  authorInfo: Yup.string()
 });
 
 export default function CreateCollection() {

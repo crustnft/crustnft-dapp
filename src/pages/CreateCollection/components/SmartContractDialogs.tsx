@@ -16,10 +16,11 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { TransitionProps } from '@mui/material/transitions';
+import { getContract } from 'constants/contract';
 import { forwardRef, useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { androidstudio } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
-// ----------------------------------------------------------------------
+
 const Transition = forwardRef(
   (
     props: TransitionProps & {
@@ -31,6 +32,7 @@ const Transition = forwardRef(
 export default function SmartContractDialogs() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const source = getContract();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -91,60 +93,7 @@ export default function SmartContractDialogs() {
           margin={`${theme.spacing(0)} !important`}
           bgcolor={'#21325b !important'}
         >
-          {`
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.2;
-
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-
-contract MyToken is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Ownable {
-    constructor() ERC721("MyToken", "MTK") {}
-
-    function pause() public onlyOwner {
-        _pause();
-    }
-
-    function unpause() public onlyOwner {
-        _unpause();
-    }
-
-    function _beforeTokenTransfer(address from, address to, uint256 tokenId)
-        internal
-        whenNotPaused
-        override(ERC721, ERC721Enumerable)
-    {
-        super._beforeTokenTransfer(from, to, tokenId);
-    }
-
-    // The following functions are overrides required by Solidity.
-
-    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
-        super._burn(tokenId);
-    }
-
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override(ERC721, ERC721URIStorage)
-        returns (string memory)
-    {
-        return super.tokenURI(tokenId);
-    }
-
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override(ERC721, ERC721Enumerable)
-        returns (bool)
-    {
-        return super.supportsInterface(interfaceId);
-    }
-}
-        `}
+          {source}
         </Box>
       </Dialog>
     </>

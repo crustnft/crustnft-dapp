@@ -7,9 +7,7 @@ import { MHidden } from '../../components/@material-extend';
 import Logo from '../../components/Logo';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import ConnectWalletPopover from './ConnectWalletPopover';
-import LanguagePopover from './LanguagePopover';
 import NetworkPopover from './NetworkPopover';
-import NotificationPopover from './NotificationPopover';
 
 // const DRAWER_WIDTH = 280;
 const COLLAPSE_WIDTH = 0;
@@ -68,8 +66,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
         </MHidden>
         <Box sx={{ flexGrow: 1 }} />
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          <LanguagePopover />
-          <NotificationPopover />
+          {/* <LanguagePopover />
+          <NotificationPopover /> */}
           <ConnectWalletPopover />
           <Divider orientation="vertical" flexItem />
           <NetworkPopover />
