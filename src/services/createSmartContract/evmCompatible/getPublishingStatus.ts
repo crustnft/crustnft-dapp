@@ -1,5 +1,5 @@
 import * as etherscanClient from '../../../clients/etherscan-client';
-const ETHERSCAN_API_SECRET_KEY = 'G1UDIXWQ3YZRNQJ6CVVNYZQF1AAHD1JGTK';
+import { ETHERSCAN_API_SECRET_KEY } from './constants';
 
 export const getPublishingStatus = async (etherscanPublishingHx: string, chainId: number) => {
   try {
@@ -10,7 +10,7 @@ export const getPublishingStatus = async (etherscanPublishingHx: string, chainId
     );
     if (
       verifyStatusResponse.data.status === '1' ||
-      verifyStatusResponse.data.message === 'Already Verified'
+      verifyStatusResponse.data.result === 'Already Verified'
     ) {
       console.log('success verifying');
     } else {

@@ -5,9 +5,7 @@ import {
   SOLIDITY_COMPILER_VERSION,
   SPDX_LICENSE_IDENTIFIER
 } from '../../../constants/solcEnvironments';
-const CONTRACT_FILE_NAME = 'EnumerableOwnable.sol';
-const CONTRACT_NAME = 'EnumerableOwnable';
-const ETHERSCAN_API_SECRET_KEY = 'G1UDIXWQ3YZRNQJ6CVVNYZQF1AAHD1JGTK';
+import { CONTRACT_FILE_NAME, CONTRACT_NAME, ETHERSCAN_API_SECRET_KEY } from './constants';
 
 export const publishSmartContract = async (
   chainId: number,

@@ -50,10 +50,12 @@ export default function DeploySmartContract() {
   const [publishing, setPublishing] = useState(false);
   const [publishingSuccess, setPublishingSuccess] = useState(false);
   const [publishingError, setPublishingError] = useState(false);
+  const [publishingRetry, setPublishingRetry] = useState(false);
 
   const [verifying, setVerifying] = useState(false);
   const [verifyingSuccess, setVerifyingSuccess] = useState(false);
   const [verifyingError, setVerifyingError] = useState(false);
+  const [verifyingRetry, setVerifyingRetry] = useState(false);
 
   const createCollection = async () => {
     setStartedCreation(true);
@@ -63,11 +65,9 @@ export default function DeploySmartContract() {
     const compileResult = await compileSmartContract(source);
     setCompiling(false);
 
-    console.log(compileResult);
     if (compileResult) {
       setCompilingSuccess(true);
       await onboard?.walletCheck();
-      console.log('library', library);
       const signer = library?.getSigner(account);
 
       setActiveStep((prevActiveStep) => 1);
@@ -100,9 +100,11 @@ export default function DeploySmartContract() {
               setVerifyingSuccess(true);
             } else {
               setVerifyingError(true);
+              setVerifyingRetry(true);
             }
           } else {
             setPublishingError(true);
+            setPublishingRetry(true);
           }
         } else {
           setDeployingError(true);
@@ -147,8 +149,7 @@ export default function DeploySmartContract() {
         </Typography>
         <Typography variant="body2">
           You're about to create a new collection on Ethereum and will have to confirm a transaction
-          with your currently connected wallet. The creation will cost approximately 0,06749 ETH.
-          The exact amount will be determined by your wallet
+          with your currently connected wallet.
         </Typography>
 
         <Stepper activeStep={activeStep} orientation="vertical" nonLinear>
@@ -189,8 +190,7 @@ export default function DeploySmartContract() {
             </StepLabel>
             <StepContent>
               <Typography>
-                You need to make a traction on Ethereum to deploy the smart contract. This
-                transaction will cost 0,06749 ETH for the miners fee.
+                You need to make a traction on Ethereum to deploy the smart contract.
               </Typography>
             </StepContent>
           </Step>
@@ -230,7 +230,7 @@ export default function DeploySmartContract() {
               Verify status on Etherscan
             </StepLabel>
             <StepContent>
-              <Typography>Waiting for the verification to be treated by Etherscan</Typography>
+              <Typography>Get the verification status on Etherscan</Typography>
             </StepContent>
           </Step>
         </Stepper>

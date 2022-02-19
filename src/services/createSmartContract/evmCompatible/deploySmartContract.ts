@@ -1,7 +1,7 @@
 import { JsonRpcSigner, TransactionReceipt } from '@ethersproject/providers';
 import { CompilerAbstract } from '@remix-project/remix-solidity';
 import { ContractFactory } from 'ethers';
-const CONTRACT_NAME = 'EnumerableOwnable';
+import { CONTRACT_NAME } from './constants';
 
 export const deploySmartContract = async (
   compileResult: CompilerAbstract,
