@@ -11,17 +11,15 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import useLocales from 'hooks/useLocales';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
 import { Controller, useFormContext } from 'react-hook-form';
 import SmartContractDialogs from './SmartContractDialogs';
 
 export default function ConfigureSmartContract({ startedCreation }: { startedCreation: boolean }) {
-  const { translate } = useLocales();
   const { control, watch } = useFormContext();
 
-  const { active, account, library, provider, onboard, activate } = useWeb3();
+  const { active, account } = useWeb3();
   const { chain: selectedChain } = useWallet();
 
   const [name, symbol] = watch(['name', 'symbol']);

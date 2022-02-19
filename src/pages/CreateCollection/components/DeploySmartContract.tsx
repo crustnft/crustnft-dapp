@@ -32,23 +32,14 @@ export default function DeploySmartContract({
   const {
     watch,
     handleSubmit,
-    formState: { isValid, isSubmitting, touchedFields, submitCount }
+    formState: { isValid }
   } = useFormContext();
   const { active, account, library, onboard } = useWeb3();
   const { chain: selectedChain } = useWallet();
   const [activeStep, setActiveStep] = useState(0);
   const [source, setSource] = useState('');
 
-  const [name, symbol, authorInfo, agreement] = watch([
-    'name',
-    'symbol',
-    'authorInfo',
-    'agreement'
-  ]);
-
-  useEffect(() => {
-    console.log('isvalid', isValid);
-  }, [isValid]);
+  const [name, symbol, authorInfo] = watch(['name', 'symbol', 'authorInfo']);
 
   useEffect(() => {
     setName(name);
@@ -56,10 +47,6 @@ export default function DeploySmartContract({
     setAuthorInfo(authorInfo);
     setSource(getContract());
   }, [name, symbol, authorInfo]);
-
-  useEffect(() => {
-    console.log('agreement', agreement);
-  }, [agreement]);
 
   const [compiling, setCompiling] = useState(false);
   const [compilingSuccess, setCompilingSuccess] = useState(false);
