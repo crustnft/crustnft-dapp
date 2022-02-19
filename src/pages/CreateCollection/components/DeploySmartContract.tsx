@@ -1,7 +1,11 @@
 import {
   Box,
   Button,
+  Grid,
+  IconButton,
+  Link,
   Paper,
+  Stack,
   Step,
   StepContent,
   StepLabel,
@@ -9,7 +13,10 @@ import {
   Tooltip,
   Typography
 } from '@mui/material';
+import { postContract } from 'clients/crustnft-explore-api';
+import Iconify from 'components/Iconify';
 import { getContract, setAuthorInfo, setName, setSymbol } from 'constants/contract';
+import { SOLIDITY_COMPILER_VERSION, SPDX_LICENSE_IDENTIFIER } from 'constants/solcEnvironments';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
 import { useEffect, useState } from 'react';
@@ -20,6 +27,7 @@ import {
   getPublishingStatus,
   publishSmartContract
 } from 'services/createSmartContract/evmCompatible/';
+import LightTooltip from './LightTooltip';
 import { DoingIcon, ErrorIcon, SuccessIcon } from './StepperIcons';
 
 export default function DeploySmartContract({
@@ -32,23 +40,14 @@ export default function DeploySmartContract({
   const {
     watch,
     handleSubmit,
-    formState: { isValid, isSubmitting, touchedFields, submitCount }
+    formState: { isValid }
   } = useFormContext();
   const { active, account, library, onboard } = useWeb3();
   const { chain: selectedChain } = useWallet();
   const [activeStep, setActiveStep] = useState(0);
   const [source, setSource] = useState('');
 
-  const [name, symbol, authorInfo, agreement] = watch([
-    'name',
-    'symbol',
-    'authorInfo',
-    'agreement'
-  ]);
-
-  useEffect(() => {
-    console.log('isvalid', isValid);
-  }, [isValid]);
+  const [name, symbol, authorInfo] = watch(['name', 'symbol', 'authorInfo']);
 
   useEffect(() => {
     setName(name);
@@ -56,10 +55,6 @@ export default function DeploySmartContract({
     setAuthorInfo(authorInfo);
     setSource(getContract());
   }, [name, symbol, authorInfo]);
-
-  useEffect(() => {
-    console.log('agreement', agreement);
-  }, [agreement]);
 
   const [compiling, setCompiling] = useState(false);
   const [compilingSuccess, setCompilingSuccess] = useState(false);
@@ -78,6 +73,9 @@ export default function DeploySmartContract({
   const [verifyingSuccess, setVerifyingSuccess] = useState(false);
   const [verifyingError, setVerifyingError] = useState(false);
   const [verifyingRetry, setVerifyingRetry] = useState(false);
+
+  const [txHash, setTxHash] = useState('');
+  const [contractAddress, setContractAddress] = useState('');
 
   const createCollection = async () => {
     setStartedCreation(true);
@@ -99,6 +97,22 @@ export default function DeploySmartContract({
         setDeploying(false);
         if (txReceipt) {
           setDeployingSuccess(true);
+
+          postContract({
+            txHash: txReceipt.transactionHash,
+            contractAddress: txReceipt.contractAddress,
+            chainId: selectedChain?.chainId || 1,
+            account: account || '',
+            contractContent: JSON.stringify({
+              sourceCode: source,
+              compilerversion: 'v' + SOLIDITY_COMPILER_VERSION,
+              licenseType: SPDX_LICENSE_IDENTIFIER.MIT
+            })
+          }).catch((err) => {
+            console.log('Error posting contract:', err.response);
+          });
+          setContractAddress(txReceipt.contractAddress);
+          setTxHash(txReceipt.transactionHash);
           setActiveStep((prevActiveStep) => 2);
           setPublishing(true);
           const etherscanPublishingHx = await publishSmartContract(
@@ -265,6 +279,131 @@ export default function DeploySmartContract({
             </StepContent>
           </Step>
         </Stepper>
+
+        <Stack spacing={1}>
+          <Grid container sx={{ display: txHash ? 'flex' : 'none', mt: 5 }}>
+            <Grid item xs={12} md={3}>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <LightTooltip
+                  title="A TxHash or transaction hash is a unique 66 character identifier that is generated whenever a transaction is executed."
+                  placement="top"
+                >
+                  <Box>
+                    <Stack justifyContent="center">
+                      <Iconify icon="bi:question-circle" />
+                    </Stack>
+                  </Box>
+                </LightTooltip>
+                <Typography variant="body2">Transaction Hash:</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} md={9}>
+              <Stack direction="row" alignItems="center">
+                <Link
+                  href={`${selectedChain.blockExplorerUrl}/tx/${txHash}`}
+                  underline="none"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <Typography variant="body2" sx={{ wordBreak: 'break-word', color: '#1890FF' }}>
+                    {txHash}
+                  </Typography>
+                </Link>
+
+                <IconButton
+                  size="small"
+                  onClick={() => {
+                    navigator.clipboard.writeText(txHash);
+                  }}
+                >
+                  <Iconify icon="carbon:copy-file" />
+                </IconButton>
+              </Stack>
+            </Grid>
+          </Grid>
+          <Grid container sx={{ display: contractAddress ? 'flex' : 'none' }}>
+            <Grid item xs={12} md={3}>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <LightTooltip
+                  title="The transaction created a new smart contract with with its unique address. In this case the smart contract is your NFT collection."
+                  placement="top"
+                >
+                  <Box>
+                    <Stack justifyContent="center">
+                      <Iconify icon="bi:question-circle" />
+                    </Stack>
+                  </Box>
+                </LightTooltip>
+                <Typography variant="body2">Contract Address:</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} md={9}>
+              <Stack direction="row" alignItems="center">
+                <Link
+                  href={`${selectedChain.blockExplorerUrl}/address/${contractAddress}`}
+                  underline="none"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <Typography variant="body2" sx={{ wordBreak: 'break-word', color: '#1890FF' }}>
+                    {contractAddress}
+                  </Typography>
+                </Link>
+
+                <IconButton
+                  size="small"
+                  onClick={() => {
+                    navigator.clipboard.writeText(contractAddress);
+                  }}
+                >
+                  <Iconify icon="carbon:copy-file" />
+                </IconButton>
+              </Stack>
+            </Grid>
+          </Grid>
+          <Grid container sx={{ display: verifyingSuccess ? 'flex' : 'none' }}>
+            <Grid item xs={12} md={3}>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <LightTooltip
+                  title="The source code of your smart contract (NFT collection) is uploaded on explorer to ensure its transparency."
+                  placement="top"
+                >
+                  <Box>
+                    <Stack justifyContent="center">
+                      <Iconify icon="bi:question-circle" />
+                    </Stack>
+                  </Box>
+                </LightTooltip>
+                <Typography variant="body2">Verified Source Code:</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} md={9}>
+              <Stack direction="row" alignItems="center">
+                <Link
+                  href={`${selectedChain.blockExplorerUrl}/address/${contractAddress}#code`}
+                  underline="none"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <Typography variant="body2" sx={{ wordBreak: 'break-word', color: '#1890FF' }}>
+                    {`${selectedChain.blockExplorerUrl}/address/${contractAddress}#code`}
+                  </Typography>
+                </Link>
+
+                <IconButton
+                  size="small"
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      `${selectedChain.blockExplorerUrl}/address/${contractAddress}#code`
+                    );
+                  }}
+                >
+                  <Iconify icon="carbon:copy-file" />
+                </IconButton>
+              </Stack>
+            </Grid>
+          </Grid>
+        </Stack>
       </Paper>
     </>
   );

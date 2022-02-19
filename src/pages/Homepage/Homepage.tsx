@@ -1,24 +1,23 @@
-import { useState } from 'react';
 import {
-  Container,
-  Typography,
+  Avatar,
   Box,
   Button,
-  Grid,
-  Divider,
-  Avatar,
   Card,
-  CardContent
+  CardContent,
+  colors,
+  Container,
+  Divider,
+  Grid,
+  Typography
 } from '@mui/material';
-import Page from '../../components/Page';
-import Typed from 'react-typed';
 import { alpha, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { colors } from '@mui/material';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import VisibilitySensor from 'react-visibility-sensor';
+import { useState } from 'react';
 import CountUp from 'react-countup';
-
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import Typed from 'react-typed';
+import VisibilitySensor from 'react-visibility-sensor';
+import Page from '../../components/Page';
 const mock = [
   {
     title: 'Your NFTs collection, your smart contract',
@@ -238,6 +237,7 @@ export default function Homepage() {
                   >
                     One Stop Station
                   </Typography>
+
                   <Typography
                     color={'primary'}
                     component={'span'}
