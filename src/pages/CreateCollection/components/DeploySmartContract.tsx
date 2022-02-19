@@ -13,8 +13,10 @@ import {
   Tooltip,
   Typography
 } from '@mui/material';
+import { postContract } from 'clients/crustnft-explore-api';
 import Iconify from 'components/Iconify';
 import { getContract, setAuthorInfo, setName, setSymbol } from 'constants/contract';
+import { SOLIDITY_COMPILER_VERSION, SPDX_LICENSE_IDENTIFIER } from 'constants/solcEnvironments';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
 import { useEffect, useState } from 'react';
@@ -95,6 +97,20 @@ export default function DeploySmartContract({
         setDeploying(false);
         if (txReceipt) {
           setDeployingSuccess(true);
+
+          postContract({
+            txHash: txReceipt.transactionHash,
+            contractAddress: txReceipt.contractAddress,
+            chainId: selectedChain?.chainId || 1,
+            account: account || '',
+            contractContent: JSON.stringify({
+              sourceCode: source,
+              compilerversion: 'v' + SOLIDITY_COMPILER_VERSION,
+              licenseType: SPDX_LICENSE_IDENTIFIER.MIT
+            })
+          }).catch((err) => {
+            console.log('Error posting contract:', err.response);
+          });
           setContractAddress(txReceipt.contractAddress);
           setTxHash(txReceipt.transactionHash);
           setActiveStep((prevActiveStep) => 2);
