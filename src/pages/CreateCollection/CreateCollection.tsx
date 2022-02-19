@@ -1,5 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Card, Container } from '@mui/material';
+import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import Page from '../../components/Page';
@@ -11,6 +12,14 @@ type FormSmartContractConfig = {
   name: string;
   symbol: string;
   authorInfo: string;
+  agreement: boolean;
+};
+
+const InitFormSmartContractConfig: FormSmartContractConfig = {
+  name: '',
+  symbol: '',
+  authorInfo: '',
+  agreement: true
 };
 
 const FormSmartContractSchema = Yup.object().shape({
@@ -18,14 +27,17 @@ const FormSmartContractSchema = Yup.object().shape({
   symbol: Yup.string()
     .required('Symbol is required')
     .transform((value) => value.toUpperCase()),
-  authorInfo: Yup.string()
+  authorInfo: Yup.string(),
+  agreement: Yup.boolean().oneOf([true], 'You must agree to the terms and conditions')
 });
 
 export default function CreateCollection() {
   const method = useForm<FormSmartContractConfig>({
     mode: 'onTouched',
-    resolver: yupResolver(FormSmartContractSchema)
+    resolver: yupResolver(FormSmartContractSchema),
+    defaultValues: InitFormSmartContractConfig
   });
+  const [startedCreation, setStartedCreation] = useState(false);
 
   return (
     <Page title="Create NFTs Collection">
@@ -33,8 +45,11 @@ export default function CreateCollection() {
         <Introduction />
         <Card sx={{ p: 3 }}>
           <FormProvider {...method}>
-            <ConfigureSmartContract />
-            <DeploySmartContract />
+            <ConfigureSmartContract startedCreation={startedCreation} />
+            <DeploySmartContract
+              startedCreation={startedCreation}
+              setStartedCreation={setStartedCreation}
+            />
           </FormProvider>
         </Card>
       </Container>

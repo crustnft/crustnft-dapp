@@ -12,19 +12,17 @@ import {
   Typography
 } from '@mui/material';
 import useLocales from 'hooks/useLocales';
+import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
-import { useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import type { HandleNextBackButton } from '../CreateCollection.types';
 import SmartContractDialogs from './SmartContractDialogs';
 
-export default function ConfigureSmartContract({ handleNextButtonClick }: HandleNextBackButton) {
+export default function ConfigureSmartContract({ startedCreation }: { startedCreation: boolean }) {
   const { translate } = useLocales();
   const { control, watch } = useFormContext();
 
   const { active, account, library, provider, onboard, activate } = useWeb3();
-
-  const timer = useRef<number>();
+  const { chain: selectedChain } = useWallet();
 
   const [name, symbol] = watch(['name', 'symbol']);
 
@@ -66,6 +64,9 @@ export default function ConfigureSmartContract({ handleNextButtonClick }: Handle
             >
               <Typography variant="overline" sx={{ display: 'block', color: 'text.secondary' }}>
                 Settings
+                <Typography variant="overline" sx={{ color: '#FF4842', display: 'inline' }}>
+                  *
+                </Typography>
               </Typography>
               <Controller
                 control={control}
@@ -78,6 +79,7 @@ export default function ConfigureSmartContract({ handleNextButtonClick }: Handle
                     fullWidth
                     margin="normal"
                     error={Boolean(error)}
+                    disabled={startedCreation}
                     helperText={error?.message}
                   />
                 )}
@@ -97,6 +99,7 @@ export default function ConfigureSmartContract({ handleNextButtonClick }: Handle
                     fullWidth
                     margin="normal"
                     error={Boolean(error)}
+                    disabled={startedCreation}
                     helperText={error?.message}
                   />
                 )}
@@ -116,6 +119,7 @@ export default function ConfigureSmartContract({ handleNextButtonClick }: Handle
                     variant="outlined"
                     fullWidth
                     margin="normal"
+                    disabled={startedCreation}
                   />
                 )}
               />
@@ -160,7 +164,7 @@ export default function ConfigureSmartContract({ handleNextButtonClick }: Handle
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     Network
                   </Typography>
-                  <Typography variant="subtitle2">{'Chain'}</Typography>
+                  <Typography variant="subtitle2">{selectedChain?.name}</Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between" spacing={2}>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -183,12 +187,9 @@ export default function ConfigureSmartContract({ handleNextButtonClick }: Handle
                     }
                   }}
                 >
-                  <Chip size="small" label="Burnable"></Chip>
+                  <Chip size="small" label="Ownable"></Chip>
                   <Chip size="small" label="Enumarable"></Chip>
-                  <Chip size="small" label="Burnable"></Chip>
-                  <Chip size="small" label="Enumarable"></Chip>
-                  <Chip size="small" label="Burnable"></Chip>
-                  <Chip size="small" label="Enumarable"></Chip>
+                  <Chip size="small" label="Expandable"></Chip>
                 </Paper>
                 <Stack direction="row" justifyContent="space-between"></Stack>
               </Stack>
@@ -203,10 +204,32 @@ export default function ConfigureSmartContract({ handleNextButtonClick }: Handle
             </Button>
           </Stack>
 
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label="I agree with the smart contract provided by Crustnft"
+          <Controller
+            control={control}
+            name="agreement"
+            render={({ field, fieldState: { error } }) => (
+              <FormControlLabel
+                disabled={startedCreation}
+                control={<Checkbox {...field} defaultChecked />}
+                label="I agree with the smart contract provided by Crustnft"
+                sx={{ color: error ? '#FF4842' : '#212B36' }}
+              />
+            )}
           />
+          {/*
+          <FormControlLabel
+            control={
+              <Controller
+                control={control}
+                name="agreement"
+                render={({ field, fieldState: { error } }) => {
+                  console.log('error', error);
+                  return <Checkbox {...field} defaultChecked />;
+                }}
+              />
+            }
+            label="I agree with the smart contract provided by Crustnft"
+          /> */}
         </Stack>
       </Box>
     </>

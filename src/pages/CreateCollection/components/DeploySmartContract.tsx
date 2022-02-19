@@ -6,6 +6,7 @@ import {
   StepContent,
   StepLabel,
   Stepper,
+  Tooltip,
   Typography
 } from '@mui/material';
 import { getContract, setAuthorInfo, setName, setSymbol } from 'constants/contract';
@@ -21,14 +22,33 @@ import {
 } from 'services/createSmartContract/evmCompatible/';
 import { DoingIcon, ErrorIcon, SuccessIcon } from './StepperIcons';
 
-export default function DeploySmartContract() {
-  const { watch, handleSubmit } = useFormContext();
+export default function DeploySmartContract({
+  startedCreation,
+  setStartedCreation
+}: {
+  startedCreation: boolean;
+  setStartedCreation: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  const {
+    watch,
+    handleSubmit,
+    formState: { isValid, isSubmitting, touchedFields, submitCount }
+  } = useFormContext();
   const { active, account, library, onboard } = useWeb3();
   const { chain: selectedChain } = useWallet();
   const [activeStep, setActiveStep] = useState(0);
   const [source, setSource] = useState('');
 
-  const [name, symbol, authorInfo] = watch(['name', 'symbol', 'authorInfo']);
+  const [name, symbol, authorInfo, agreement] = watch([
+    'name',
+    'symbol',
+    'authorInfo',
+    'agreement'
+  ]);
+
+  useEffect(() => {
+    console.log('isvalid', isValid);
+  }, [isValid]);
 
   useEffect(() => {
     setName(name);
@@ -37,7 +57,9 @@ export default function DeploySmartContract() {
     setSource(getContract());
   }, [name, symbol, authorInfo]);
 
-  const [startedCreation, setStartedCreation] = useState(false);
+  useEffect(() => {
+    console.log('agreement', agreement);
+  }, [agreement]);
 
   const [compiling, setCompiling] = useState(false);
   const [compilingSuccess, setCompilingSuccess] = useState(false);
@@ -118,20 +140,29 @@ export default function DeploySmartContract() {
   return (
     <>
       <Box sx={{ mt: 2 }}>
-        <Button
-          variant="contained"
-          size="large"
-          disabled={!active}
-          color="info"
-          sx={{
-            backgroundColor: '#377dff',
-            px: 5,
-            display: startedCreation ? 'none' : 'block'
-          }}
-          onClick={handleSubmit(createCollection)}
+        <Tooltip
+          title={!active ? 'Connect your wallet' : 'Please configure your smart contract'}
+          disableFocusListener={active && isValid}
+          disableHoverListener={active && isValid}
+          disableTouchListener={active && isValid}
         >
-          Deploy
-        </Button>
+          <Box sx={{ width: 'max-content' }}>
+            <Button
+              variant="contained"
+              size="large"
+              disabled={!active || !isValid}
+              color="info"
+              sx={{
+                backgroundColor: '#377dff',
+                px: 5,
+                display: startedCreation ? 'none' : 'block'
+              }}
+              onClick={handleSubmit(createCollection)}
+            >
+              Deploy
+            </Button>
+          </Box>
+        </Tooltip>
       </Box>
 
       <Paper
