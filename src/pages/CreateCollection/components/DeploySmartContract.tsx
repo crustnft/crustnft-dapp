@@ -93,13 +93,17 @@ export default function DeploySmartContract({
       setActiveStep((prevActiveStep) => 1);
       setDeploying(true);
       if (signer) {
-        const txReceipt = await deploySmartContract(compileResult, signer);
+        const deployTransaction = deploySmartContract(compileResult, signer);
+        const txResponseGenerator = await deployTransaction.next();
+        setTxHash(txResponseGenerator.value?.hash || '');
+        const txReceiptGenerator = await deployTransaction.next();
+        const txReceipt = txReceiptGenerator.value;
         setDeploying(false);
         if (txReceipt) {
           setDeployingSuccess(true);
 
           postContract({
-            txHash: txReceipt.transactionHash,
+            txHash: txReceipt.transactionHash || '',
             contractAddress: txReceipt.contractAddress,
             chainId: selectedChain?.chainId || 1,
             account: account || '',

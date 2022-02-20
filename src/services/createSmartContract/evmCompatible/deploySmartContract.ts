@@ -1,12 +1,12 @@
-import { JsonRpcSigner, TransactionReceipt } from '@ethersproject/providers';
+import { JsonRpcSigner } from '@ethersproject/providers';
 import { CompilerAbstract } from '@remix-project/remix-solidity';
 import { ContractFactory } from 'ethers';
 import { CONTRACT_NAME } from './constants';
 
-export async function deploySmartContract(
+export async function* deploySmartContract(
   compileResult: CompilerAbstract,
   signer: JsonRpcSigner
-): Promise<TransactionReceipt | undefined> {
+): AsyncGenerator<any, any, any> {
   try {
     const compiledContract = compileResult?.getContract(CONTRACT_NAME);
     const contractBinary = '0x' + compiledContract?.object.evm.bytecode.object;
@@ -17,6 +17,7 @@ export async function deploySmartContract(
       signer
     );
     const deployingContract = await contractFactory.deploy();
+    yield deployingContract.deployTransaction;
     const txReceipt = await deployingContract.deployTransaction.wait(1);
     console.log('TransactionReceipt: ', txReceipt);
     return txReceipt;
