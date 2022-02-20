@@ -25,7 +25,7 @@ export async function* deploySmartContract(
     if (e.reason === 'repriced') {
       return e.receipt;
     } else {
-      throw e;
+      console.log('Error deploying', e);
     }
   }
 }

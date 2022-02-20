@@ -95,7 +95,7 @@ export default function DeploySmartContract({
       if (signer) {
         const deployTransaction = deploySmartContract(compileResult, signer);
         const txResponseGenerator = await deployTransaction.next();
-        setTxHash(txResponseGenerator.value?.hash || '');
+        setTxHash(txResponseGenerator?.value?.hash || '');
         const txReceiptGenerator = await deployTransaction.next();
         const txReceipt = txReceiptGenerator.value;
         setDeploying(false);
@@ -255,12 +255,12 @@ export default function DeploySmartContract({
                   : undefined
               }
             >
-              Publish smart contract contract on Etherscan
+              Publish smart contract contract on {selectedChain?.blockExplorerUrl}
             </StepLabel>
             <StepContent>
               <Typography>
-                The source code of your smart contract will be published on Etherscan to ensure its
-                transparency.
+                The source code of your smart contract will be published on{' '}
+                {selectedChain?.blockExplorerUrl} to ensure its transparency.
               </Typography>
             </StepContent>
           </Step>
@@ -276,10 +276,12 @@ export default function DeploySmartContract({
                   : undefined
               }
             >
-              Verify status on Etherscan
+              Verify status on {selectedChain?.blockExplorerUrl}
             </StepLabel>
             <StepContent>
-              <Typography>Get the verification status on Etherscan</Typography>
+              <Typography>
+                Get the verification status on {selectedChain?.blockExplorerUrl}
+              </Typography>
             </StepContent>
           </Step>
         </Stepper>

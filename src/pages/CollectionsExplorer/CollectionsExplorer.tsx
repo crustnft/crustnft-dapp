@@ -7,7 +7,7 @@ import SimpleCollectionCard from './components/SimpleCollectionCard';
 export default function MyNFT() {
   const [collections, setCollections] = useState<any>([]);
   useEffect(() => {
-    getContracts(5).then((res) => {
+    getContracts(50).then((res) => {
       setCollections(res?.data.data);
     });
   }, []);
