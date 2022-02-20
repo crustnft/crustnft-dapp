@@ -39,5 +39,6 @@ export const publishSmartContract = async (
     return (verifiedResponse.data as any).result;
   } catch (e) {
     console.log('Error on publishing', e);
+    console.log(e.response || '');
   }
 };

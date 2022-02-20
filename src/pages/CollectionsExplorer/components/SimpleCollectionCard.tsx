@@ -9,6 +9,7 @@ import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWeb3 from 'hooks/useWeb3';
 import { ColorButton } from 'pages/CollectionViewer/components/NftCard';
 import { useEffect, useMemo, useState } from 'react';
+import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import {
   connectContract,
   getContractOwner,
@@ -39,7 +40,7 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
   const [symbol, setSymbol] = useState('');
   const [contractOwner, setContractOwner] = useState('');
   const [totalSupply, setTotalSupply] = useState(0);
-  const [networkIcon, setNetworkIcon] = useState('');
+  const [network, setNetwork] = useState('');
 
   const contract = useMemo(() => {
     return connectContract(
@@ -55,7 +56,7 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
     getContractOwner(contract).then((contractOwner) => setContractOwner(contractOwner));
     getTotalSupply(contract).then((totalSupply) => setTotalSupply(totalSupply));
     const chain = getChainByChainId(chainId);
-    setNetworkIcon(chain?.iconDark || '');
+    setNetwork(chain?.name || '');
   }, []);
 
   return (
@@ -65,19 +66,21 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
           <Typography variant="caption">{totalSupply} NFTs</Typography>
           <Typography variant="subtitle2">{name}</Typography>
         </Stack>
-        <Avatar alt="avatar" src={networkIcon} />
+        <Avatar alt="avatar">
+          <Jazzicon diameter={40} seed={jsNumberForAddress(contractAddress)} />
+        </Avatar>
       </Stack>
       <Divider sx={{ mx: -3, my: 2 }} />
 
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Link color="inherit" underline="none" href={`#/assets/polygon/${contractAddress}/${''}`}>
           <Typography variant="caption" noWrap>
-            Owner
+            Network
           </Typography>
         </Link>
 
         <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
-          {contractOwner}
+          {network}
         </Typography>
       </Stack>
 
@@ -94,6 +97,18 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
           {symbol}
         </Typography>
       </Stack>
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Link color="inherit" underline="none" href={`#/assets/polygon/${contractAddress}/${''}`}>
+          <Typography variant="caption" noWrap>
+            Owner
+          </Typography>
+        </Link>
+
+        <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
+          {contractOwner}
+        </Typography>
+      </Stack>
+
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Link color="inherit" underline="none" href={`#/assets/polygon/${contractAddress}/${''}`}>
           <Stack direction="row" alignItems="center" spacing={0.5}>

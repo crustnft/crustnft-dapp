@@ -110,6 +110,7 @@
     "react-image-lightbox": "^5.1.4",
     "react-infinite-scroll-component": "^6.1.0",
     "react-intersection-observer": "^8.32.1",
+    "react-jazzicon": "^1.0.3",
     "react-jdenticon": "^0.0.9",
     "react-lazy-load-image-component": "^1.5.1",
     "react-map-gl": "^6.1.17",
