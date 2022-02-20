@@ -5,7 +5,7 @@ const PROD_CHAINS = [
     icon: './static/icons/networks/ethereum.svg',
     iconDark: './static/icons/networks/ethereum-dark.svg',
     chainId: 1,
-    rpcUrl: '',
+    rpcUrl: 'https://mainnet.infura.io/v3/741c5f1257a24106934fe4105c784478',
     blockExplorerUrl: 'https://etherscan.io'
   },
   {
