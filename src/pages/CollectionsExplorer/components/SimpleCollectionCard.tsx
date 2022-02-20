@@ -6,6 +6,7 @@ import { Avatar, Divider, Link, Paper, Stack, Tooltip, Typography } from '@mui/m
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
+import useWeb3 from 'hooks/useWeb3';
 import { ColorButton } from 'pages/CollectionViewer/components/NftCard';
 import { useEffect, useMemo, useState } from 'react';
 import {
@@ -15,7 +16,7 @@ import {
   getSymbol,
   getTotalSupply
 } from 'services/smartContract/evmCompatible';
-import { getRpcUrlByChainId } from 'utils/blockchainHandlers';
+import { getChainByChainId, getRpcUrlByChainId } from 'utils/blockchainHandlers';
 import { shortenAddress } from 'utils/formatAddress';
 
 export type CollectionData = {
@@ -33,10 +34,12 @@ type CollectionCardProps = {
 export default function SimpleCollectionCard({ collection }: CollectionCardProps) {
   const theme = useTheme();
   const { contractAddress, description, avatarUrl, chainId } = collection;
+  const { account } = useWeb3();
   const [name, setName] = useState('');
   const [symbol, setSymbol] = useState('');
   const [contractOwner, setContractOwner] = useState('');
   const [totalSupply, setTotalSupply] = useState(0);
+  const [networkIcon, setNetworkIcon] = useState('');
 
   const contract = useMemo(() => {
     return connectContract(
@@ -51,6 +54,8 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
     getSymbol(contract).then((symbol) => setSymbol(symbol));
     getContractOwner(contract).then((contractOwner) => setContractOwner(contractOwner));
     getTotalSupply(contract).then((totalSupply) => setTotalSupply(totalSupply));
+    const chain = getChainByChainId(chainId);
+    setNetworkIcon(chain?.iconDark || '');
   }, []);
 
   return (
@@ -60,7 +65,7 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
           <Typography variant="caption">{totalSupply} NFTs</Typography>
           <Typography variant="subtitle2">{name}</Typography>
         </Stack>
-        <Avatar alt="avatar" src="./static/icons/networks/withBackground/ethereum.png" />
+        <Avatar alt="avatar" src={networkIcon} />
       </Stack>
       <Divider sx={{ mx: -3, my: 2 }} />
 
@@ -126,17 +131,19 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
             </IconButton>
           </Tooltip>
         </Stack>
-        <ColorButton
-          variant="contained"
-          size="small"
-          disableElevation
-          disableFocusRipple
-          disableRipple
-        >
-          <Typography variant="overline" noWrap>
-            Mint NFT
-          </Typography>
-        </ColorButton>
+        {account?.toLowerCase() === contractOwner?.toLowerCase() && (
+          <ColorButton
+            variant="contained"
+            size="small"
+            disableElevation
+            disableFocusRipple
+            disableRipple
+          >
+            <Typography variant="overline" noWrap>
+              Mint NFT
+            </Typography>
+          </ColorButton>
+        )}
       </Stack>
     </Paper>
   );

@@ -3,6 +3,7 @@ const PROD_CHAINS = [
     name: 'Ethereum',
     currencySymbol: 'ETH',
     icon: './static/icons/networks/ethereum.svg',
+    iconDark: './static/icons/networks/ethereum-dark.svg',
     chainId: 1,
     rpcUrl: '',
     blockExplorerUrl: 'https://etherscan.io'
@@ -11,6 +12,7 @@ const PROD_CHAINS = [
     name: 'Binance',
     currencySymbol: 'BNB',
     icon: './static/icons/networks/binance.svg',
+    iconDark: './static/icons/networks/binance-dark.png',
     chainId: 56,
     rpcUrl: 'https://bsc-dataseed.binance.org/',
     blockExplorerUrl: 'https://bscscan.com'
@@ -19,6 +21,7 @@ const PROD_CHAINS = [
     name: 'Polygon',
     currencySymbol: 'MATIC',
     icon: './static/icons/networks/polygon.svg',
+    iconDark: './static/icons/networks/polygon-dark.png',
     chainId: 137,
     rpcUrl: 'https://polygon-rpc.com/',
     blockExplorerUrl: 'https://polygonscan.com'
@@ -29,7 +32,8 @@ const TEST_CHAINS = [
   {
     name: 'Rinkeby',
     currencySymbol: 'RIN',
-    icon: './static/icons/networks/ethereum.svg',
+    icon: './static/icons/networks/rinkeby.svg',
+    iconDark: './static/icons/networks/rinkeby-dark.png',
     chainId: 4,
     rpcUrl: 'https://rinkeby.infura.io/v3/741c5f1257a24106934fe4105c784478',
     blockExplorerUrl: 'https://rinkeby.etherscan.io'
@@ -44,6 +48,7 @@ export const EMPTY_CHAIN = {
   name: 'Unknown',
   currencySymbol: 'UNK',
   icon: '',
+  iconDark: '',
   chainId: 0,
   rpcUrl: '',
   blockExplorerUrl: ''
