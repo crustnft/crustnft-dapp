@@ -1,15 +1,14 @@
-import { useEffect, useState } from 'react';
-import { Typography, Box, Paper, Stack, Link } from '@mui/material';
-import { BallClipRotateMultiple } from 'react-pure-loaders';
 import { Icon } from '@iconify/react';
-import { contractAddress } from 'utils/contractAddress';
-import { useTheme } from '@mui/material/styles';
-import { styled } from '@mui/material/styles';
+import { Box, Link, Paper, Stack, Typography } from '@mui/material';
 import Button, { ButtonProps } from '@mui/material/Button';
+import { styled, useTheme } from '@mui/material/styles';
+import { useEffect, useState } from 'react';
+import { BallClipRotateMultiple } from 'react-pure-loaders';
+import { contractAddress } from 'utils/contractAddress';
 import type { NftCardCollectionViewerProps } from '../CollectionViewer.types';
 
 // To be moved to its place
-const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
+export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText('#EAECEF'),
   backgroundColor: '#EAECEF',
   '&:hover': {

@@ -1,4 +1,4 @@
-import { ethers, Contract } from 'ethers';
+import { Contract, ethers } from 'ethers';
 import asyncWithCache from '../../utils/asyncWithCache';
 
 export function connectContract(
@@ -39,4 +39,8 @@ export async function getName(contract: Contract): Promise<string> {
 
 export async function getSymbol(contract: Contract): Promise<string> {
   return asyncWithCache(contract.symbol, contract.address + '-getSymbol');
+}
+
+export async function getContractOwner(contract: Contract): Promise<string> {
+  return asyncWithCache(contract.owner, contract.address + '-getContractOwner');
 }
