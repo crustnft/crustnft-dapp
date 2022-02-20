@@ -41,6 +41,7 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
   const [contractOwner, setContractOwner] = useState('');
   const [totalSupply, setTotalSupply] = useState(0);
   const [network, setNetwork] = useState('');
+  const [blockExplorerUrl, setBLockExplorerUrl] = useState('');
 
   const contract = useMemo(() => {
     return connectContract(
@@ -57,6 +58,7 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
     getTotalSupply(contract).then((totalSupply) => setTotalSupply(totalSupply));
     const chain = getChainByChainId(chainId);
     setNetwork(chain?.name || '');
+    setBLockExplorerUrl(chain?.blockExplorerUrl || '');
   }, []);
 
   return (
@@ -136,14 +138,28 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
             </IconButton>
           </Tooltip>
           <Tooltip title="View on explorer">
-            <IconButton>
-              <PodcastsIcon sx={{ color: '#454F5B' }} />
-            </IconButton>
+            <Link
+              href={`${blockExplorerUrl}/address/${contractAddress}#readContract`}
+              underline="none"
+              target="_blank"
+              rel="noopener"
+            >
+              <IconButton>
+                <PodcastsIcon sx={{ color: '#454F5B' }} />
+              </IconButton>
+            </Link>
           </Tooltip>
           <Tooltip title="Source code">
-            <IconButton>
-              <IntegrationInstructionsIcon sx={{ color: '#454F5B' }} />
-            </IconButton>
+            <Link
+              href={`${blockExplorerUrl}/address/${contractAddress}#code`}
+              underline="none"
+              target="_blank"
+              rel="noopener"
+            >
+              <IconButton>
+                <IntegrationInstructionsIcon sx={{ color: '#454F5B' }} />
+              </IconButton>
+            </Link>
           </Tooltip>
         </Stack>
         {account?.toLowerCase() === contractOwner?.toLowerCase() && (
