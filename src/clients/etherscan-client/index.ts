@@ -15,7 +15,7 @@ const retryWrapper = (axios: AxiosInstance, options: any) => {
     if (counter < maxTime && response?.data?.status === NOT_OK_STATUS) {
       counter++;
       return new Promise((resolve) => {
-        const waitTime = Math.floor(2000 + Math.random() * 1000);
+        const waitTime = Math.floor(5000 + Math.random() * 1000);
         setTimeout(() => resolve(axios(config)), waitTime);
       });
     }
@@ -39,7 +39,7 @@ const statusVerificationRetryWrapper = (axios: AxiosInstance, options: any) => {
     ) {
       counter++;
       return new Promise((resolve) => {
-        const waitTime = Math.floor(2000 + Math.random() * 1000);
+        const waitTime = Math.floor(5000 + Math.random() * 1000);
         setTimeout(() => resolve(axios(config)), waitTime);
       });
     }
@@ -48,11 +48,14 @@ const statusVerificationRetryWrapper = (axios: AxiosInstance, options: any) => {
 };
 
 const API_ENDPOINTS: Record<string, string> = {
-  '1': '//api.etherscan.io/',
-  '3': '//api-ropsten.etherscan.io/api',
-  '4': '//api-rinkeby.etherscan.io/api',
-  '5': '//api-goerli.etherscan.io/api',
-  '42': '//api-kovan.etherscan.io/api'
+  '1': 'https://api.etherscan.io/api',
+  '3': 'https://api-ropsten.etherscan.io/api',
+  '4': 'https://api-rinkeby.etherscan.io/api',
+  '5': 'https://api-goerli.etherscan.io/api',
+  '42': 'https://api-kovan.etherscan.io/api',
+  '56': 'https://api.bscscan.com/api',
+  '97': 'https://api-testnet.bscscan.com/api',
+  '137': 'https://api.polygonscan.com/api'
 };
 
 export async function verifyAndPublicContractSourceCode(
@@ -73,7 +76,7 @@ export async function verifyAndPublicContractSourceCode(
   bodyFormData.append('runs', '200');
   bodyFormData.append('licenseType', requestBody.licenseType);
   const instance = Axios.create();
-  retryWrapper(instance, { retry_time: 100 });
+  retryWrapper(instance, { retry_time: 500 });
   return instance.post<any, EtherScanResponse>(API_ENDPOINTS[chainId], bodyFormData);
 }
 
@@ -85,6 +88,6 @@ export async function codeVerificationStatus(apiKey: string, chainId: string, tx
   bodyFormData.append('action', 'checkverifystatus');
 
   const instance = Axios.create();
-  statusVerificationRetryWrapper(instance, { retry_time: 100 });
+  statusVerificationRetryWrapper(instance, { retry_time: 500 });
   return instance.post<any, EtherScanResponse>(API_ENDPOINTS[chainId], bodyFormData);
 }
