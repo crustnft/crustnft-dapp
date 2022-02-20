@@ -1,5 +1,5 @@
 import Axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { POST_CONTRACT_TO_API } from 'configs/crustnft-explore-api';
+import { CONTRACT_API_V1 } from 'configs/crustnft-explore-api';
 import type { PostContractObj } from './types';
 
 const retryWrapper = (axios: AxiosInstance, options: any) => {
@@ -28,5 +28,11 @@ const retryWrapper = (axios: AxiosInstance, options: any) => {
 export async function postContract(postContractObj: PostContractObj) {
   const instance = Axios.create();
   retryWrapper(instance, { retry_time: 5 });
-  return instance.post(POST_CONTRACT_TO_API, postContractObj);
+  return instance.post(CONTRACT_API_V1, postContractObj);
+}
+
+export async function getContracts(pageSize: number) {
+  const instance = Axios.create();
+  retryWrapper(instance, { retry_time: 5 });
+  return instance.get(`${CONTRACT_API_V1}?pageSize=${pageSize}`);
 }

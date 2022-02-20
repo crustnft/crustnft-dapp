@@ -18,6 +18,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Typed from 'react-typed';
 import VisibilitySensor from 'react-visibility-sensor';
 import Page from '../../components/Page';
+
 const mock = [
   {
     title: 'Your NFTs collection, your smart contract',

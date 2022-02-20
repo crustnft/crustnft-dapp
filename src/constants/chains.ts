@@ -31,7 +31,7 @@ const TEST_CHAINS = [
     currencySymbol: 'RIN',
     icon: './static/icons/networks/ethereum.svg',
     chainId: 4,
-    rpcUrl: '',
+    rpcUrl: 'https://rinkeby.infura.io/v3/741c5f1257a24106934fe4105c784478',
     blockExplorerUrl: 'https://rinkeby.etherscan.io'
   }
 ];
