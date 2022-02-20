@@ -93,13 +93,23 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
         hideBranding: true,
         networkId: chain.chainId,
         walletSelect: {
-          wallets
+          wallets: [
+            { walletName: 'metamask' },
+            {
+              walletName: 'walletConnect',
+              infuraKey: '741c5f1257a24106934fe4105c784478'
+            },
+            {
+              walletName: 'ledger',
+              infuraKey: '741c5f1257a24106934fe4105c784478'
+            }
+          ]
         },
         subscriptions: {
           wallet: (wallet: Wallet) => {
             if (wallet.provider) {
               setProvider(wallet.provider);
-              setLibrary(new Web3Provider(wallet.provider));
+              setLibrary(new Web3Provider(wallet.provider, 'any'));
               setModalSelectedWallet(wallet.name);
             } else {
               setProvider(undefined);
@@ -119,6 +129,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
 
   const activate = useCallback(() => {
     setPending(true);
+
     onboard
       .walletSelect(previousSelectedWallet)
       .catch(console.error)

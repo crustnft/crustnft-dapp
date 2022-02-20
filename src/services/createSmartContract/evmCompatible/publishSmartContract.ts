@@ -5,7 +5,7 @@ import {
   SOLIDITY_COMPILER_VERSION,
   SPDX_LICENSE_IDENTIFIER
 } from '../../../constants/solcEnvironments';
-import { CONTRACT_FILE_NAME, CONTRACT_NAME, ETHERSCAN_API_SECRET_KEY } from './constants';
+import { CONTRACT_FILE_NAME, CONTRACT_NAME, EXPLORER_API_SECRET_KEY } from './constants';
 
 export const publishSmartContract = async (
   chainId: number,
@@ -14,7 +14,7 @@ export const publishSmartContract = async (
 ): Promise<string | undefined> => {
   try {
     const verifiedResponse = await etherscanClient.verifyAndPublicContractSourceCode(
-      ETHERSCAN_API_SECRET_KEY,
+      EXPLORER_API_SECRET_KEY[chainId],
       chainId + '',
       {
         address: txReceipt?.contractAddress || '',
@@ -39,5 +39,6 @@ export const publishSmartContract = async (
     return (verifiedResponse.data as any).result;
   } catch (e) {
     console.log('Error on publishing', e);
+    console.log(e.response || '');
   }
 };
