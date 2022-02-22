@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
-import { Box, Button, Card, Dialog, Grid, Stack, Typography } from '@mui/material';
+import { Box, Button, Card, Grid, Stack, Typography } from '@mui/material';
 import { create } from 'ipfs-http-client';
 import { useSnackbar } from 'notistack';
 import { useCallback, useState } from 'react';
@@ -15,7 +15,7 @@ import type { PropertyProps } from '../MintNft.types';
 import Property from './/Property';
 import CircularBoost from './CircularBoost';
 import LevelProgress from './LevelProgress';
-import NewPropertiesDialog from './NewPropertiesDialog';
+import NewPropertiesDialog from './NewLevelsDialog';
 import NftTextField from './NftTextField';
 import StatNumber from './StatNumber';
 const ipfsGateway = 'https://gw.crustapps.net';
@@ -245,18 +245,12 @@ export default function NftForm() {
                 </Grid>
               </Stack>
 
-              <Dialog
-                open={openDialogProperties}
-                onClose={() => {
-                  setOpenDialogProperties(false);
-                }}
-              >
-                <NewPropertiesDialog
-                  properties={properties}
-                  setProperties={setProperties}
-                  setOpenDialogProperties={setOpenDialogProperties}
-                />
-              </Dialog>
+              <NewPropertiesDialog
+                openDialogProperties={openDialogProperties}
+                properties={properties}
+                setProperties={setProperties}
+                setOpenDialogProperties={setOpenDialogProperties}
+              />
 
               <Stack>
                 <Stack direction="row" alignItems="center" justifyContent="space-between">

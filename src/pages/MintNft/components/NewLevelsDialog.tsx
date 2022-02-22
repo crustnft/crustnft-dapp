@@ -1,24 +1,18 @@
 import {
   Button,
-  Card,
   Dialog,
-  Divider,
+  DialogContent,
   IconButton,
   Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   TextField,
   Typography
 } from '@mui/material';
+import { DialogProps } from '@mui/material/Dialog';
 import { useState } from 'react';
 import Iconify from '../../../components/Iconify';
 import type { PropertyProps } from '../MintNft.types';
 
-export default function NewPropertiesDialog({
+export default function NewLevelsDialog({
   openDialogProperties,
   properties,
   setProperties,
@@ -31,6 +25,7 @@ export default function NewPropertiesDialog({
 }) {
   const [newPropType, setNewPropType] = useState('');
   const [newName, setNewName] = useState('');
+  const [scroll, setScroll] = useState<DialogProps['scroll']>('paper');
 
   const handleAddProperty = () => {
     if (newPropType && newName) {
@@ -56,9 +51,10 @@ export default function NewPropertiesDialog({
       onClose={() => {
         setOpenDialogProperties(false);
       }}
+      scroll={scroll}
     >
-      <Card>
-        <Stack sx={{ p: 3, pb: 2 }} spacing={1}>
+      <DialogContent dividers={scroll === 'paper'}>
+        <Stack sx={{ p: 1, pb: 2 }} spacing={1}>
           <Typography variant="h5">Add Properties</Typography>
           <Typography variant="body2">
             Properties show up underneath your item, are clickable, and can be filtered in your
@@ -66,40 +62,23 @@ export default function NewPropertiesDialog({
           </Typography>
         </Stack>
 
-        <Divider />
-        <Stack sx={{ p: 2, pb: 0 }}>
-          <TableContainer>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Type</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell />
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {properties.map((row, index) => (
-                  <TableRow key={row.propType + index}>
-                    <TableCell>{row.propType}</TableCell>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell align="right">
-                      <IconButton size="small">
-                        <Iconify
-                          icon="fluent:delete-24-filled"
-                          onClick={() => {
-                            handleRemoveProperty(index);
-                          }}
-                        />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+        <Stack sx={{ px: 1 }} spacing={1}>
+          {properties.map((row, index) => (
+            <Stack key={row.propType + index} direction="row" spacing={2}>
+              <TextField size="small" value={row.propType} disabled />
+              <TextField placeholder="e.g. Female" value={row.name} size="small" disabled />
+              <IconButton
+                onClick={() => {
+                  handleRemoveProperty(index);
+                }}
+              >
+                <Iconify icon="fluent:delete-24-filled" />
+              </IconButton>
+            </Stack>
+          ))}
         </Stack>
 
-        <Stack sx={{ p: 3, pt: 1 }} spacing={2}>
+        <Stack sx={{ p: 1, pt: 1 }} spacing={2}>
           <Stack direction="row" spacing={2}>
             <TextField
               placeholder="e.g. Gender"
@@ -131,7 +110,7 @@ export default function NewPropertiesDialog({
             Save
           </Button>
         </Stack>
-      </Card>
+      </DialogContent>
     </Dialog>
   );
 }
