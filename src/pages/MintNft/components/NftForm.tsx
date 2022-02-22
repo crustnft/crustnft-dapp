@@ -1,20 +1,21 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
-import { Box, Card, Grid, Stack, Typography } from '@mui/material';
+import { Box, Button, Card, Grid, Stack, Typography } from '@mui/material';
 import { FormProvider, RHFSwitch, RHFUploadNftCard } from 'components/hook-form';
 import Iconify from 'components/Iconify';
+import { create } from 'ipfs-http-client';
 import { useSnackbar } from 'notistack';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { UserManager } from '../../../@types/user';
-import Label from '../../../components/Label';
 import { fData } from '../../../utils/formatNumber';
 import CircularBoost from './CircularBoost';
 import LevelProgress from './LevelProgress';
 import NftTextField from './NftTextField';
 import StatNumber from './StatNumber';
+const ipfsGateway = 'https://gw.crustapps.net';
 
 type FormValuesProps = UserManager;
 
@@ -31,16 +32,18 @@ export default function NftForm({ isEdit }: Props) {
   const NewUserSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     description: Yup.string(),
-    externalLink: Yup.string().url('Invalid URL')
+    externalLink: Yup.string().url('Invalid URL'),
+    avatarUrl: Yup.mixed().test('required', 'Avatar is required', (value) => value !== '')
   });
 
   const defaultValues = {
     name: '',
     description: '',
-    externalLink: ''
+    externalLink: '',
+    avatarUrl: ''
   };
 
-  const methods = useForm<FormValuesProps>({
+  const methods = useForm({
     mode: 'onTouched',
     resolver: yupResolver(NewUserSchema),
     defaultValues
@@ -84,21 +87,35 @@ export default function NftForm({ isEdit }: Props) {
     [setValue]
   );
 
+  const authHeader =
+    'cG9sLTB4QTIyOGNGYWI4MEE2NzM4NTIyNDc2RGVDMTFkNzkzZDYxMjk5NjhiMjoweGU2ZDA1NDIzYTcxY2YzNjdjNWNhZmQwNzRmOWZjODAyMWUwMmEzZDA4MGViZTMyY2VhNDA0MjkwZTgxOWM5YTExMDUxMjNhZDJjZWM2ZjQ1Y2NiZWRmOTYyYjc5NzA4YWRiYjMwNTcxMGEzZWIzYjMzOWM3MzFmNTc1NGM4NWY1MWM=';
+
+  const uploadImageHandle = async () => {
+    const ipfs = create({
+      url: ipfsGateway + '/api/v0',
+      headers: {
+        authorization: 'Basic ' + authHeader
+      }
+    });
+
+    const added = await ipfs.add(values.avatarUrl);
+
+    console.log(added);
+    console.log(added.cid.toV0().toString());
+  };
+
+  const printFile = () => {
+    console.log(values.avatarUrl);
+    uploadImageHandle();
+  };
+
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
           <Card sx={{ py: 2, px: 2 }}>
-            {isEdit && (
-              <Label
-                color={values.status !== 'active' ? 'error' : 'success'}
-                sx={{ textTransform: 'uppercase', position: 'absolute', top: 24, right: 24 }}
-              >
-                {values.status}
-              </Label>
-            )}
-
             <Box sx={{ mb: 5 }}>
+              <Button onClick={printFile}>Helllo</Button>
               <RHFUploadNftCard
                 name="avatarUrl"
                 accept="image/*"
@@ -271,7 +288,12 @@ export default function NftForm({ isEdit }: Props) {
             </Stack>
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+              <LoadingButton
+                type="submit"
+                variant="contained"
+                loading={isSubmitting}
+                sx={{ backgroundColor: '#1A90FF' }}
+              >
                 Mint NFT
               </LoadingButton>
             </Stack>
