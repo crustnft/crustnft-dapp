@@ -10,7 +10,7 @@ import {
   RHFUploadNftCard
 } from 'components/hook-form';
 import { useSnackbar } from 'notistack';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback } from 'react';
 // form
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +21,7 @@ import { UserManager } from '../../../@types/user';
 import Label from '../../../components/Label';
 // utils
 import { fData } from '../../../utils/formatNumber';
+import NftTextField from './NftTextField';
 
 type FormValuesProps = UserManager;
 
@@ -29,15 +30,15 @@ type Props = {
   currentUser?: UserManager;
 };
 
-export default function NftForm({ isEdit, currentUser }: Props) {
+export default function NftForm({ isEdit }: Props) {
   const navigate = useNavigate();
 
   const { enqueueSnackbar } = useSnackbar();
 
   const NewUserSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    email: Yup.string().required('Email is required').email(),
-    phoneNumber: Yup.string().required('Phone number is required'),
+    description: Yup.string().required('Email is required').email(),
+    externalLink: Yup.string(),
     address: Yup.string().required('Address is required'),
     country: Yup.string().required('country is required'),
     company: Yup.string().required('Company is required'),
@@ -47,27 +48,24 @@ export default function NftForm({ isEdit, currentUser }: Props) {
     avatarUrl: Yup.mixed().test('required', 'Avatar is required', (value) => value !== '')
   });
 
-  const defaultValues = useMemo(
-    () => ({
-      name: currentUser?.name || '',
-      email: currentUser?.email || '',
-      phoneNumber: currentUser?.phoneNumber || '',
-      address: currentUser?.address || '',
-      country: currentUser?.country || '',
-      state: currentUser?.state || '',
-      city: currentUser?.city || '',
-      zipCode: currentUser?.zipCode || '',
-      avatarUrl: currentUser?.avatarUrl || '',
-      isVerified: currentUser?.isVerified || true,
-      status: currentUser?.status,
-      company: currentUser?.company || '',
-      role: currentUser?.role || ''
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentUser]
-  );
+  const defaultValues = {
+    name: '',
+    description: '',
+    externalLink: '',
+    address: '',
+    country: '',
+    state: '',
+    city: '',
+    zipCode: '',
+    avatarUrl: '',
+    isVerified: true,
+    status: 'active',
+    company: '',
+    role: ''
+  };
 
   const methods = useForm<FormValuesProps>({
+    mode: 'onTouched',
     resolver: yupResolver(NewUserSchema),
     defaultValues
   });
@@ -82,16 +80,6 @@ export default function NftForm({ isEdit, currentUser }: Props) {
   } = methods;
 
   const values = watch();
-
-  useEffect(() => {
-    if (isEdit && currentUser) {
-      reset(defaultValues);
-    }
-    if (!isEdit) {
-      reset(defaultValues);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEdit, currentUser]);
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
@@ -178,16 +166,21 @@ export default function NftForm({ isEdit, currentUser }: Props) {
 
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
-            <Box
-              sx={{
-                display: 'grid',
-                columnGap: 2,
-                rowGap: 3,
-                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }
-              }}
-            >
-              <RHFTextField name="name" label="Full Name" />
-              <RHFTextField name="email" label="Email Address" />
+            <Stack spacing={2}>
+              <NftTextField
+                name="name"
+                label="Name"
+                size="small"
+                required={true}
+                placeholder="Item name"
+              />
+              <NftTextField
+                name="description"
+                label="Description"
+                description="The description will be included on the item's detail page underneath its image. Markdown syntax is supported."
+                size="small"
+                placeholder="Provide a detailed description of your item."
+              />
               <RHFTextField name="phoneNumber" label="Phone Number" />
 
               <RHFSelect name="country" label="Country" placeholder="Country">
@@ -202,7 +195,7 @@ export default function NftForm({ isEdit, currentUser }: Props) {
               <RHFTextField name="zipCode" label="Zip/Code" />
               <RHFTextField name="company" label="Company" />
               <RHFTextField name="role" label="Role" />
-            </Box>
+            </Stack>
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
