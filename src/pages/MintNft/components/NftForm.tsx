@@ -5,7 +5,7 @@ import { FormProvider, RHFSwitch, RHFUploadNftCard } from 'components/hook-form'
 import Iconify from 'components/Iconify';
 import { create } from 'ipfs-http-client';
 import { useSnackbar } from 'notistack';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -19,33 +19,36 @@ const ipfsGateway = 'https://gw.crustapps.net';
 
 type FormValuesProps = UserManager;
 
-type Props = {
-  isEdit: boolean;
-  currentUser?: UserManager;
+type FormValues = {
+  name: string;
+  description: string;
+  externalLink: string;
+  avatarUrl: File | null;
 };
 
-export default function NftForm({ isEdit }: Props) {
+export default function NftForm() {
   const navigate = useNavigate();
 
+  const [file, setFile] = useState<File | null>(null);
   const { enqueueSnackbar } = useSnackbar();
 
-  const NewUserSchema = Yup.object().shape({
+  const NewNftSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     description: Yup.string(),
     externalLink: Yup.string().url('Invalid URL'),
-    avatarUrl: Yup.mixed().test('required', 'Avatar is required', (value) => value !== '')
+    avatarUrl: Yup.mixed().test('required', 'Image is required', (value) => value !== null)
   });
 
   const defaultValues = {
     name: '',
     description: '',
     externalLink: '',
-    avatarUrl: ''
+    avatarUrl: null
   };
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onTouched',
-    resolver: yupResolver(NewUserSchema),
+    resolver: yupResolver(NewNftSchema),
     defaultValues
   });
 
@@ -62,9 +65,10 @@ export default function NftForm({ isEdit }: Props) {
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
+      console.log('success');
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
-      enqueueSnackbar(!isEdit ? 'Create success!' : 'Update success!');
+      enqueueSnackbar('Create success!');
       navigate('#/home');
     } catch (error) {
       console.error(error);
@@ -74,8 +78,8 @@ export default function NftForm({ isEdit }: Props) {
   const handleDrop = useCallback(
     (acceptedFiles) => {
       const file = acceptedFiles[0];
-
       if (file) {
+        setFile(file);
         setValue(
           'avatarUrl',
           Object.assign(file, {
@@ -90,23 +94,40 @@ export default function NftForm({ isEdit }: Props) {
   const authHeader =
     'cG9sLTB4QTIyOGNGYWI4MEE2NzM4NTIyNDc2RGVDMTFkNzkzZDYxMjk5NjhiMjoweGU2ZDA1NDIzYTcxY2YzNjdjNWNhZmQwNzRmOWZjODAyMWUwMmEzZDA4MGViZTMyY2VhNDA0MjkwZTgxOWM5YTExMDUxMjNhZDJjZWM2ZjQ1Y2NiZWRmOTYyYjc5NzA4YWRiYjMwNTcxMGEzZWIzYjMzOWM3MzFmNTc1NGM4NWY1MWM=';
 
-  const uploadImageHandle = async () => {
-    const ipfs = create({
-      url: ipfsGateway + '/api/v0',
-      headers: {
-        authorization: 'Basic ' + authHeader
+  function pinFileToW3Gateway(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (values.avatarUrl) {
+        const ipfs = create({
+          url: ipfsGateway + '/api/v0',
+          headers: {
+            authorization: 'Basic ' + authHeader
+          }
+        });
+        const reader = new FileReader();
+        reader.onabort = () => reject('file reading was aborted');
+        reader.onerror = () => reject('file reading has failed');
+        reader.onload = async () => {
+          const added = await ipfs.add(reader.result as ArrayBuffer);
+          console.log(added.cid.toV0().toString());
+          resolve({
+            cid: added.cid.toV0().toString(),
+            name: values?.avatarUrl?.name || '',
+            size: added.size
+          });
+        };
+
+        reader.readAsArrayBuffer(values.avatarUrl);
+      } else {
+        reject('no file');
       }
     });
-
-    const added = await ipfs.add(values.avatarUrl);
-
-    console.log(added);
-    console.log(added.cid.toV0().toString());
-  };
+  }
 
   const printFile = () => {
+    console.log(typeof file);
+    console.log(typeof values.avatarUrl);
     console.log(values.avatarUrl);
-    uploadImageHandle();
+    //uploadImageHandle();
   };
 
   return (
@@ -115,7 +136,9 @@ export default function NftForm({ isEdit }: Props) {
         <Grid item xs={12} md={4}>
           <Card sx={{ py: 2, px: 2 }}>
             <Box sx={{ mb: 5 }}>
-              <Button onClick={printFile}>Helllo</Button>
+              <Button onClick={printFile}>Print</Button>
+              {/* <Button onClick={uploadImageHandle}>Upload</Button> */}
+              <Button onClick={pinFileToW3Gateway}>To Gateway</Button>
               <RHFUploadNftCard
                 name="avatarUrl"
                 accept="image/*"
