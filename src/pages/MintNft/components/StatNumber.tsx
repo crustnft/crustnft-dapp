@@ -20,18 +20,16 @@ export default function StatNumber({ progress }: ProgressItemProps) {
 
   return (
     <Stack spacing={1}>
-      <Stack direction="row" alignItems="center">
-        <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
-          {progress.label}
-        </Typography>
-        <Typography variant="subtitle2">{value} of&nbsp;</Typography>
-        <Typography variant="subtitle2">{max}</Typography>
-      </Stack>
-
-      <Card sx={{ p: 1, backgroundColor: '#F4F6F8', borderColor: '#15B2E5' }} variant="outlined">
-        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-          <Typography variant="overline">Character</Typography>
-          <Typography variant="subtitle2">Character</Typography>
+      <Card
+        sx={{ p: 1, borderRadius: 1, backgroundColor: '#F4F6F8', borderColor: '#15B2E5' }}
+        variant="outlined"
+      >
+        <Stack direction="row" alignItems="center">
+          <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
+            {progress.label}
+          </Typography>
+          <Typography variant="subtitle2">{value} of&nbsp;</Typography>
+          <Typography variant="subtitle2">{max}</Typography>
         </Stack>
       </Card>
     </Stack>

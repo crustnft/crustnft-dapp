@@ -11,6 +11,7 @@ import * as Yup from 'yup';
 import { UserManager } from '../../../@types/user';
 import Label from '../../../components/Label';
 import { fData } from '../../../utils/formatNumber';
+import CircularBoost from './CircularBoost';
 import LevelProgress from './LevelProgress';
 import NftTextField from './NftTextField';
 import StatNumber from './StatNumber';
@@ -213,7 +214,7 @@ export default function NftForm({ isEdit }: Props) {
               <Stack>
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <Iconify icon="carbon:location-star-filled" />
-                  <Typography variant="subtitle1">Stats</Typography>
+                  <Typography variant="subtitle1">Levels</Typography>
                 </Stack>
 
                 <Typography variant="caption">
@@ -236,8 +237,35 @@ export default function NftForm({ isEdit }: Props) {
                   Numerical traits that just show as numbers
                 </Typography>
                 <Box sx={{ height: '8px' }} />
-                <Stack spacing={1}>
-                  <StatNumber progress={{ label: 'Speed', max: 180, value: 200 }} />
+                <Grid container spacing={1}>
+                  <Grid item xs={6}>
+                    <StatNumber progress={{ label: 'Generation', max: 2, value: 1 }} />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <StatNumber progress={{ label: 'Group', max: 2, value: 1 }} />
+                  </Grid>
+                </Grid>
+              </Stack>
+
+              <Stack>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Iconify icon="ic:baseline-flash-on" />
+                  <Typography variant="subtitle1">Boosts</Typography>
+                </Stack>
+                <Typography variant="caption">
+                  Number or percentage boosts that show up as a circular boost
+                </Typography>
+                <Box sx={{ height: '8px' }} />
+                <Stack direction="row" spacing={1}>
+                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
+                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
+                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
+                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
+                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
+                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
+                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
+                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
+                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
                 </Stack>
               </Stack>
             </Stack>
