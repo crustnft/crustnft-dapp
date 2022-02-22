@@ -1,21 +1,19 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-// @mui
 import { LoadingButton } from '@mui/lab';
 import { Box, Card, Grid, Stack, Typography } from '@mui/material';
 import { FormProvider, RHFSwitch, RHFUploadNftCard } from 'components/hook-form';
+import Iconify from 'components/Iconify';
 import { useSnackbar } from 'notistack';
 import { useCallback } from 'react';
-// form
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-// @types
 import { UserManager } from '../../../@types/user';
-// components
 import Label from '../../../components/Label';
-// utils
 import { fData } from '../../../utils/formatNumber';
+import LevelProgress from './LevelProgress';
 import NftTextField from './NftTextField';
+import StatNumber from './StatNumber';
 
 type FormValuesProps = UserManager;
 
@@ -167,6 +165,81 @@ export default function NftForm({ isEdit }: Props) {
                 minRows={4}
                 placeholder="Provide a detailed description of your item."
               />
+              <Stack>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Iconify icon="bxs:tag" rotate={2} />
+                  <Typography variant="subtitle1">Properties</Typography>
+                </Stack>
+
+                <Typography variant="caption">Textual traits that show up as rectangles</Typography>
+                <Box sx={{ height: '8px' }} />
+                <Grid container spacing={2}>
+                  <Grid item xs={2}>
+                    <Card
+                      sx={{ p: 2, backgroundColor: '#F4F6F8', borderColor: '#15B2E5' }}
+                      variant="outlined"
+                    >
+                      <Stack alignItems="center" spacing={1}>
+                        <Typography variant="overline">Character</Typography>
+                        <Typography variant="body2">Character</Typography>
+                      </Stack>
+                    </Card>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Card
+                      sx={{ p: 2, backgroundColor: '#F4F6F8', borderColor: '#15B2E5' }}
+                      variant="outlined"
+                    >
+                      <Stack alignItems="center" spacing={1}>
+                        <Typography variant="overline">Character</Typography>
+                        <Typography variant="body2">Character</Typography>
+                      </Stack>
+                    </Card>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Card
+                      sx={{ p: 2, backgroundColor: '#F4F6F8', borderColor: '#15B2E5' }}
+                      variant="outlined"
+                    >
+                      <Stack alignItems="center" spacing={1}>
+                        <Typography variant="overline">Character</Typography>
+                        <Typography variant="body2">Character</Typography>
+                      </Stack>
+                    </Card>
+                  </Grid>
+                </Grid>
+              </Stack>
+
+              <Stack>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Iconify icon="carbon:location-star-filled" />
+                  <Typography variant="subtitle1">Stats</Typography>
+                </Stack>
+
+                <Typography variant="caption">
+                  Numerical traits that show as a progress bar
+                </Typography>
+                <Box sx={{ height: '8px' }} />
+                <Stack spacing={1}>
+                  <LevelProgress progress={{ label: 'Speed', max: 180, value: 200 }} />
+                  <LevelProgress progress={{ label: 'Speed', max: -100, value: 200 }} />
+                </Stack>
+              </Stack>
+
+              <Stack>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Iconify icon="ion:stats-chart" />
+                  <Typography variant="subtitle1">Stats</Typography>
+                </Stack>
+
+                <Typography variant="caption">
+                  Numerical traits that just show as numbers
+                </Typography>
+                <Box sx={{ height: '8px' }} />
+                <Stack spacing={1}>
+                  <StatNumber progress={{ label: 'Speed', max: 180, value: 200 }} />
+                </Stack>
+              </Stack>
             </Stack>
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
