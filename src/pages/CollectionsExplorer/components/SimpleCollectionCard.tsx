@@ -2,7 +2,7 @@ import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak';
 import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions';
 import PodcastsIcon from '@mui/icons-material/Podcasts';
 import SailingIcon from '@mui/icons-material/Sailing';
-import { Avatar, Divider, Link, Paper, Stack, Tooltip, Typography } from '@mui/material';
+import { Avatar, Box, Card, Divider, Link, Stack, Tooltip, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
@@ -62,120 +62,124 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
   }, []);
 
   return (
-    <Paper sx={{ boxShadow: (theme) => theme.shadows['4'], padding: 3, pb: 1 }}>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-        <Stack direction="column">
-          <Typography variant="caption">{totalSupply} NFTs</Typography>
-          <Typography variant="subtitle2">{name}</Typography>
-        </Stack>
-        <Avatar alt="avatar">
-          <Jazzicon diameter={40} seed={jsNumberForAddress(contractAddress)} />
-        </Avatar>
-      </Stack>
-      <Divider sx={{ mx: -3, my: 2 }} />
-
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Link color="inherit" underline="none" href={`#/assets/polygon/${contractAddress}/${''}`}>
-          <Typography variant="caption" noWrap>
-            Network
-          </Typography>
-        </Link>
-
-        <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
-          {network}
-        </Typography>
-      </Stack>
-
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Link color="inherit" underline="none" href={`#/assets/polygon/${contractAddress}/${''}`}>
-          <Stack direction="row" alignItems="center" spacing={0.5}>
-            <Typography variant="caption" noWrap>
-              Token Symbol
-            </Typography>
+    <Card>
+      <Box sx={{ backgroundColor: '#F4F6F8', p: 2 }}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+          <Stack direction="column">
+            <Typography variant="caption">{totalSupply} NFTs</Typography>
+            <Typography variant="subtitle2">{name}</Typography>
           </Stack>
-        </Link>
-
-        <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
-          {symbol}
-        </Typography>
-      </Stack>
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Link color="inherit" underline="none" href={`#/assets/polygon/${contractAddress}/${''}`}>
-          <Typography variant="caption" noWrap>
-            Owner
-          </Typography>
-        </Link>
-
-        <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
-          {contractOwner}
-        </Typography>
-      </Stack>
-
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Link color="inherit" underline="none" href={`#/assets/polygon/${contractAddress}/${''}`}>
-          <Stack direction="row" alignItems="center" spacing={0.5}>
-            <Typography variant="caption" noWrap>
-              Contract Address
-            </Typography>
-          </Stack>
-        </Link>
-
-        <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
-          {shortenAddress(contractAddress, 15)}
-        </Typography>
-      </Stack>
-      <Stack direction="row" sx={{ mt: 2 }} alignItems="center" justifyContent="space-between">
-        <Stack direction="row">
-          <Tooltip title="View collection on crustnft.io">
-            <IconButton>
-              <CenterFocusWeakIcon sx={{ color: '#454F5B' }} />
-            </IconButton>
-          </Tooltip>
-
-          <Tooltip title="View collection on opensea.io">
-            <IconButton>
-              <SailingIcon sx={{ color: '#454F5B' }} />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="View on explorer">
-            <Link
-              href={`${blockExplorerUrl}/address/${contractAddress}#readContract`}
-              underline="none"
-              target="_blank"
-              rel="noopener"
-            >
-              <IconButton>
-                <PodcastsIcon sx={{ color: '#454F5B' }} />
-              </IconButton>
-            </Link>
-          </Tooltip>
-          <Tooltip title="Source code">
-            <Link
-              href={`${blockExplorerUrl}/address/${contractAddress}#code`}
-              underline="none"
-              target="_blank"
-              rel="noopener"
-            >
-              <IconButton>
-                <IntegrationInstructionsIcon sx={{ color: '#454F5B' }} />
-              </IconButton>
-            </Link>
-          </Tooltip>
+          <Avatar alt="avatar">
+            <Jazzicon diameter={40} seed={jsNumberForAddress(contractAddress)} />
+          </Avatar>
         </Stack>
-        {account?.toLowerCase() === contractOwner?.toLowerCase() && (
-          <ColorButton
-            variant="contained"
-            size="small"
-            disableElevation
-            disableFocusRipple
-            disableRipple
-          >
-            <Typography variant="overline" noWrap>
-              Mint NFT
+      </Box>
+
+      <Divider />
+      <Box sx={{ p: 2 }}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Link color="inherit" underline="none" href={`#/assets/polygon/${contractAddress}/${''}`}>
+            <Typography variant="caption" noWrap>
+              Network
             </Typography>
-          </ColorButton>
-        )}
-      </Stack>
-    </Paper>
+          </Link>
+
+          <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
+            {network}
+          </Typography>
+        </Stack>
+
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Link color="inherit" underline="none" href={`#/assets/polygon/${contractAddress}/${''}`}>
+            <Stack direction="row" alignItems="center" spacing={0.5}>
+              <Typography variant="caption" noWrap>
+                Token Symbol
+              </Typography>
+            </Stack>
+          </Link>
+
+          <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
+            {symbol}
+          </Typography>
+        </Stack>
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Link color="inherit" underline="none" href={`#/assets/polygon/${contractAddress}/${''}`}>
+            <Typography variant="caption" noWrap>
+              Owner
+            </Typography>
+          </Link>
+
+          <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
+            {contractOwner}
+          </Typography>
+        </Stack>
+
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Link color="inherit" underline="none" href={`#/assets/polygon/${contractAddress}/${''}`}>
+            <Stack direction="row" alignItems="center" spacing={0.5}>
+              <Typography variant="caption" noWrap>
+                Contract Address
+              </Typography>
+            </Stack>
+          </Link>
+
+          <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
+            {shortenAddress(contractAddress, 15)}
+          </Typography>
+        </Stack>
+        <Stack direction="row" sx={{ mt: 2 }} alignItems="center" justifyContent="space-between">
+          <Stack direction="row">
+            <Tooltip title="View collection on crustnft.io">
+              <IconButton>
+                <CenterFocusWeakIcon sx={{ color: '#454F5B' }} />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="View collection on opensea.io">
+              <IconButton>
+                <SailingIcon sx={{ color: '#454F5B' }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="View on explorer">
+              <Link
+                href={`${blockExplorerUrl}/address/${contractAddress}#readContract`}
+                underline="none"
+                target="_blank"
+                rel="noopener"
+              >
+                <IconButton>
+                  <PodcastsIcon sx={{ color: '#454F5B' }} />
+                </IconButton>
+              </Link>
+            </Tooltip>
+            <Tooltip title="Source code">
+              <Link
+                href={`${blockExplorerUrl}/address/${contractAddress}#code`}
+                underline="none"
+                target="_blank"
+                rel="noopener"
+              >
+                <IconButton>
+                  <IntegrationInstructionsIcon sx={{ color: '#454F5B' }} />
+                </IconButton>
+              </Link>
+            </Tooltip>
+          </Stack>
+          {account?.toLowerCase() === contractOwner?.toLowerCase() && (
+            <ColorButton
+              variant="contained"
+              size="small"
+              disableElevation
+              disableFocusRipple
+              disableRipple
+            >
+              <Typography variant="overline" noWrap>
+                Mint NFT
+              </Typography>
+            </ColorButton>
+          )}
+        </Stack>
+      </Box>
+    </Card>
   );
 }
