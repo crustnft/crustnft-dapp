@@ -2,13 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { LoadingButton } from '@mui/lab';
 import { Box, Card, Grid, Stack, Typography } from '@mui/material';
-import {
-  FormProvider,
-  RHFSelect,
-  RHFSwitch,
-  RHFTextField,
-  RHFUploadNftCard
-} from 'components/hook-form';
+import { FormProvider, RHFSwitch, RHFUploadNftCard } from 'components/hook-form';
 import { useSnackbar } from 'notistack';
 import { useCallback } from 'react';
 // form
@@ -37,31 +31,14 @@ export default function NftForm({ isEdit }: Props) {
 
   const NewUserSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    description: Yup.string().required('Email is required').email(),
-    externalLink: Yup.string(),
-    address: Yup.string().required('Address is required'),
-    country: Yup.string().required('country is required'),
-    company: Yup.string().required('Company is required'),
-    state: Yup.string().required('State is required'),
-    city: Yup.string().required('City is required'),
-    role: Yup.string().required('Role Number is required'),
-    avatarUrl: Yup.mixed().test('required', 'Avatar is required', (value) => value !== '')
+    description: Yup.string(),
+    externalLink: Yup.string().url('Invalid URL')
   });
 
   const defaultValues = {
     name: '',
     description: '',
-    externalLink: '',
-    address: '',
-    country: '',
-    state: '',
-    city: '',
-    zipCode: '',
-    avatarUrl: '',
-    isVerified: true,
-    status: 'active',
-    company: '',
-    role: ''
+    externalLink: ''
   };
 
   const methods = useForm<FormValuesProps>({
@@ -175,31 +152,26 @@ export default function NftForm({ isEdit }: Props) {
                 placeholder="Item name"
               />
               <NftTextField
+                name="externalLink"
+                label="External Link"
+                description="We will include a link on this item's detail page, so that users can click to learn more about it. You are welcome to link to your own webpage with more details."
+                size="small"
+                placeholder="https://your-gallery.com/item-name"
+              />
+              <NftTextField
                 name="description"
                 label="Description"
-                description="The description will be included on the item's detail page underneath its image. Markdown syntax is supported."
+                description="The description will be included on the item's detail page underneath its image."
                 size="small"
+                multiline
+                minRows={4}
                 placeholder="Provide a detailed description of your item."
               />
-              <RHFTextField name="phoneNumber" label="Phone Number" />
-
-              <RHFSelect name="country" label="Country" placeholder="Country">
-                <option value="" />
-                <option value="VN">Vietnam</option>
-                <option value="FR">France</option>
-              </RHFSelect>
-
-              <RHFTextField name="state" label="State/Region" />
-              <RHFTextField name="city" label="City" />
-              <RHFTextField name="address" label="Address" />
-              <RHFTextField name="zipCode" label="Zip/Code" />
-              <RHFTextField name="company" label="Company" />
-              <RHFTextField name="role" label="Role" />
             </Stack>
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                {!isEdit ? 'Create User' : 'Save Changes'}
+                Mint NFT
               </LoadingButton>
             </Stack>
           </Card>
