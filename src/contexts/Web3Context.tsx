@@ -67,7 +67,6 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
   const [pending, setPending] = useState(false);
   const [modalSelectedWallet, setModalSelectedWallet] = useState<null | string>(null);
   const [connectedChainId, setConnectedChainId] = useState<number | null>(null);
-  const [dump, setDump] = useState<any>(null);
   const {
     chain,
     selectedWallet: previousSelectedWallet,
@@ -91,7 +90,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
       Onboard({
         dappId,
         hideBranding: true,
-        networkId: chain.chainId,
+        networkId: chain?.chainId || 1,
         walletSelect: {
           wallets: [
             { walletName: 'metamask' },
@@ -124,7 +123,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
           }
         }
       }),
-    [chain.chainId, setProvider, setLibrary, setAccount]
+    [chain, setProvider, setLibrary, setAccount]
   );
 
   const activate = useCallback(() => {
@@ -133,9 +132,11 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     onboard
       .walletSelect(previousSelectedWallet)
       .catch(console.error)
-      .then((res) => res && onboard.walletCheck)
-      // FIXME: setDump is just a workaround, do I need to set some sort of promise here to wait walletCheck to finish?
-      .then(setDump)
+      .then((res) => {
+        if (res) {
+          return onboard.walletCheck();
+        }
+      })
       .then(() => {
         setPending(false);
       });
