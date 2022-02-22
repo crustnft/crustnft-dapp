@@ -1,8 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
-import { Box, Button, Card, Grid, Stack, Typography } from '@mui/material';
-import { FormProvider, RHFSwitch, RHFUploadNftCard } from 'components/hook-form';
-import Iconify from 'components/Iconify';
+import { Box, Button, Card, Dialog, Grid, Stack, Typography } from '@mui/material';
 import { create } from 'ipfs-http-client';
 import { useSnackbar } from 'notistack';
 import { useCallback, useState } from 'react';
@@ -10,9 +8,14 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { UserManager } from '../../../@types/user';
+import { FormProvider, RHFSwitch, RHFUploadNftCard } from '../../../components/hook-form';
+import Iconify from '../../../components/Iconify';
 import { fData } from '../../../utils/formatNumber';
+import type { PropertyProps } from '../MintNft.types';
+import Property from './/Property';
 import CircularBoost from './CircularBoost';
 import LevelProgress from './LevelProgress';
+import NewPropertiesDialog from './NewPropertiesDialog';
 import NftTextField from './NftTextField';
 import StatNumber from './StatNumber';
 const ipfsGateway = 'https://gw.crustapps.net';
@@ -31,6 +34,9 @@ export default function NftForm() {
 
   const [file, setFile] = useState<File | null>(null);
   const { enqueueSnackbar } = useSnackbar();
+  const [properties, setProperties] = useState<PropertyProps[]>([]);
+
+  const [openDialogProperties, setOpenDialogProperties] = useState(false);
 
   const NewNftSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -207,59 +213,67 @@ export default function NftForm() {
                 placeholder="Provide a detailed description of your item."
               />
               <Stack>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Iconify icon="bxs:tag" rotate={2} />
-                  <Typography variant="subtitle1">Properties</Typography>
+                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                  <Stack>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Iconify icon="bxs:tag" rotate={2} />
+                      <Typography variant="subtitle1">Properties</Typography>
+                    </Stack>
+                    <Typography variant="caption">
+                      Textual traits that show up as rectangles
+                    </Typography>
+                  </Stack>
+
+                  <Button
+                    sx={{ borderColor: '#15B2E5' }}
+                    onClick={() => {
+                      setOpenDialogProperties(true);
+                    }}
+                    variant="outlined"
+                  >
+                    Add Properties
+                  </Button>
                 </Stack>
 
-                <Typography variant="caption">Textual traits that show up as rectangles</Typography>
                 <Box sx={{ height: '8px' }} />
                 <Grid container spacing={2}>
-                  <Grid item xs={2}>
-                    <Card
-                      sx={{ p: 2, backgroundColor: '#F4F6F8', borderColor: '#15B2E5' }}
-                      variant="outlined"
-                    >
-                      <Stack alignItems="center" spacing={1}>
-                        <Typography variant="overline">Character</Typography>
-                        <Typography variant="body2">Character</Typography>
-                      </Stack>
-                    </Card>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Card
-                      sx={{ p: 2, backgroundColor: '#F4F6F8', borderColor: '#15B2E5' }}
-                      variant="outlined"
-                    >
-                      <Stack alignItems="center" spacing={1}>
-                        <Typography variant="overline">Character</Typography>
-                        <Typography variant="body2">Character</Typography>
-                      </Stack>
-                    </Card>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Card
-                      sx={{ p: 2, backgroundColor: '#F4F6F8', borderColor: '#15B2E5' }}
-                      variant="outlined"
-                    >
-                      <Stack alignItems="center" spacing={1}>
-                        <Typography variant="overline">Character</Typography>
-                        <Typography variant="body2">Character</Typography>
-                      </Stack>
-                    </Card>
-                  </Grid>
+                  {properties.map((property, index) => (
+                    <Grid key={index} item xs={6} sm={4} md={3}>
+                      <Property {...property} />
+                    </Grid>
+                  ))}
                 </Grid>
               </Stack>
 
-              <Stack>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Iconify icon="carbon:location-star-filled" />
-                  <Typography variant="subtitle1">Levels</Typography>
-                </Stack>
+              <Dialog
+                open={openDialogProperties}
+                onClose={() => {
+                  setOpenDialogProperties(false);
+                }}
+              >
+                <NewPropertiesDialog
+                  properties={properties}
+                  setProperties={setProperties}
+                  setOpenDialogProperties={setOpenDialogProperties}
+                />
+              </Dialog>
 
-                <Typography variant="caption">
-                  Numerical traits that show as a progress bar
-                </Typography>
+              <Stack>
+                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                  <Stack>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Iconify icon="bxs:star" />
+                      <Typography variant="subtitle1">Levels</Typography>
+                    </Stack>
+                    <Typography variant="caption">
+                      Numerical traits that show as a progress bar
+                    </Typography>
+                  </Stack>
+
+                  <Button variant="outlined" sx={{ borderColor: '#15B2E5' }}>
+                    Add Levels
+                  </Button>
+                </Stack>
                 <Box sx={{ height: '8px' }} />
                 <Stack spacing={1}>
                   <LevelProgress progress={{ label: 'Speed', max: 180, value: 200 }} />
