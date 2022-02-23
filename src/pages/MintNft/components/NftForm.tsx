@@ -11,10 +11,11 @@ import { UserManager } from '../../../@types/user';
 import { FormProvider, RHFSwitch, RHFUploadNftCard } from '../../../components/hook-form';
 import Iconify from '../../../components/Iconify';
 import { fData } from '../../../utils/formatNumber';
-import type { LevelProps, PropertyProps, StatProps } from '../MintNft.types';
+import type { BoostProps, LevelProps, PropertyProps, StatProps } from '../MintNft.types';
 import Property from './/Property';
 import CircularBoost from './CircularBoost';
 import LevelProgress from './LevelProgress';
+import NewBoostsDialog from './NewBoostsDialog';
 import NewLevelsDialog from './NewLevelsDialog';
 import NewPropertiesDialog from './NewPropertiesDialog';
 import NewStatsDialog from './NewStatsDialog';
@@ -45,6 +46,9 @@ export default function NftForm() {
 
   const [stats, setStats] = useState<StatProps[]>([]);
   const [openDialogStats, setOpenDialogStats] = useState(false);
+
+  const [boosts, setBoosts] = useState<BoostProps[]>([]);
+  const [openDialogBoosts, setOpenDialogBoosts] = useState(false);
 
   const NewNftSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -338,13 +342,28 @@ export default function NftForm() {
               />
 
               <Stack>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Iconify icon="ic:baseline-flash-on" />
-                  <Typography variant="subtitle1">Boosts</Typography>
+                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                  <Stack>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Iconify icon="ic:baseline-flash-on" />
+                      <Typography variant="subtitle1">Boosts</Typography>
+                    </Stack>
+                    <Typography variant="caption">
+                      Number or percentage boosts that show up as a circular boost
+                    </Typography>
+                  </Stack>
+
+                  <Button
+                    variant="outlined"
+                    sx={{ borderColor: '#15B2E5' }}
+                    onClick={() => {
+                      setOpenDialogBoosts(true);
+                    }}
+                  >
+                    Add Boosts
+                  </Button>
                 </Stack>
-                <Typography variant="caption">
-                  Number or percentage boosts that show up as a circular boost
-                </Typography>
+
                 <Box sx={{ height: '8px' }} />
                 <Stack direction="row" spacing={1}>
                   <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
@@ -358,6 +377,12 @@ export default function NftForm() {
                   <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
                 </Stack>
               </Stack>
+              <NewBoostsDialog
+                openDialogBoosts={openDialogBoosts}
+                setOpenDialogBoosts={setOpenDialogBoosts}
+                boosts={boosts}
+                setBoosts={setBoosts}
+              />
             </Stack>
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>

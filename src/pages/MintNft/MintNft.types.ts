@@ -14,3 +14,9 @@ export type StatProps = {
   value: number;
   max: number;
 };
+
+export type BoostProps = {
+  boostType: string;
+  displayType: 'boost_percentage' | 'boost_number';
+  value: number;
+};
