@@ -10,66 +10,70 @@ import {
 import { DialogProps } from '@mui/material/Dialog';
 import { useState } from 'react';
 import Iconify from '../../../components/Iconify';
-import type { PropertyProps } from '../MintNft.types';
+import type { LevelProps } from '../MintNft.types';
 
 export default function NewLevelsDialog({
-  openDialogProperties,
-  properties,
-  setProperties,
-  setOpenDialogProperties
+  openDialogLevels,
+  levels,
+  setLevels,
+  setOpenDialogLevels
 }: {
-  openDialogProperties: boolean;
-  properties: PropertyProps[];
-  setProperties: React.Dispatch<React.SetStateAction<PropertyProps[]>>;
-  setOpenDialogProperties: React.Dispatch<React.SetStateAction<boolean>>;
+  openDialogLevels: boolean;
+  levels: LevelProps[];
+  setLevels: React.Dispatch<React.SetStateAction<LevelProps[]>>;
+  setOpenDialogLevels: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [newPropType, setNewPropType] = useState('');
-  const [newName, setNewName] = useState('');
+  const [newLevelType, setNewLevelType] = useState('');
+  const [newValue, setNewValue] = useState(0);
+  const [newMax, setNewMax] = useState(0);
   const [scroll, setScroll] = useState<DialogProps['scroll']>('paper');
 
   const handleAddProperty = () => {
-    if (newPropType && newName) {
-      setProperties([
-        ...properties,
+    if (newLevelType && newMax) {
+      setLevels([
+        ...levels,
         {
-          name: newName,
-          propType: newPropType
+          levelType: newLevelType,
+          max: newMax,
+          value: newValue
         }
       ]);
-      setNewPropType('');
-      setNewName('');
+      setNewLevelType('');
+      setNewValue(0);
     }
   };
 
-  const handleRemoveProperty = (index: number) => {
-    setProperties(properties.filter((_, i) => i !== index));
+  const handleRemoveLevel = (index: number) => {
+    setLevels(levels.filter((_, i) => i !== index));
   };
 
   return (
     <Dialog
-      open={openDialogProperties}
+      open={openDialogLevels}
       onClose={() => {
-        setOpenDialogProperties(false);
+        setOpenDialogLevels(false);
       }}
       scroll={scroll}
     >
       <DialogContent dividers={scroll === 'paper'}>
         <Stack sx={{ p: 1, pb: 2 }} spacing={1}>
-          <Typography variant="h5">Add Properties</Typography>
+          <Typography variant="h5">Add Levels</Typography>
           <Typography variant="body2">
-            Properties show up underneath your item, are clickable, and can be filtered in your
+            Levels show up underneath your item, are clickable, and can be filtered in your
             collection's sidebar.
           </Typography>
         </Stack>
 
         <Stack sx={{ px: 1 }} spacing={1}>
-          {properties.map((row, index) => (
-            <Stack key={row.propType + index} direction="row" spacing={2}>
-              <TextField size="small" value={row.propType} disabled />
-              <TextField placeholder="e.g. Female" value={row.name} size="small" disabled />
+          {levels.map((row, index) => (
+            <Stack key={row.levelType + index} direction="row" spacing={2}>
+              <TextField size="small" value={row.levelType} disabled />
+              <TextField placeholder="e.g. Female" value={row.value} size="small" disabled />
+              <TextField placeholder="e.g. Female" value={row.max} size="small" disabled />
+
               <IconButton
                 onClick={() => {
-                  handleRemoveProperty(index);
+                  handleRemoveLevel(index);
                 }}
               >
                 <Iconify icon="fluent:delete-24-filled" />
@@ -81,19 +85,30 @@ export default function NewLevelsDialog({
         <Stack sx={{ p: 1, pt: 1 }} spacing={2}>
           <Stack direction="row" spacing={2}>
             <TextField
-              placeholder="e.g. Gender"
+              label="Name"
               size="small"
-              value={newPropType}
+              value={newLevelType}
               onChange={(e) => {
-                setNewPropType(e.target.value);
+                setNewLevelType(e.target.value);
               }}
             />
             <TextField
-              placeholder="e.g. Female"
-              value={newName}
+              value={newValue}
               size="small"
+              label="Value"
+              type="number"
               onChange={(e) => {
-                setNewName(e.target.value);
+                if (parseInt(e.target.value)) {
+                  setNewValue(parseInt(e.target.value));
+                }
+              }}
+            />
+            <TextField
+              size="small"
+              label="Max"
+              type="number"
+              InputLabelProps={{
+                shrink: true
               }}
             />
             <IconButton onClick={handleAddProperty}>
@@ -104,7 +119,7 @@ export default function NewLevelsDialog({
             color="info"
             variant="contained"
             onClick={() => {
-              setOpenDialogProperties(false);
+              setOpenDialogLevels(false);
             }}
           >
             Save

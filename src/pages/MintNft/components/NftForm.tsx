@@ -11,11 +11,12 @@ import { UserManager } from '../../../@types/user';
 import { FormProvider, RHFSwitch, RHFUploadNftCard } from '../../../components/hook-form';
 import Iconify from '../../../components/Iconify';
 import { fData } from '../../../utils/formatNumber';
-import type { PropertyProps } from '../MintNft.types';
+import type { LevelProps, PropertyProps } from '../MintNft.types';
 import Property from './/Property';
 import CircularBoost from './CircularBoost';
 import LevelProgress from './LevelProgress';
-import NewPropertiesDialog from './NewLevelsDialog';
+import NewLevelsDialog from './NewLevelsDialog';
+import NewPropertiesDialog from './NewPropertiesDialog';
 import NftTextField from './NftTextField';
 import StatNumber from './StatNumber';
 const ipfsGateway = 'https://gw.crustapps.net';
@@ -34,9 +35,12 @@ export default function NftForm() {
 
   const [file, setFile] = useState<File | null>(null);
   const { enqueueSnackbar } = useSnackbar();
-  const [properties, setProperties] = useState<PropertyProps[]>([]);
 
+  const [properties, setProperties] = useState<PropertyProps[]>([]);
   const [openDialogProperties, setOpenDialogProperties] = useState(false);
+
+  const [levels, setLevels] = useState<LevelProps[]>([]);
+  const [openDialogLevels, setOpenDialogLevels] = useState(false);
 
   const NewNftSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -264,16 +268,29 @@ export default function NftForm() {
                     </Typography>
                   </Stack>
 
-                  <Button variant="outlined" sx={{ borderColor: '#15B2E5' }}>
+                  <Button
+                    variant="outlined"
+                    sx={{ borderColor: '#15B2E5' }}
+                    onClick={() => {
+                      setOpenDialogLevels(true);
+                    }}
+                  >
                     Add Levels
                   </Button>
                 </Stack>
                 <Box sx={{ height: '8px' }} />
                 <Stack spacing={1}>
-                  <LevelProgress progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <LevelProgress progress={{ label: 'Speed', max: -100, value: 200 }} />
+                  <LevelProgress progress={{ levelType: 'Speed', max: 180, value: 200 }} />
+                  <LevelProgress progress={{ levelType: 'Speed', max: -100, value: 200 }} />
                 </Stack>
               </Stack>
+
+              <NewLevelsDialog
+                openDialogLevels={openDialogLevels}
+                setOpenDialogLevels={setOpenDialogLevels}
+                levels={levels}
+                setLevels={setLevels}
+              />
 
               <Stack>
                 <Stack direction="row" alignItems="center" spacing={1}>

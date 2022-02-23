@@ -12,7 +12,7 @@ import { useState } from 'react';
 import Iconify from '../../../components/Iconify';
 import type { PropertyProps } from '../MintNft.types';
 
-export default function NewLevelsDialog({
+export default function NewPropertiesDialog({
   openDialogProperties,
   properties,
   setProperties,
