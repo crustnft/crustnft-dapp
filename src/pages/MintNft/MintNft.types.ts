@@ -8,3 +8,9 @@ export type LevelProps = {
   value: number;
   max: number;
 };
+
+export type StatProps = {
+  statType: string;
+  value: number;
+  max: number;
+};

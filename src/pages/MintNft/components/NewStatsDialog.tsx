@@ -10,52 +10,52 @@ import {
 import { DialogProps } from '@mui/material/Dialog';
 import { useState } from 'react';
 import Iconify from '../../../components/Iconify';
-import type { LevelProps } from '../MintNft.types';
+import type { StatProps } from '../MintNft.types';
 
-export default function NewLevelsDialog({
-  openDialogLevels,
-  levels,
-  setLevels,
-  setOpenDialogLevels
+export default function NewStatsDialog({
+  openDialogStats,
+  stats,
+  setStats,
+  setOpenDialogStats
 }: {
-  openDialogLevels: boolean;
-  levels: LevelProps[];
-  setLevels: React.Dispatch<React.SetStateAction<LevelProps[]>>;
-  setOpenDialogLevels: React.Dispatch<React.SetStateAction<boolean>>;
+  openDialogStats: boolean;
+  stats: StatProps[];
+  setStats: React.Dispatch<React.SetStateAction<StatProps[]>>;
+  setOpenDialogStats: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [newLevelType, setNewLevelType] = useState('');
+  const [newStatType, setNewStatType] = useState('');
   const [newValue, setNewValue] = useState<number>(0);
   const [newMax, setNewMax] = useState<number>(0);
   const [scroll, setScroll] = useState<DialogProps['scroll']>('paper');
 
-  const handleAddLevel = () => {
-    if (newLevelType) {
+  const handleAddStat = () => {
+    if (newStatType) {
       const validValue = newValue < 0 ? 0 : newValue;
       const validMax = newMax < validValue ? validValue : newMax;
 
-      setLevels([
-        ...levels,
+      setStats([
+        ...stats,
         {
-          levelType: newLevelType,
+          statType: newStatType,
           max: validMax,
           value: validValue
         }
       ]);
-      setNewLevelType('');
+      setNewStatType('');
       setNewValue(0);
       setNewMax(0);
     }
   };
 
   const handleRemoveLevel = (index: number) => {
-    setLevels(levels.filter((_, i) => i !== index));
+    setStats(stats.filter((_, i) => i !== index));
   };
 
   return (
     <Dialog
-      open={openDialogLevels}
+      open={openDialogStats}
       onClose={() => {
-        setOpenDialogLevels(false);
+        setOpenDialogStats(false);
       }}
       scroll={scroll}
     >
@@ -69,9 +69,9 @@ export default function NewLevelsDialog({
         </Stack>
 
         <Stack sx={{ px: 1 }} spacing={1}>
-          {levels.map((row, index) => (
-            <Stack key={row.levelType + index} direction="row" spacing={2}>
-              <TextField size="small" value={row.levelType} disabled />
+          {stats.map((row, index) => (
+            <Stack key={row.statType + index} direction="row" spacing={2}>
+              <TextField size="small" value={row.statType} disabled />
               <TextField value={row.value} size="small" type="number" disabled />
               <Typography sx={{ pt: 0.8 }}>of</Typography>
               <TextField value={row.max} size="small" type="number" disabled />
@@ -91,11 +91,11 @@ export default function NewLevelsDialog({
             <TextField
               label="Name"
               size="small"
-              value={newLevelType}
+              value={newStatType}
               onChange={(e) => {
-                setNewLevelType(e.target.value);
+                setNewStatType(e.target.value);
               }}
-              helperText="Enter a name e.g. level, speed, power, etc."
+              helperText="Enter a name e.g. generation, etc."
             />
             <TextField
               value={newValue}
@@ -116,7 +116,7 @@ export default function NewLevelsDialog({
                 setNewMax(parseInt(e.target.value));
               }}
             />
-            <IconButton onClick={handleAddLevel}>
+            <IconButton onClick={handleAddStat}>
               <Iconify icon="carbon:add-alt" />
             </IconButton>
           </Stack>
@@ -124,7 +124,7 @@ export default function NewLevelsDialog({
             color="info"
             variant="contained"
             onClick={() => {
-              setOpenDialogLevels(false);
+              setOpenDialogStats(false);
             }}
           >
             Save

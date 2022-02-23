@@ -11,12 +11,13 @@ import { UserManager } from '../../../@types/user';
 import { FormProvider, RHFSwitch, RHFUploadNftCard } from '../../../components/hook-form';
 import Iconify from '../../../components/Iconify';
 import { fData } from '../../../utils/formatNumber';
-import type { LevelProps, PropertyProps } from '../MintNft.types';
+import type { LevelProps, PropertyProps, StatProps } from '../MintNft.types';
 import Property from './/Property';
 import CircularBoost from './CircularBoost';
 import LevelProgress from './LevelProgress';
 import NewLevelsDialog from './NewLevelsDialog';
 import NewPropertiesDialog from './NewPropertiesDialog';
+import NewStatsDialog from './NewStatsDialog';
 import NftTextField from './NftTextField';
 import StatNumber from './StatNumber';
 const ipfsGateway = 'https://gw.crustapps.net';
@@ -41,6 +42,9 @@ export default function NftForm() {
 
   const [levels, setLevels] = useState<LevelProps[]>([]);
   const [openDialogLevels, setOpenDialogLevels] = useState(false);
+
+  const [stats, setStats] = useState<StatProps[]>([]);
+  const [openDialogStats, setOpenDialogStats] = useState(false);
 
   const NewNftSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -280,8 +284,9 @@ export default function NftForm() {
                 </Stack>
                 <Box sx={{ height: '8px' }} />
                 <Stack spacing={1}>
-                  <LevelProgress progress={{ levelType: 'Speed', max: 180, value: 200 }} />
-                  <LevelProgress progress={{ levelType: 'Speed', max: -100, value: 200 }} />
+                  {levels.map((level, index) => (
+                    <LevelProgress key={level.levelType + index} {...level} />
+                  ))}
                 </Stack>
               </Stack>
 
@@ -293,24 +298,44 @@ export default function NftForm() {
               />
 
               <Stack>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Iconify icon="ion:stats-chart" />
-                  <Typography variant="subtitle1">Stats</Typography>
+                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                  <Stack>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Iconify icon="ion:stats-chart" />
+                      <Typography variant="subtitle1">Stats</Typography>
+                    </Stack>
+                    <Typography variant="caption">
+                      Numerical traits that just show as numbers
+                    </Typography>
+                  </Stack>
+
+                  <Button
+                    variant="outlined"
+                    sx={{ borderColor: '#15B2E5' }}
+                    onClick={() => {
+                      setOpenDialogStats(true);
+                    }}
+                  >
+                    Add Stats
+                  </Button>
                 </Stack>
 
-                <Typography variant="caption">
-                  Numerical traits that just show as numbers
-                </Typography>
                 <Box sx={{ height: '8px' }} />
                 <Grid container spacing={1}>
-                  <Grid item xs={6}>
-                    <StatNumber progress={{ label: 'Generation', max: 2, value: 1 }} />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <StatNumber progress={{ label: 'Group', max: 2, value: 1 }} />
-                  </Grid>
+                  {stats.map((stat, index) => (
+                    <Grid key={stat.statType + index} item xs={6}>
+                      <StatNumber {...stat} />
+                    </Grid>
+                  ))}
                 </Grid>
               </Stack>
+
+              <NewStatsDialog
+                openDialogStats={openDialogStats}
+                setOpenDialogStats={setOpenDialogStats}
+                stats={stats}
+                setStats={setStats}
+              />
 
               <Stack>
                 <Stack direction="row" alignItems="center" spacing={1}>

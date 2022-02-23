@@ -1,12 +1,7 @@
 import { LinearProgress, Stack, Typography } from '@mui/material';
 import { linearProgressClasses } from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
-import { useEffect, useState } from 'react';
 import type { LevelProps } from '../MintNft.types';
-
-type ProgressItemProps = {
-  progress: LevelProps;
-};
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -20,20 +15,12 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   }
 }));
 
-export default function ProgressItem({ progress }: ProgressItemProps) {
-  const [value, setValue] = useState(0);
-  const [max, setMax] = useState(0);
-
-  useEffect(() => {
-    setValue(progress.value < 0 ? 0 : progress.value);
-    setMax(progress.max < progress.value ? progress.value : progress.max);
-  }, [progress]);
-
+export default function ProgressItem({ levelType, max, value }: LevelProps) {
   return (
     <Stack spacing={1}>
       <Stack direction="row" alignItems="center">
         <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
-          {progress.levelType}
+          {levelType}
         </Typography>
         <Typography variant="subtitle2">{value} of&nbsp;</Typography>
         <Typography variant="subtitle2">{max}</Typography>
