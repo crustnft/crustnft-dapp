@@ -63,9 +63,9 @@ export default function MainFooter() {
               <Box
                 component="img"
                 width={1}
-                src={'https://crust.network/_nuxt/img/logo-B@3x.fdbab2d.png'}
+                src={'./static/logo/v1/long-logo-black.png'}
                 alt="..."
-                maxWidth={80}
+                maxWidth={120}
                 marginBottom={2}
                 onClick={() => {
                   scroll.scrollToTop();
