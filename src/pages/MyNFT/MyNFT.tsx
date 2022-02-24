@@ -1,9 +1,10 @@
-import { Box, Card, Container, Grid } from '@mui/material';
+import { Box, Container, Grid } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
 import Page from '../../components/Page';
+import AccountBalanceCard from './components/AccountBalanceCard';
+import CallAction from './components/CallAction';
 import MyCollections from './components/MyCollections';
-
 const TabsWrapperStyle = styled('div')(({ theme }) => ({
   zIndex: 9,
   bottom: 0,
@@ -31,10 +32,12 @@ export default function MyNFT() {
     <Page title="My NFTs">
       <Container maxWidth="lg">
         <Grid container>
-          <Grid item xs={8}>
-            <Card sx={{ height: '200px' }}></Card>
+          <Grid item xs={7}>
+            <CallAction />
           </Grid>
-          <Grid item xs={4}></Grid>
+          <Grid item xs={5}>
+            <AccountBalanceCard />
+          </Grid>
         </Grid>
         <Box key="nfts">
           <MyCollections />
