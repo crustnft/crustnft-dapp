@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { UserManager } from '../../../@types/user';
-import { FormProvider, RHFSwitch, RHFUploadNftCard } from '../../../components/hook-form';
+import { FormProvider, RHFUploadNftCard } from '../../../components/hook-form';
 import Iconify from '../../../components/Iconify';
 import { fData } from '../../../utils/formatNumber';
 import type { BoostProps, LevelProps, PropertyProps, StatProps } from '../MintNft.types';
@@ -81,10 +81,45 @@ export default function NftForm() {
 
   const values = watch();
 
+  const authHeader =
+    'cG9sLTB4QTIyOGNGYWI4MEE2NzM4NTIyNDc2RGVDMTFkNzkzZDYxMjk5NjhiMjoweGU2ZDA1NDIzYTcxY2YzNjdjNWNhZmQwNzRmOWZjODAyMWUwMmEzZDA4MGViZTMyY2VhNDA0MjkwZTgxOWM5YTExMDUxMjNhZDJjZWM2ZjQ1Y2NiZWRmOTYyYjc5NzA4YWRiYjMwNTcxMGEzZWIzYjMzOWM3MzFmNTc1NGM4NWY1MWM=';
+
+  function pinFileToW3Gateway(): Promise<any> {
+    console.log('go in');
+    return new Promise((resolve, reject) => {
+      if (values.avatarUrl) {
+        const ipfs = create({
+          url: ipfsGateway + '/api/v0',
+          headers: {
+            authorization: 'Basic ' + authHeader
+          }
+        });
+        console.log('start pin w3');
+        const reader = new FileReader();
+        reader.onabort = () => reject('file reading was aborted');
+        reader.onerror = () => reject('file reading has failed');
+        reader.onload = async () => {
+          const added = await ipfs.add(reader.result as ArrayBuffer);
+          console.log(added.cid.toV0().toString());
+          resolve({
+            cid: added.cid.toV0().toString(),
+            name: values?.avatarUrl?.name || '',
+            size: added.size
+          });
+        };
+
+        reader.readAsArrayBuffer(values.avatarUrl);
+      } else {
+        reject('no file');
+      }
+    });
+  }
+
   const onSubmit = async (data: FormValuesProps) => {
     try {
       console.log('success');
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await pinFileToW3Gateway();
+      console.log('pinfile');
       reset();
       enqueueSnackbar('Create success!');
       navigate('#/home');
@@ -109,38 +144,6 @@ export default function NftForm() {
     [setValue]
   );
 
-  const authHeader =
-    'cG9sLTB4QTIyOGNGYWI4MEE2NzM4NTIyNDc2RGVDMTFkNzkzZDYxMjk5NjhiMjoweGU2ZDA1NDIzYTcxY2YzNjdjNWNhZmQwNzRmOWZjODAyMWUwMmEzZDA4MGViZTMyY2VhNDA0MjkwZTgxOWM5YTExMDUxMjNhZDJjZWM2ZjQ1Y2NiZWRmOTYyYjc5NzA4YWRiYjMwNTcxMGEzZWIzYjMzOWM3MzFmNTc1NGM4NWY1MWM=';
-
-  function pinFileToW3Gateway(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (values.avatarUrl) {
-        const ipfs = create({
-          url: ipfsGateway + '/api/v0',
-          headers: {
-            authorization: 'Basic ' + authHeader
-          }
-        });
-        const reader = new FileReader();
-        reader.onabort = () => reject('file reading was aborted');
-        reader.onerror = () => reject('file reading has failed');
-        reader.onload = async () => {
-          const added = await ipfs.add(reader.result as ArrayBuffer);
-          console.log(added.cid.toV0().toString());
-          resolve({
-            cid: added.cid.toV0().toString(),
-            name: values?.avatarUrl?.name || '',
-            size: added.size
-          });
-        };
-
-        reader.readAsArrayBuffer(values.avatarUrl);
-      } else {
-        reject('no file');
-      }
-    });
-  }
-
   const printFile = () => {
     console.log(typeof file);
     console.log(typeof values.avatarUrl);
@@ -154,13 +157,10 @@ export default function NftForm() {
         <Grid item xs={12} md={4}>
           <Card sx={{ py: 2, px: 2 }}>
             <Box sx={{ mb: 5 }}>
-              <Button onClick={printFile}>Print</Button>
-              {/* <Button onClick={uploadImageHandle}>Upload</Button> */}
-              <Button onClick={pinFileToW3Gateway}>To Gateway</Button>
               <RHFUploadNftCard
                 name="avatarUrl"
                 accept="image/*"
-                maxSize={30145728}
+                maxSize={31457280}
                 onDrop={handleDrop}
                 helperText={
                   <Typography
@@ -174,27 +174,11 @@ export default function NftForm() {
                     }}
                   >
                     Allowed *.jpeg, *.jpg, *.png, *.gif
-                    <br /> max size of {fData(30145728)}
+                    <br /> max size of {fData(31457280)}
                   </Typography>
                 }
               />
             </Box>
-
-            <RHFSwitch
-              name="isVerified"
-              labelPlacement="start"
-              label={
-                <>
-                  <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                    Email Verified
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Disabling this will automatically send the user a verification email
-                  </Typography>
-                </>
-              }
-              sx={{ mx: 0, width: 1, justifyContent: 'space-between' }}
-            />
           </Card>
         </Grid>
 
@@ -366,15 +350,9 @@ export default function NftForm() {
 
                 <Box sx={{ height: '8px' }} />
                 <Stack direction="row" spacing={1}>
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
+                  {boosts.map((boost, index) => (
+                    <CircularBoost key={boost.boostType + index} {...boost} />
+                  ))}
                 </Stack>
               </Stack>
               <NewBoostsDialog

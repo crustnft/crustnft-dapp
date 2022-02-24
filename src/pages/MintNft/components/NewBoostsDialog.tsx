@@ -1,16 +1,61 @@
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import {
   Button,
   Dialog,
   DialogContent,
   IconButton,
+  InputLabel,
+  Menu,
+  MenuItem,
+  MenuProps,
   Stack,
   TextField,
   Typography
 } from '@mui/material';
-import { DialogProps } from '@mui/material/Dialog';
+import FormControl from '@mui/material/FormControl';
+import InputAdornment from '@mui/material/InputAdornment';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import { alpha, styled } from '@mui/material/styles';
 import { useState } from 'react';
 import Iconify from '../../../components/Iconify';
 import type { BoostProps } from '../MintNft.types';
+
+const StyledMenu = styled((props: MenuProps) => (
+  <Menu
+    elevation={0}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'right'
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'right'
+    }}
+    {...props}
+  />
+))(({ theme }) => ({
+  '& .MuiPaper-root': {
+    borderRadius: 6,
+    marginTop: theme.spacing(1),
+    minWidth: 180,
+    color: theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
+    boxShadow:
+      'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+    '& .MuiMenu-list': {
+      padding: '4px 0'
+    },
+    '& .MuiMenuItem-root': {
+      '& .MuiSvgIcon-root': {
+        fontSize: 18,
+        color: theme.palette.text.secondary,
+        marginRight: theme.spacing(1.5)
+      },
+      '&:active': {
+        backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
+      }
+    }
+  }
+}));
 
 export default function NewDialogBoost({
   openDialogBoosts,
@@ -24,25 +69,34 @@ export default function NewDialogBoost({
   setOpenDialogBoosts: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [newBoostType, setNewBoostType] = useState('');
-  const [newValue, setNewValue] = useState<number>(0);
+  const [newRawValue, setNewRawValue] = useState<string>('');
   const [newDisplayType, setNewDisplayType] = useState<'boost_percentage' | 'boost_number'>(
-    'boost_number'
+    'boost_percentage'
   );
 
-  const [scroll, setScroll] = useState<DialogProps['scroll']>('paper');
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleAddBoost = () => {
     if (newBoostType) {
-      setBoosts([
-        ...boosts,
-        {
-          boostType: newBoostType,
-          value: newValue,
-          displayType: newDisplayType
-        }
-      ]);
-      setNewBoostType('');
-      setNewValue(0);
+      if (!isNaN(parseInt(newRawValue))) {
+        setBoosts([
+          ...boosts,
+          {
+            boostType: newBoostType,
+            value: parseInt(newRawValue),
+            displayType: newDisplayType
+          }
+        ]);
+        setNewBoostType('');
+        setNewRawValue('');
+      }
     }
   };
 
@@ -56,14 +110,13 @@ export default function NewDialogBoost({
       onClose={() => {
         setOpenDialogBoosts(false);
       }}
-      scroll={scroll}
+      scroll="paper"
     >
-      <DialogContent dividers={scroll === 'paper'}>
+      <DialogContent dividers={true}>
         <Stack sx={{ p: 1, pb: 2 }} spacing={1}>
           <Typography variant="h5">Add Boosts</Typography>
           <Typography variant="body2">
-            Levels show up underneath your item, are clickable, and can be filtered in your
-            collection's sidebar.
+            Number or percentage boosts that show up as a circular boost
           </Typography>
         </Stack>
 
@@ -71,9 +124,14 @@ export default function NewDialogBoost({
           {boosts.map((row, index) => (
             <Stack key={row.boostType + index} direction="row" spacing={2}>
               <TextField size="small" value={row.boostType} disabled />
-              <TextField value={row.value} size="small" type="number" disabled />
-              <Typography sx={{ pt: 0.8 }}>of</Typography>
-              <TextField value={row.value} size="small" type="number" disabled />
+              <TextField
+                value={`${row.value.toString()}${
+                  row.displayType === 'boost_percentage' ? '%' : ''
+                }`}
+                size="small"
+                type="string"
+                disabled
+              />
               <IconButton
                 onClick={() => {
                   handleRemoveLevel(index);
@@ -96,25 +154,58 @@ export default function NewDialogBoost({
               }}
               helperText="Enter a name e.g. level, speed, power, etc."
             />
-            <TextField
-              value={newValue}
-              size="small"
-              label="Value"
-              type="number"
-              onChange={(e) => {
-                setNewValue(parseInt(e.target.value));
-              }}
-            />
-            <Typography sx={{ pt: 0.8 }}>of</Typography>
-            <TextField
-              value={newValue}
-              size="small"
-              label="Max"
-              type="number"
-              onChange={(e) => {
-                setNewValue(parseInt(e.target.value));
-              }}
-            />
+
+            <FormControl size="small" sx={{ m: 1, width: '15ch' }}>
+              <InputLabel htmlFor="outlined-adornment-password">Value</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-password"
+                value={newRawValue}
+                onChange={(e) => {
+                  setNewRawValue(e.target.value);
+                }}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <Typography variant="subtitle1">
+                      {newDisplayType === 'boost_percentage' ? '%' : ''}
+                    </Typography>
+                    <IconButton onClick={handleClick} size="small" sx={{ mr: -1 }}>
+                      <KeyboardArrowDownIcon />
+                    </IconButton>
+
+                    <StyledMenu
+                      id="demo-customized-menu"
+                      MenuListProps={{
+                        'aria-labelledby': 'demo-customized-button'
+                      }}
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                    >
+                      <MenuItem
+                        onClick={() => {
+                          setNewDisplayType('boost_number');
+                          setAnchorEl(null);
+                        }}
+                        disableRipple
+                      >
+                        Number
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          setNewDisplayType('boost_percentage');
+                          setAnchorEl(null);
+                        }}
+                        disableRipple
+                      >
+                        Percentage
+                      </MenuItem>
+                    </StyledMenu>
+                  </InputAdornment>
+                }
+                label="Password"
+              />
+            </FormControl>
+
             <IconButton onClick={handleAddBoost}>
               <Iconify icon="carbon:add-alt" />
             </IconButton>
