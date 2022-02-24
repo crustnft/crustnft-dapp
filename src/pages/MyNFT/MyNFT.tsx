@@ -9,10 +9,10 @@ export default function MyNFT() {
     <Page title="My NFTs">
       <Container maxWidth="lg">
         <Grid container spacing={2}>
-          <Grid item xs={7}>
+          <Grid item xs={12} md={7}>
             <CallAction />
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={12} md={5}>
             <AccountBalanceCard />
           </Grid>
         </Grid>
