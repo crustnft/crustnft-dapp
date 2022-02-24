@@ -74,7 +74,7 @@ export default function CallAction() {
             </Typography>
 
             <Typography variant="body2" sx={{ pb: { xs: 3, xl: 5 }, maxWidth: 480, mx: 'auto' }}>
-              Create your own NFTs collection in minutes.
+              Create your own NFTs collection in minutes
             </Typography>
 
             <Stack direction="row">
