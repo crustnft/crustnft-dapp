@@ -1,8 +1,15 @@
-// material
-import { Box, BoxProps } from '@mui/material';
-import './LogoStyle.css';
-// ----------------------------------------------------------------------
+import { Box, BoxProps, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 export default function Logo({ sx }: BoxProps) {
-  return <Box sx={{ height: 30, ...sx }} component="img" src="./static/brand/logo_single.svg" />;
+  const theme = useTheme();
+  const mdUp = useMediaQuery(theme.breakpoints.up('md'));
+
+  return (
+    <Box
+      sx={{ height: 25, ...sx }}
+      component="img"
+      src={mdUp ? './static/logo/v1/long-logo-black.png' : './static/logo/v1/icon-black.png'}
+    />
+  );
 }
