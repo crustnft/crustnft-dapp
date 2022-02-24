@@ -70,7 +70,7 @@ export default function CollectionViewer() {
   }, []);
 
   useEffect(() => {
-    setPage(parseInt(pageNb || '1'))
+    setPage(parseInt(pageNb || '1'));
   }, [pageNb]);
 
   useEffect(() => {

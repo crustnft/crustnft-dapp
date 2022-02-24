@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
 // material
 import { styled, useTheme } from '@mui/material/styles';
+import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 // hooks
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 //
@@ -55,7 +55,8 @@ export default function DashboardLayout() {
           }),
           ...(collapseClick && {
             ml: '102px'
-          })
+          }),
+          backgroundColor: '#F2F4FA'
         }}
       >
         <Outlet />

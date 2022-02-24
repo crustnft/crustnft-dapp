@@ -1,22 +1,21 @@
 import { Icon } from '@iconify/react';
-import { animateScroll as scroll } from 'react-scroll';
-import { Link as RouterLink } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
 import {
+  Box,
+  Container,
+  Divider,
   Grid,
   Link,
-  Divider,
-  Container,
-  Typography,
   Stack,
-  Box,
   Tooltip,
+  Typography,
   useMediaQuery,
   useTheme
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Link as RouterLink } from 'react-router-dom';
+import { animateScroll as scroll } from 'react-scroll';
 import { MIconButton } from '../../components/@material-extend';
-import { DISCORD, TWITTER, TELEGRAM, MEDIUM } from '../../constants/COMMON_VARIABLES';
-import Logo from '../../components/Logo';
+import { DISCORD, MEDIUM, TELEGRAM, TWITTER } from '../../constants/COMMON_VARIABLES';
 
 const LINKS = [
   {
@@ -43,7 +42,8 @@ const LINKS = [
 const RootStyle = styled('div')(({ theme }) => ({
   position: 'relative',
   marginTop: '50px',
-  backgroundColor: theme.palette.background.default
+  // backgroundColor: theme.palette.background.default,
+  backgroundColor: '#F2F4FA'
 }));
 
 // ----------------------------------------------------------------------
