@@ -1,8 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, Card, Grid, Stack, Typography } from '@mui/material';
-import { FormProvider, RHFSwitch, RHFUploadNftCard } from 'components/hook-form';
-import Iconify from 'components/Iconify';
 import { create } from 'ipfs-http-client';
 import { useSnackbar } from 'notistack';
 import { useCallback, useState } from 'react';
@@ -10,9 +8,17 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { UserManager } from '../../../@types/user';
+import { FormProvider, RHFUploadNftCard } from '../../../components/hook-form';
+import Iconify from '../../../components/Iconify';
 import { fData } from '../../../utils/formatNumber';
+import type { BoostProps, LevelProps, PropertyProps, StatProps } from '../MintNft.types';
+import Property from './/Property';
 import CircularBoost from './CircularBoost';
 import LevelProgress from './LevelProgress';
+import NewBoostsDialog from './NewBoostsDialog';
+import NewLevelsDialog from './NewLevelsDialog';
+import NewPropertiesDialog from './NewPropertiesDialog';
+import NewStatsDialog from './NewStatsDialog';
 import NftTextField from './NftTextField';
 import StatNumber from './StatNumber';
 const ipfsGateway = 'https://gw.crustapps.net';
@@ -31,6 +37,18 @@ export default function NftForm() {
 
   const [file, setFile] = useState<File | null>(null);
   const { enqueueSnackbar } = useSnackbar();
+
+  const [properties, setProperties] = useState<PropertyProps[]>([]);
+  const [openDialogProperties, setOpenDialogProperties] = useState(false);
+
+  const [levels, setLevels] = useState<LevelProps[]>([]);
+  const [openDialogLevels, setOpenDialogLevels] = useState(false);
+
+  const [stats, setStats] = useState<StatProps[]>([]);
+  const [openDialogStats, setOpenDialogStats] = useState(false);
+
+  const [boosts, setBoosts] = useState<BoostProps[]>([]);
+  const [openDialogBoosts, setOpenDialogBoosts] = useState(false);
 
   const NewNftSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -63,10 +81,45 @@ export default function NftForm() {
 
   const values = watch();
 
+  const authHeader =
+    'cG9sLTB4QTIyOGNGYWI4MEE2NzM4NTIyNDc2RGVDMTFkNzkzZDYxMjk5NjhiMjoweGU2ZDA1NDIzYTcxY2YzNjdjNWNhZmQwNzRmOWZjODAyMWUwMmEzZDA4MGViZTMyY2VhNDA0MjkwZTgxOWM5YTExMDUxMjNhZDJjZWM2ZjQ1Y2NiZWRmOTYyYjc5NzA4YWRiYjMwNTcxMGEzZWIzYjMzOWM3MzFmNTc1NGM4NWY1MWM=';
+
+  function pinFileToW3Gateway(): Promise<any> {
+    console.log('go in');
+    return new Promise((resolve, reject) => {
+      if (values.avatarUrl) {
+        const ipfs = create({
+          url: ipfsGateway + '/api/v0',
+          headers: {
+            authorization: 'Basic ' + authHeader
+          }
+        });
+        console.log('start pin w3');
+        const reader = new FileReader();
+        reader.onabort = () => reject('file reading was aborted');
+        reader.onerror = () => reject('file reading has failed');
+        reader.onload = async () => {
+          const added = await ipfs.add(reader.result as ArrayBuffer);
+          console.log(added.cid.toV0().toString());
+          resolve({
+            cid: added.cid.toV0().toString(),
+            name: values?.avatarUrl?.name || '',
+            size: added.size
+          });
+        };
+
+        reader.readAsArrayBuffer(values.avatarUrl);
+      } else {
+        reject('no file');
+      }
+    });
+  }
+
   const onSubmit = async (data: FormValuesProps) => {
     try {
       console.log('success');
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await pinFileToW3Gateway();
+      console.log('pinfile');
       reset();
       enqueueSnackbar('Create success!');
       navigate('#/home');
@@ -91,38 +144,6 @@ export default function NftForm() {
     [setValue]
   );
 
-  const authHeader =
-    'cG9sLTB4QTIyOGNGYWI4MEE2NzM4NTIyNDc2RGVDMTFkNzkzZDYxMjk5NjhiMjoweGU2ZDA1NDIzYTcxY2YzNjdjNWNhZmQwNzRmOWZjODAyMWUwMmEzZDA4MGViZTMyY2VhNDA0MjkwZTgxOWM5YTExMDUxMjNhZDJjZWM2ZjQ1Y2NiZWRmOTYyYjc5NzA4YWRiYjMwNTcxMGEzZWIzYjMzOWM3MzFmNTc1NGM4NWY1MWM=';
-
-  function pinFileToW3Gateway(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (values.avatarUrl) {
-        const ipfs = create({
-          url: ipfsGateway + '/api/v0',
-          headers: {
-            authorization: 'Basic ' + authHeader
-          }
-        });
-        const reader = new FileReader();
-        reader.onabort = () => reject('file reading was aborted');
-        reader.onerror = () => reject('file reading has failed');
-        reader.onload = async () => {
-          const added = await ipfs.add(reader.result as ArrayBuffer);
-          console.log(added.cid.toV0().toString());
-          resolve({
-            cid: added.cid.toV0().toString(),
-            name: values?.avatarUrl?.name || '',
-            size: added.size
-          });
-        };
-
-        reader.readAsArrayBuffer(values.avatarUrl);
-      } else {
-        reject('no file');
-      }
-    });
-  }
-
   const printFile = () => {
     console.log(typeof file);
     console.log(typeof values.avatarUrl);
@@ -136,13 +157,10 @@ export default function NftForm() {
         <Grid item xs={12} md={4}>
           <Card sx={{ py: 2, px: 2 }}>
             <Box sx={{ mb: 5 }}>
-              <Button onClick={printFile}>Print</Button>
-              {/* <Button onClick={uploadImageHandle}>Upload</Button> */}
-              <Button onClick={pinFileToW3Gateway}>To Gateway</Button>
               <RHFUploadNftCard
                 name="avatarUrl"
                 accept="image/*"
-                maxSize={30145728}
+                maxSize={31457280}
                 onDrop={handleDrop}
                 helperText={
                   <Typography
@@ -156,27 +174,11 @@ export default function NftForm() {
                     }}
                   >
                     Allowed *.jpeg, *.jpg, *.png, *.gif
-                    <br /> max size of {fData(30145728)}
+                    <br /> max size of {fData(31457280)}
                   </Typography>
                 }
               />
             </Box>
-
-            <RHFSwitch
-              name="isVerified"
-              labelPlacement="start"
-              label={
-                <>
-                  <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                    Email Verified
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Disabling this will automatically send the user a verification email
-                  </Typography>
-                </>
-              }
-              sx={{ mx: 0, width: 1, justifyContent: 'space-between' }}
-            />
           </Card>
         </Grid>
 
@@ -207,107 +209,158 @@ export default function NftForm() {
                 placeholder="Provide a detailed description of your item."
               />
               <Stack>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Iconify icon="bxs:tag" rotate={2} />
-                  <Typography variant="subtitle1">Properties</Typography>
+                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                  <Stack>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Iconify icon="bxs:tag" rotate={2} />
+                      <Typography variant="subtitle1">Properties</Typography>
+                    </Stack>
+                    <Typography variant="caption">
+                      Textual traits that show up as rectangles
+                    </Typography>
+                  </Stack>
+
+                  <Button
+                    sx={{ borderColor: '#15B2E5' }}
+                    onClick={() => {
+                      setOpenDialogProperties(true);
+                    }}
+                    variant="outlined"
+                  >
+                    Add Properties
+                  </Button>
                 </Stack>
 
-                <Typography variant="caption">Textual traits that show up as rectangles</Typography>
                 <Box sx={{ height: '8px' }} />
                 <Grid container spacing={2}>
-                  <Grid item xs={2}>
-                    <Card
-                      sx={{ p: 2, backgroundColor: '#F4F6F8', borderColor: '#15B2E5' }}
-                      variant="outlined"
-                    >
-                      <Stack alignItems="center" spacing={1}>
-                        <Typography variant="overline">Character</Typography>
-                        <Typography variant="body2">Character</Typography>
-                      </Stack>
-                    </Card>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Card
-                      sx={{ p: 2, backgroundColor: '#F4F6F8', borderColor: '#15B2E5' }}
-                      variant="outlined"
-                    >
-                      <Stack alignItems="center" spacing={1}>
-                        <Typography variant="overline">Character</Typography>
-                        <Typography variant="body2">Character</Typography>
-                      </Stack>
-                    </Card>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Card
-                      sx={{ p: 2, backgroundColor: '#F4F6F8', borderColor: '#15B2E5' }}
-                      variant="outlined"
-                    >
-                      <Stack alignItems="center" spacing={1}>
-                        <Typography variant="overline">Character</Typography>
-                        <Typography variant="body2">Character</Typography>
-                      </Stack>
-                    </Card>
-                  </Grid>
+                  {properties.map((property, index) => (
+                    <Grid key={index} item xs={6} sm={4} md={3}>
+                      <Property {...property} />
+                    </Grid>
+                  ))}
                 </Grid>
               </Stack>
 
-              <Stack>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Iconify icon="carbon:location-star-filled" />
-                  <Typography variant="subtitle1">Levels</Typography>
-                </Stack>
+              <NewPropertiesDialog
+                openDialogProperties={openDialogProperties}
+                properties={properties}
+                setProperties={setProperties}
+                setOpenDialogProperties={setOpenDialogProperties}
+              />
 
-                <Typography variant="caption">
-                  Numerical traits that show as a progress bar
-                </Typography>
+              <Stack>
+                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                  <Stack>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Iconify icon="bxs:star" />
+                      <Typography variant="subtitle1">Levels</Typography>
+                    </Stack>
+                    <Typography variant="caption">
+                      Numerical traits that show as a progress bar
+                    </Typography>
+                  </Stack>
+
+                  <Button
+                    variant="outlined"
+                    sx={{ borderColor: '#15B2E5' }}
+                    onClick={() => {
+                      setOpenDialogLevels(true);
+                    }}
+                  >
+                    Add Levels
+                  </Button>
+                </Stack>
                 <Box sx={{ height: '8px' }} />
                 <Stack spacing={1}>
-                  <LevelProgress progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <LevelProgress progress={{ label: 'Speed', max: -100, value: 200 }} />
+                  {levels.map((level, index) => (
+                    <LevelProgress key={level.levelType + index} {...level} />
+                  ))}
                 </Stack>
               </Stack>
 
+              <NewLevelsDialog
+                openDialogLevels={openDialogLevels}
+                setOpenDialogLevels={setOpenDialogLevels}
+                levels={levels}
+                setLevels={setLevels}
+              />
+
               <Stack>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Iconify icon="ion:stats-chart" />
-                  <Typography variant="subtitle1">Stats</Typography>
+                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                  <Stack>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Iconify icon="ion:stats-chart" />
+                      <Typography variant="subtitle1">Stats</Typography>
+                    </Stack>
+                    <Typography variant="caption">
+                      Numerical traits that just show as numbers
+                    </Typography>
+                  </Stack>
+
+                  <Button
+                    variant="outlined"
+                    sx={{ borderColor: '#15B2E5' }}
+                    onClick={() => {
+                      setOpenDialogStats(true);
+                    }}
+                  >
+                    Add Stats
+                  </Button>
                 </Stack>
 
-                <Typography variant="caption">
-                  Numerical traits that just show as numbers
-                </Typography>
                 <Box sx={{ height: '8px' }} />
                 <Grid container spacing={1}>
-                  <Grid item xs={6}>
-                    <StatNumber progress={{ label: 'Generation', max: 2, value: 1 }} />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <StatNumber progress={{ label: 'Group', max: 2, value: 1 }} />
-                  </Grid>
+                  {stats.map((stat, index) => (
+                    <Grid key={stat.statType + index} item xs={6}>
+                      <StatNumber {...stat} />
+                    </Grid>
+                  ))}
                 </Grid>
               </Stack>
 
+              <NewStatsDialog
+                openDialogStats={openDialogStats}
+                setOpenDialogStats={setOpenDialogStats}
+                stats={stats}
+                setStats={setStats}
+              />
+
               <Stack>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Iconify icon="ic:baseline-flash-on" />
-                  <Typography variant="subtitle1">Boosts</Typography>
+                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                  <Stack>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Iconify icon="ic:baseline-flash-on" />
+                      <Typography variant="subtitle1">Boosts</Typography>
+                    </Stack>
+                    <Typography variant="caption">
+                      Number or percentage boosts that show up as a circular boost
+                    </Typography>
+                  </Stack>
+
+                  <Button
+                    variant="outlined"
+                    sx={{ borderColor: '#15B2E5' }}
+                    onClick={() => {
+                      setOpenDialogBoosts(true);
+                    }}
+                  >
+                    Add Boosts
+                  </Button>
                 </Stack>
-                <Typography variant="caption">
-                  Number or percentage boosts that show up as a circular boost
-                </Typography>
+
                 <Box sx={{ height: '8px' }} />
                 <Stack direction="row" spacing={1}>
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
-                  <CircularBoost progress={{ label: 'Speed', max: 180, value: 200 }} />
+                  {boosts.map((boost, index) => (
+                    <CircularBoost key={boost.boostType + index} {...boost} />
+                  ))}
                 </Stack>
               </Stack>
+              <NewBoostsDialog
+                openDialogBoosts={openDialogBoosts}
+                setOpenDialogBoosts={setOpenDialogBoosts}
+                boosts={boosts}
+                setBoosts={setBoosts}
+              />
             </Stack>
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>

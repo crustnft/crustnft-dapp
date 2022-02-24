@@ -1,31 +1,17 @@
-import { Box } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Box, Stack, Typography } from '@mui/material';
+import { useState } from 'react';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import type { BoostProps } from '../MintNft.types';
 
-type ProgressItemProps = {
-  progress: {
-    label: string;
-    max: number;
-    value: number;
-  };
-};
-
-export default function StatNumber({ progress }: ProgressItemProps) {
-  const [value, setValue] = useState(0);
+export default function StatNumber({ boostType, displayType, value }: BoostProps) {
   const [max, setMax] = useState(0);
-  const percentage = 66;
-
-  useEffect(() => {
-    setValue(progress.value < 0 ? 0 : progress.value);
-    setMax(progress.max < progress.value ? progress.value : progress.max);
-  }, [progress]);
 
   return (
     <Box sx={{ width: '100px' }}>
       <CircularProgressbar
-        value={percentage}
-        text={`+${percentage}%`}
+        value={value}
+        text={`${value}${displayType === 'boost_percentage' ? '%' : ''}`}
         styles={buildStyles({
           textSize: '16px',
           pathTransitionDuration: 0.5,
@@ -33,6 +19,9 @@ export default function StatNumber({ progress }: ProgressItemProps) {
           textColor: '#212B36'
         })}
       />
+      <Stack alignItems="center">
+        <Typography variant="h6">{boostType}</Typography>
+      </Stack>
     </Box>
   );
 }

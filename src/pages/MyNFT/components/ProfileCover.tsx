@@ -1,10 +1,8 @@
-import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
-
-import MyAvatar from './MyAvatar';
+import { styled } from '@mui/material/styles';
+import useWeb3 from 'hooks/useWeb3';
 import Image from './Image';
-
-// ----------------------------------------------------------------------
+import MyAvatar from './MyAvatar';
 
 const RootStyle = styled('div')(({ theme }) => ({
   '&:before': {
@@ -34,6 +32,7 @@ const InfoStyle = styled('div')(({ theme }) => ({
 }));
 
 export default function ProfileCover() {
+  const { account } = useWeb3();
   return (
     <RootStyle>
       <InfoStyle>
@@ -61,7 +60,7 @@ export default function ProfileCover() {
       </InfoStyle>
       <Image
         alt="profile cover"
-        src="https://public.nftstatic.com/static/nft/res/d06f4b2332c740658c1f081b2b74ed4b.png"
+        src={`https://mewcard.mewapi.io/?address=${account}`}
         sx={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
       />
     </RootStyle>

@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
 // material
 import { styled, useTheme } from '@mui/material/styles';
+import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 // hooks
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 //
@@ -27,13 +27,11 @@ const MainStyle = styled('div')(({ theme }) => ({
   paddingTop: APP_BAR_MOBILE + 24,
   paddingBottom: theme.spacing(4),
   [theme.breakpoints.up('lg')]: {
-    paddingTop: APP_BAR_DESKTOP + 24,
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2)
+    paddingTop: APP_BAR_DESKTOP + 24
+    // paddingLeft: theme.spacing(2),
+    // paddingRight: theme.spacing(2)
   }
 }));
-
-// ----------------------------------------------------------------------
 
 export default function DashboardLayout() {
   const theme = useTheme();
@@ -55,7 +53,8 @@ export default function DashboardLayout() {
           }),
           ...(collapseClick && {
             ml: '102px'
-          })
+          }),
+          backgroundColor: '#F2F4FA'
         }}
       >
         <Outlet />

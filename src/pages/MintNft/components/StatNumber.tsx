@@ -1,23 +1,7 @@
 import { Card, Stack, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import type { StatProps } from '../MintNft.types';
 
-type ProgressItemProps = {
-  progress: {
-    label: string;
-    max: number;
-    value: number;
-  };
-};
-
-export default function StatNumber({ progress }: ProgressItemProps) {
-  const [value, setValue] = useState(0);
-  const [max, setMax] = useState(0);
-
-  useEffect(() => {
-    setValue(progress.value < 0 ? 0 : progress.value);
-    setMax(progress.max < progress.value ? progress.value : progress.max);
-  }, [progress]);
-
+export default function StatNumber({ statType, max, value }: StatProps) {
   return (
     <Stack spacing={1}>
       <Card
@@ -26,7 +10,7 @@ export default function StatNumber({ progress }: ProgressItemProps) {
       >
         <Stack direction="row" alignItems="center">
           <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
-            {progress.label}
+            {statType}
           </Typography>
           <Typography variant="subtitle2">{value} of&nbsp;</Typography>
           <Typography variant="subtitle2">{max}</Typography>

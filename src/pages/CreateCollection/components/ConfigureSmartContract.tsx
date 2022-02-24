@@ -74,6 +74,7 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
                     {...field}
                     label="Name"
                     variant="outlined"
+                    autoComplete="off"
                     fullWidth
                     margin="normal"
                     error={Boolean(error)}
@@ -93,6 +94,7 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
                     }}
                     value={field.value}
                     label="Token Symbol"
+                    autoComplete="off"
                     variant="outlined"
                     fullWidth
                     margin="normal"
@@ -114,6 +116,7 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
                   <TextField
                     {...field}
                     label="Author"
+                    autoComplete="off"
                     variant="outlined"
                     fullWidth
                     margin="normal"
