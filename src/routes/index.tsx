@@ -4,6 +4,7 @@ import LoadingScreen from '../components/LoadingScreen';
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 import MainLayout from '../layouts/main';
+import CollectionsExplorer from '../pages/CollectionsExplorer';
 
 const Loadable = (Component: any) => (props: any) => {
   return (
@@ -107,7 +108,6 @@ const AssetViewer = Loadable(lazy(() => import('../pages/AssetViewer')));
 const Homepage = LoadWithoutSpinner(lazy(() => import('../pages/Homepage')));
 const CreateCollection = LoadWithoutSpinner(lazy(() => import('../pages/CreateCollection')));
 const MyNFT = LoadWithoutSpinner(lazy(() => import('../pages/MyNFT')));
-const CollectionsExplorer = LoadWithoutSpinner(lazy(() => import('../pages/CollectionsExplorer')));
 const CollectionViewer = LoadWithoutSpinner(lazy(() => import('../pages/CollectionViewer')));
 const MintNft = LoadWithoutSpinner(lazy(() => import('../pages/MintNft')));
 // const Universe = lazy(() => import('../pages/Universe'));
