@@ -43,7 +43,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   position: 'relative',
   marginTop: '50px',
   backgroundColor: theme.palette.background.default,
-  marginBottom: '-30px'
+  marginBottom: '-32px'
 }));
 
 export default function MainFooter() {
