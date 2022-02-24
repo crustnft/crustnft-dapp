@@ -42,11 +42,9 @@ const LINKS = [
 const RootStyle = styled('div')(({ theme }) => ({
   position: 'relative',
   marginTop: '50px',
-  // backgroundColor: theme.palette.background.default,
-  backgroundColor: '#F2F4FA'
+  backgroundColor: theme.palette.background.default,
+  marginBottom: '-30px'
 }));
-
-// ----------------------------------------------------------------------
 
 export default function MainFooter() {
   const theme = useTheme();
@@ -54,7 +52,7 @@ export default function MainFooter() {
   return (
     <RootStyle>
       <Divider />
-      <Container maxWidth="lg" sx={{ pt: 6 }}>
+      <Container maxWidth="lg" sx={{ pt: 3, pb: 2 }}>
         <Grid
           container
           justifyContent={{ xs: 'center', md: 'space-between' }}
