@@ -33,6 +33,7 @@ type FormValues = {
   avatar: File | null;
   properties: PropertyProps[];
   levels: LevelProps[];
+  stats: StatProps[];
 };
 
 export default function NftForm() {
@@ -42,10 +43,8 @@ export default function NftForm() {
 
   const [openDialogProperties, setOpenDialogProperties] = useState(false);
 
-  // const [levels, setLevels] = useState<LevelProps[]>([]);
   const [openDialogLevels, setOpenDialogLevels] = useState(false);
 
-  const [stats, setStats] = useState<StatProps[]>([]);
   const [openDialogStats, setOpenDialogStats] = useState(false);
 
   const [boosts, setBoosts] = useState<BoostProps[]>([]);
@@ -64,7 +63,8 @@ export default function NftForm() {
     externalLink: '',
     avatar: null,
     properties: [],
-    levels: []
+    levels: [],
+    stats: []
   };
 
   const methods = useForm<FormValues>({
@@ -81,7 +81,7 @@ export default function NftForm() {
     formState: { isSubmitting }
   } = methods;
 
-  const { avatar, properties, levels } = watch();
+  const { avatar, properties, levels, stats } = watch();
 
   const authHeader =
     'cG9sLTB4QTIyOGNGYWI4MEE2NzM4NTIyNDc2RGVDMTFkNzkzZDYxMjk5NjhiMjoweGU2ZDA1NDIzYTcxY2YzNjdjNWNhZmQwNzRmOWZjODAyMWUwMmEzZDA4MGViZTMyY2VhNDA0MjkwZTgxOWM5YTExMDUxMjNhZDJjZWM2ZjQ1Y2NiZWRmOTYyYjc5NzA4YWRiYjMwNTcxMGEzZWIzYjMzOWM3MzFmNTc1NGM4NWY1MWM=';
@@ -277,8 +277,6 @@ export default function NftForm() {
                 <NewLevelsDialog
                   openDialogLevels={openDialogLevels}
                   setOpenDialogLevels={setOpenDialogLevels}
-                  // levels={levels}
-                  // setLevels={setLevels}
                 />
 
                 <Stack>
@@ -318,8 +316,6 @@ export default function NftForm() {
                 <NewStatsDialog
                   openDialogStats={openDialogStats}
                   setOpenDialogStats={setOpenDialogStats}
-                  stats={stats}
-                  setStats={setStats}
                 />
 
                 <Stack>
