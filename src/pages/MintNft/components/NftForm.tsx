@@ -32,6 +32,7 @@ type FormValues = {
   externalLink: string;
   avatar: File | null;
   properties: PropertyProps[];
+  levels: LevelProps[];
 };
 
 export default function NftForm() {
@@ -41,7 +42,7 @@ export default function NftForm() {
 
   const [openDialogProperties, setOpenDialogProperties] = useState(false);
 
-  const [levels, setLevels] = useState<LevelProps[]>([]);
+  // const [levels, setLevels] = useState<LevelProps[]>([]);
   const [openDialogLevels, setOpenDialogLevels] = useState(false);
 
   const [stats, setStats] = useState<StatProps[]>([]);
@@ -62,7 +63,8 @@ export default function NftForm() {
     description: '',
     externalLink: '',
     avatar: null,
-    properties: []
+    properties: [],
+    levels: []
   };
 
   const methods = useForm<FormValues>({
@@ -79,7 +81,7 @@ export default function NftForm() {
     formState: { isSubmitting }
   } = methods;
 
-  const values = watch();
+  const { avatar, properties, levels } = watch();
 
   const authHeader =
     'cG9sLTB4QTIyOGNGYWI4MEE2NzM4NTIyNDc2RGVDMTFkNzkzZDYxMjk5NjhiMjoweGU2ZDA1NDIzYTcxY2YzNjdjNWNhZmQwNzRmOWZjODAyMWUwMmEzZDA4MGViZTMyY2VhNDA0MjkwZTgxOWM5YTExMDUxMjNhZDJjZWM2ZjQ1Y2NiZWRmOTYyYjc5NzA4YWRiYjMwNTcxMGEzZWIzYjMzOWM3MzFmNTc1NGM4NWY1MWM=';
@@ -87,7 +89,7 @@ export default function NftForm() {
   function pinFileToW3Gateway(): Promise<any> {
     console.log('go in');
     return new Promise((resolve, reject) => {
-      if (values.avatar) {
+      if (avatar) {
         const ipfs = create({
           url: ipfsGateway + '/api/v0',
           headers: {
@@ -103,12 +105,12 @@ export default function NftForm() {
           console.log(added.cid.toV0().toString());
           resolve({
             cid: added.cid.toV0().toString(),
-            name: values?.avatar?.name || '',
+            name: avatar?.name || '',
             size: added.size
           });
         };
 
-        reader.readAsArrayBuffer(values.avatar);
+        reader.readAsArrayBuffer(avatar);
       } else {
         reject('no file');
       }
@@ -226,7 +228,7 @@ export default function NftForm() {
 
                   <Stack sx={{ mt: 1 }}>
                     <Grid container spacing={2}>
-                      {values.properties.map((property, index) => (
+                      {properties.map((property, index) => (
                         <Grid key={index} item xs={6} sm={4} md={3}>
                           <Property {...property} />
                         </Grid>
@@ -275,8 +277,8 @@ export default function NftForm() {
                 <NewLevelsDialog
                   openDialogLevels={openDialogLevels}
                   setOpenDialogLevels={setOpenDialogLevels}
-                  levels={levels}
-                  setLevels={setLevels}
+                  // levels={levels}
+                  // setLevels={setLevels}
                 />
 
                 <Stack>
