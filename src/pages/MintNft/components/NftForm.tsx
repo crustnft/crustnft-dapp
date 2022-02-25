@@ -34,6 +34,7 @@ type FormValues = {
   properties: PropertyProps[];
   levels: LevelProps[];
   stats: StatProps[];
+  boosts: BoostProps[];
 };
 
 export default function NftForm() {
@@ -47,7 +48,6 @@ export default function NftForm() {
 
   const [openDialogStats, setOpenDialogStats] = useState(false);
 
-  const [boosts, setBoosts] = useState<BoostProps[]>([]);
   const [openDialogBoosts, setOpenDialogBoosts] = useState(false);
 
   const NewNftSchema = Yup.object().shape({
@@ -64,7 +64,8 @@ export default function NftForm() {
     avatar: null,
     properties: [],
     levels: [],
-    stats: []
+    stats: [],
+    boosts: []
   };
 
   const methods = useForm<FormValues>({
@@ -81,7 +82,7 @@ export default function NftForm() {
     formState: { isSubmitting }
   } = methods;
 
-  const { avatar, properties, levels, stats } = watch();
+  const { avatar, properties, levels, stats, boosts } = watch();
 
   const authHeader =
     'cG9sLTB4QTIyOGNGYWI4MEE2NzM4NTIyNDc2RGVDMTFkNzkzZDYxMjk5NjhiMjoweGU2ZDA1NDIzYTcxY2YzNjdjNWNhZmQwNzRmOWZjODAyMWUwMmEzZDA4MGViZTMyY2VhNDA0MjkwZTgxOWM5YTExMDUxMjNhZDJjZWM2ZjQ1Y2NiZWRmOTYyYjc5NzA4YWRiYjMwNTcxMGEzZWIzYjMzOWM3MzFmNTc1NGM4NWY1MWM=';
@@ -350,8 +351,6 @@ export default function NftForm() {
                 <NewBoostsDialog
                   openDialogBoosts={openDialogBoosts}
                   setOpenDialogBoosts={setOpenDialogBoosts}
-                  boosts={boosts}
-                  setBoosts={setBoosts}
                 />
               </Stack>
             </Stack>
