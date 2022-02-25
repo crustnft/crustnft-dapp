@@ -21,6 +21,7 @@ import NewPropertiesDialog from './NewPropertiesDialog';
 import NewStatsDialog from './NewStatsDialog';
 import NftTextField from './NftTextField';
 import StatNumber from './StatNumber';
+
 const ipfsGateway = 'https://gw.crustapps.net';
 
 type FormValuesProps = UserManager;
@@ -29,7 +30,7 @@ type FormValues = {
   name: string;
   description: string;
   externalLink: string;
-  avatarUrl: File | null;
+  avatar: File | null;
 };
 
 export default function NftForm() {
@@ -54,14 +55,14 @@ export default function NftForm() {
     name: Yup.string().required('Name is required'),
     description: Yup.string(),
     externalLink: Yup.string().url('Invalid URL'),
-    avatarUrl: Yup.mixed().test('required', 'Image is required', (value) => value !== null)
+    avatar: Yup.mixed().test('required', 'Image is required', (value) => value !== null)
   });
 
   const defaultValues = {
     name: '',
     description: '',
     externalLink: '',
-    avatarUrl: null
+    avatar: null
   };
 
   const methods = useForm<FormValues>({
@@ -87,7 +88,7 @@ export default function NftForm() {
   function pinFileToW3Gateway(): Promise<any> {
     console.log('go in');
     return new Promise((resolve, reject) => {
-      if (values.avatarUrl) {
+      if (values.avatar) {
         const ipfs = create({
           url: ipfsGateway + '/api/v0',
           headers: {
@@ -103,12 +104,12 @@ export default function NftForm() {
           console.log(added.cid.toV0().toString());
           resolve({
             cid: added.cid.toV0().toString(),
-            name: values?.avatarUrl?.name || '',
+            name: values?.avatar?.name || '',
             size: added.size
           });
         };
 
-        reader.readAsArrayBuffer(values.avatarUrl);
+        reader.readAsArrayBuffer(values.avatar);
       } else {
         reject('no file');
       }
@@ -134,7 +135,7 @@ export default function NftForm() {
       if (file) {
         setFile(file);
         setValue(
-          'avatarUrl',
+          'avatar',
           Object.assign(file, {
             preview: URL.createObjectURL(file)
           })
@@ -146,8 +147,8 @@ export default function NftForm() {
 
   const printFile = () => {
     console.log(typeof file);
-    console.log(typeof values.avatarUrl);
-    console.log(values.avatarUrl);
+    console.log(typeof values.avatar);
+    console.log(values.avatar);
     //uploadImageHandle();
   };
 
@@ -158,7 +159,7 @@ export default function NftForm() {
           <Card sx={{ py: 2, px: 2 }}>
             <Box sx={{ mb: 5 }}>
               <RHFUploadNftCard
-                name="avatarUrl"
+                name="avatar"
                 accept="image/*"
                 maxSize={31457280}
                 onDrop={handleDrop}
@@ -208,159 +209,162 @@ export default function NftForm() {
                 minRows={4}
                 placeholder="Provide a detailed description of your item."
               />
-              <Stack>
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
-                  <Stack>
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <Iconify icon="bxs:tag" rotate={2} />
-                      <Typography variant="subtitle1">Properties</Typography>
+              <Stack spacing={1}>
+                <Stack>
+                  <Stack direction="row" alignItems="center" justifyContent="space-between">
+                    <Stack>
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <Iconify icon="bxs:tag" rotate={2} />
+                        <Typography variant="subtitle1">Properties</Typography>
+                      </Stack>
+                      <Typography variant="caption">
+                        Textual traits that show up as rectangles
+                      </Typography>
                     </Stack>
-                    <Typography variant="caption">
-                      Textual traits that show up as rectangles
-                    </Typography>
+
+                    <Button
+                      sx={{ borderColor: '#15B2E5' }}
+                      onClick={() => {
+                        setOpenDialogProperties(true);
+                      }}
+                      variant="outlined"
+                    >
+                      Add Properties
+                    </Button>
                   </Stack>
 
-                  <Button
-                    sx={{ borderColor: '#15B2E5' }}
-                    onClick={() => {
-                      setOpenDialogProperties(true);
-                    }}
-                    variant="outlined"
-                  >
-                    Add Properties
-                  </Button>
-                </Stack>
-
-                <Box sx={{ height: '8px' }} />
-                <Grid container spacing={2}>
-                  {properties.map((property, index) => (
-                    <Grid key={index} item xs={6} sm={4} md={3}>
-                      <Property {...property} />
+                  <Stack sx={{ mt: 1 }}>
+                    <Grid container spacing={2}>
+                      {properties.map((property, index) => (
+                        <Grid key={index} item xs={6} sm={4} md={3}>
+                          <Property {...property} />
+                        </Grid>
+                      ))}
                     </Grid>
-                  ))}
-                </Grid>
-              </Stack>
+                  </Stack>
+                </Stack>
 
-              <NewPropertiesDialog
-                openDialogProperties={openDialogProperties}
-                properties={properties}
-                setProperties={setProperties}
-                setOpenDialogProperties={setOpenDialogProperties}
-              />
+                <NewPropertiesDialog
+                  openDialogProperties={openDialogProperties}
+                  properties={properties}
+                  setProperties={setProperties}
+                  setOpenDialogProperties={setOpenDialogProperties}
+                />
 
-              <Stack>
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
-                  <Stack>
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <Iconify icon="bxs:star" />
-                      <Typography variant="subtitle1">Levels</Typography>
+                <Stack>
+                  <Stack direction="row" alignItems="center" justifyContent="space-between">
+                    <Stack>
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <Iconify icon="bxs:star" />
+                        <Typography variant="subtitle1">Levels</Typography>
+                      </Stack>
+                      <Typography variant="caption">
+                        Numerical traits that show as a progress bar
+                      </Typography>
                     </Stack>
-                    <Typography variant="caption">
-                      Numerical traits that show as a progress bar
-                    </Typography>
+
+                    <Button
+                      variant="outlined"
+                      sx={{ borderColor: '#15B2E5' }}
+                      onClick={() => {
+                        setOpenDialogLevels(true);
+                      }}
+                    >
+                      Add Levels
+                    </Button>
                   </Stack>
 
-                  <Button
-                    variant="outlined"
-                    sx={{ borderColor: '#15B2E5' }}
-                    onClick={() => {
-                      setOpenDialogLevels(true);
-                    }}
-                  >
-                    Add Levels
-                  </Button>
+                  <Stack spacing={1} sx={{ mt: 1 }}>
+                    {levels.map((level, index) => (
+                      <LevelProgress key={level.levelType + index} {...level} />
+                    ))}
+                  </Stack>
                 </Stack>
-                <Box sx={{ height: '8px' }} />
-                <Stack spacing={1}>
-                  {levels.map((level, index) => (
-                    <LevelProgress key={level.levelType + index} {...level} />
-                  ))}
-                </Stack>
-              </Stack>
 
-              <NewLevelsDialog
-                openDialogLevels={openDialogLevels}
-                setOpenDialogLevels={setOpenDialogLevels}
-                levels={levels}
-                setLevels={setLevels}
-              />
+                <NewLevelsDialog
+                  openDialogLevels={openDialogLevels}
+                  setOpenDialogLevels={setOpenDialogLevels}
+                  levels={levels}
+                  setLevels={setLevels}
+                />
 
-              <Stack>
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
-                  <Stack>
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <Iconify icon="ion:stats-chart" />
-                      <Typography variant="subtitle1">Stats</Typography>
+                <Stack>
+                  <Stack direction="row" alignItems="center" justifyContent="space-between">
+                    <Stack>
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <Iconify icon="ion:stats-chart" />
+                        <Typography variant="subtitle1">Stats</Typography>
+                      </Stack>
+                      <Typography variant="caption">
+                        Numerical traits that just show as numbers
+                      </Typography>
                     </Stack>
-                    <Typography variant="caption">
-                      Numerical traits that just show as numbers
-                    </Typography>
+
+                    <Button
+                      variant="outlined"
+                      sx={{ borderColor: '#15B2E5' }}
+                      onClick={() => {
+                        setOpenDialogStats(true);
+                      }}
+                    >
+                      Add Stats
+                    </Button>
                   </Stack>
 
-                  <Button
-                    variant="outlined"
-                    sx={{ borderColor: '#15B2E5' }}
-                    onClick={() => {
-                      setOpenDialogStats(true);
-                    }}
-                  >
-                    Add Stats
-                  </Button>
-                </Stack>
-
-                <Box sx={{ height: '8px' }} />
-                <Grid container spacing={1}>
-                  {stats.map((stat, index) => (
-                    <Grid key={stat.statType + index} item xs={6}>
-                      <StatNumber {...stat} />
+                  <Stack sx={{ mt: 1 }}>
+                    <Grid container spacing={1}>
+                      {stats.map((stat, index) => (
+                        <Grid key={stat.statType + index} item xs={6}>
+                          <StatNumber {...stat} />
+                        </Grid>
+                      ))}
                     </Grid>
-                  ))}
-                </Grid>
-              </Stack>
+                  </Stack>
+                </Stack>
 
-              <NewStatsDialog
-                openDialogStats={openDialogStats}
-                setOpenDialogStats={setOpenDialogStats}
-                stats={stats}
-                setStats={setStats}
-              />
+                <NewStatsDialog
+                  openDialogStats={openDialogStats}
+                  setOpenDialogStats={setOpenDialogStats}
+                  stats={stats}
+                  setStats={setStats}
+                />
 
-              <Stack>
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
-                  <Stack>
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <Iconify icon="ic:baseline-flash-on" />
-                      <Typography variant="subtitle1">Boosts</Typography>
+                <Stack>
+                  <Stack direction="row" alignItems="center" justifyContent="space-between">
+                    <Stack>
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <Iconify icon="ic:baseline-flash-on" />
+                        <Typography variant="subtitle1">Boosts</Typography>
+                      </Stack>
+                      <Typography variant="caption">
+                        Number or percentage boosts that show up as a circular boost
+                      </Typography>
                     </Stack>
-                    <Typography variant="caption">
-                      Number or percentage boosts that show up as a circular boost
-                    </Typography>
+
+                    <Button
+                      variant="outlined"
+                      sx={{ borderColor: '#15B2E5' }}
+                      onClick={() => {
+                        setOpenDialogBoosts(true);
+                      }}
+                    >
+                      Add Boosts
+                    </Button>
                   </Stack>
 
-                  <Button
-                    variant="outlined"
-                    sx={{ borderColor: '#15B2E5' }}
-                    onClick={() => {
-                      setOpenDialogBoosts(true);
-                    }}
-                  >
-                    Add Boosts
-                  </Button>
+                  <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+                    {boosts.map((boost, index) => (
+                      <CircularBoost key={boost.boostType + index} {...boost} />
+                    ))}
+                  </Stack>
                 </Stack>
-
-                <Box sx={{ height: '8px' }} />
-                <Stack direction="row" spacing={1}>
-                  {boosts.map((boost, index) => (
-                    <CircularBoost key={boost.boostType + index} {...boost} />
-                  ))}
-                </Stack>
+                <NewBoostsDialog
+                  openDialogBoosts={openDialogBoosts}
+                  setOpenDialogBoosts={setOpenDialogBoosts}
+                  boosts={boosts}
+                  setBoosts={setBoosts}
+                />
               </Stack>
-              <NewBoostsDialog
-                openDialogBoosts={openDialogBoosts}
-                setOpenDialogBoosts={setOpenDialogBoosts}
-                boosts={boosts}
-                setBoosts={setBoosts}
-              />
             </Stack>
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
