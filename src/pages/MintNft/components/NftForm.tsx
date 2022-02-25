@@ -31,15 +31,14 @@ type FormValues = {
   description: string;
   externalLink: string;
   avatar: File | null;
+  properties: PropertyProps[];
 };
 
 export default function NftForm() {
   const navigate = useNavigate();
 
-  const [file, setFile] = useState<File | null>(null);
   const { enqueueSnackbar } = useSnackbar();
 
-  const [properties, setProperties] = useState<PropertyProps[]>([]);
   const [openDialogProperties, setOpenDialogProperties] = useState(false);
 
   const [levels, setLevels] = useState<LevelProps[]>([]);
@@ -62,7 +61,8 @@ export default function NftForm() {
     name: '',
     description: '',
     externalLink: '',
-    avatar: null
+    avatar: null,
+    properties: []
   };
 
   const methods = useForm<FormValues>({
@@ -74,7 +74,6 @@ export default function NftForm() {
   const {
     reset,
     watch,
-    control,
     setValue,
     handleSubmit,
     formState: { isSubmitting }
@@ -133,7 +132,6 @@ export default function NftForm() {
     (acceptedFiles) => {
       const file = acceptedFiles[0];
       if (file) {
-        setFile(file);
         setValue(
           'avatar',
           Object.assign(file, {
@@ -144,13 +142,6 @@ export default function NftForm() {
     },
     [setValue]
   );
-
-  const printFile = () => {
-    console.log(typeof file);
-    console.log(typeof values.avatar);
-    console.log(values.avatar);
-    //uploadImageHandle();
-  };
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -235,7 +226,7 @@ export default function NftForm() {
 
                   <Stack sx={{ mt: 1 }}>
                     <Grid container spacing={2}>
-                      {properties.map((property, index) => (
+                      {values.properties.map((property, index) => (
                         <Grid key={index} item xs={6} sm={4} md={3}>
                           <Property {...property} />
                         </Grid>
@@ -246,8 +237,8 @@ export default function NftForm() {
 
                 <NewPropertiesDialog
                   openDialogProperties={openDialogProperties}
-                  properties={properties}
-                  setProperties={setProperties}
+                  // properties={properties}
+                  // setProperties={setProperties}
                   setOpenDialogProperties={setOpenDialogProperties}
                 />
 

@@ -7,29 +7,27 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import { DialogProps } from '@mui/material/Dialog';
 import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import Iconify from '../../../components/Iconify';
 import type { PropertyProps } from '../MintNft.types';
-
 export default function NewPropertiesDialog({
   openDialogProperties,
-  properties,
-  setProperties,
+
   setOpenDialogProperties
 }: {
   openDialogProperties: boolean;
-  properties: PropertyProps[];
-  setProperties: React.Dispatch<React.SetStateAction<PropertyProps[]>>;
+
   setOpenDialogProperties: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [newPropType, setNewPropType] = useState('');
   const [newName, setNewName] = useState('');
-  const [scroll, setScroll] = useState<DialogProps['scroll']>('paper');
+  const { setValue, watch } = useFormContext();
 
+  const properties: PropertyProps[] = watch('properties');
   const handleAddProperty = () => {
     if (newPropType && newName) {
-      setProperties([
+      setValue('properties', [
         ...properties,
         {
           name: newName,
@@ -42,7 +40,10 @@ export default function NewPropertiesDialog({
   };
 
   const handleRemoveProperty = (index: number) => {
-    setProperties(properties.filter((_, i) => i !== index));
+    setValue(
+      'properties',
+      properties.filter((_, i) => i !== index)
+    );
   };
 
   return (
@@ -51,9 +52,9 @@ export default function NewPropertiesDialog({
       onClose={() => {
         setOpenDialogProperties(false);
       }}
-      scroll={scroll}
+      scroll="paper"
     >
-      <DialogContent dividers={scroll === 'paper'}>
+      <DialogContent dividers={true}>
         <Stack sx={{ p: 1, pb: 2 }} spacing={1}>
           <Typography variant="h5">Add Properties</Typography>
           <Typography variant="body2">
