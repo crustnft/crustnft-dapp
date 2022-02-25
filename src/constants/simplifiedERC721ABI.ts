@@ -61,5 +61,24 @@ export const SIMPLIFIED_ERC721_ABI = [
     stateMutability: 'view',
     type: 'function',
     constant: true
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: '_tokenURI',
+        type: 'string'
+      }
+    ],
+    name: 'mint',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function'
   }
 ];

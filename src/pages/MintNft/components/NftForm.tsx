@@ -1,13 +1,14 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, Card, Grid, Stack, Typography } from '@mui/material';
+import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
+import useWeb3 from 'hooks/useWeb3';
 import { create } from 'ipfs-http-client';
 import { useSnackbar } from 'notistack';
-import { useCallback, useState } from 'react';
+import { createContext, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { connectRWContract } from 'services/smartContract/evmCompatible';
 import * as Yup from 'yup';
-import { UserManager } from '../../../@types/user';
 import { FormProvider, RHFUploadNftCard } from '../../../components/hook-form';
 import Iconify from '../../../components/Iconify';
 import { fData } from '../../../utils/formatNumber';
@@ -25,7 +26,36 @@ import StatNumber from './StatNumber';
 
 const ipfsGateway = 'https://gw.crustapps.net';
 
-type FormValuesProps = UserManager;
+const initialNftCreationStatus = {
+  uploadingImage: false,
+  uploadImageSuccess: false,
+  uploadImageError: false,
+  uploadingMetadata: false,
+  uploadMetadataSuccess: false,
+  uploadMetadataError: false,
+  mintingNft: false,
+  mintNftSuccess: false,
+  mintNftError: false,
+  txHash: '',
+  activeStep: 0,
+  setActiveStep: () => {}
+};
+
+type NftCreationStatus = {
+  uploadingImage: boolean;
+  uploadImageSuccess: boolean;
+  uploadImageError: boolean;
+  uploadingMetadata: boolean;
+  uploadMetadataSuccess: boolean;
+  uploadMetadataError: boolean;
+  mintingNft: boolean;
+  mintNftSuccess: boolean;
+  mintNftError: boolean;
+  txHash: string;
+  activeStep: number;
+  setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+};
+export const NftCreationStatusContext = createContext<NftCreationStatus>(initialNftCreationStatus);
 
 type FormValues = {
   name: string;
@@ -39,17 +69,29 @@ type FormValues = {
 };
 
 export default function NftForm() {
-  const navigate = useNavigate();
-
   const { enqueueSnackbar } = useSnackbar();
 
+  const { active, account, library, onboard } = useWeb3();
+
   const [openDialogProperties, setOpenDialogProperties] = useState(false);
-
   const [openDialogLevels, setOpenDialogLevels] = useState(false);
-
   const [openDialogStats, setOpenDialogStats] = useState(false);
-
   const [openDialogBoosts, setOpenDialogBoosts] = useState(false);
+
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadImageSuccess, setUploadImageSuccess] = useState(false);
+  const [uploadImageError, setUploadImageError] = useState(false);
+
+  const [uploadingMetadata, setUploadingMetadata] = useState(false);
+  const [uploadMetadataSuccess, setUploadMetadataSuccess] = useState(false);
+  const [uploadMetadataError, setUploadMetadataError] = useState(false);
+
+  const [mintingNft, setMintingNft] = useState(false);
+  const [mintNftSuccess, setMintNftSuccess] = useState(false);
+  const [mintNftError, setMintNftError] = useState(false);
+
+  const [txHash, setTxHash] = useState('');
+  const [activeStep, setActiveStep] = useState(0);
 
   const NewNftSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -88,71 +130,123 @@ export default function NftForm() {
   const authHeader =
     'cG9sLTB4QTIyOGNGYWI4MEE2NzM4NTIyNDc2RGVDMTFkNzkzZDYxMjk5NjhiMjoweGU2ZDA1NDIzYTcxY2YzNjdjNWNhZmQwNzRmOWZjODAyMWUwMmEzZDA4MGViZTMyY2VhNDA0MjkwZTgxOWM5YTExMDUxMjNhZDJjZWM2ZjQ1Y2NiZWRmOTYyYjc5NzA4YWRiYjMwNTcxMGEzZWIzYjMzOWM3MzFmNTc1NGM4NWY1MWM=';
 
-  function pinFileToW3Gateway(): Promise<any> {
-    console.log('go in');
+  function uploadFileToW3AuthGateway(
+    ipfsGateway: string,
+    authHeader: string,
+    file: File
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (avatar) {
-        const ipfs = create({
-          url: ipfsGateway + '/api/v0',
-          headers: {
-            authorization: 'Basic ' + authHeader
-          }
+      const ipfs = create({
+        url: ipfsGateway + '/api/v0',
+        headers: {
+          authorization: 'Basic ' + authHeader
+        }
+      });
+      console.log('start pin w3');
+      const reader = new FileReader();
+      reader.onabort = () => reject('file reading was aborted');
+      reader.onerror = () => reject('file reading has failed');
+      reader.onload = async () => {
+        const added = await ipfs.add(reader.result as ArrayBuffer);
+        console.log(added.cid.toV0().toString());
+        resolve({
+          cid: added.cid.toV0().toString(),
+          name: file.name || '',
+          size: added.size
         });
-        console.log('start pin w3');
-        const reader = new FileReader();
-        reader.onabort = () => reject('file reading was aborted');
-        reader.onerror = () => reject('file reading has failed');
-        reader.onload = async () => {
-          const added = await ipfs.add(reader.result as ArrayBuffer);
-          console.log(added.cid.toV0().toString());
-          resolve({
-            cid: added.cid.toV0().toString(),
-            name: avatar?.name || '',
-            size: added.size
-          });
-        };
+      };
 
-        reader.readAsArrayBuffer(avatar);
-      } else {
-        reject('no file');
-      }
+      reader.readAsArrayBuffer(file);
     });
   }
 
-  const onSubmit = async (data: FormValuesProps) => {
+  async function uploadMetadataW3AuthGateway(authHeader: string, metadata: any): Promise<any> {
+    const ipfs = create({
+      url: ipfsGateway + '/api/v0',
+      headers: {
+        authorization: 'Basic ' + authHeader
+      }
+    });
+    const added = await ipfs.add(JSON.stringify(metadata));
+    return { cid: added.cid.toV0().toString(), size: added.size };
+  }
+
+  const onSubmit = async () => {
     try {
-      console.log('success');
-      const addedFile = await pinFileToW3Gateway();
+      if (avatar) {
+        setActiveStep(0);
+        setUploadingImage(true);
+        const addedFile = await uploadFileToW3AuthGateway(ipfsGateway, authHeader, avatar).catch(
+          () => {
+            setUploadImageError(true);
+          }
+        );
+        setUploadingImage(false);
 
-      const metadata = {
-        name,
-        description,
-        image: `ipfs://${addedFile.cid}`,
-        external_url: externalLink,
-        attributes: [
-          ...properties.map((property) => ({
-            trait_type: property.propType,
-            value: property.name
-          })),
-          ...levels.map((level) => ({ trait_type: level.levelType, value: level.value })),
-          ...stats.map((stat) => ({
-            display_type: 'number',
-            trait_type: stat.statType,
-            value: stat.value
-          })),
-          ...boosts.map((boost) => ({
-            display_type: boost.displayType,
-            trait_type: boost.boostType,
-            value: boost.value
-          }))
-        ]
-      };
+        if (!addedFile) {
+          return;
+        }
 
-      console.log(metadata);
+        setUploadImageSuccess(true);
 
-      console.log('pinfile');
-      reset();
-      enqueueSnackbar('Create success!');
+        const metadata = {
+          name,
+          description,
+          image: `ipfs://${addedFile.cid}`,
+          external_url: externalLink,
+          attributes: [
+            ...properties.map((property) => ({
+              trait_type: property.propType,
+              value: property.name
+            })),
+            ...levels.map((level) => ({ trait_type: level.levelType, value: level.value })),
+            ...stats.map((stat) => ({
+              display_type: 'number',
+              trait_type: stat.statType,
+              value: stat.value
+            })),
+            ...boosts.map((boost) => ({
+              display_type: boost.displayType,
+              trait_type: boost.boostType,
+              value: boost.value
+            }))
+          ]
+        };
+        setActiveStep(1);
+        setUploadingMetadata(true);
+        const addedMetadata = await uploadMetadataW3AuthGateway(authHeader, metadata).catch(() => {
+          setUploadMetadataError(true);
+        });
+
+        setUploadingMetadata(false);
+        if (!addedMetadata) {
+          return;
+        }
+
+        setUploadMetadataSuccess(true);
+
+        setActiveStep(2);
+        setMintingNft(true);
+        await onboard?.walletCheck();
+        const signer = library?.getSigner(account);
+
+        if (signer) {
+          const contract = connectRWContract(
+            '0x763A8A60bf6840a1cdb3d0E1A49893B143539bb9',
+            SIMPLIFIED_ERC721_ABI,
+            signer
+          );
+          const tx = await contract.mint(`ipfs://${addedMetadata.cid}`);
+          console.log(tx);
+          const txReceipt = await tx.wait(1);
+          console.log('txReceipt', txReceipt);
+          setMintingNft(false);
+          setMintNftSuccess(true);
+        }
+
+        reset();
+        enqueueSnackbar('Create success!');
+      }
     } catch (error) {
       console.error(error);
     }
@@ -396,7 +490,24 @@ export default function NftForm() {
               </LoadingButton>
             </Stack>
 
-            <NftCreationStatus />
+            <NftCreationStatusContext.Provider
+              value={{
+                uploadingImage,
+                uploadImageError,
+                uploadImageSuccess,
+                uploadingMetadata,
+                uploadMetadataError,
+                uploadMetadataSuccess,
+                mintingNft,
+                mintNftError,
+                mintNftSuccess,
+                txHash,
+                activeStep,
+                setActiveStep
+              }}
+            >
+              <NftCreationStatus />
+            </NftCreationStatusContext.Provider>
           </Card>
         </Grid>
       </Grid>

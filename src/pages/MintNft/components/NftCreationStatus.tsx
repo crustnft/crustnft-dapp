@@ -1,30 +1,43 @@
 import { Paper, Step, StepContent, StepLabel, Stepper, Typography } from '@mui/material';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
-import { useState } from 'react';
+import { useContext } from 'react';
 import { DoingIcon, ErrorIcon, SuccessIcon } from '../../../components/StepperIcons';
-
+import { NftCreationStatusContext } from './NftForm';
 export default function NftCreationStatus() {
+  const {
+    uploadingImage,
+    uploadImageError,
+    uploadImageSuccess,
+    uploadingMetadata,
+    uploadMetadataError,
+    uploadMetadataSuccess,
+    mintingNft,
+    mintNftError,
+    mintNftSuccess,
+    txHash,
+    activeStep,
+    setActiveStep
+  } = useContext(NftCreationStatusContext);
   const { active, account, library, onboard } = useWeb3();
 
   const { chain: selectedChain } = useWallet();
-  const [activeStep, setActiveStep] = useState(0);
 
-  const [uploadingImage, setUploadingImage] = useState(false);
-  const [uploadImageSuccess, setUploadImageSuccess] = useState(false);
-  const [uploadImageError, setUploadImageError] = useState(false);
+  // const [uploadingImage, setUploadingImage] = useState(false);
+  // const [uploadImageSuccess, setUploadImageSuccess] = useState(false);
+  // const [uploadImageError, setUploadImageError] = useState(false);
 
-  const [uploadingMetadata, setUploadingMetadata] = useState(false);
-  const [uploadMetadataSuccess, setUploadMetadataSuccess] = useState(false);
-  const [uploadMetadataError, setUploadMetadataError] = useState(false);
+  // const [uploadingMetadata, setUploadingMetadata] = useState(false);
+  // const [uploadMetadataSuccess, setUploadMetadataSuccess] = useState(false);
+  // const [uploadMetadataError, setUploadMetadataError] = useState(false);
 
-  const [mintingNft, setMintingNft] = useState(false);
-  const [mintNftSuccess, setMintNftSuccess] = useState(false);
-  const [mintNftError, setMintNftError] = useState(false);
-  const [publishingRetry, setPublishingRetry] = useState(false);
+  // const [mintingNft, setMintingNft] = useState(false);
+  // const [mintNftSuccess, setMintNftSuccess] = useState(false);
+  // const [mintNftError, setMintNftError] = useState(false);
+  // const [publishingRetry, setPublishingRetry] = useState(false);
 
-  const [txHash, setTxHash] = useState('');
-  const [contractAddress, setContractAddress] = useState('');
+  // const [txHash, setTxHash] = useState('');
+  // const [contractAddress, setContractAddress] = useState('');
 
   return (
     <>

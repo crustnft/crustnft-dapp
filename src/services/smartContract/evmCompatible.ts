@@ -1,4 +1,4 @@
-import { Contract, ethers } from 'ethers';
+import { Contract, ethers, Signer } from 'ethers';
 import asyncWithCache from '../../utils/asyncWithCache';
 
 export function connectContract(
@@ -10,6 +10,16 @@ export function connectContract(
   const contract = new ethers.Contract(contractAddress, ABI, provider);
   return contract;
 }
+
+export function connectRWContract(
+  contractAddress: string,
+  ABI: ethers.ContractInterface,
+  signer: Signer
+): Contract {
+  const contract = new ethers.Contract(contractAddress, ABI, signer);
+  return contract;
+}
+
 // FIXME: Potentially, An issue when a same contract address on 2 different chains.
 export async function getTotalSupply(contract: Contract): Promise<number> {
   const NftBalance = await asyncWithCache(
@@ -44,3 +54,7 @@ export async function getSymbol(contract: Contract): Promise<string> {
 export async function getContractOwner(contract: Contract): Promise<string> {
   return asyncWithCache(contract.owner, contract.address + '-getContractOwner');
 }
+
+// export async function mint(contract: Contract): Promise<string> {
+//   contract.mint();
+// }
