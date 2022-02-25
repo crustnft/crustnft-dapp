@@ -82,7 +82,7 @@ export default function NftForm() {
     formState: { isSubmitting }
   } = methods;
 
-  const { avatar, properties, levels, stats, boosts } = watch();
+  const { name, description, externalLink, avatar, properties, levels, stats, boosts } = watch();
 
   const authHeader =
     'cG9sLTB4QTIyOGNGYWI4MEE2NzM4NTIyNDc2RGVDMTFkNzkzZDYxMjk5NjhiMjoweGU2ZDA1NDIzYTcxY2YzNjdjNWNhZmQwNzRmOWZjODAyMWUwMmEzZDA4MGViZTMyY2VhNDA0MjkwZTgxOWM5YTExMDUxMjNhZDJjZWM2ZjQ1Y2NiZWRmOTYyYjc5NzA4YWRiYjMwNTcxMGEzZWIzYjMzOWM3MzFmNTc1NGM4NWY1MWM=';
@@ -121,7 +121,34 @@ export default function NftForm() {
   const onSubmit = async (data: FormValuesProps) => {
     try {
       console.log('success');
-      await pinFileToW3Gateway();
+      const addedFile = await pinFileToW3Gateway();
+
+      const metadata = {
+        name,
+        description,
+        image: `ipfs://${addedFile.cid}`,
+        external_url: externalLink,
+        attributes: [
+          ...properties.map((property) => ({
+            trait_type: property.propType,
+            value: property.name
+          })),
+          ...levels.map((level) => ({ trait_type: level.levelType, value: level.value })),
+          ...stats.map((stat) => ({
+            display_type: 'number',
+            trait_type: stat.statType,
+            value: stat.value
+          })),
+          ...boosts.map((boost) => ({
+            display_type: boost.displayType,
+            trait_type: boost.boostType,
+            value: boost.value
+          }))
+        ]
+      };
+
+      console.log(metadata);
+
       console.log('pinfile');
       reset();
       enqueueSnackbar('Create success!');
