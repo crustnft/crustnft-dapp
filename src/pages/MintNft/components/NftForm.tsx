@@ -186,6 +186,7 @@ export default function NftForm() {
                 size="small"
                 required={true}
                 placeholder="Item name"
+                autoComplete="off"
               />
               <NftTextField
                 name="externalLink"
@@ -193,6 +194,7 @@ export default function NftForm() {
                 description="We will include a link on this item's detail page, so that users can click to learn more about it. You are welcome to link to your own webpage with more details."
                 size="small"
                 placeholder="https://your-gallery.com/item-name"
+                autoComplete="off"
               />
               <NftTextField
                 name="description"
@@ -202,6 +204,7 @@ export default function NftForm() {
                 multiline
                 minRows={4}
                 placeholder="Provide a detailed description of your item."
+                autoComplete="off"
               />
               <Stack spacing={1}>
                 <Stack>

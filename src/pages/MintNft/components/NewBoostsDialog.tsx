@@ -157,6 +157,7 @@ export default function NewDialogBoost({
                 setNewBoostType(e.target.value);
               }}
               helperText="Enter a name e.g. level, speed, power, etc."
+              autoComplete="off"
             />
 
             <FormControl size="small" sx={{ m: 1, width: '15ch' }}>
@@ -167,6 +168,7 @@ export default function NewDialogBoost({
                 onChange={(e) => {
                   setNewRawValue(e.target.value);
                 }}
+                autoComplete="off"
                 endAdornment={
                   <InputAdornment position="end">
                     <Typography variant="subtitle1">

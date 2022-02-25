@@ -100,6 +100,7 @@ export default function NewLevelsDialog({
                 setNewLevelType(e.target.value);
               }}
               helperText="Enter a name e.g. level, speed, power, etc."
+              autoComplete="off"
             />
             <TextField
               value={newValue}
@@ -109,6 +110,7 @@ export default function NewLevelsDialog({
               onChange={(e) => {
                 setNewValue(parseInt(e.target.value));
               }}
+              autoComplete="off"
             />
             <Typography sx={{ pt: 0.8 }}>of</Typography>
             <TextField
@@ -119,6 +121,7 @@ export default function NewLevelsDialog({
               onChange={(e) => {
                 setNewMax(parseInt(e.target.value));
               }}
+              autoComplete="off"
             />
             <IconButton onClick={handleAddLevel}>
               <Iconify icon="carbon:add-alt" />

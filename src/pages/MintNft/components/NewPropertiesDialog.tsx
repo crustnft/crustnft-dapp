@@ -88,6 +88,7 @@ export default function NewPropertiesDialog({
               onChange={(e) => {
                 setNewPropType(e.target.value);
               }}
+              autoComplete="off"
             />
             <TextField
               placeholder="e.g. Female"
@@ -96,6 +97,7 @@ export default function NewPropertiesDialog({
               onChange={(e) => {
                 setNewName(e.target.value);
               }}
+              autoComplete="off"
             />
             <IconButton onClick={handleAddProperty}>
               <Iconify icon="carbon:add-alt" />

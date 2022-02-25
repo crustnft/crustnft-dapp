@@ -95,6 +95,7 @@ export default function NewStatsDialog({
                 setNewStatType(e.target.value);
               }}
               helperText="Enter a name e.g. generation, etc."
+              autoComplete="off"
             />
             <TextField
               value={newValue}
@@ -104,6 +105,7 @@ export default function NewStatsDialog({
               onChange={(e) => {
                 setNewValue(parseInt(e.target.value));
               }}
+              autoComplete="off"
             />
             <Typography sx={{ pt: 0.8 }}>of</Typography>
             <TextField
@@ -114,6 +116,7 @@ export default function NewStatsDialog({
               onChange={(e) => {
                 setNewMax(parseInt(e.target.value));
               }}
+              autoComplete="off"
             />
             <IconButton onClick={handleAddStat}>
               <Iconify icon="carbon:add-alt" />
