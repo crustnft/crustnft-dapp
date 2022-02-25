@@ -19,6 +19,7 @@ import NewBoostsDialog from './NewBoostsDialog';
 import NewLevelsDialog from './NewLevelsDialog';
 import NewPropertiesDialog from './NewPropertiesDialog';
 import NewStatsDialog from './NewStatsDialog';
+import NftCreationStatus from './NftCreationStatus';
 import NftTextField from './NftTextField';
 import StatNumber from './StatNumber';
 
@@ -152,7 +153,6 @@ export default function NftForm() {
       console.log('pinfile');
       reset();
       enqueueSnackbar('Create success!');
-      navigate('#/home');
     } catch (error) {
       console.error(error);
     }
@@ -395,6 +395,8 @@ export default function NftForm() {
                 Mint NFT
               </LoadingButton>
             </Stack>
+
+            <NftCreationStatus />
           </Card>
         </Grid>
       </Grid>
