@@ -11,7 +11,7 @@ import {
   getTokenURI,
   getTotalSupply
 } from 'services/smartContract/evmCompatible';
-import { getRpcUrl } from 'utils/blockchainHandlers';
+import { getRpcUrlByNetworkName } from 'utils/blockchainHandlers';
 import { parseNftUri } from 'utils/tokenUriHandlers';
 import Page from '../../components/Page';
 import { NB_NFT_PER_PAGE } from '../../configs/general';
@@ -39,7 +39,11 @@ export default function CollectionViewer() {
   const [symbol, setSymbol] = useState('');
 
   const contract = useMemo(() => {
-    return connectContract(contractAddr || '', SIMPLIFIED_ERC721_ABI, getRpcUrl(chain || ''));
+    return connectContract(
+      contractAddr || '',
+      SIMPLIFIED_ERC721_ABI,
+      getRpcUrlByNetworkName(chain || '')
+    );
   }, [contractAddr, chain]);
 
   const [NftList, setNftList] = useState<

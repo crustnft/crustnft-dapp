@@ -78,7 +78,7 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
       <Divider />
       <Box sx={{ p: 2 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Link color="inherit" underline="none" href={`#/assets/polygon/${contractAddress}/${''}`}>
+          <Link color="inherit" underline="none">
             <Typography variant="caption" noWrap>
               Network
             </Typography>
@@ -90,7 +90,7 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Link color="inherit" underline="none" href={`#/assets/polygon/${contractAddress}/${''}`}>
+          <Link color="inherit" underline="none">
             <Stack direction="row" alignItems="center" spacing={0.5}>
               <Typography variant="caption" noWrap>
                 Token Symbol
@@ -103,7 +103,7 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
           </Typography>
         </Stack>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Link color="inherit" underline="none" href={`#/assets/polygon/${contractAddress}/${''}`}>
+          <Link color="inherit" underline="none">
             <Typography variant="caption" noWrap>
               Owner
             </Typography>
@@ -115,7 +115,7 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Link color="inherit" underline="none" href={`#/assets/polygon/${contractAddress}/${''}`}>
+          <Link color="inherit" underline="none">
             <Stack direction="row" alignItems="center" spacing={0.5}>
               <Typography variant="caption" noWrap>
                 Contract Address
@@ -130,9 +130,16 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
         <Stack direction="row" sx={{ mt: 2 }} alignItems="center" justifyContent="space-between">
           <Stack direction="row">
             <Tooltip title="View collection on crustnft.io">
-              <IconButton>
-                <CenterFocusWeakIcon sx={{ color: '#454F5B' }} />
-              </IconButton>
+              <Link
+                underline="none"
+                href={`#/collection/${network.toLowerCase()}/${contractAddress}/1`}
+                target="_blank"
+                rel="noopener"
+              >
+                <IconButton>
+                  <CenterFocusWeakIcon sx={{ color: '#454F5B' }} />
+                </IconButton>
+              </Link>
             </Tooltip>
 
             <Tooltip title="View collection on opensea.io">
