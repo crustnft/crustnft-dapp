@@ -17,6 +17,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { alpha, styled } from '@mui/material/styles';
 import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import Iconify from '../../../components/Iconify';
 import type { BoostProps } from '../MintNft.types';
 
@@ -59,13 +60,9 @@ const StyledMenu = styled((props: MenuProps) => (
 
 export default function NewDialogBoost({
   openDialogBoosts,
-  boosts,
-  setBoosts,
   setOpenDialogBoosts
 }: {
   openDialogBoosts: boolean;
-  boosts: BoostProps[];
-  setBoosts: React.Dispatch<React.SetStateAction<BoostProps[]>>;
   setOpenDialogBoosts: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [newBoostType, setNewBoostType] = useState('');
@@ -73,6 +70,9 @@ export default function NewDialogBoost({
   const [newDisplayType, setNewDisplayType] = useState<'boost_percentage' | 'boost_number'>(
     'boost_percentage'
   );
+
+  const { setValue, watch } = useFormContext();
+  const boosts: BoostProps[] = watch('boosts');
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -86,7 +86,7 @@ export default function NewDialogBoost({
   const handleAddBoost = () => {
     if (newBoostType) {
       if (!isNaN(parseInt(newRawValue))) {
-        setBoosts([
+        setValue('boosts', [
           ...boosts,
           {
             boostType: newBoostType,
@@ -94,6 +94,7 @@ export default function NewDialogBoost({
             displayType: newDisplayType
           }
         ]);
+
         setNewBoostType('');
         setNewRawValue('');
       }
@@ -101,7 +102,10 @@ export default function NewDialogBoost({
   };
 
   const handleRemoveLevel = (index: number) => {
-    setBoosts(boosts.filter((_, i) => i !== index));
+    setValue(
+      'boosts',
+      boosts.filter((_, i) => i !== index)
+    );
   };
 
   return (
@@ -153,6 +157,7 @@ export default function NewDialogBoost({
                 setNewBoostType(e.target.value);
               }}
               helperText="Enter a name e.g. level, speed, power, etc."
+              autoComplete="off"
             />
 
             <FormControl size="small" sx={{ m: 1, width: '15ch' }}>
@@ -163,6 +168,7 @@ export default function NewDialogBoost({
                 onChange={(e) => {
                   setNewRawValue(e.target.value);
                 }}
+                autoComplete="off"
                 endAdornment={
                   <InputAdornment position="end">
                     <Typography variant="subtitle1">

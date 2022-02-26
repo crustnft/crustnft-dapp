@@ -27,8 +27,8 @@ import {
   getPublishingStatus,
   publishSmartContract
 } from 'services/createSmartContract/evmCompatible/';
-import LightTooltip from './LightTooltip';
-import { DoingIcon, ErrorIcon, SuccessIcon } from './StepperIcons';
+import LightTooltip from '../../../components/LightTooltip';
+import { DoingIcon, ErrorIcon, SuccessIcon } from '../../../components/StepperIcons';
 
 export default function DeploySmartContract({
   startedCreation,
@@ -217,7 +217,7 @@ export default function DeploySmartContract({
               Compile smart contract
             </StepLabel>
             <StepContent>
-              <Typography>
+              <Typography variant="body2">
                 Your collection is build using your own smart contract therefore it needs to be
                 compiled in machine language.
               </Typography>
@@ -238,7 +238,7 @@ export default function DeploySmartContract({
               Deploy smart contract
             </StepLabel>
             <StepContent>
-              <Typography>
+              <Typography variant="body2">
                 You need to make a traction on Ethereum to deploy the smart contract.
               </Typography>
             </StepContent>
@@ -258,7 +258,7 @@ export default function DeploySmartContract({
               Publish smart contract contract on {selectedChain?.blockExplorerUrl}
             </StepLabel>
             <StepContent>
-              <Typography>
+              <Typography variant="body2">
                 The source code of your smart contract will be published on{' '}
                 {selectedChain?.blockExplorerUrl} to ensure its transparency.
               </Typography>
@@ -279,7 +279,7 @@ export default function DeploySmartContract({
               Verify status on {selectedChain?.blockExplorerUrl}
             </StepLabel>
             <StepContent>
-              <Typography>
+              <Typography variant="body2">
                 Get the verification status on {selectedChain?.blockExplorerUrl}
               </Typography>
             </StepContent>

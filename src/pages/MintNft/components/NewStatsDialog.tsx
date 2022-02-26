@@ -7,33 +7,29 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import { DialogProps } from '@mui/material/Dialog';
 import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import Iconify from '../../../components/Iconify';
 import type { StatProps } from '../MintNft.types';
 
 export default function NewStatsDialog({
   openDialogStats,
-  stats,
-  setStats,
   setOpenDialogStats
 }: {
   openDialogStats: boolean;
-  stats: StatProps[];
-  setStats: React.Dispatch<React.SetStateAction<StatProps[]>>;
   setOpenDialogStats: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [newStatType, setNewStatType] = useState('');
   const [newValue, setNewValue] = useState<number>(0);
   const [newMax, setNewMax] = useState<number>(0);
-  const [scroll, setScroll] = useState<DialogProps['scroll']>('paper');
+  const { setValue, watch } = useFormContext();
+  const stats: StatProps[] = watch('stats');
 
   const handleAddStat = () => {
     if (newStatType) {
       const validValue = newValue < 0 ? 0 : newValue;
       const validMax = newMax < validValue ? validValue : newMax;
-
-      setStats([
+      setValue('stats', [
         ...stats,
         {
           statType: newStatType,
@@ -48,7 +44,10 @@ export default function NewStatsDialog({
   };
 
   const handleRemoveLevel = (index: number) => {
-    setStats(stats.filter((_, i) => i !== index));
+    setValue(
+      'stats',
+      stats.filter((_, i) => i !== index)
+    );
   };
 
   return (
@@ -57,9 +56,9 @@ export default function NewStatsDialog({
       onClose={() => {
         setOpenDialogStats(false);
       }}
-      scroll={scroll}
+      scroll="paper"
     >
-      <DialogContent dividers={scroll === 'paper'}>
+      <DialogContent dividers={true}>
         <Stack sx={{ p: 1, pb: 2 }} spacing={1}>
           <Typography variant="h5">Add Levels</Typography>
           <Typography variant="body2">
@@ -96,6 +95,7 @@ export default function NewStatsDialog({
                 setNewStatType(e.target.value);
               }}
               helperText="Enter a name e.g. generation, etc."
+              autoComplete="off"
             />
             <TextField
               value={newValue}
@@ -105,6 +105,7 @@ export default function NewStatsDialog({
               onChange={(e) => {
                 setNewValue(parseInt(e.target.value));
               }}
+              autoComplete="off"
             />
             <Typography sx={{ pt: 0.8 }}>of</Typography>
             <TextField
@@ -115,6 +116,7 @@ export default function NewStatsDialog({
               onChange={(e) => {
                 setNewMax(parseInt(e.target.value));
               }}
+              autoComplete="off"
             />
             <IconButton onClick={handleAddStat}>
               <Iconify icon="carbon:add-alt" />

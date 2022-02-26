@@ -7,40 +7,41 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import { DialogProps } from '@mui/material/Dialog';
 import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import Iconify from '../../../components/Iconify';
 import type { LevelProps } from '../MintNft.types';
 
 export default function NewLevelsDialog({
   openDialogLevels,
-  levels,
-  setLevels,
+
   setOpenDialogLevels
 }: {
   openDialogLevels: boolean;
-  levels: LevelProps[];
-  setLevels: React.Dispatch<React.SetStateAction<LevelProps[]>>;
+
   setOpenDialogLevels: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [newLevelType, setNewLevelType] = useState('');
   const [newValue, setNewValue] = useState<number>(0);
   const [newMax, setNewMax] = useState<number>(0);
-  const [scroll, setScroll] = useState<DialogProps['scroll']>('paper');
+  const { setValue, watch } = useFormContext();
+
+  const levels: LevelProps[] = watch('levels');
 
   const handleAddLevel = () => {
     if (newLevelType) {
       const validValue = newValue < 0 ? 0 : newValue;
       const validMax = newMax < validValue ? validValue : newMax;
 
-      setLevels([
+      setValue('levels', [
         ...levels,
         {
           levelType: newLevelType,
-          max: validMax,
-          value: validValue
+          value: validValue,
+          max: validMax
         }
       ]);
+
       setNewLevelType('');
       setNewValue(0);
       setNewMax(0);
@@ -48,7 +49,10 @@ export default function NewLevelsDialog({
   };
 
   const handleRemoveLevel = (index: number) => {
-    setLevels(levels.filter((_, i) => i !== index));
+    setValue(
+      'levels',
+      levels.filter((_, i) => i !== index)
+    );
   };
 
   return (
@@ -57,9 +61,9 @@ export default function NewLevelsDialog({
       onClose={() => {
         setOpenDialogLevels(false);
       }}
-      scroll={scroll}
+      scroll="paper"
     >
-      <DialogContent dividers={scroll === 'paper'}>
+      <DialogContent dividers={true}>
         <Stack sx={{ p: 1, pb: 2 }} spacing={1}>
           <Typography variant="h5">Add Levels</Typography>
           <Typography variant="body2">
@@ -96,6 +100,7 @@ export default function NewLevelsDialog({
                 setNewLevelType(e.target.value);
               }}
               helperText="Enter a name e.g. level, speed, power, etc."
+              autoComplete="off"
             />
             <TextField
               value={newValue}
@@ -105,6 +110,7 @@ export default function NewLevelsDialog({
               onChange={(e) => {
                 setNewValue(parseInt(e.target.value));
               }}
+              autoComplete="off"
             />
             <Typography sx={{ pt: 0.8 }}>of</Typography>
             <TextField
@@ -115,6 +121,7 @@ export default function NewLevelsDialog({
               onChange={(e) => {
                 setNewMax(parseInt(e.target.value));
               }}
+              autoComplete="off"
             />
             <IconButton onClick={handleAddLevel}>
               <Iconify icon="carbon:add-alt" />
