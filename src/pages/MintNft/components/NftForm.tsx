@@ -1,3 +1,4 @@
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, Card, Grid, Stack, Typography } from '@mui/material';
@@ -38,7 +39,9 @@ const initialNftCreationStatus = {
   mintNftError: false,
   txHash: '',
   activeStep: 0,
-  setActiveStep: () => {}
+  setActiveStep: () => {},
+  imageCid: '',
+  metadataCid: ''
 };
 
 type NftCreationStatus = {
@@ -54,6 +57,8 @@ type NftCreationStatus = {
   txHash: string;
   activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+  imageCid: string;
+  metadataCid: string;
 };
 export const NftCreationStatusContext = createContext<NftCreationStatus>(initialNftCreationStatus);
 
@@ -71,7 +76,11 @@ type FormValues = {
 export default function NftForm() {
   const { enqueueSnackbar } = useSnackbar();
 
-  const { active, account, library, onboard } = useWeb3();
+  const { account, library, onboard } = useWeb3();
+
+  const [mintingState, setMintingState] = useState<'notstarted' | 'success' | 'error'>(
+    'notstarted'
+  );
 
   const [openDialogProperties, setOpenDialogProperties] = useState(false);
   const [openDialogLevels, setOpenDialogLevels] = useState(false);
@@ -91,6 +100,8 @@ export default function NftForm() {
   const [mintNftError, setMintNftError] = useState(false);
 
   const [txHash, setTxHash] = useState('');
+  const [imageCid, setImageCid] = useState('');
+  const [metadataCid, setMetadataCid] = useState('');
   const [activeStep, setActiveStep] = useState(0);
 
   const NewNftSchema = Yup.object().shape({
@@ -118,7 +129,6 @@ export default function NftForm() {
   });
 
   const {
-    reset,
     watch,
     setValue,
     handleSubmit,
@@ -172,80 +182,107 @@ export default function NftForm() {
   }
 
   const onSubmit = async () => {
+    setMintingState('error');
     try {
       if (avatar) {
-        setActiveStep(0);
-        setUploadingImage(true);
-        const addedFile = await uploadFileToW3AuthGateway(ipfsGateway, authHeader, avatar).catch(
-          () => {
-            setUploadImageError(true);
-          }
-        );
-        setUploadingImage(false);
+        // Local variables for retry in case of error
+        let newImageCid = imageCid;
+        let newMetadataCid = metadataCid;
 
-        if (!addedFile) {
-          return;
-        }
-
-        setUploadImageSuccess(true);
-
-        const metadata = {
-          name,
-          description,
-          image: `ipfs://${addedFile.cid}`,
-          external_url: externalLink,
-          attributes: [
-            ...properties.map((property) => ({
-              trait_type: property.propType,
-              value: property.name
-            })),
-            ...levels.map((level) => ({ trait_type: level.levelType, value: level.value })),
-            ...stats.map((stat) => ({
-              display_type: 'number',
-              trait_type: stat.statType,
-              value: stat.value
-            })),
-            ...boosts.map((boost) => ({
-              display_type: boost.displayType,
-              trait_type: boost.boostType,
-              value: boost.value
-            }))
-          ]
-        };
-        setActiveStep(1);
-        setUploadingMetadata(true);
-        const addedMetadata = await uploadMetadataW3AuthGateway(authHeader, metadata).catch(() => {
-          setUploadMetadataError(true);
-        });
-
-        setUploadingMetadata(false);
-        if (!addedMetadata) {
-          return;
-        }
-
-        setUploadMetadataSuccess(true);
-
-        setActiveStep(2);
-        setMintingNft(true);
-        await onboard?.walletCheck();
-        const signer = library?.getSigner(account);
-
-        if (signer) {
-          const contract = connectRWContract(
-            '0x763A8A60bf6840a1cdb3d0E1A49893B143539bb9',
-            SIMPLIFIED_ERC721_ABI,
-            signer
+        // Upload image on IPFS
+        if (!uploadImageSuccess) {
+          setActiveStep(0);
+          setUploadingImage(true);
+          const addedFile = await uploadFileToW3AuthGateway(ipfsGateway, authHeader, avatar).catch(
+            () => {
+              setUploadImageError(true);
+            }
           );
-          const tx = await contract.mint(`ipfs://${addedMetadata.cid}`);
-          console.log(tx);
-          const txReceipt = await tx.wait(1);
-          console.log('txReceipt', txReceipt);
-          setMintingNft(false);
-          setMintNftSuccess(true);
+          setUploadingImage(false);
+          if (!addedFile) {
+            return;
+          }
+          setUploadImageSuccess(true);
+          newImageCid = addedFile.cid;
+          setImageCid(newImageCid);
         }
 
-        reset();
-        enqueueSnackbar('Create success!');
+        // Upload metadata on IPFS
+        if (!uploadMetadataSuccess) {
+          setActiveStep(1);
+          setUploadingMetadata(true);
+
+          const metadata = {
+            name,
+            description,
+            image: `ipfs://${newImageCid}`,
+            external_url: externalLink,
+            attributes: [
+              ...properties.map((property) => ({
+                trait_type: property.propType,
+                value: property.name
+              })),
+              ...levels.map((level) => ({ trait_type: level.levelType, value: level.value })),
+              ...stats.map((stat) => ({
+                display_type: 'number',
+                trait_type: stat.statType,
+                value: stat.value
+              })),
+              ...boosts.map((boost) => ({
+                display_type: boost.displayType,
+                trait_type: boost.boostType,
+                value: boost.value
+              }))
+            ]
+          };
+
+          const addedMetadata = await uploadMetadataW3AuthGateway(authHeader, metadata).catch(
+            () => {
+              setUploadMetadataError(true);
+            }
+          );
+          setUploadingMetadata(false);
+          if (!addedMetadata) {
+            return;
+          }
+          newMetadataCid = addedMetadata.cid;
+          setUploadMetadataSuccess(true);
+          setMetadataCid(newMetadataCid);
+        }
+
+        // Interact with smart contract
+        if (!mintNftSuccess) {
+          try {
+            setActiveStep(2);
+            setMintingNft(true);
+            console.log('wallet Check');
+            await onboard?.walletCheck();
+            console.log('get signer');
+            const signer = library?.getSigner(account);
+            console.log('compare signer');
+            if (signer) {
+              const contract = connectRWContract(
+                '0x763A8A60bf6840a1cdb3d0E1A49893B143539bb9',
+                SIMPLIFIED_ERC721_ABI,
+                signer
+              );
+              console.log('mint');
+              const tx: TransactionResponse = await contract.mint(`ipfs://${metadataCid}`);
+              setTxHash(tx.hash);
+              const txReceipt: TransactionReceipt = await tx.wait(1);
+              setTxHash(txReceipt.transactionHash);
+              setMintingNft(false);
+              setMintNftSuccess(true);
+            }
+            enqueueSnackbar('Create success!');
+            setMintingState('success');
+          } catch {
+            setMintingNft(false);
+            setMintNftSuccess(false);
+            setMintNftError(true);
+            enqueueSnackbar('Create failed!');
+          }
+        }
       }
     } catch (error) {
       console.error(error);
@@ -479,17 +516,6 @@ export default function NftForm() {
               </Stack>
             </Stack>
 
-            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                loading={isSubmitting}
-                sx={{ backgroundColor: '#1A90FF' }}
-              >
-                Mint NFT
-              </LoadingButton>
-            </Stack>
-
             <NftCreationStatusContext.Provider
               value={{
                 uploadingImage,
@@ -503,11 +529,29 @@ export default function NftForm() {
                 mintNftSuccess,
                 txHash,
                 activeStep,
-                setActiveStep
+                setActiveStep,
+                imageCid,
+                metadataCid
               }}
             >
-              <NftCreationStatus />
+              <Box sx={{ display: mintingState === 'notstarted' ? 'none' : 'block' }}>
+                <NftCreationStatus />
+              </Box>
             </NftCreationStatusContext.Provider>
+            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
+              <LoadingButton
+                type="submit"
+                variant="contained"
+                color="info"
+                loading={isSubmitting}
+                sx={{
+                  backgroundColor: '#1A90FF',
+                  display: mintingState === 'success' ? 'none' : 'block'
+                }}
+              >
+                {mintingState === 'error' ? 'Try Again' : 'Mint NFT'}
+              </LoadingButton>
+            </Stack>
           </Card>
         </Grid>
       </Grid>

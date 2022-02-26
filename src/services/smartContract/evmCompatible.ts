@@ -54,7 +54,3 @@ export async function getSymbol(contract: Contract): Promise<string> {
 export async function getContractOwner(contract: Contract): Promise<string> {
   return asyncWithCache(contract.owner, contract.address + '-getContractOwner');
 }
-
-// export async function mint(contract: Contract): Promise<string> {
-//   contract.mint();
-// }

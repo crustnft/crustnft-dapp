@@ -27,8 +27,8 @@ import {
   getPublishingStatus,
   publishSmartContract
 } from 'services/createSmartContract/evmCompatible/';
+import LightTooltip from '../../../components/LightTooltip';
 import { DoingIcon, ErrorIcon, SuccessIcon } from '../../../components/StepperIcons';
-import LightTooltip from './LightTooltip';
 
 export default function DeploySmartContract({
   startedCreation,
