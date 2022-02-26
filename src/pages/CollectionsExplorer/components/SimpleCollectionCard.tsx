@@ -44,6 +44,7 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
   const [blockExplorerUrl, setBLockExplorerUrl] = useState('');
 
   const contract = useMemo(() => {
+    console.log('RPC', getRpcUrlByChainId(chainId));
     return connectContract(
       contractAddress || '',
       SIMPLIFIED_ERC721_ABI,
@@ -52,10 +53,26 @@ export default function SimpleCollectionCard({ collection }: CollectionCardProps
   }, [contractAddress, chainId]);
 
   useEffect(() => {
-    getName(contract).then((name) => setName(name));
-    getSymbol(contract).then((symbol) => setSymbol(symbol));
-    getContractOwner(contract).then((contractOwner) => setContractOwner(contractOwner));
-    getTotalSupply(contract).then((totalSupply) => setTotalSupply(totalSupply));
+    getName(contract)
+      .then((name) => setName(name))
+      .catch((e) => {
+        console.log(e);
+      });
+    getSymbol(contract)
+      .then((symbol) => setSymbol(symbol))
+      .catch((e) => {
+        console.log(e);
+      });
+    getContractOwner(contract)
+      .then((contractOwner) => setContractOwner(contractOwner))
+      .catch((e) => {
+        console.log(e);
+      });
+    getTotalSupply(contract)
+      .then((totalSupply) => setTotalSupply(totalSupply))
+      .catch((e) => {
+        console.log(e);
+      });
     const chain = getChainByChainId(chainId);
     setNetwork(chain?.name || '');
     setBLockExplorerUrl(chain?.blockExplorerUrl || '');
