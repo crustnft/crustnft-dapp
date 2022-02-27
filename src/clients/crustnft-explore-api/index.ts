@@ -12,7 +12,7 @@ const retryWrapper = (axios: AxiosInstance, options: any) => {
     (response) => response,
     (error) => {
       const config = error.config as AxiosRequestConfig;
-      console.log('Error posting contract', error.response);
+      console.log('Error in retryWrapper', error.response);
       if (counter < maxTime) {
         counter++;
         return new Promise((resolve) => {
@@ -35,4 +35,10 @@ export async function getContracts(pageSize: number) {
   const instance = Axios.create();
   retryWrapper(instance, { retry_time: 5 });
   return instance.get(`${CONTRACT_API_V1}?pageSize=${pageSize}&order=createdAt desc`); // or asc
+}
+
+export async function getContractsByAccount(pageSize: number, account: string) {
+  const instance = Axios.create();
+  retryWrapper(instance, { retry_time: 5 });
+  return instance.get(`${CONTRACT_API_V1}?pageSize=${pageSize}&account=${account}`); // or asc
 }
