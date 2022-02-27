@@ -43,7 +43,7 @@ export default function CallAction() {
   return (
     <WrapStyle>
       <Box sx={{ position: 'absolute', top: '0px', left: '0px' }}>
-        <Trianglify height={276} />
+        <Trianglify height={276} width={900} />
       </Box>
       <RootStyle>
         {/* <DocIllustration
