@@ -3,7 +3,6 @@ export type AssetAndOwnerType = {
   contractAddress: string;
   tokenId: string;
   ownerIcon: string;
-  balance: string;
   imageUrl: string;
   name: string;
   description: string;
