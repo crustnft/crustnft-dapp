@@ -197,8 +197,8 @@ export default function DeploySmartContract({
           Status
         </Typography>
         <Typography variant="body2">
-          You're about to create a new collection on Ethereum and will have to confirm a transaction
-          with your currently connected wallet.
+          You're about to create a new collection on {selectedChain.name} and will have to confirm a
+          transaction with your currently connected wallet.
         </Typography>
 
         <Stepper activeStep={activeStep} orientation="vertical" nonLinear>
@@ -239,7 +239,7 @@ export default function DeploySmartContract({
             </StepLabel>
             <StepContent>
               <Typography variant="body2">
-                You need to make a traction on Ethereum to deploy the smart contract.
+                You need to make a transaction on {selectedChain.name} to deploy the smart contract.
               </Typography>
             </StepContent>
           </Step>

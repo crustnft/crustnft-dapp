@@ -1,12 +1,15 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
 // material
 import { styled } from '@mui/material/styles';
-import { animated } from 'react-spring';
+// import Trianglify from 'trianglify';
+import Trianglify from 'react-trianglify';
 
-const WrapStyle = styled(animated.div)(({ theme }) => ({
-  backgroundImage: 'url("./static/glassmorphism/circle.png")',
+const WrapStyle = styled(Box)(({ theme }) => ({
+  // backgroundImage: 'url("./static/glassmorphism/trianglify-lowres.png")',
   backgroundSize: '100% ',
-  borderRadius: '15px'
+  borderRadius: '15px',
+  position: 'relative',
+  overflow: 'hidden'
 }));
 
 const RootStyle = styled(Box)(({ theme }) => ({
@@ -33,12 +36,15 @@ const RootStyle = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   borderTop: '1px solid rgba(255,255,255,0.5)',
   borderLeft: '1px solid rgba(255,255,255,0.5)',
-  backdropFilter: 'blur(5px)'
+  backdropFilter: 'blur(2px)'
 }));
 
 export default function CallAction() {
   return (
     <WrapStyle>
+      <Box sx={{ position: 'absolute', top: '0px', left: '0px' }}>
+        <Trianglify height={276} width={900} cellSize={40} />
+      </Box>
       <RootStyle>
         {/* <DocIllustration
         sx={{
