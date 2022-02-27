@@ -40,11 +40,10 @@ export default function Router() {
       path: '/',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/home" replace /> },
-        { path: 'home', element: <Homepage /> },
+        { element: <Navigate to="/wallet" replace /> },
+        { path: 'wallet', element: <MyNFT /> },
         { path: 'create-collection', element: <CreateCollection /> },
         { path: 'mint-nft/:chain/:contractAddr', element: <MintNft /> },
-        { path: 'my-nft', element: <MyNFT /> },
         { path: 'collection-explore', element: <CollectionsExplorer /> },
         { path: 'collection/:chain/:contractAddr/:pageNb', element: <CollectionViewer /> },
         {
