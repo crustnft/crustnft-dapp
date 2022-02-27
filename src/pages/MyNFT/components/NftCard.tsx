@@ -74,7 +74,7 @@ export default function NftCard({ tokenId, imageUrl, name, owner }: NftCardColle
                   width: '100%',
                   height: '100%',
                   objectFit: 'contain',
-                  display: loading ? 'none' : 'block',
+                  display: loading ? 'none !important' : 'block',
                   position: 'absolute',
                   borderRadius: '5px'
                 }}
