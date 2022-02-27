@@ -16,7 +16,7 @@ export function removeIpfsHeader(ipfsUri: string) {
   return ipfsUri.replace(/^(ipfs|ipns):\/\//, '');
 }
 
-const IPFS_GATEWAY_FOR_FETCHING_DATA = 'https://ipfs.io/ipfs/';
+const IPFS_GATEWAY_FOR_FETCHING_DATA = 'https://gw.crustapps.net/ipfs/';
 
 export function parseNftUri(tokenUri: string): string {
   if (!tokenUri) {

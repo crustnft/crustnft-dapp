@@ -8,6 +8,7 @@ import { create } from 'ipfs-http-client';
 import { useSnackbar } from 'notistack';
 import { createContext, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { connectRWContract } from 'services/smartContract/evmCompatible';
 import * as Yup from 'yup';
 import { FormProvider, RHFUploadNftCard } from '../../../components/hook-form';
@@ -74,10 +75,10 @@ type FormValues = {
 };
 
 export default function NftForm() {
+  const { chain, contractAddr } = useParams();
+
   const { enqueueSnackbar } = useSnackbar();
-
   const { account, library, onboard } = useWeb3();
-
   const [mintingState, setMintingState] = useState<'notstarted' | 'success' | 'error'>(
     'notstarted'
   );
@@ -261,13 +262,9 @@ export default function NftForm() {
             const signer = library?.getSigner(account);
             console.log('compare signer');
             if (signer) {
-              const contract = connectRWContract(
-                '0x763A8A60bf6840a1cdb3d0E1A49893B143539bb9',
-                SIMPLIFIED_ERC721_ABI,
-                signer
-              );
+              const contract = connectRWContract(contractAddr || '', SIMPLIFIED_ERC721_ABI, signer);
               console.log('mint');
-              const tx: TransactionResponse = await contract.mint(`ipfs://${metadataCid}`);
+              const tx: TransactionResponse = await contract.mint(`ipfs://${newMetadataCid}`);
               setTxHash(tx.hash);
               const txReceipt: TransactionReceipt = await tx.wait(1);
               setTxHash(txReceipt.transactionHash);

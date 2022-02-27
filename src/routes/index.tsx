@@ -43,18 +43,10 @@ export default function Router() {
         { element: <Navigate to="/home" replace /> },
         { path: 'home', element: <Homepage /> },
         { path: 'create-collection', element: <CreateCollection /> },
-        { path: 'mint-nft', element: <MintNft /> },
+        { path: 'mint-nft/:chain/:contractAddr', element: <MintNft /> },
         { path: 'my-nft', element: <MyNFT /> },
         { path: 'collection-explore', element: <CollectionsExplorer /> },
         { path: 'collection/:chain/:contractAddr/:pageNb', element: <CollectionViewer /> },
-        {
-          path: 'gallery',
-          children: [
-            { element: <Navigate to="/gallery/universe/1" replace /> },
-            { path: 'universe/:pageUrl', element: <Universe /> }
-          ]
-        },
-        { path: 'nft-manager/:pageUrl', element: <NftManager /> },
         {
           path: 'faucets',
           children: [
