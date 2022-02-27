@@ -81,7 +81,6 @@ export default function CollectionViewer() {
     async function getNftList() {
       for (let i = 0; i < NB_NFT_PER_PAGE; i++) {
         const tokenId = (page - 1) * NB_NFT_PER_PAGE + i + 1;
-        console.log('tokenId', tokenId);
         getTokenURI(contract, tokenId)
           .then(async (tokenUri) => {
             const parsedTokenUri = parseNftUri(tokenUri);

@@ -1,61 +1,122 @@
-import Slider from 'react-slick';
-import { useRef, useEffect, useState } from 'react';
-import { useTheme } from '@mui/material/styles';
 import { Box, CardHeader, useMediaQuery } from '@mui/material';
-
+import { useTheme } from '@mui/material/styles';
+import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import Slider from 'react-slick';
+import { getDataFromTokenUri } from 'services/http';
+import {
+  connectContract,
+  getOwner,
+  getTokenURI,
+  getTotalSupply
+} from 'services/smartContract/evmCompatible';
+import { getRpcUrlByNetworkName } from 'utils/blockchainHandlers';
+import { parseNftUri } from 'utils/tokenUriHandlers';
 import CarouselArrows from './CarouselArrows';
-import NftCard from 'components/gallery/NftCard';
+import NftCard from './NftCard';
 
-const mock = [
-  {
-    tokenId: '1',
-    imageUrl: 'https://public.nftstatic.com/static/nft/res/415278e5c62e4bdca1c608f967db8513.gif',
-    name: 'Name#1',
-    nftContract: '0x1234',
-    owner: '0x1423432'
-  },
-  {
-    tokenId: '2',
-    imageUrl: 'https://public.nftstatic.com/static/nft/res/5ca1d828ada44bfdbbe610b1ef5524c5.png',
-    name: 'Name#2',
-    nftContract: '0x1234',
-    owner: '0x1423432'
-  },
-  {
-    tokenId: '3',
-    imageUrl: 'https://public.nftstatic.com/static/nft/res/1451e60556704027a42ee72da6d6a11c.png',
-    name: 'Name#3',
-    nftContract: '0x1234',
-    owner: '0x1423432'
-  },
-  {
-    tokenId: '4',
-    imageUrl: 'https://public.nftstatic.com/static/nft/res/57d22e253a784219a9f3b6eaafdd2f4a.gif',
-    name: 'Name#1',
-    nftContract: '0x1234',
-    owner: '0x1423432'
-  },
-  {
-    tokenId: '5',
-    imageUrl: 'https://public.nftstatic.com/static/nft/res/a85ad35627c4468f9e8b48de2bf9ba1a.png',
-    name: 'Name#1',
-    nftContract: '0x1234',
-    owner: '0x1423432'
-  }
-];
+const NB_OF_NFT_PER_CAROUSEL = 10;
 
-export default function MyCollections() {
+const emptyNftList = new Array(NB_OF_NFT_PER_CAROUSEL).fill(null).map((_, index) => ({
+  key: index,
+  failToLoad: false,
+  tokenId: '',
+  imageUrl: '',
+  name: '',
+  nftContract: '',
+  owner: ''
+}));
+
+type NftItem = {
+  key: number;
+  failToLoad: boolean;
+  tokenId: string;
+  tokenURI?: string;
+  imageUrl: string;
+  name: string;
+  owner?: string;
+};
+
+export default function CollectionSlider() {
   const theme = useTheme();
   const carouselRef = useRef<Slider | null>(null);
 
-  const [numberOfFrames, setNumberOfFrames] = useState(4);
+  const contractAddr = '0x763A8A60bf6840a1cdb3d0E1A49893B143539bb9';
+  const contract = useMemo(() => {
+    return connectContract(
+      contractAddr || '',
+      SIMPLIFIED_ERC721_ABI,
+      getRpcUrlByNetworkName('rinkeby' || '')
+    );
+  }, [contractAddr]);
+
+  const [totalSupply, setTotalSupply] = useState(0);
+  const [nbEmptyCarouselItems, setNbEmptyCarouselItems] = useState(0);
+  const [NftList, setNftList] = useState<NftItem[]>(emptyNftList);
+  const [filteredNftList, setFilteredNftList] = useState<NftItem[]>([]);
+
+  useEffect(() => {
+    async function getNftList() {
+      const _totalSupply = await getTotalSupply(contract).catch((e) => {
+        console.log(e);
+      });
+      setTotalSupply(_totalSupply || 0);
+      const nbOfNftPerCarousel =
+        _totalSupply < NB_OF_NFT_PER_CAROUSEL ? _totalSupply : NB_OF_NFT_PER_CAROUSEL;
+
+      setNftList((prevList) => [...emptyNftList.slice(0, nbOfNftPerCarousel || 0)]);
+      for (let i = 0; i < nbOfNftPerCarousel; i++) {
+        const tokenId = i + 1;
+        getTokenURI(contract, tokenId)
+          .then(async (tokenUri) => {
+            const parsedTokenUri = parseNftUri(tokenUri);
+            const data = await getDataFromTokenUri(parsedTokenUri);
+            const owner = await getOwner(contract, tokenId);
+            const parsedImageUrl = parseNftUri(data.image || '');
+            setNftList((prevList) => {
+              prevList[i] = {
+                key: i,
+                failToLoad: false,
+                tokenId: tokenId.toString(),
+                tokenURI: tokenUri,
+                imageUrl: parsedImageUrl,
+                name: data.name || '',
+                owner
+              };
+              return [...prevList];
+            });
+          })
+          .catch((e) => {
+            setNftList((prevList) => {
+              prevList[i] = { ...prevList[i], failToLoad: true };
+              return [...prevList];
+            });
+            console.log(`Error token ${tokenId}: `, e);
+          });
+      }
+    }
+
+    getNftList();
+  }, []);
+
+  useEffect(() => {
+    setFilteredNftList(NftList.filter((nft) => !nft.failToLoad));
+  }, [NftList]);
+
+  const [nbOfFrames, setNbOfFrames] = useState(4);
   const fourFrames = useMediaQuery(theme.breakpoints.up(800));
   const threeFrames = useMediaQuery(theme.breakpoints.up(600));
   const twoFrames = useMediaQuery(theme.breakpoints.up(400));
 
   useEffect(() => {
-    setNumberOfFrames(fourFrames ? 4 : threeFrames ? 3 : twoFrames ? 2 : 1);
+    setNbOfFrames(fourFrames ? 4 : threeFrames ? 3 : twoFrames ? 2 : 1);
   }, [fourFrames, threeFrames, twoFrames]);
+
+  useEffect(() => {
+    setNbEmptyCarouselItems(
+      nbOfFrames - filteredNftList.length < 0 ? 0 : nbOfFrames - filteredNftList.length
+    );
+  }, [filteredNftList, nbOfFrames]);
 
   const settings = {
     dots: false,
@@ -98,7 +159,7 @@ export default function MyCollections() {
     <Box>
       <CardHeader
         title="Collection #1"
-        subheader="45 NFTs"
+        subheader={`${totalSupply} NFTs`}
         action={
           <CarouselArrows
             customIcon={'ic:round-keyboard-arrow-right'}
@@ -116,17 +177,15 @@ export default function MyCollections() {
       />
 
       <Slider ref={carouselRef} {...settings}>
-        {mock.map((item) => (
-          <Box key={item.tokenId}>
-            <NftCard {...item} />
+        {filteredNftList.map((nft) => (
+          <Box key={nft.key + '-' + nft.tokenId}>
+            <NftCard {...nft} />
           </Box>
         ))}
 
-        {[...Array(numberOfFrames - mock.length < 0 ? 0 : numberOfFrames - mock.length)].map(
-          (_, index) => (
-            <Box key={index} />
-          )
-        )}
+        {[...Array(nbEmptyCarouselItems)].map((_, index) => (
+          <Box key={index} />
+        ))}
       </Slider>
     </Box>
   );

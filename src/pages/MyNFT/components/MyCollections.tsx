@@ -5,9 +5,6 @@ export default function MyCollections() {
   return (
     <Box>
       <Collection />
-      <Collection />
-      <Collection />
-      <Collection />
     </Box>
   );
 }

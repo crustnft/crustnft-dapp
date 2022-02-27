@@ -34,5 +34,5 @@ export async function postContract(postContractObj: PostContractObj) {
 export async function getContracts(pageSize: number) {
   const instance = Axios.create();
   retryWrapper(instance, { retry_time: 5 });
-  return instance.get(`${CONTRACT_API_V1}?pageSize=${pageSize}`);
+  return instance.get(`${CONTRACT_API_V1}?pageSize=${pageSize}&order=createdAt desc`); // or asc
 }
