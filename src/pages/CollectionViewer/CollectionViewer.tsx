@@ -65,11 +65,21 @@ export default function CollectionViewer() {
   };
 
   useEffect(() => {
-    getTotalSupply(contract).then((totalSupply) =>
-      setPageCount(Math.ceil(totalSupply / NB_NFT_PER_PAGE))
-    );
-    getName(contract).then((name) => setName(name));
-    getSymbol(contract).then((symbol) => setSymbol(symbol));
+    getTotalSupply(contract)
+      .then((totalSupply) => setPageCount(Math.ceil(totalSupply / NB_NFT_PER_PAGE)))
+      .catch((e) => {
+        console.log(e);
+      });
+    getName(contract)
+      .then((name) => setName(name))
+      .catch((e) => {
+        console.log(e);
+      });
+    getSymbol(contract)
+      .then((symbol) => setSymbol(symbol))
+      .catch((e) => {
+        console.log(e);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -79,6 +89,7 @@ export default function CollectionViewer() {
 
   useEffect(() => {
     async function getNftList() {
+      // FIXME: If NB_NFT_PER_PAGE > totalSupply then there will be error
       for (let i = 0; i < NB_NFT_PER_PAGE; i++) {
         const tokenId = (page - 1) * NB_NFT_PER_PAGE + i + 1;
         getTokenURI(contract, tokenId)
