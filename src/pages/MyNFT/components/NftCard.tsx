@@ -1,4 +1,3 @@
-import { Icon } from '@iconify/react';
 import { Box, Link, Paper, Stack, Typography } from '@mui/material';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
@@ -55,7 +54,7 @@ export default function NftCard({ tokenId, imageUrl, name, owner }: NftCardColle
                 alignItems="center"
                 justifyContent="center"
                 sx={{
-                  display: loading ? 'flex' : 'none',
+                  display: loading ? 'flex' : 'none !important',
                   position: 'absolute',
                   top: 0,
                   width: '100%',
@@ -107,25 +106,6 @@ export default function NftCard({ tokenId, imageUrl, name, owner }: NftCardColle
               Polygon
             </Typography>
           </ColorButton>
-        </Stack>
-
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Link
-            color="inherit"
-            underline="none"
-            href={`#/assets/polygon/${contractAddress}/${tokenId}`}
-          >
-            <Stack direction="row" alignItems="center" spacing={0.5}>
-              <Typography variant="caption" noWrap>
-                Owner
-              </Typography>
-              <Icon icon="healthicons:miner-worker-outline" width={18} height={18} />
-            </Stack>
-          </Link>
-
-          <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
-            {owner || ''}
-          </Typography>
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
