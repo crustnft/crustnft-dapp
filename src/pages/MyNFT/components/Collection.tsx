@@ -1,11 +1,13 @@
-import { Box, CardHeader, useMediaQuery } from '@mui/material';
+import { Box, Button, CardHeader, Stack, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import Iconify from 'components/Iconify';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import { getDataFromTokenUri } from 'services/http';
 import {
   connectContract,
+  getName,
   getOwner,
   getTokenURI,
   getTotalSupply
@@ -50,6 +52,7 @@ export default function CollectionSlider() {
     );
   }, [contractAddr]);
 
+  const [name, setName] = useState('Getting name...');
   const [totalSupply, setTotalSupply] = useState(0);
   const [nbEmptyCarouselItems, setNbEmptyCarouselItems] = useState(0);
   const [NftList, setNftList] = useState<NftItem[]>(emptyNftList);
@@ -57,6 +60,9 @@ export default function CollectionSlider() {
 
   useEffect(() => {
     async function getNftList() {
+      getName(contract)
+        .then((name: string) => setName(name))
+        .catch(() => setName('Unknown'));
       const _totalSupply = await getTotalSupply(contract).catch((e) => {
         console.log(e);
       });
@@ -158,7 +164,7 @@ export default function CollectionSlider() {
   return (
     <Box>
       <CardHeader
-        title="Collection #1"
+        title={name}
         subheader={`${totalSupply} NFTs`}
         action={
           <CarouselArrows
@@ -175,6 +181,21 @@ export default function CollectionSlider() {
           '& .MuiCardHeader-action': { alignSelf: 'center' }
         }}
       />
+
+      <Stack direction="row" spacing={2}>
+        <Button size="small" variant="contained" color="info" sx={{ px: 3 }}>
+          View all
+        </Button>
+        <Button
+          size="small"
+          variant="contained"
+          color="warning"
+          startIcon={<Iconify icon="teenyicons:contract-outline" />}
+          sx={{ px: 3 }}
+        >
+          Mint NFT
+        </Button>
+      </Stack>
 
       <Slider ref={carouselRef} {...settings}>
         {filteredNftList.map((nft) => (
