@@ -1,6 +1,5 @@
 import { Box, Button, CardHeader, Stack, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import Iconify from 'components/Iconify';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Slider from 'react-slick';
@@ -12,7 +11,7 @@ import {
   getTokenURI,
   getTotalSupply
 } from 'services/smartContract/evmCompatible';
-import { getRpcUrlByNetworkName } from 'utils/blockchainHandlers';
+import { getRpcUrlByChainId } from 'utils/blockchainHandlers';
 import { parseNftUri } from 'utils/tokenUriHandlers';
 import CarouselArrows from './CarouselArrows';
 import NftCard from './NftCard';
@@ -39,18 +38,19 @@ type NftItem = {
   owner?: string;
 };
 
-export default function CollectionSlider() {
+export default function CollectionSlider({
+  contractAddr,
+  chainId
+}: {
+  contractAddr: string;
+  chainId: number;
+}) {
   const theme = useTheme();
   const carouselRef = useRef<Slider | null>(null);
 
-  const contractAddr = '0x763A8A60bf6840a1cdb3d0E1A49893B143539bb9';
   const contract = useMemo(() => {
-    return connectContract(
-      contractAddr || '',
-      SIMPLIFIED_ERC721_ABI,
-      getRpcUrlByNetworkName('rinkeby' || '')
-    );
-  }, [contractAddr]);
+    return connectContract(contractAddr || '', SIMPLIFIED_ERC721_ABI, getRpcUrlByChainId(chainId));
+  }, [contractAddr, chainId]);
 
   const [name, setName] = useState('Getting name...');
   const [totalSupply, setTotalSupply] = useState(0);
@@ -176,23 +176,19 @@ export default function CollectionSlider() {
         }
         sx={{
           p: 0,
-          mt: 5,
           mb: 1,
           '& .MuiCardHeader-action': { alignSelf: 'center' }
         }}
       />
 
       <Stack direction="row" spacing={2}>
-        <Button size="small" variant="contained" color="info" sx={{ px: 3 }}>
-          View all
-        </Button>
-        <Button
-          size="small"
-          variant="contained"
-          color="warning"
-          startIcon={<Iconify icon="teenyicons:contract-outline" />}
-          sx={{ px: 3 }}
-        >
+        {totalSupply !== 0 && (
+          <Button size="small" variant="contained" color="info" sx={{ px: 3 }}>
+            View all
+          </Button>
+        )}
+
+        <Button size="small" variant="contained" color="warning" sx={{ px: 3 }}>
           Mint NFT
         </Button>
       </Stack>
