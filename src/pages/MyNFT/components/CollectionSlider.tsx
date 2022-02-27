@@ -25,7 +25,8 @@ const emptyNftList = new Array(NB_OF_NFT_PER_CAROUSEL).fill(null).map((_, index)
   imageUrl: '',
   name: '',
   nftContract: '',
-  owner: ''
+  owner: '',
+  chainName: ''
 }));
 
 type NftItem = {
@@ -36,6 +37,7 @@ type NftItem = {
   imageUrl: string;
   name: string;
   owner?: string;
+  chainName: string;
 };
 
 export default function CollectionSlider({
@@ -92,7 +94,8 @@ export default function CollectionSlider({
                 tokenURI: tokenUri,
                 imageUrl: parsedImageUrl,
                 name: data.name || '',
-                owner
+                owner,
+                chainName: getChainNameByChainId(chainId)
               };
               return [...prevList];
             });

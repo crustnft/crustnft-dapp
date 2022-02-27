@@ -19,7 +19,13 @@ export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   borderRadius: '3px'
 }));
 
-export default function NftCard({ tokenId, imageUrl, name, owner }: NftCardCollectionViewerProps) {
+export default function NftCard({
+  tokenId,
+  imageUrl,
+  name,
+  owner,
+  chainName
+}: NftCardCollectionViewerProps) {
   const theme = useTheme();
   const [loading, setLoading] = useState(true);
 
@@ -39,7 +45,7 @@ export default function NftCard({ tokenId, imageUrl, name, owner }: NftCardColle
       }}
     >
       <Box sx={{ p: 2, position: 'relative' }}>
-        <Link href={`#/assets/polygon/${contractAddress}/${tokenId}`}>
+        <Link href={`#/assets/${chainName.toLowerCase()}/${contractAddress}/${tokenId}`}>
           <Box sx={{ border: 1, borderRadius: '5px', borderColor: '#DFE3E8' }}>
             <Stack
               sx={{
@@ -89,7 +95,7 @@ export default function NftCard({ tokenId, imageUrl, name, owner }: NftCardColle
           <Link
             color="inherit"
             underline="none"
-            href={`#/assets/polygon/${contractAddress}/${tokenId}`}
+            href={`#/assets/${chainName.toLowerCase()}/${contractAddress}/${tokenId}`}
             sx={{ maxWidth: '70%' }}
           >
             <Typography variant="subtitle2" noWrap>
@@ -104,7 +110,7 @@ export default function NftCard({ tokenId, imageUrl, name, owner }: NftCardColle
             disableRipple
           >
             <Typography variant="caption" noWrap>
-              Polygon
+              {chainName}
             </Typography>
           </ColorButton>
         </Stack>
@@ -113,7 +119,7 @@ export default function NftCard({ tokenId, imageUrl, name, owner }: NftCardColle
           <Link
             color="inherit"
             underline="none"
-            href={`#/assets/polygon/${contractAddress}/${tokenId}`}
+            href={`#/assets/${chainName.toLowerCase()}/${contractAddress}/${tokenId}`}
           >
             <Stack direction="row" alignItems="center" spacing={0.5}>
               <Typography variant="caption" noWrap>

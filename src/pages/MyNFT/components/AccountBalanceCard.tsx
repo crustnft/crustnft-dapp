@@ -29,7 +29,7 @@ const CardItemStyle = styled('div')(({ theme }) => ({
 
 export default function AccountBalanceCard() {
   const theme = useTheme();
-  const { account, connectedChainId, provider, library } = useWeb3();
+  const { account, library } = useWeb3();
   const [showCurrency, setShowCurrency] = useState(true);
   const [balance, setBalance] = useState(0);
 
@@ -52,7 +52,9 @@ export default function AccountBalanceCard() {
         <CardItemStyle>
           <Stack direction="row" justifyContent="space-between">
             <Box>
-              <Typography sx={{ mb: 2, typography: 'subtitle2', opacity: 0.72 }}>
+              <Typography
+                sx={{ mb: 2, typography: 'subtitle2', opacity: 0.72, pointerEvents: 'none' }}
+              >
                 Token Balance
               </Typography>
               <Stack direction="row" alignItems="center" spacing={1}>
@@ -66,7 +68,9 @@ export default function AccountBalanceCard() {
             </Box>
 
             <Stack alignItems="flex-end">
-              <Typography sx={{ mb: 2, typography: 'subtitle2', opacity: 0.72 }}>
+              <Typography
+                sx={{ mb: 2, typography: 'subtitle2', opacity: 0.72, pointerEvents: 'none' }}
+              >
                 NFTs Balance
               </Typography>
               <Stack direction="row" alignItems="center" spacing={1}>
@@ -81,9 +85,12 @@ export default function AccountBalanceCard() {
 
           <Stack direction="row" spacing={5}>
             <Box>
-              <Typography sx={{ mb: 1, typography: 'caption', opacity: 0.48 }}>
-                Wallet Address
+              <Typography
+                sx={{ mb: 1, typography: 'caption', opacity: 0.48, pointerEvents: 'none' }}
+              >
+                {account ? 'Wallet Address' : 'Connect a wallet to see your NFTs'}
               </Typography>
+
               <Typography
                 sx={{ typography: 'subtitle1', textAlign: 'left', wordBreak: 'break-word' }}
               >
