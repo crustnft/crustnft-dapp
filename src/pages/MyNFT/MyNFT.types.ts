@@ -3,4 +3,5 @@ export type NftCardCollectionViewerProps = {
   imageUrl: string;
   name: string;
   owner?: string;
+  chainName: string;
 };

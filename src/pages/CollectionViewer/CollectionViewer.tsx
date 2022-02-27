@@ -1,4 +1,4 @@
-import { Box, Chip, Container, Grid, Pagination, Paper, Stack, Typography } from '@mui/material';
+import { Container, Grid, Pagination, Stack } from '@mui/material';
 import Identicons from '@nimiq/identicons';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -17,7 +17,7 @@ import Page from '../../components/Page';
 import { NB_NFT_PER_PAGE } from '../../configs/general';
 import { SIMPLIFIED_ERC721_ABI } from '../../constants/simplifiedERC721ABI';
 import NftCard from './components/NftCard';
-import ProfileCover, { ProfileCoverProps } from './components/ProfileCover';
+import { ProfileCoverProps } from './components/ProfileCover';
 Identicons.svgPath = './static/identicons.min.svg';
 
 const emptyNftList = new Array(NB_NFT_PER_PAGE).fill(null).map((_, index) => ({
@@ -65,11 +65,21 @@ export default function CollectionViewer() {
   };
 
   useEffect(() => {
-    getTotalSupply(contract).then((totalSupply) =>
-      setPageCount(Math.ceil(totalSupply / NB_NFT_PER_PAGE))
-    );
-    getName(contract).then((name) => setName(name));
-    getSymbol(contract).then((symbol) => setSymbol(symbol));
+    getTotalSupply(contract)
+      .then((totalSupply) => setPageCount(Math.ceil(totalSupply / NB_NFT_PER_PAGE)))
+      .catch((e) => {
+        console.log(e);
+      });
+    getName(contract)
+      .then((name) => setName(name))
+      .catch((e) => {
+        console.log(e);
+      });
+    getSymbol(contract)
+      .then((symbol) => setSymbol(symbol))
+      .catch((e) => {
+        console.log(e);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -79,6 +89,7 @@ export default function CollectionViewer() {
 
   useEffect(() => {
     async function getNftList() {
+      // FIXME: If NB_NFT_PER_PAGE > totalSupply then there will be error
       for (let i = 0; i < NB_NFT_PER_PAGE; i++) {
         const tokenId = (page - 1) * NB_NFT_PER_PAGE + i + 1;
         getTokenURI(contract, tokenId)
@@ -131,16 +142,16 @@ export default function CollectionViewer() {
   return (
     <Page title={`Collection - ${name}`}>
       <Container maxWidth="lg">
-        <Box
+        {/* <Box
           sx={{
             height: 280,
             position: 'relative'
           }}
         >
           <ProfileCover {...profileCover} />
-        </Box>
+        </Box> */}
 
-        <Box sx={{ height: 64 }} />
+        {/* <Box sx={{ height: 64 }} />
         <Stack alignItems="center">
           <Typography variant="h3" sx={{ mb: 3 }}>
             {name}
@@ -217,7 +228,7 @@ export default function CollectionViewer() {
               </Stack>
             </Paper>
           </Grid>
-        </Grid>
+        </Grid> */}
         <Grid container spacing={0}>
           {NftList.filter((nft) => !nft.failToLoad).map((nft) => (
             <Grid key={nft.key + '-' + nft.tokenId} item xs={12} sm={4} md={3}>

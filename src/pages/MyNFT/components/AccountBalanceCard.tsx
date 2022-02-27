@@ -2,7 +2,9 @@ import { Icon } from '@iconify/react';
 import { Box, IconButton, Stack, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import Iconify from 'components/Iconify';
-import { useState } from 'react';
+import { utils } from 'ethers';
+import useWeb3 from 'hooks/useWeb3';
+import { useEffect, useState } from 'react';
 const HEIGHT = 276;
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -27,11 +29,22 @@ const CardItemStyle = styled('div')(({ theme }) => ({
 
 export default function AccountBalanceCard() {
   const theme = useTheme();
+  const { account, library } = useWeb3();
   const [showCurrency, setShowCurrency] = useState(true);
+  const [balance, setBalance] = useState(0);
 
   const onToggleShowCurrency = () => {
     setShowCurrency((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (library && account) {
+      library.getBalance(account).then((_balance) => {
+        const _parsedBalance = Math.round(parseFloat(utils.formatEther(_balance)) * 10000) / 10000;
+        setBalance(_parsedBalance);
+      });
+    }
+  }, [library, account]);
 
   return (
     <RootStyle>
@@ -39,12 +52,14 @@ export default function AccountBalanceCard() {
         <CardItemStyle>
           <Stack direction="row" justifyContent="space-between">
             <Box>
-              <Typography sx={{ mb: 2, typography: 'subtitle2', opacity: 0.72 }}>
+              <Typography
+                sx={{ mb: 2, typography: 'subtitle2', opacity: 0.72, pointerEvents: 'none' }}
+              >
                 Token Balance
               </Typography>
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Typography sx={{ typography: 'h3' }}>
-                  {showCurrency ? `\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7` : '12345 RIN'}
+                  {showCurrency ? `\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7` : balance + ' RIN'}
                 </Typography>
                 <IconButton color="inherit" onClick={onToggleShowCurrency} sx={{ opacity: 0.48 }}>
                   <Iconify icon={showCurrency ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
@@ -53,7 +68,9 @@ export default function AccountBalanceCard() {
             </Box>
 
             <Stack alignItems="flex-end">
-              <Typography sx={{ mb: 2, typography: 'subtitle2', opacity: 0.72 }}>
+              <Typography
+                sx={{ mb: 2, typography: 'subtitle2', opacity: 0.72, pointerEvents: 'none' }}
+              >
                 NFTs Balance
               </Typography>
               <Stack direction="row" alignItems="center" spacing={1}>
@@ -67,14 +84,19 @@ export default function AccountBalanceCard() {
           </Stack>
 
           <Stack direction="row" spacing={5}>
-            <div>
-              <Typography sx={{ mb: 1, typography: 'caption', opacity: 0.48 }}>
-                Wallet Address
+            <Box>
+              <Typography
+                sx={{ mb: 1, typography: 'caption', opacity: 0.48, pointerEvents: 'none' }}
+              >
+                {account ? 'Wallet Address' : 'Connect a wallet to see your NFTs'}
               </Typography>
-              <Typography sx={{ typography: 'subtitle1', textAlign: 'right' }}>
-                0x1234234237482749732947237498327
+
+              <Typography
+                sx={{ typography: 'subtitle1', textAlign: 'left', wordBreak: 'break-word' }}
+              >
+                {account}
               </Typography>
-            </div>
+            </Box>
           </Stack>
         </CardItemStyle>
       </Box>

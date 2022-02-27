@@ -1,4 +1,4 @@
-import { Box, Button, CardHeader, Stack, useMediaQuery } from '@mui/material';
+import { Box, Button, CardHeader, Link, Stack, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -11,7 +11,7 @@ import {
   getTokenURI,
   getTotalSupply
 } from 'services/smartContract/evmCompatible';
-import { getRpcUrlByChainId } from 'utils/blockchainHandlers';
+import { getChainNameByChainId, getRpcUrlByChainId } from 'utils/blockchainHandlers';
 import { parseNftUri } from 'utils/tokenUriHandlers';
 import CarouselArrows from './CarouselArrows';
 import NftCard from './NftCard';
@@ -25,7 +25,8 @@ const emptyNftList = new Array(NB_OF_NFT_PER_CAROUSEL).fill(null).map((_, index)
   imageUrl: '',
   name: '',
   nftContract: '',
-  owner: ''
+  owner: '',
+  chainName: ''
 }));
 
 type NftItem = {
@@ -36,6 +37,7 @@ type NftItem = {
   imageUrl: string;
   name: string;
   owner?: string;
+  chainName: string;
 };
 
 export default function CollectionSlider({
@@ -53,10 +55,15 @@ export default function CollectionSlider({
   }, [contractAddr, chainId]);
 
   const [name, setName] = useState('Getting name...');
+  const [chainName, setChainName] = useState('');
   const [totalSupply, setTotalSupply] = useState(0);
   const [nbEmptyCarouselItems, setNbEmptyCarouselItems] = useState(0);
   const [NftList, setNftList] = useState<NftItem[]>(emptyNftList);
   const [filteredNftList, setFilteredNftList] = useState<NftItem[]>([]);
+
+  useEffect(() => {
+    setChainName(getChainNameByChainId(chainId).toLowerCase());
+  }, [chainId]);
 
   useEffect(() => {
     async function getNftList() {
@@ -87,7 +94,8 @@ export default function CollectionSlider({
                 tokenURI: tokenUri,
                 imageUrl: parsedImageUrl,
                 name: data.name || '',
-                owner
+                owner,
+                chainName: getChainNameByChainId(chainId)
               };
               return [...prevList];
             });
@@ -183,14 +191,18 @@ export default function CollectionSlider({
 
       <Stack direction="row" spacing={2}>
         {totalSupply !== 0 && (
-          <Button size="small" variant="contained" color="info" sx={{ px: 3 }}>
-            View all
-          </Button>
+          <Link href={`#/collection/${chainName}/${contractAddr}/1`}>
+            <Button size="small" variant="contained" color="info" sx={{ px: 3 }}>
+              View all
+            </Button>
+          </Link>
         )}
 
-        <Button size="small" variant="contained" color="warning" sx={{ px: 3 }}>
-          Mint NFT
-        </Button>
+        <Link href={`#/mint-nft/${chainName}/${contractAddr}`}>
+          <Button size="small" variant="contained" color="warning" sx={{ px: 3 }}>
+            Mint NFT
+          </Button>
+        </Link>
       </Stack>
 
       <Slider ref={carouselRef} {...settings}>

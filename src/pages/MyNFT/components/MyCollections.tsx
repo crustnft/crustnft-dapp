@@ -1,4 +1,4 @@
-import { Link, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { getContractsByAccount } from 'clients/crustnft-explore-api';
 import Iconify from 'components/Iconify';
@@ -37,11 +37,16 @@ export default function MyCollections() {
             COLLECTIONS CREATED ON CRUSTNFT
           </Typography>
 
-          <Link underline="none" href="#/collection-explore" target="_blank" rel="noopener">
+          {account && (
             <Typography sx={{ color: '#919EAB' }}>
               You have {nbOfContractCreated} collection{nbOfContractCreated > 1 ? 's' : ''}
             </Typography>
-          </Link>
+          )}
+          {!account && (
+            <Typography sx={{ color: '#919EAB' }}>
+              You have to connect to a wallet to see your collections.
+            </Typography>
+          )}
         </Stack>
       </Stack>
       {collections.map((collection: any) => (

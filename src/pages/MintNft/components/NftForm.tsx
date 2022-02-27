@@ -1,13 +1,15 @@
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
-import { Box, Button, Card, Grid, Stack, Typography } from '@mui/material';
+import { Alert, Box, Button, Card, Grid, Stack, Typography } from '@mui/material';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
+import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
 import { create } from 'ipfs-http-client';
 import { useSnackbar } from 'notistack';
-import { createContext, useCallback, useState } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { connectRWContract } from 'services/smartContract/evmCompatible';
 import * as Yup from 'yup';
 import { FormProvider, RHFUploadNftCard } from '../../../components/hook-form';
@@ -74,10 +76,13 @@ type FormValues = {
 };
 
 export default function NftForm() {
+  const { chain, contractAddr } = useParams();
+
   const { enqueueSnackbar } = useSnackbar();
+  const { chain: selectedChain } = useWallet();
+  const [isNetworkCorrect, setIsNetworkCorrect] = useState(true);
 
   const { account, library, onboard } = useWeb3();
-
   const [mintingState, setMintingState] = useState<'notstarted' | 'success' | 'error'>(
     'notstarted'
   );
@@ -139,6 +144,14 @@ export default function NftForm() {
 
   const authHeader =
     'cG9sLTB4QTIyOGNGYWI4MEE2NzM4NTIyNDc2RGVDMTFkNzkzZDYxMjk5NjhiMjoweGU2ZDA1NDIzYTcxY2YzNjdjNWNhZmQwNzRmOWZjODAyMWUwMmEzZDA4MGViZTMyY2VhNDA0MjkwZTgxOWM5YTExMDUxMjNhZDJjZWM2ZjQ1Y2NiZWRmOTYyYjc5NzA4YWRiYjMwNTcxMGEzZWIzYjMzOWM3MzFmNTc1NGM4NWY1MWM=';
+
+  useEffect(() => {
+    if (selectedChain?.name?.toLowerCase() === chain?.toLowerCase()) {
+      setIsNetworkCorrect(true);
+    } else {
+      setIsNetworkCorrect(false);
+    }
+  }, [selectedChain, chain]);
 
   function uploadFileToW3AuthGateway(
     ipfsGateway: string,
@@ -261,13 +274,9 @@ export default function NftForm() {
             const signer = library?.getSigner(account);
             console.log('compare signer');
             if (signer) {
-              const contract = connectRWContract(
-                '0x763A8A60bf6840a1cdb3d0E1A49893B143539bb9',
-                SIMPLIFIED_ERC721_ABI,
-                signer
-              );
+              const contract = connectRWContract(contractAddr || '', SIMPLIFIED_ERC721_ABI, signer);
               console.log('mint');
-              const tx: TransactionResponse = await contract.mint(`ipfs://${metadataCid}`);
+              const tx: TransactionResponse = await contract.mint(`ipfs://${newMetadataCid}`);
               setTxHash(tx.hash);
               const txReceipt: TransactionReceipt = await tx.wait(1);
               setTxHash(txReceipt.transactionHash);
@@ -307,6 +316,15 @@ export default function NftForm() {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
+        {!isNetworkCorrect && (
+          <Grid item xs={12}>
+            <Alert severity="warning">
+              You are selecting {selectedChain.name} but the smart contract is generated on {chain},
+              you have to change your wallet to the correct network.
+            </Alert>
+          </Grid>
+        )}
+
         <Grid item xs={12} md={4}>
           <Card sx={{ py: 2, px: 2 }}>
             <Box sx={{ mb: 5 }}>

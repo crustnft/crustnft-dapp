@@ -1,4 +1,4 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Link, Stack, Typography } from '@mui/material';
 // material
 import { styled } from '@mui/material/styles';
 // import Trianglify from 'trianglify';
@@ -46,13 +46,6 @@ export default function CallAction() {
         <Trianglify height={276} width={900} cellSize={40} />
       </Box>
       <RootStyle>
-        {/* <DocIllustration
-        sx={{
-          p: 3,
-          width: 360,
-          margin: { xs: 'auto', md: 'inherit' }
-        }}
-      /> */}
         <Box
           component="img"
           sx={{
@@ -84,12 +77,14 @@ export default function CallAction() {
             </Typography>
 
             <Stack direction="row">
-              <Button
-                variant="contained"
-                sx={{ borderRadius: '20px', boxShadow: '0 5px 15px rgba(0,0,0,0.5)' }}
-              >
-                Create Collection
-              </Button>
+              <Link href="#/create-collection" target="_blank">
+                <Button
+                  variant="contained"
+                  sx={{ borderRadius: '20px', boxShadow: '0 5px 15px rgba(0,0,0,0.5)' }}
+                >
+                  Create Collection
+                </Button>
+              </Link>
             </Stack>
           </Stack>
         </Stack>

@@ -14,3 +14,8 @@ export function getRpcUrlByChainId(chainId: number): string {
 export function getChainByChainId(chainId: number): Chain | undefined {
   return SUPPORTED_CHAINS.find((c) => c.chainId === chainId);
 }
+
+export function getChainNameByChainId(chainId: number): string {
+  const chainObj = getChainByChainId(chainId);
+  return chainObj?.name || '';
+}
