@@ -22,6 +22,7 @@ export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 export default function NftCard({ tokenId, imageUrl, name, owner }: NftCardCollectionViewerProps) {
   const theme = useTheme();
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     setLoading(true);
   }, [imageUrl]);
@@ -73,7 +74,7 @@ export default function NftCard({ tokenId, imageUrl, name, owner }: NftCardColle
                   width: '100%',
                   height: '100%',
                   objectFit: 'contain',
-                  display: loading ? 'none !important' : 'block',
+                  display: loading ? 'none !important' : 'block !important',
                   position: 'absolute',
                   borderRadius: '5px'
                 }}
