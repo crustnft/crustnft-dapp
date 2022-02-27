@@ -9,11 +9,13 @@ import CollectionSlider from './CollectionSlider';
 export default function MyCollections() {
   const { account } = useWeb3();
   const [collections, setCollections] = useState([]);
+  const [nbOfContractCreated, setNbOfContractCreated] = useState(0);
 
   useEffect(() => {
     if (account) {
       getContractsByAccount(10, account.toLowerCase()).then((res) => {
         setCollections(res.data?.data);
+        setNbOfContractCreated(res.data?.data?.length || 0);
       });
     }
   }, [account]);
@@ -36,7 +38,9 @@ export default function MyCollections() {
           </Typography>
 
           <Link underline="none" href="#/collection-explore" target="_blank" rel="noopener">
-            <Typography sx={{ color: '#919EAB' }}>Explore all</Typography>
+            <Typography sx={{ color: '#919EAB' }}>
+              You have {nbOfContractCreated} collection{nbOfContractCreated > 1 ? 's' : ''}
+            </Typography>
           </Link>
         </Stack>
       </Stack>
