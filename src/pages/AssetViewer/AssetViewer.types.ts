@@ -11,6 +11,7 @@ export type AssetAndOwnerType = {
   metadataId: string;
   externalUrl: string;
   attributes: any;
+  chain: string;
 };
 
 export type PropertyProps = {

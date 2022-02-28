@@ -1,19 +1,29 @@
 import {
-  Card,
-  Typography,
-  CardHeader,
-  Stack,
-  ButtonBase,
   Box,
+  ButtonBase,
+  Card,
+  CardHeader,
+  IconButton,
+  Stack,
   Tooltip,
-  IconButton
+  Typography
 } from '@mui/material';
-
-import { AssetAndOwnerType } from '../AssetViewer.types';
+import { Chain } from 'interfaces/chain';
+import { useEffect, useState } from 'react';
+import { getChainByNetworkName } from 'utils/blockchainHandlers';
 import { shortenAddress } from 'utils/formatAddress';
 import useLocales from '../../../hooks/useLocales';
+import { AssetAndOwnerType } from '../AssetViewer.types';
 export default function AssetDetails({ assetAndOwner }: { assetAndOwner: AssetAndOwnerType }) {
   const { translate } = useLocales();
+  const [chain, setChain] = useState<Chain | undefined>(undefined);
+  useEffect(() => {
+    if (assetAndOwner.chain) {
+      const chainObj = getChainByNetworkName(assetAndOwner.chain);
+      setChain(chainObj);
+    }
+  }, [assetAndOwner]);
+
   return (
     <Card>
       <CardHeader title="Asset Details" />
@@ -40,21 +50,23 @@ export default function AssetDetails({ assetAndOwner }: { assetAndOwner: AssetAn
         </Stack>
         <Stack direction="row" justifyContent="space-between">
           <Typography variant="body2">{translate(`assetDetail.network`)}</Typography>
-          <Typography variant="body2">Polygon</Typography>
+          <Typography variant="body2">{chain?.name || ''}</Typography>
         </Stack>
       </Stack>
       <Box sx={{ textAlign: 'center', mb: 2 }}>
         <Tooltip title="Transaction History">
           <IconButton
-            href={`https://polygonscan.com/token/${assetAndOwner.contractAddress}?a=${assetAndOwner.tokenId}`}
+            href={`${chain?.blockExplorerUrl || ''}/token/${assetAndOwner.contractAddress}?a=${
+              assetAndOwner.tokenId
+            }`}
             target="_blank"
           >
-            <Box component="img" src="./static/icons/shared/polygon.svg" sx={{ height: 24 }} />
+            <Box component="img" src={chain?.icon || ''} sx={{ height: 24 }} />
           </IconButton>
         </Tooltip>
         <Tooltip title="Opensea Viewer">
           <IconButton
-            href={`https://opensea.io/assets/matic/${assetAndOwner.contractAddress}/${assetAndOwner.tokenId}`}
+            href={`https://testnets.opensea.io/assets/${assetAndOwner.contractAddress}/${assetAndOwner.tokenId}`}
             target="_blank"
           >
             <Box component="img" src="./static/icons/shared/opensea.svg" sx={{ height: 24 }} />

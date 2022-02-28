@@ -4,7 +4,6 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 // import ProfileSocialInfo from './ProfileSocialInfo';
 import { AssetAndOwnerType } from '../AssetViewer.types';
-import AboutOwner from './AboutOwner';
 import AssetAttributes from './AssetAttributes';
 import AssetCard from './AssetCard';
 //
@@ -26,7 +25,6 @@ export default function Asset({ assetAndOwner }: { assetAndOwner: AssetAndOwnerT
       <Grid item xs={12} md={6}>
         <Stack spacing={3}>
           <AssetAttributes assetAndOwner={assetAndOwner} />
-          <AboutOwner assetAndOwner={assetAndOwner} />
         </Stack>
       </Grid>
     </Grid>

@@ -22,6 +22,7 @@ const initAssetAndOwner: AssetAndOwnerType = {
   contractAddress: '',
   externalUrl: '',
   attributes: [],
+  chain: '',
 
   ownerIcon: '',
   contentId: '',
@@ -61,7 +62,8 @@ export default function AssetViewer() {
           name: data?.name || '',
           description: data?.description || '',
           contractAddress: contractAddr || '',
-          tokenId: tokenId || ''
+          tokenId: tokenId || '',
+          chain: chain || ''
         }));
       });
     }
