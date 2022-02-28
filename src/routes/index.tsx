@@ -47,6 +47,7 @@ export default function Router() {
         { path: 'collection-explore', element: <CollectionsExplorer /> },
         { path: 'collection/:chain/:contractAddr/:pageNb', element: <CollectionViewer /> },
         { path: 'projects-dashboard', element: <CPProjectsDashboard /> },
+        { path: 'project-details', element: <CPProjectDetails /> },
         {
           path: 'faucets',
           children: [
@@ -103,6 +104,7 @@ const MyNFT = LoadWithoutSpinner(lazy(() => import('../pages/MyNFT')));
 const CollectionViewer = LoadWithoutSpinner(lazy(() => import('../pages/CollectionViewer')));
 const MintNft = LoadWithoutSpinner(lazy(() => import('../pages/MintNft')));
 const CPProjectsDashboard = LoadWithoutSpinner(lazy(() => import('../pages/CPProjectsDashboard')));
+const CPProjectDetails = LoadWithoutSpinner(lazy(() => import('../pages/CPProjectDetails')));
 
 // const Universe = lazy(() => import('../pages/Universe'));
 // const NftMinting = lazy(() => import('../pages/NftMinting'));
