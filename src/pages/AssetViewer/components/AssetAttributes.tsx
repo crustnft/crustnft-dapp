@@ -1,7 +1,13 @@
 import { Box, Card, Grid, Stack, Typography } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Iconify from '../../../components/Iconify';
-import { AssetAndOwnerType } from '../AssetViewer.types';
+import {
+  AssetAndOwnerType,
+  BoostProps,
+  LevelProps,
+  PropertyProps,
+  StatProps
+} from '../AssetViewer.types';
 import Property from './/Property';
 import CircularBoost from './CircularBoost';
 import LevelProgress from './LevelProgress';
@@ -14,6 +20,10 @@ type AssetAttributesProps = {
 };
 
 export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps) {
+  const [properties, setProperties] = useState<PropertyProps[]>([]);
+  const [levels, setLevels] = useState<LevelProps[]>([]);
+  const [stats, setStats] = useState<StatProps[]>([]);
+  const [boosts, setBoosts] = useState<BoostProps[]>([]);
   useEffect(() => {
     if (assetAndOwner.attributes.length) {
       for (let i = 0; i < assetAndOwner.attributes.length; i++) {
@@ -22,15 +32,59 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
           assetAndOwner.attributes[i].hasOwnProperty('value')
         ) {
           if (typeof assetAndOwner.attributes[i].trait_type === 'string') {
+            if (typeof assetAndOwner.attributes[i].value === 'string') {
+              console.log('set properties');
+              setProperties((prev) => [
+                ...prev,
+                {
+                  propType: assetAndOwner.attributes[i].trait_type as string,
+                  name: assetAndOwner.attributes[i].value as string
+                }
+              ]);
+            } else if (typeof assetAndOwner.attributes[i].value === 'number') {
+              if (assetAndOwner.attributes[i].hasOwnProperty('display_type')) {
+                switch (assetAndOwner.attributes[i].display_type) {
+                  case 'number':
+                    setStats((prev) => [
+                      ...prev,
+                      {
+                        statType: assetAndOwner.attributes[i].trait_type as string,
+                        value: assetAndOwner.attributes[i].value as number,
+                        max: assetAndOwner.attributes[i].value as number
+                      }
+                    ]);
+                    break;
+                  case 'boost_percentage':
+                  case 'boost_number':
+                    setBoosts((prev) => [
+                      ...prev,
+                      {
+                        boostType: assetAndOwner.attributes[i].trait_type as string,
+                        displayType: assetAndOwner.attributes[i].display_type,
+                        value: assetAndOwner.attributes[i].value as number
+                      }
+                    ]);
+                    break;
+                  default:
+                    break;
+                }
+              } else {
+                setLevels((prev) => [
+                  ...prev,
+                  {
+                    levelType: assetAndOwner.attributes[i].trait_type as string,
+                    value: assetAndOwner.attributes[i].value as number,
+                    max: assetAndOwner.attributes[i].value as number
+                  }
+                ]);
+              }
+            }
           }
         }
       }
     }
   }, [assetAndOwner.attributes]);
-  const properties: any = [];
-  const boosts: any = [];
-  const stats: any = [];
-  const levels: any = [];
+
   return (
     <Card sx={{ p: 3 }}>
       <Stack spacing={2}>
@@ -58,7 +112,7 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
             <Stack sx={{ mt: 1 }}>
               <Grid container spacing={2}>
                 {properties.map((property: any, index: any) => (
-                  <Grid key={index} item xs={6} sm={4} md={3}>
+                  <Grid key={index} item xs={6} sm={4}>
                     <Property {...property} />
                   </Grid>
                 ))}
