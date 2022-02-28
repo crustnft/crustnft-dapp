@@ -44,18 +44,18 @@ export default function ProjectCard() {
               icon={'eva:trash-2-outline'}
               sx={{ width: 20, height: 20, flexShrink: 0, mr: 1 }}
             />
-            Delete section
+            Delete Project
           </MenuItem>
 
           <MenuItem>
             <Iconify icon={'eva:edit-fill'} sx={{ width: 20, height: 20, flexShrink: 0, mr: 1 }} />
-            Rename section
+            Something else
           </MenuItem>
         </MenuPopover>
       </Box>
 
       <Divider />
-      <Stack sx={{ px: 2, py: 1 }} spacing={1}>
+      <Stack sx={{ px: 2, py: 1 }} spacing={0.5}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="caption" noWrap>
             Uploaded Photos
