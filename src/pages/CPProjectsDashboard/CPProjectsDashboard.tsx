@@ -1,11 +1,14 @@
 import { Avatar, Container, Grid, Stack, Typography } from '@mui/material';
 import Iconify from 'components/Iconify';
 import Page from '../../components/Page';
+import Introduction from './components/Introduction';
 import ProjectCard from './components/ProjectCard';
+
 export default function CPProjectsDashboard() {
   return (
     <Page title="Crypto Punks Projects">
       <Container maxWidth="lg">
+        <Introduction />
         <Stack direction="row" alignItems="center" spacing={2}>
           <Stack>
             <Avatar>
