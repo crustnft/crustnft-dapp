@@ -22,14 +22,27 @@ const sidebarConfig = [
   {
     subheader: 'DAPP',
     items: [
-      { title: 'Home', path: PATH_DASHBOARD.app.homepage, icon: ICONS.home },
+      { title: 'Wallet', path: PATH_DASHBOARD.app.homepage, icon: ICONS.home },
       {
         title: 'Collections Explore',
         path: PATH_DASHBOARD.app.collectionExplore,
         icon: ICONS.gallery
       },
-      { title: 'My NFTs', path: PATH_DASHBOARD.app.myNFT, icon: ICONS.nftManager },
-      { title: 'Faucets', path: PATH_DASHBOARD.app.faucets, icon: ICONS.faucets }
+      {
+        title: 'Create Collection',
+        icon: ICONS.faucets,
+        path: PATH_DASHBOARD.createCollection.expandableCollection,
+        children: [
+          {
+            title: 'Expandable Collection',
+            path: PATH_DASHBOARD.createCollection.expandableCollection
+          },
+          {
+            title: 'Sharing Collection',
+            path: PATH_DASHBOARD.createCollection.expandableCollection
+          }
+        ]
+      }
     ]
   },
   {

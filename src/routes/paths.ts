@@ -11,10 +11,13 @@ const ROOTS_DASHBOARD = '';
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
   app: {
-    homepage: path(ROOTS_DASHBOARD, '/home'),
+    homepage: path(ROOTS_DASHBOARD, '/wallet'),
     myNFT: path(ROOTS_DASHBOARD, '/my-nft'),
-    faucets: path(ROOTS_DASHBOARD, '/faucets'),
+    createCollection: path(ROOTS_DASHBOARD, '/create-collection'),
     collectionExplore: path(ROOTS_DASHBOARD, '/collection-explore')
+  },
+  createCollection: {
+    expandableCollection: path(ROOTS_DASHBOARD, '/create-collection')
   },
   gallery: {
     root: path(ROOTS_DASHBOARD, '/gallery'),
