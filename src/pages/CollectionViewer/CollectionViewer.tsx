@@ -26,8 +26,9 @@ const emptyNftList = new Array(NB_NFT_PER_PAGE).fill(null).map((_, index) => ({
   tokenId: '',
   imageUrl: '',
   name: '',
-  nftContract: '',
-  owner: ''
+  owner: '',
+  contractAddr: '',
+  chain: ''
 }));
 
 export default function CollectionViewer() {
@@ -55,6 +56,8 @@ export default function CollectionViewer() {
       imageUrl: string;
       name: string;
       owner?: string;
+      contractAddr: string;
+      chain: string;
     }[]
   >(emptyNftList);
 
@@ -106,7 +109,9 @@ export default function CollectionViewer() {
                 tokenURI: tokenUri,
                 imageUrl: parsedImageUrl,
                 name: data.name || '',
-                owner
+                owner,
+                contractAddr: contractAddr || '',
+                chain: chain || ''
               };
               return [...prevList];
             });

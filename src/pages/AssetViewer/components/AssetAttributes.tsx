@@ -21,7 +21,8 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
           assetAndOwner.attributes[i].hasOwnProperty('trait_type') &&
           assetAndOwner.attributes[i].hasOwnProperty('value')
         ) {
-          console.log(typeof assetAndOwner.attributes[i].trait_type);
+          if (typeof assetAndOwner.attributes[i].trait_type === 'string') {
+          }
         }
       }
     }
