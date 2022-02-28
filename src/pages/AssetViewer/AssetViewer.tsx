@@ -14,13 +14,16 @@ import { Asset } from './components';
 Identicons.svgPath = './static/identicons.min.svg';
 
 const initAssetAndOwner: AssetAndOwnerType = {
-  ownerAddress: '',
-  contractAddress: '',
   tokenId: '',
-  ownerIcon: '',
-  imageUrl: '',
   name: '',
   description: '',
+  imageUrl: '',
+  ownerAddress: '',
+  contractAddress: '',
+  externalUrl: '',
+  attributes: [],
+
+  ownerIcon: '',
   contentId: '',
   nftCardId: '',
   metadataId: ''
@@ -48,10 +51,13 @@ export default function AssetViewer() {
         const data = await getDataFromTokenUri(parsedTokenUri);
         const ownerAddress = await getOwner(contract, parseInt(tokenId));
         const parsedImageUrl = parseNftUri(data.image || '');
+        console.log(data);
         setAssetAndOwner((prevState) => ({
           ...prevState,
           imageUrl: parsedImageUrl,
           ownerAddress,
+          externalUrl: data?.external_url || '',
+          attributes: data?.attributes || [],
           name: data?.name || '',
           description: data?.description || '',
           contractAddress: contractAddr || '',

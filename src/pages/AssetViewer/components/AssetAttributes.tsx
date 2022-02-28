@@ -1,5 +1,7 @@
 import { Box, Card, Grid, Stack, Typography } from '@mui/material';
+import { useEffect } from 'react';
 import Iconify from '../../../components/Iconify';
+import { AssetAndOwnerType } from '../AssetViewer.types';
 import Property from './/Property';
 import CircularBoost from './CircularBoost';
 import LevelProgress from './LevelProgress';
@@ -7,7 +9,23 @@ import StatNumber from './StatNumber';
 
 const ipfsGateway = 'https://gw.crustapps.net';
 
-export default function AssetAttributes() {
+type AssetAttributesProps = {
+  assetAndOwner: AssetAndOwnerType;
+};
+
+export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps) {
+  useEffect(() => {
+    if (assetAndOwner.attributes.length) {
+      for (let i = 0; i < assetAndOwner.attributes.length; i++) {
+        if (
+          assetAndOwner.attributes[i].hasOwnProperty('trait_type') &&
+          assetAndOwner.attributes[i].hasOwnProperty('value')
+        ) {
+          console.log(typeof assetAndOwner.attributes[i].trait_type);
+        }
+      }
+    }
+  }, [assetAndOwner.attributes]);
   const properties: any = [];
   const boosts: any = [];
   const stats: any = [];

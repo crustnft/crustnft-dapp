@@ -9,6 +9,8 @@ export type AssetAndOwnerType = {
   contentId: string;
   nftCardId: string;
   metadataId: string;
+  externalUrl: string;
+  attributes: any;
 };
 
 export type PropertyProps = {
