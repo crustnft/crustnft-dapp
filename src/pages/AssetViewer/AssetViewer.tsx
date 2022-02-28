@@ -1,104 +1,74 @@
-import { useEffect, useState } from 'react';
 import { Box, Container } from '@mui/material';
-import { useParams } from 'react-router-dom';
-import Page from '../../components/Page';
-import { Asset } from './components';
 import Identicons from '@nimiq/identicons';
-import { IPFS_GATEWAY_FOR_FETCHING_DATA, POLYGON_RPC } from '../../constants/COMMON_VARIABLES';
-import { contractAddress } from '../../utils/contractAddress';
-import { ethers } from 'ethers';
-import { ABI } from 'utils/abi';
-import axios from 'axios';
-import { ipfsUriToCid } from '../../utils/gallery/ipfsUriToCid';
+import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
+import { useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getDataFromTokenUri } from 'services/http';
+import { connectContract, getOwner, getTokenURI } from 'services/smartContract/evmCompatible';
+import { getRpcUrlByNetworkName } from 'utils/blockchainHandlers';
+import { parseNftUri } from 'utils/tokenUriHandlers';
+import Page from '../../components/Page';
 import type { AssetAndOwnerType } from './AssetViewer.types';
+import { Asset } from './components';
 
 Identicons.svgPath = './static/identicons.min.svg';
 
 const initAssetAndOwner: AssetAndOwnerType = {
-  ownerAddress: '',
-  contractAddress: '',
   tokenId: '',
-  ownerIcon: '',
-  balance: '0',
-  imageUrl: '',
   name: '',
   description: '',
+  imageUrl: '',
+  ownerAddress: '',
+  contractAddress: '',
+  externalUrl: '',
+  attributes: [],
+  chain: '',
+
+  ownerIcon: '',
   contentId: '',
   nftCardId: '',
   metadataId: ''
 };
 
 export default function AssetViewer() {
-  let networkRPC = '';
+  const { chain, contractAddr, tokenId } = useParams();
 
-  const { network, contract, tokenId } = useParams();
-  switch (network) {
-    case 'polygon':
-      networkRPC = POLYGON_RPC[0];
-      break;
-    default:
-      networkRPC = '0';
-  }
+  const contract = useMemo(() => {
+    return connectContract(
+      contractAddr || '',
+      SIMPLIFIED_ERC721_ABI,
+      getRpcUrlByNetworkName(chain || '')
+    );
+  }, [contractAddr, chain]);
 
   const [assetAndOwner, setAssetAndOwner] = useState<AssetAndOwnerType>(initAssetAndOwner);
 
   useEffect(() => {
     async function fetchData() {
-      const provider = new ethers.providers.JsonRpcProvider(networkRPC);
-      const contractEthersJs = new ethers.Contract(contractAddress, ABI, provider);
+      if (!tokenId) return;
 
-      const ownerOfNFT = await contractEthersJs.ownerOf(tokenId);
-      const balanceOfOwner = (await contractEthersJs.balanceOf(ownerOfNFT)).toString();
-      const tokenURI = await contractEthersJs.tokenURI(tokenId);
-
-      contractEthersJs.getDataIdOnchain(tokenId).then((contentId: string) => {
-        setAssetAndOwner((assetAndOwner) => ({
-          ...assetAndOwner,
-          contentId: ipfsUriToCid(contentId) || ''
-        }));
-      });
-
-      const tokenURICid = ipfsUriToCid(tokenURI);
-
-      Identicons.toDataUrl(ownerOfNFT).then((img: string) => {
-        setAssetAndOwner((assetAndOwner) => ({
-          ...assetAndOwner,
-          ownerIcon: img,
-          balance: balanceOfOwner,
-          ownerAddress: ownerOfNFT,
+      getTokenURI(contract, parseInt(tokenId)).then(async (tokenUri) => {
+        const parsedTokenUri = parseNftUri(tokenUri);
+        const data = await getDataFromTokenUri(parsedTokenUri);
+        const ownerAddress = await getOwner(contract, parseInt(tokenId));
+        const parsedImageUrl = parseNftUri(data.image || '');
+        console.log(data);
+        setAssetAndOwner((prevState) => ({
+          ...prevState,
+          imageUrl: parsedImageUrl,
+          ownerAddress,
+          externalUrl: data?.external_url || '',
+          attributes: data?.attributes || [],
+          name: data?.name || '',
+          description: data?.description || '',
+          contractAddress: contractAddr || '',
           tokenId: tokenId || '',
-          contractAddress
+          chain: chain || ''
         }));
       });
-
-      if (tokenURICid) {
-        setAssetAndOwner((assetAndOwner) => ({
-          ...assetAndOwner,
-          metadataId: tokenURICid
-        }));
-
-        const tokenURIHttp = `${IPFS_GATEWAY_FOR_FETCHING_DATA[0]}/${tokenURICid}`;
-        axios.get(tokenURIHttp).then((response) => {
-          const name = response.data.name || '';
-          const description = response.data.description || '';
-
-          if (response.data && response.data.image) {
-            const imageCid = ipfsUriToCid(response.data.image);
-            if (imageCid) {
-              const imageUrl = `${IPFS_GATEWAY_FOR_FETCHING_DATA[0]}/${imageCid}`;
-              setAssetAndOwner((assetAndOwner) => ({
-                ...assetAndOwner,
-                imageUrl,
-                name,
-                description,
-                nftCardId: imageCid
-              }));
-            }
-          }
-        });
-      }
     }
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

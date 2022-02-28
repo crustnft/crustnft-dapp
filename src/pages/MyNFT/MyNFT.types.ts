@@ -4,4 +4,5 @@ export type NftCardCollectionViewerProps = {
   name: string;
   owner?: string;
   chainName: string;
+  contractAddr: string;
 };

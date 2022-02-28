@@ -6,6 +6,11 @@ export function getRpcUrlByNetworkName(chain: string): string {
   return chainObj?.rpcUrl || '';
 }
 
+export function getChainByNetworkName(chain: string): Chain | undefined {
+  const chainObj = SUPPORTED_CHAINS.find((c) => c.name.toLowerCase() === chain.toLowerCase());
+  return chainObj || undefined;
+}
+
 export function getRpcUrlByChainId(chainId: number): string {
   const chainObj = SUPPORTED_CHAINS.find((c) => c.chainId === chainId);
   return chainObj?.rpcUrl || '';

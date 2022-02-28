@@ -23,7 +23,11 @@
     "Learn More": "Learn More",
     "Faucets": "Faucets",
     "Collections Explore": "Collections Explore",
-    "My NFTs": "My NFTs"
+    "My NFTs": "My NFTs",
+    "Wallet": "Wallet",
+    "Create Collection": "Create Collection",
+    "Expandable Collection": "Expandable Collection",
+    "Sharing Collection": "Sharing Collection"
   },
   "landingPage": {
     "title": "The starting point for your next project"

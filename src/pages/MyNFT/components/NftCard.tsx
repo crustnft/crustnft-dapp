@@ -3,7 +3,6 @@ import Button, { ButtonProps } from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import { BallClipRotateMultiple } from 'react-pure-loaders';
-import { contractAddress } from 'utils/contractAddress';
 import type { NftCardCollectionViewerProps } from '../MyNFT.types';
 
 // To be moved to its place
@@ -24,7 +23,8 @@ export default function NftCard({
   imageUrl,
   name,
   owner,
-  chainName
+  chainName,
+  contractAddr
 }: NftCardCollectionViewerProps) {
   const theme = useTheme();
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,7 @@ export default function NftCard({
       }}
     >
       <Box sx={{ p: 2, position: 'relative' }}>
-        <Link href={`#/assets/${chainName.toLowerCase()}/${contractAddress}/${tokenId}`}>
+        <Link href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}>
           <Box sx={{ border: 1, borderRadius: '5px', borderColor: '#DFE3E8' }}>
             <Stack
               sx={{
@@ -95,7 +95,7 @@ export default function NftCard({
           <Link
             color="inherit"
             underline="none"
-            href={`#/assets/${chainName.toLowerCase()}/${contractAddress}/${tokenId}`}
+            href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
             sx={{ maxWidth: '70%' }}
           >
             <Typography variant="subtitle2" noWrap>
@@ -119,7 +119,7 @@ export default function NftCard({
           <Link
             color="inherit"
             underline="none"
-            href={`#/assets/${chainName.toLowerCase()}/${contractAddress}/${tokenId}`}
+            href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
           >
             <Stack direction="row" alignItems="center" spacing={0.5}>
               <Typography variant="caption" noWrap>
