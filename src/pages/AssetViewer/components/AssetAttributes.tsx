@@ -13,8 +13,6 @@ import CircularBoost from './CircularBoost';
 import LevelProgress from './LevelProgress';
 import StatNumber from './StatNumber';
 
-const ipfsGateway = 'https://gw.crustapps.net';
-
 type AssetAttributesProps = {
   assetAndOwner: AssetAndOwnerType;
 };
@@ -89,12 +87,11 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
     <Card sx={{ p: 3 }}>
       <Stack spacing={2}>
         <Stack>
-          <Typography variant="subtitle1" sx={{ display: 'block' }}>
-            Name of item
+          <Typography variant="h5" sx={{ display: 'block' }}>
+            {assetAndOwner.name}
           </Typography>
-          <Typography variant="caption">A description</Typography>
+          <Typography variant="caption">{assetAndOwner.description}</Typography>
           <Box sx={{ height: 5 }} />
-          <Typography variant="caption">A description</Typography>
         </Stack>
 
         <Stack spacing={1}>

@@ -1,4 +1,4 @@
-import { Box, Card, Stack, Typography } from '@mui/material';
+import { Box, Card, Stack } from '@mui/material';
 import { useState } from 'react';
 import { LineScalePulseOutRapid } from 'react-pure-loaders';
 import { AssetAndOwnerType } from '../AssetViewer.types';
@@ -30,11 +30,6 @@ export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOw
             <LineScalePulseOutRapid color={'#637381'} loading={loading} />
           </Stack>
         </Box>
-
-        <Stack>
-          <Typography variant="subtitle1">{assetAndOwner.name}</Typography>
-          <Typography variant="body2">{assetAndOwner.description}</Typography>
-        </Stack>
       </Stack>
     </Card>
   );
