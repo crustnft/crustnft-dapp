@@ -1,13 +1,8 @@
-// @mui
 import { Button, ClickAwayListener, OutlinedInput, Paper } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
-// components
 import Iconify from '../../../components/Iconify';
 import { createColumn } from '../../../redux/slices/imagesGCS';
-// redux
 import { useDispatch } from '../../../redux/store';
-
-// ----------------------------------------------------------------------
 
 export default function ImagesColumnAdd() {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -67,7 +62,7 @@ export default function ImagesColumnAdd() {
           startIcon={<Iconify icon={'eva:plus-fill'} width={20} height={20} />}
           onClick={handleOpen}
         >
-          Add section
+          Add layer
         </Button>
       )}
 

@@ -1,21 +1,12 @@
-// @mui
-import { Button, Divider, Drawer, OutlinedInput, Stack, Tooltip, Typography } from '@mui/material';
+import { Divider, Drawer, OutlinedInput, Stack, Tooltip, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { ChangeEvent, useRef, useState } from 'react';
-// /@types
+import { useRef } from 'react';
 import { ImageCard } from '../../../@types/imagesGCS';
 import { IconButtonAnimate } from '../../../components/animate';
-// components
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
-// hooks
 import useResponsive from '../../../hooks/useResponsive';
-import { useDatePicker } from './ImageAdd';
-import ImageAttachments from './ImageAttachments';
-
-// ----------------------------------------------------------------------
-
-const PRIORITIZES = ['low', 'medium', 'hight'];
+import ImageAttachment from './ImageAttachment';
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.body2,
@@ -39,36 +30,10 @@ export default function ImageDetails({ card, isOpen, onClose, onDeleteTask }: Pr
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [taskCompleted, setTaskCompleted] = useState(card.completed);
-
-  const [prioritize, setPrioritize] = useState('low');
-
-  const { name, description, due, assignee, attachments, comments } = card;
-
-  const {
-    dueDate,
-    startTime,
-    endTime,
-    isSameDays,
-    isSameMonths,
-    onChangeDueDate,
-    openPicker,
-    onOpenPicker,
-    onClosePicker
-  } = useDatePicker({
-    date: due
-  });
+  const { name, imageUrl } = card;
 
   const handleAttach = () => {
     fileInputRef.current?.click();
-  };
-
-  const handleToggleCompleted = () => {
-    setTaskCompleted((prev) => !prev);
-  };
-
-  const handleChangePrioritize = (event: ChangeEvent<HTMLInputElement>) => {
-    setPrioritize(event.target.value);
   };
 
   return (
@@ -90,34 +55,7 @@ export default function ImageDetails({ card, isOpen, onClose, onDeleteTask }: Pr
             </>
           )}
 
-          <Button
-            size="small"
-            variant="outlined"
-            color={taskCompleted ? 'primary' : 'inherit'}
-            startIcon={
-              taskCompleted && <Iconify icon={'eva:checkmark-fill'} width={16} height={16} />
-            }
-            onClick={handleToggleCompleted}
-          >
-            {taskCompleted ? 'Complete' : 'Mark as complete'}
-          </Button>
-
           <Stack direction="row" spacing={1} justifyContent="flex-end" flexGrow={1}>
-            <Tooltip title="Like this">
-              <IconButtonAnimate size="small">
-                <Iconify icon={'ic:round-thumb-up'} width={20} height={20} />
-              </IconButtonAnimate>
-            </Tooltip>
-
-            <>
-              <Tooltip title="Attachment">
-                <IconButtonAnimate size="small" onClick={handleAttach}>
-                  <Iconify icon={'eva:attach-2-fill'} width={20} height={20} />
-                </IconButtonAnimate>
-              </Tooltip>
-              <input ref={fileInputRef} type="file" style={{ display: 'none' }} />
-            </>
-
             <Tooltip title="Delete task">
               <IconButtonAnimate onClick={onDeleteTask} size="small">
                 <Iconify icon={'eva:trash-2-outline'} width={20} height={20} />
@@ -194,7 +132,7 @@ export default function ImageDetails({ card, isOpen, onClose, onDeleteTask }: Pr
             <Stack direction="row">
               <LabelStyle sx={{ mt: 2 }}>Image Preview</LabelStyle>
               <Stack direction="row" flexWrap="wrap">
-                <ImageAttachments attachments={attachments} />
+                <ImageAttachment imageUrl={imageUrl} />
               </Stack>
             </Stack>
           </Stack>

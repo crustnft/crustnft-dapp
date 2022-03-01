@@ -1,16 +1,12 @@
 import { Box, IconButton } from '@mui/material';
-// @mui
 import { alpha, styled } from '@mui/material/styles';
 import isString from 'lodash/isString';
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { varFade } from '../../../components/animate/version310';
 import Iconify from '../../../components/Iconify';
-// components
 import Image from '../../../components/Image';
 import LightboxModal from '../../../components/LightboxModal';
-
-// ----------------------------------------------------------------------
 
 const DropZoneStyle = styled('div')(({ theme }) => ({
   width: 64,
@@ -26,48 +22,40 @@ const DropZoneStyle = styled('div')(({ theme }) => ({
   '&:hover': { opacity: 0.72 }
 }));
 
-// ----------------------------------------------------------------------
-
 type Props = {
-  attachments: string[];
+  imageUrl: string;
 };
 
-export default function ImageAttachments({ attachments }: Props) {
+export default function ImageAttachment({ imageUrl }: Props) {
   const [openLightbox, setOpenLightbox] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<number>(0);
 
-  const imagesLightbox = attachments;
+  const imagesLightbox = imageUrl;
 
   const handleOpenLightbox = (url: string) => {
-    const selectedImage = imagesLightbox.findIndex((index) => index === url);
     setOpenLightbox(true);
-    setSelectedImage(selectedImage);
   };
 
   return (
     <>
-      {attachments.map((attachment) => (
-        <Image
-          key={attachment}
-          src={attachment}
-          onClick={() => handleOpenLightbox(attachment)}
-          sx={{
-            m: 0.5,
-            width: 64,
-            height: 64,
-            borderRadius: 1,
-            cursor: 'pointer'
-          }}
-        />
-      ))}
+      <Image
+        src={imageUrl}
+        onClick={() => handleOpenLightbox(imageUrl)}
+        sx={{
+          m: 0.5,
+          width: 64,
+          height: 64,
+          borderRadius: 1,
+          cursor: 'pointer'
+        }}
+      />
 
       <UploadFile />
 
       <LightboxModal
-        images={imagesLightbox}
-        mainSrc={imagesLightbox[selectedImage]}
-        photoIndex={selectedImage}
-        setPhotoIndex={setSelectedImage}
+        images={[imagesLightbox]}
+        mainSrc={imagesLightbox}
+        photoIndex={0}
+        setPhotoIndex={() => {}}
         isOpen={openLightbox}
         onCloseRequest={() => setOpenLightbox(false)}
       />

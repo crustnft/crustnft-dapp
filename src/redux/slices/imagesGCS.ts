@@ -159,7 +159,7 @@ const mock_board_2 = {
         }
       ],
       due: [1646659456363, 1646745856363],
-      attachments: ['https://minimal-assets-api.vercel.app/assets/images/feeds/feed_2.jpg'],
+      imageUrl: 'https://minimal-assets-api.vercel.app/assets/images/feeds/feed_2.jpg',
       comments: [],
       completed: false
     },
@@ -181,7 +181,7 @@ const mock_board_2 = {
         }
       ],
       due: [null, null],
-      attachments: ['https://minimal-assets-api.vercel.app/assets/images/feeds/feed_4.jpg'],
+      imageUrl: 'https://minimal-assets-api.vercel.app/assets/images/feeds/feed_4.jpg',
       comments: [],
       completed: false
     }
@@ -317,7 +317,7 @@ const mock_board = {
         }
       ],
       due: [1646661671287, 1646748071287],
-      attachments: [],
+      imageUrl: [],
       comments: [
         {
           id: '1874ef88-0467-4831-a144-fe0ee034d080',
@@ -418,7 +418,7 @@ const mock_board = {
         }
       ],
       due: [1646661671287, 1646748071287],
-      attachments: ['https://minimal-assets-api.vercel.app/assets/images/feeds/feed_2.jpg'],
+      imageUrl: ['https://minimal-assets-api.vercel.app/assets/images/feeds/feed_2.jpg'],
       comments: [],
       completed: false
     },
@@ -429,7 +429,7 @@ const mock_board = {
         'We nede to make it aggressive with pricing because it’s in their interest to acquire us',
       assignee: [],
       due: [null, null],
-      attachments: [],
+      imageUrl: [],
       comments: [],
       completed: true
     },
@@ -451,7 +451,7 @@ const mock_board = {
         }
       ],
       due: [null, null],
-      attachments: ['https://minimal-assets-api.vercel.app/assets/images/feeds/feed_4.jpg'],
+      imageUrl: ['https://minimal-assets-api.vercel.app/assets/images/feeds/feed_4.jpg'],
       comments: [],
       completed: false
     },
@@ -468,7 +468,7 @@ const mock_board = {
         }
       ],
       due: [null, null],
-      attachments: [],
+      imageUrl: [],
       comments: [],
       completed: true
     },
@@ -484,7 +484,7 @@ const mock_board = {
         }
       ],
       due: [null, null],
-      attachments: [],
+      imageUrl: [],
       comments: [],
       completed: true
     }

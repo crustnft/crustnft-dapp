@@ -1,12 +1,3 @@
-export type CardComment = {
-  id: string;
-  avatar: string;
-  name: string;
-  createdAt: Date | string | number;
-  messageType: 'image' | 'text';
-  message: string;
-};
-
 export type Assignee = {
   id: string;
   avatar: string;
@@ -16,12 +7,7 @@ export type Assignee = {
 export type ImageCard = {
   id: string;
   name: string;
-  description?: string;
-  assignee: Assignee[];
-  due: [number | null, number | null];
-  attachments: string[];
-  comments: CardComment[];
-  completed: boolean;
+  imageUrl: string;
 };
 
 export type ImagesColumn = {
