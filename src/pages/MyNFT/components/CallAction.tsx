@@ -51,7 +51,7 @@ export default function CallAction() {
           sx={{
             height: '100%',
             position: 'absolute',
-            left: '0px',
+            left: { xs: '-50px', sm: '0px' },
             top: '0px',
             zIndex: '5'
           }}
@@ -62,6 +62,7 @@ export default function CallAction() {
             sx={{
               maxWidth: '250px'
             }}
+            alignItems={{ xs: 'flex-end', sm: 'flex-start' }}
           >
             <Typography
               gutterBottom
@@ -72,12 +73,16 @@ export default function CallAction() {
               No Code Required
             </Typography>
 
-            <Typography variant="body2" sx={{ pb: { xs: 3, xl: 5 }, maxWidth: 480, mx: 'auto' }}>
+            <Typography
+              variant="body2"
+              textAlign={{ xs: 'right', sm: 'left' }}
+              sx={{ pb: { xs: 3, xl: 5 }, display: { xs: 'none', sm: 'block' } }}
+            >
               Create your own NFTs collection in minutes
             </Typography>
 
             <Stack direction="row">
-              <Link href="#/create-collection" target="_blank">
+              <Link href="#/create-collection">
                 <Button
                   variant="contained"
                   sx={{ borderRadius: '20px', boxShadow: '0 5px 15px rgba(0,0,0,0.5)' }}
