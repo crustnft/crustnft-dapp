@@ -46,7 +46,11 @@ export default function CPProjectDetails() {
                         textAlign: { xs: 'center', md: 'left' }
                       }}
                     >
-                      <Icon icon="fa:cloud-upload" height="40" color="#637381" />
+                      <Icon
+                        icon="iconoir:one-finger-select-hand-gesture"
+                        height="40"
+                        color="#637381"
+                      />
 
                       <Box>
                         <Typography gutterBottom variant="h5">
@@ -135,7 +139,7 @@ export default function CPProjectDetails() {
                         textAlign: { xs: 'center', md: 'left' }
                       }}
                     >
-                      <Icon icon="carbon:deployment-pattern" height="40" color="#637381" />
+                      <Icon icon="ci:share-outline" height="40" color="#637381" />
 
                       <Box>
                         <Typography gutterBottom variant="h5">
