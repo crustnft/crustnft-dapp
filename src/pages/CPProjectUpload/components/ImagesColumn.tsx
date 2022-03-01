@@ -113,7 +113,7 @@ export default function ImagesColumn({ column, index }: Props) {
                 onClick={handleOpenAddTask}
                 sx={{ fontSize: 14 }}
               >
-                Add Task
+                Add Images
               </Button>
             </Stack>
           </Stack>
