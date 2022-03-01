@@ -46,6 +46,9 @@ export default function Router() {
         { path: 'mint-nft/:chain/:contractAddr', element: <MintNft /> },
         { path: 'collection-explore', element: <CollectionsExplorer /> },
         { path: 'collection/:chain/:contractAddr/:pageNb', element: <CollectionViewer /> },
+        { path: 'projects-dashboard', element: <CPProjectsDashboard /> },
+        { path: 'project-details', element: <CPProjectDetails /> },
+        { path: 'project-upload', element: <CPProjectUpload /> },
         {
           path: 'faucets',
           children: [
@@ -101,6 +104,9 @@ const CreateCollection = LoadWithoutSpinner(lazy(() => import('../pages/CreateCo
 const MyNFT = LoadWithoutSpinner(lazy(() => import('../pages/MyNFT')));
 const CollectionViewer = LoadWithoutSpinner(lazy(() => import('../pages/CollectionViewer')));
 const MintNft = LoadWithoutSpinner(lazy(() => import('../pages/MintNft')));
+const CPProjectsDashboard = LoadWithoutSpinner(lazy(() => import('../pages/CPProjectsDashboard')));
+const CPProjectDetails = LoadWithoutSpinner(lazy(() => import('../pages/CPProjectDetails')));
+const CPProjectUpload = LoadWithoutSpinner(lazy(() => import('../pages/CPProjectUpload')));
 // const Universe = lazy(() => import('../pages/Universe'));
 // const NftMinting = lazy(() => import('../pages/NftMinting'));
 // const NftManager = lazy(() => import('../pages/NftManager'));
