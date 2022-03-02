@@ -66,7 +66,7 @@ export default function ImagesColumnToolBar({ columnName, onDelete, onUpdate }: 
       >
         <OutlinedInput
           size="small"
-          placeholder="Section name"
+          placeholder="Layer Name"
           value={value}
           onBlur={handleUpdateColumn}
           onChange={handleChangeColumnName}

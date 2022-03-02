@@ -80,11 +80,19 @@ const slice = createSlice({
       state.board.columnOrder = action.payload;
     },
 
-    addTask(state, action) {
+    addImage(state, action) {
       const { card, columnId } = action.payload;
 
       state.board.cards[card.id] = card;
       state.board.columns[columnId].cardIds.push(card.id);
+    },
+
+    updatePartialImage(state, action) {
+      const { card } = action.payload;
+
+      if (state.board.cards.hasOwnProperty(card.id)) {
+        state.board.cards[card.id] = { ...state.board.cards[card.id], ...card };
+      }
     },
 
     deleteTask(state, action) {
@@ -240,9 +248,17 @@ export function persistCard(columns: Record<string, ImagesColumn>) {
 
 // ----------------------------------------------------------------------
 
-export function addTask({ card, columnId }: { card: Partial<ImageCard>; columnId: string }) {
+export function addImage({ card, columnId }: { card: Partial<ImageCard>; columnId: string }) {
   return () => {
-    dispatch(slice.actions.addTask({ card, columnId }));
+    dispatch(slice.actions.addImage({ card, columnId }));
+  };
+}
+
+// ----------------------------------------------------------------------
+
+export function updatePartialImage({ card }: { card: Partial<ImageCard> }) {
+  return () => {
+    dispatch(slice.actions.updatePartialImage({ card }));
   };
 }
 

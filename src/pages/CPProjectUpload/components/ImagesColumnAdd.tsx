@@ -70,7 +70,7 @@ export default function ImagesColumnAdd() {
         <ClickAwayListener onClickAway={handleCreateColumn}>
           <OutlinedInput
             fullWidth
-            placeholder="New section"
+            placeholder="New Layer"
             inputRef={nameRef}
             value={name}
             onChange={handleChangeName}

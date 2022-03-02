@@ -1,11 +1,13 @@
 import { Divider, Drawer, OutlinedInput, Stack, Tooltip, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useRef } from 'react';
+import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
 import { ImageCard } from '../../../@types/imagesGCS';
 import { IconButtonAnimate } from '../../../components/animate';
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
 import useResponsive from '../../../hooks/useResponsive';
+import { updatePartialImage } from '../../../redux/slices/imagesGCS';
+import { useDispatch } from '../../../redux/store';
 import ImageAttachment from './ImageAttachment';
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
@@ -26,14 +28,26 @@ type Props = {
 };
 
 export default function ImageDetails({ card, isOpen, onClose, onDeleteTask }: Props) {
+  const dispatch = useDispatch();
   const isDesktop = useResponsive('up', 'sm');
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
-  const { name, imageUrl } = card;
+  const { name, imageUrl, id } = card;
+  const [localName, setLocalName] = useState(name);
 
-  const handleAttach = () => {
-    fileInputRef.current?.click();
+  const handleChangeName = (event: ChangeEvent<HTMLInputElement>) => {
+    setLocalName(event.target.value);
+  };
+
+  const handleKeyUpNameInput = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && nameInputRef.current) {
+      nameInputRef.current.blur();
+    }
+  };
+
+  const handleUpdateName = () => {
+    dispatch(updatePartialImage({ card: { id, name: localName } }));
   };
 
   return (
@@ -76,10 +90,13 @@ export default function ImageDetails({ card, isOpen, onClose, onDeleteTask }: Pr
           <Stack spacing={3} sx={{ px: 2.5, py: 3 }}>
             <OutlinedInput
               fullWidth
-              multiline
               size="small"
               placeholder="Image Name"
-              value={name}
+              inputRef={nameInputRef}
+              onChange={handleChangeName}
+              onKeyUp={handleKeyUpNameInput}
+              onBlur={handleUpdateName}
+              value={localName}
               sx={{
                 typography: 'h6',
                 '& .MuiOutlinedInput-notchedOutline': { borderColor: 'transparent' }

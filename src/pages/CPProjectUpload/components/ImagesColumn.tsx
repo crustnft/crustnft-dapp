@@ -7,7 +7,7 @@ import { useDropzone } from 'react-dropzone';
 import { useSelector } from 'react-redux';
 import { ImageCard as ImageCardProps, ImagesColumn as Column } from '../../../@types/imagesGCS';
 import Iconify from '../../../components/Iconify';
-import { addTask, deleteColumn, deleteTask, updateColumn } from '../../../redux/slices/imagesGCS';
+import { addImage, deleteColumn, deleteTask, updateColumn } from '../../../redux/slices/imagesGCS';
 import { RootState, useDispatch } from '../../../redux/store';
 import uuidv4 from '../../../utils/uuidv4';
 import ImageCard from './ImageCard';
@@ -50,8 +50,8 @@ export default function ImagesColumn({ column, index }: Props) {
     }
   };
 
-  const handleAddTask = (task: any) => {
-    dispatch(addTask({ card: task, columnId: id }));
+  const handleAddImage = (task: any) => {
+    dispatch(addImage({ card: task, columnId: id }));
   };
 
   return (
@@ -94,7 +94,7 @@ export default function ImagesColumn({ column, index }: Props) {
             )}
 
             <Stack>
-              <UploadFile onAddTask={handleAddTask} onCloseAddTask={() => {}} />
+              <UploadFile onAddImage={handleAddImage} onCloseAddImage={() => {}} />
             </Stack>
           </Stack>
         </Paper>
@@ -118,14 +118,14 @@ const DropZoneStyle = styled('div')(({ theme }) => ({
 }));
 
 type UploadFileProps = {
-  onAddTask: (task: ImageCardProps) => void;
-  onCloseAddTask: VoidFunction;
+  onAddImage: (task: ImageCardProps) => void;
+  onCloseAddImage: VoidFunction;
 };
 
-function UploadFile({ onAddTask, onCloseAddTask }: UploadFileProps) {
+function UploadFile({ onAddImage, onCloseAddImage }: UploadFileProps) {
   const handleDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: File) => {
-      onAddTask({
+      onAddImage({
         imageUrl: URL.createObjectURL(file),
         name: file.name,
         id: uuidv4()
