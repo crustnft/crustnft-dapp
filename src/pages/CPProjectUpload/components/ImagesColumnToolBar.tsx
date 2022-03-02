@@ -44,11 +44,14 @@ export default function ImagesColumnToolBar({ columnName, onDelete, onUpdate }: 
     setValue(event.target.value);
   };
 
-  const handleUpdateColumn = (event: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyUpColumn = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && renameRef.current) {
       renameRef.current.blur();
-      onUpdate(value);
     }
+  };
+
+  const handleUpdateColumn = () => {
+    onUpdate(value);
   };
 
   return (
@@ -65,8 +68,9 @@ export default function ImagesColumnToolBar({ columnName, onDelete, onUpdate }: 
           size="small"
           placeholder="Section name"
           value={value}
+          onBlur={handleUpdateColumn}
           onChange={handleChangeColumnName}
-          onKeyUp={handleUpdateColumn}
+          onKeyUp={handleKeyUpColumn}
           inputRef={renameRef}
           sx={{
             typography: 'h6',
