@@ -129,72 +129,24 @@ const mock_board_2 = {
   cards: [
     {
       id: '98bf6e8b-becc-485b-9c3f-a7d09392c48d',
-      name: 'Interview for the Asis. Sales Manager',
-      description: 'We are looking for vue experience and of course node js strong knowledge',
-      assignee: [
-        {
-          id: '473d2720-341c-49bf-94ed-556999cf6ef7',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_2.jpg',
-          name: 'Deja Brady'
-        },
-        {
-          id: 'b8395203-887c-46f5-a85f-339b2d75c98b',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_3.jpg',
-          name: 'Harrison Stein'
-        },
-        {
-          id: '18e23ac9-c874-43e4-8163-2d37f15f3367',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_4.jpg',
-          name: 'Reece Chung'
-        },
-        {
-          id: 'a3be5485-03bf-47a6-b553-a9cf9f070ed8',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_5.jpg',
-          name: 'Lainey Davidson'
-        },
-        {
-          id: '048f6343-7a65-4873-a570-eb6ff4eb1ba3',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_6.jpg',
-          name: 'Cristopher Cardenas'
-        }
-      ],
-      due: [1646659456363, 1646745856363],
-      imageUrl: 'https://minimal-assets-api.vercel.app/assets/images/feeds/feed_2.jpg',
-      comments: [],
-      completed: false
+      name: 'Yellow',
+      imageUrl: 'https://minimal-assets-api.vercel.app/assets/images/feeds/feed_2.jpg'
     },
     {
       id: 'ab9cebca-6cb4-4847-aa17-3b261b3dd0fb',
-      name: 'Integrate Stripe API',
-      description:
-        'We nede to make it aggresive with pricing because it’s in their interest to acquire us',
-      assignee: [
-        {
-          id: 'b8395203-887c-46f5-a85f-339b2d75c98b',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_3.jpg',
-          name: 'Melanie Noble'
-        },
-        {
-          id: 'a3be5485-03bf-47a6-b553-a9cf9f070ed8',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_6.jpg',
-          name: 'Chase Day'
-        }
-      ],
-      due: [null, null],
-      imageUrl: 'https://minimal-assets-api.vercel.app/assets/images/feeds/feed_4.jpg',
-      comments: [],
-      completed: false
+      name: 'Multi',
+      imageUrl: 'https://minimal-assets-api.vercel.app/assets/images/feeds/feed_4.jpg'
     }
   ],
   columns: [
     {
       id: '8cd887ec-b3bc-11eb-8529-0242ac130003',
-      name: 'Backlog',
+      name: 'Background',
       cardIds: ['98bf6e8b-becc-485b-9c3f-a7d09392c48d']
     },
     {
       id: '23008a1f-ad94-4771-b85c-3566755afab7',
-      name: 'Progress',
+      name: 'Upper layer',
       cardIds: ['ab9cebca-6cb4-4847-aa17-3b261b3dd0fb']
     }
   ],

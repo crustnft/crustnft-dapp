@@ -1,4 +1,4 @@
-import { Button, Paper, Stack } from '@mui/material';
+import { Paper, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useSnackbar } from 'notistack';
 import { useCallback, useState } from 'react';
@@ -10,7 +10,6 @@ import Iconify from '../../../components/Iconify';
 import { addTask, deleteColumn, deleteTask, updateColumn } from '../../../redux/slices/imagesGCS';
 import { RootState, useDispatch } from '../../../redux/store';
 import uuidv4 from '../../../utils/uuidv4';
-import ImageAdd from './ImageAdd';
 import ImageCard from './ImageCard';
 import ImagesColumnToolBar from './ImagesColumnToolBar';
 
@@ -98,20 +97,6 @@ export default function ImagesColumn({ column, index }: Props) {
               )}
             </Droppable>
 
-            <Stack spacing={2} sx={{ pb: 3 }}>
-              {open && <ImageAdd onAddTask={handleAddTask} onCloseAddTask={handleCloseAddTask} />}
-
-              <Button
-                fullWidth
-                size="large"
-                color="inherit"
-                startIcon={<Iconify icon={'eva:plus-fill'} width={20} height={20} />}
-                onClick={handleOpenAddTask}
-                sx={{ fontSize: 14 }}
-              >
-                Add Images
-              </Button>
-            </Stack>
             <Stack>
               <UploadFile onAddTask={handleAddTask} onCloseAddTask={handleCloseAddTask} />
             </Stack>
@@ -123,14 +108,14 @@ export default function ImagesColumn({ column, index }: Props) {
 }
 
 const DropZoneStyle = styled('div')(({ theme }) => ({
-  width: 64,
-  height: 64,
+  width: '100%',
   fontSize: 24,
+  marginBottom: 20,
+  backgroundColor: '#fafafa',
   display: 'flex',
   cursor: 'pointer',
   alignItems: 'center',
   justifyContent: 'center',
-  margin: theme.spacing(0.5),
   borderRadius: theme.shape.borderRadius,
   border: `dashed 1px ${theme.palette.divider}`,
   '&:hover': { opacity: 0.72 }
@@ -166,7 +151,21 @@ function UploadFile({ onAddTask, onCloseAddTask }: UploadFileProps) {
       >
         <input {...getInputProps()} />
 
-        <Iconify icon={'eva:plus-fill'} sx={{ color: 'text.secondary' }} />
+        <Stack
+          direction="row"
+          justifyContent="flex-start"
+          spacing={2}
+          alignItems="center"
+          width="100%"
+          sx={{ padding: 2 }}
+        >
+          <Iconify icon={'eva:plus-fill'} sx={{ color: 'text.secondary' }} />
+
+          <Stack direction="column">
+            <Typography variant="body2">Click to add or drag images</Typography>
+            <Typography variant="caption">Allowed *.jpeg, *.jpg, *.png, *.gif</Typography>
+          </Stack>
+        </Stack>
       </DropZoneStyle>
     </>
   );
