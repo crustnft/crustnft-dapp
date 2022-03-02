@@ -59,6 +59,7 @@ export default function ImagesColumnToolBar({ columnName, onDelete, onUpdate }: 
         alignItems="center"
         spacing={1}
         sx={{ pt: 3 }}
+        width={280}
       >
         <OutlinedInput
           size="small"

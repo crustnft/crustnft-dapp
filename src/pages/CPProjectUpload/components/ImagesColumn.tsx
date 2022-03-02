@@ -1,22 +1,18 @@
-// @mui
 import { Button, Paper, Stack } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { useSnackbar } from 'notistack';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { useDropzone } from 'react-dropzone';
 import { useSelector } from 'react-redux';
-// @types
-import { ImagesColumn as Column } from '../../../@types/imagesGCS';
-// components
+import { ImageCard as ImageCardProps, ImagesColumn as Column } from '../../../@types/imagesGCS';
 import Iconify from '../../../components/Iconify';
 import { addTask, deleteColumn, deleteTask, updateColumn } from '../../../redux/slices/imagesGCS';
-// redux
 import { RootState, useDispatch } from '../../../redux/store';
-//
+import uuidv4 from '../../../utils/uuidv4';
 import ImageAdd from './ImageAdd';
 import ImageCard from './ImageCard';
 import ImagesColumnToolBar from './ImagesColumnToolBar';
-
-// ----------------------------------------------------------------------
 
 type Props = {
   column: Column;
@@ -116,9 +112,62 @@ export default function ImagesColumn({ column, index }: Props) {
                 Add Images
               </Button>
             </Stack>
+            <Stack>
+              <UploadFile onAddTask={handleAddTask} onCloseAddTask={handleCloseAddTask} />
+            </Stack>
           </Stack>
         </Paper>
       )}
     </Draggable>
+  );
+}
+
+const DropZoneStyle = styled('div')(({ theme }) => ({
+  width: 64,
+  height: 64,
+  fontSize: 24,
+  display: 'flex',
+  cursor: 'pointer',
+  alignItems: 'center',
+  justifyContent: 'center',
+  margin: theme.spacing(0.5),
+  borderRadius: theme.shape.borderRadius,
+  border: `dashed 1px ${theme.palette.divider}`,
+  '&:hover': { opacity: 0.72 }
+}));
+
+type UploadFileProps = {
+  onAddTask: (task: ImageCardProps) => void;
+  onCloseAddTask: VoidFunction;
+};
+
+function UploadFile({ onAddTask, onCloseAddTask }: UploadFileProps) {
+  const handleDrop = useCallback((acceptedFiles) => {
+    acceptedFiles.forEach((file: File) => {
+      onAddTask({
+        imageUrl: URL.createObjectURL(file),
+        name: file.name,
+        id: uuidv4()
+      });
+    });
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: handleDrop
+  });
+
+  return (
+    <>
+      <DropZoneStyle
+        {...getRootProps()}
+        sx={{
+          ...(isDragActive && { opacity: 0.72 })
+        }}
+      >
+        <input {...getInputProps()} />
+
+        <Iconify icon={'eva:plus-fill'} sx={{ color: 'text.secondary' }} />
+      </DropZoneStyle>
+    </>
   );
 }
