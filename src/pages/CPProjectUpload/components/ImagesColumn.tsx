@@ -1,7 +1,7 @@
 import { Paper, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useSnackbar } from 'notistack';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useDropzone } from 'react-dropzone';
 import { useSelector } from 'react-redux';
@@ -25,17 +25,7 @@ export default function ImagesColumn({ column, index }: Props) {
 
   const { board } = useSelector((state: RootState) => state.image);
 
-  const [open, setOpen] = useState(false);
-
   const { name, cardIds, id } = column;
-
-  const handleOpenAddTask = () => {
-    setOpen((prev) => !prev);
-  };
-
-  const handleCloseAddTask = () => {
-    setOpen(false);
-  };
 
   const handleDeleteTask = (cardId: string) => {
     dispatch(deleteTask({ cardId, columnId: id }));
@@ -62,7 +52,6 @@ export default function ImagesColumn({ column, index }: Props) {
 
   const handleAddTask = (task: any) => {
     dispatch(addTask({ card: task, columnId: id }));
-    handleCloseAddTask();
   };
 
   return (
@@ -105,7 +94,7 @@ export default function ImagesColumn({ column, index }: Props) {
             )}
 
             <Stack>
-              <UploadFile onAddTask={handleAddTask} onCloseAddTask={handleCloseAddTask} />
+              <UploadFile onAddTask={handleAddTask} onCloseAddTask={() => {}} />
             </Stack>
           </Stack>
         </Paper>
