@@ -81,21 +81,28 @@ export default function ImagesColumn({ column, index }: Props) {
               onUpdate={handleUpdateColumn}
             />
 
-            <Droppable droppableId={id} type="task">
-              {(provided) => (
-                <Stack ref={provided.innerRef} {...provided.droppableProps} spacing={2} width={280}>
-                  {cardIds.map((cardId, index) => (
-                    <ImageCard
-                      key={cardId}
-                      onDeleteTask={handleDeleteTask}
-                      card={board?.cards[cardId]}
-                      index={index}
-                    />
-                  ))}
-                  {provided.placeholder}
-                </Stack>
-              )}
-            </Droppable>
+            {cardIds.length !== 0 && (
+              <Droppable droppableId={id} type="task">
+                {(provided) => (
+                  <Stack
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    spacing={2}
+                    width={280}
+                  >
+                    {cardIds.map((cardId, index) => (
+                      <ImageCard
+                        key={cardId}
+                        onDeleteTask={handleDeleteTask}
+                        card={board?.cards[cardId]}
+                        index={index}
+                      />
+                    ))}
+                    {provided.placeholder}
+                  </Stack>
+                )}
+              </Droppable>
+            )}
 
             <Stack>
               <UploadFile onAddTask={handleAddTask} onCloseAddTask={handleCloseAddTask} />
