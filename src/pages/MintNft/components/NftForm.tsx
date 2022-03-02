@@ -11,6 +11,7 @@ import { createContext, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { connectRWContract } from 'services/smartContract/evmCompatible';
+import { AUTH_HEADER, pinW3Crust } from 'services/w3AuthIpfs';
 import * as Yup from 'yup';
 import { FormProvider, RHFUploadNftCard } from '../../../components/hook-form';
 import Iconify from '../../../components/Iconify';
@@ -62,6 +63,7 @@ type NftCreationStatus = {
   imageCid: string;
   metadataCid: string;
 };
+
 export const NftCreationStatusContext = createContext<NftCreationStatus>(initialNftCreationStatus);
 
 type FormValues = {
@@ -142,9 +144,6 @@ export default function NftForm() {
 
   const { name, description, externalLink, avatar, properties, levels, stats, boosts } = watch();
 
-  const authHeader =
-    'cG9sLTB4QTIyOGNGYWI4MEE2NzM4NTIyNDc2RGVDMTFkNzkzZDYxMjk5NjhiMjoweGU2ZDA1NDIzYTcxY2YzNjdjNWNhZmQwNzRmOWZjODAyMWUwMmEzZDA4MGViZTMyY2VhNDA0MjkwZTgxOWM5YTExMDUxMjNhZDJjZWM2ZjQ1Y2NiZWRmOTYyYjc5NzA4YWRiYjMwNTcxMGEzZWIzYjMzOWM3MzFmNTc1NGM4NWY1MWM=';
-
   useEffect(() => {
     if (selectedChain?.name?.toLowerCase() === chain?.toLowerCase()) {
       setIsNetworkCorrect(true);
@@ -206,7 +205,7 @@ export default function NftForm() {
         if (!uploadImageSuccess) {
           setActiveStep(0);
           setUploadingImage(true);
-          const addedFile = await uploadFileToW3AuthGateway(ipfsGateway, authHeader, avatar).catch(
+          const addedFile = await uploadFileToW3AuthGateway(ipfsGateway, AUTH_HEADER, avatar).catch(
             () => {
               setUploadImageError(true);
             }
@@ -215,6 +214,11 @@ export default function NftForm() {
           if (!addedFile) {
             return;
           }
+
+          pinW3Crust(AUTH_HEADER, addedFile.cid, 'fileName').catch((err) => {
+            console.log('Error pin file to Crust Network', err);
+          });
+
           setUploadImageSuccess(true);
           newImageCid = addedFile.cid;
           setImageCid(newImageCid);
@@ -249,7 +253,7 @@ export default function NftForm() {
             ]
           };
 
-          const addedMetadata = await uploadMetadataW3AuthGateway(authHeader, metadata).catch(
+          const addedMetadata = await uploadMetadataW3AuthGateway(AUTH_HEADER, metadata).catch(
             () => {
               setUploadMetadataError(true);
             }
@@ -258,6 +262,14 @@ export default function NftForm() {
           if (!addedMetadata) {
             return;
           }
+
+          pinW3Crust(AUTH_HEADER, addedMetadata.cid, 'fileName')
+            .then((res) => {
+              console.log('pin ok', res, addedMetadata.cid);
+            })
+            .catch((err) => {
+              console.log('Error pin metadata to Crust Network', err);
+            });
           newMetadataCid = addedMetadata.cid;
           setUploadMetadataSuccess(true);
           setMetadataCid(newMetadataCid);

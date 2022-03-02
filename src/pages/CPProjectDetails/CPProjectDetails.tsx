@@ -55,7 +55,7 @@ export default function CPProjectDetails() {
                         }}
                       >
                         <Icon
-                          icon="iconoir:one-finger-select-hand-gesture"
+                          icon="emojione-monotone:index-pointing-up"
                           height="40"
                           color="#637381"
                         />
