@@ -1,10 +1,5 @@
-import { Box, IconButton } from '@mui/material';
-import { alpha, styled } from '@mui/material/styles';
-import isString from 'lodash/isString';
-import { useCallback, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { varFade } from '../../../components/animate/version310';
-import Iconify from '../../../components/Iconify';
+import { styled } from '@mui/material/styles';
+import { useState } from 'react';
 import Image from '../../../components/Image';
 import LightboxModal from '../../../components/LightboxModal';
 
@@ -49,8 +44,6 @@ export default function ImageAttachment({ imageUrl }: Props) {
         }}
       />
 
-      <UploadFile />
-
       <LightboxModal
         images={[imagesLightbox]}
         mainSrc={imagesLightbox}
@@ -59,95 +52,6 @@ export default function ImageAttachment({ imageUrl }: Props) {
         isOpen={openLightbox}
         onCloseRequest={() => setOpenLightbox(false)}
       />
-    </>
-  );
-}
-
-// ----------------------------------------------------------------------
-
-function UploadFile() {
-  const [files, setFiles] = useState([]);
-
-  const handleRemove = (file: File) => {
-    const filteredItems = files.filter((_file) => _file !== file);
-    setFiles(filteredItems);
-  };
-
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      setFiles(
-        acceptedFiles.map((file: File) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file)
-          })
-        )
-      );
-    },
-    [setFiles]
-  );
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: handleDrop
-  });
-
-  return (
-    <>
-      {files.map((file) => {
-        const { name, preview } = file;
-        const key = isString(file) ? file : name;
-
-        return (
-          <Box
-            key={key}
-            {...varFade().inRight}
-            sx={{
-              p: 0,
-              m: 0.5,
-              width: 64,
-              height: 64,
-              borderRadius: 1,
-              overflow: 'hidden',
-              position: 'relative'
-            }}
-          >
-            <Image
-              src={isString(file) ? file : preview}
-              sx={{
-                height: 1,
-                position: 'absolute',
-                border: (theme) => `solid 1px ${theme.palette.divider}`
-              }}
-            />
-            <Box sx={{ top: 6, right: 6, position: 'absolute' }}>
-              <IconButton
-                size="small"
-                onClick={() => handleRemove(file)}
-                sx={{
-                  p: '2px',
-                  color: 'common.white',
-                  bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
-                  '&:hover': {
-                    bgcolor: (theme) => alpha(theme.palette.grey[900], 0.48)
-                  }
-                }}
-              >
-                <Iconify icon={'eva:close-fill'} />
-              </IconButton>
-            </Box>
-          </Box>
-        );
-      })}
-
-      <DropZoneStyle
-        {...getRootProps()}
-        sx={{
-          ...(isDragActive && { opacity: 0.72 })
-        }}
-      >
-        <input {...getInputProps()} />
-
-        <Iconify icon={'eva:plus-fill'} sx={{ color: 'text.secondary' }} />
-      </DropZoneStyle>
     </>
   );
 }
