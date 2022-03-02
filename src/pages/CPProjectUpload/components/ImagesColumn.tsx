@@ -1,18 +1,13 @@
-import { Paper, Stack, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Paper, Stack } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { useCallback } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { useDropzone } from 'react-dropzone';
 import { useSelector } from 'react-redux';
-import { ImageCard as ImageCardProps, ImagesColumn as Column } from '../../../@types/imagesGCS';
-import Iconify from '../../../components/Iconify';
+import { ImagesColumn as Column } from '../../../@types/imagesGCS';
 import { addImage, deleteColumn, deleteTask, updateColumn } from '../../../redux/slices/imagesGCS';
 import { RootState, useDispatch } from '../../../redux/store';
-import uuidv4 from '../../../utils/uuidv4';
 import ImageCard from './ImageCard';
+import ImagesAdd from './ImagesAdd';
 import ImagesColumnToolBar from './ImagesColumnToolBar';
-
 type Props = {
   column: Column;
   index: number;
@@ -94,75 +89,11 @@ export default function ImagesColumn({ column, index }: Props) {
             )}
 
             <Stack>
-              <UploadFile onAddImage={handleAddImage} onCloseAddImage={() => {}} />
+              <ImagesAdd onAddImage={handleAddImage} onCloseAddImage={() => {}} />
             </Stack>
           </Stack>
         </Paper>
       )}
     </Draggable>
-  );
-}
-
-const DropZoneStyle = styled('div')(({ theme }) => ({
-  width: '100%',
-  fontSize: 24,
-  marginBottom: 20,
-  backgroundColor: '#fafafa',
-  display: 'flex',
-  cursor: 'pointer',
-  alignItems: 'center',
-  justifyContent: 'center',
-  borderRadius: theme.shape.borderRadius,
-  border: `dashed 1px ${theme.palette.divider}`,
-  '&:hover': { opacity: 0.72 }
-}));
-
-type UploadFileProps = {
-  onAddImage: (task: ImageCardProps) => void;
-  onCloseAddImage: VoidFunction;
-};
-
-function UploadFile({ onAddImage, onCloseAddImage }: UploadFileProps) {
-  const handleDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file: File) => {
-      onAddImage({
-        imageUrl: URL.createObjectURL(file),
-        name: file.name,
-        id: uuidv4()
-      });
-    });
-  }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: handleDrop
-  });
-
-  return (
-    <>
-      <DropZoneStyle
-        {...getRootProps()}
-        sx={{
-          ...(isDragActive && { opacity: 0.72 })
-        }}
-      >
-        <input {...getInputProps()} />
-
-        <Stack
-          direction="row"
-          justifyContent="flex-start"
-          spacing={2}
-          alignItems="center"
-          width="100%"
-          sx={{ padding: 2 }}
-        >
-          <Iconify icon={'eva:plus-fill'} sx={{ color: 'text.secondary' }} />
-
-          <Stack direction="column">
-            <Typography variant="body2">Click to add or drag images</Typography>
-            <Typography variant="caption">Allowed *.jpeg, *.jpg, *.png, *.gif</Typography>
-          </Stack>
-        </Stack>
-      </DropZoneStyle>
-    </>
   );
 }
