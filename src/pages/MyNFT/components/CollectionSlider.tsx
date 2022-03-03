@@ -19,7 +19,7 @@ import NftCard from './NftCard';
 const NB_OF_NFT_PER_CAROUSEL = 10;
 
 const emptyNftList = new Array(NB_OF_NFT_PER_CAROUSEL).fill(null).map((_, index) => ({
-  key: index,
+  key: index.toString(),
   failToLoad: false,
   tokenId: '',
   imageUrl: '',
@@ -31,7 +31,7 @@ const emptyNftList = new Array(NB_OF_NFT_PER_CAROUSEL).fill(null).map((_, index)
 }));
 
 type NftItem = {
-  key: number;
+  key: string;
   failToLoad: boolean;
   tokenId: string;
   tokenURI?: string;
@@ -51,6 +51,7 @@ export default function CollectionSlider({
 }) {
   const theme = useTheme();
   const carouselRef = useRef<Slider | null>(null);
+  const [nbFailedNft, setFailedNft] = useState(0);
 
   const contract = useMemo(() => {
     return connectContract(contractAddr || '', SIMPLIFIED_ERC721_ABI, getRpcUrlByChainId(chainId));
@@ -61,7 +62,7 @@ export default function CollectionSlider({
   const [totalSupply, setTotalSupply] = useState(0);
   const [nbEmptyCarouselItems, setNbEmptyCarouselItems] = useState(0);
   const [NftList, setNftList] = useState<NftItem[]>(emptyNftList);
-  const [filteredNftList, setFilteredNftList] = useState<NftItem[]>([]);
+  // const [filteredNftList, setFilteredNftList] = useState<NftItem[]>([]);
 
   useEffect(() => {
     setChainName(getChainNameByChainId(chainId).toLowerCase());
@@ -90,7 +91,7 @@ export default function CollectionSlider({
             const parsedImageUrl = parseNftUri(data.image || '');
             setNftList((prevList) => {
               prevList[i] = {
-                key: i,
+                key: contractAddr.slice(-4, -1) + tokenId,
                 failToLoad: false,
                 tokenId: tokenId.toString(),
                 tokenURI: tokenUri,
@@ -108,17 +109,19 @@ export default function CollectionSlider({
               prevList[i] = { ...prevList[i], failToLoad: true };
               return [...prevList];
             });
+            setFailedNft((prevNb) => prevNb + 1);
             console.log(`Error token ${tokenId}: `, e);
           });
       }
     }
 
     getNftList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    setFilteredNftList(NftList.filter((nft) => !nft.failToLoad));
-  }, [NftList]);
+  // useEffect(() => {
+  //   setFilteredNftList(NftList.filter((nft) => !nft.failToLoad));
+  // }, [NftList]);
 
   const [nbOfFrames, setNbOfFrames] = useState(4);
   const fourFrames = useMediaQuery(theme.breakpoints.up(800));
@@ -131,9 +134,9 @@ export default function CollectionSlider({
 
   useEffect(() => {
     setNbEmptyCarouselItems(
-      nbOfFrames - filteredNftList.length < 0 ? 0 : nbOfFrames - filteredNftList.length
+      nbOfFrames - (totalSupply - nbFailedNft) < 0 ? 0 : nbOfFrames - (totalSupply - nbFailedNft)
     );
-  }, [filteredNftList, nbOfFrames]);
+  }, [totalSupply, nbFailedNft, nbOfFrames]);
 
   const settings = {
     dots: false,
@@ -208,17 +211,19 @@ export default function CollectionSlider({
         </Link>
       </Stack>
 
-      <Slider ref={carouselRef} {...settings}>
-        {filteredNftList.map((nft) => (
-          <Box key={nft.key + '-' + nft.tokenId}>
-            <NftCard {...nft} />
-          </Box>
-        ))}
+      <Stack sx={{ mx: -2 }}>
+        <Slider ref={carouselRef} {...settings}>
+          {NftList.filter((nft) => !nft.failToLoad).map((nft) => (
+            <Box key={nft.key}>
+              <NftCard {...nft} />
+            </Box>
+          ))}
 
-        {[...Array(nbEmptyCarouselItems)].map((_, index) => (
-          <Box key={index} />
-        ))}
-      </Slider>
+          {[...Array(nbEmptyCarouselItems)].map((_, index) => (
+            <Box key={index} />
+          ))}
+        </Slider>
+      </Stack>
     </Box>
   );
 }

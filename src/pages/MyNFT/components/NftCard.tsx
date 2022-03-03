@@ -1,11 +1,11 @@
 import { Box, Link, Paper, Stack, Typography } from '@mui/material';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BallClipRotateMultiple } from 'react-pure-loaders';
+// To be moved to its place
 import type { NftCardCollectionViewerProps } from '../MyNFT.types';
 
-// To be moved to its place
 export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText('#EAECEF'),
   backgroundColor: '#EAECEF',
@@ -18,7 +18,7 @@ export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   borderRadius: '3px'
 }));
 
-export default function NftCard({
+function NftCard({
   tokenId,
   imageUrl,
   name,
@@ -32,6 +32,10 @@ export default function NftCard({
   useEffect(() => {
     setLoading(true);
   }, [imageUrl]);
+
+  useEffect(() => {
+    console.log(`NftCard: ${tokenId}, name: ${name}, loading: ${loading}`);
+  }, [loading]);
   return (
     <Paper
       sx={{
@@ -74,6 +78,7 @@ export default function NftCard({
               <Box
                 component="img"
                 src={imageUrl}
+                alt="nftcard"
                 onLoad={() => setLoading(false)}
                 sx={{
                   top: 0,
@@ -136,3 +141,5 @@ export default function NftCard({
     </Paper>
   );
 }
+
+export default React.memo(NftCard);
