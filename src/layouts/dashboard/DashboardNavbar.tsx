@@ -3,7 +3,6 @@ import { Icon } from '@iconify/react';
 import { AppBar, Box, Divider, IconButton, Stack, Toolbar } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
-import { MHidden } from '../../components/@material-extend';
 import Logo from '../../components/Logo';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import ConnectWalletPopover from './ConnectWalletPopover';
@@ -51,19 +50,18 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
       }}
     >
       <ToolbarStyle>
+        <IconButton onClick={onOpenSidebar} sx={{ color: 'text.primary' }}>
+          <Icon icon={menu2Fill} />
+        </IconButton>
+
         <Box
           component={RouterLink}
           to="/"
-          sx={{ display: 'inline-flex', pr: { xs: '5px', sm: '15px', lg: '25px' } }}
+          sx={{ display: 'inline-flex', pl: { xs: '5px', sm: '15px', lg: '25px' } }}
         >
           <Logo />
         </Box>
 
-        <MHidden width="xsDown">
-          <IconButton onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
-            <Icon icon={menu2Fill} />
-          </IconButton>
-        </MHidden>
         <Box sx={{ flexGrow: 1 }} />
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
           {/* <LanguagePopover />
