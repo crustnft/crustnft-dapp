@@ -32,6 +32,7 @@ export default function NftCard({
   useEffect(() => {
     setLoading(true);
   }, [imageUrl]);
+
   return (
     <Paper
       sx={{

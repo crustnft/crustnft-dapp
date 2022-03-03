@@ -1,9 +1,5 @@
-// routes
-// components
 import SvgIconStyle from '../../components/SvgIconStyle';
 import { PATH_DASHBOARD } from '../../routes/paths';
-
-// ----------------------------------------------------------------------
 
 const getIcon = (name: string) => (
   <SvgIconStyle src={`./static/icons/navbar/${name}.svg`} sx={{ width: '100%', height: '100%' }} />

@@ -1,15 +1,10 @@
-// material
 import { styled, useTheme } from '@mui/material/styles';
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
-// hooks
+import { Outlet, useLocation } from 'react-router-dom';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
-//
 import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
 import Footer from './Footer';
-
-// ----------------------------------------------------------------------
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 92;
@@ -35,6 +30,9 @@ const MainStyle = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
   const theme = useTheme();
+  const { pathname } = useLocation();
+  const isWallet = pathname.includes('wallet');
+
   const { collapseClick } = useCollapseDrawer();
   const [open, setOpen] = useState(false);
 
@@ -54,7 +52,7 @@ export default function DashboardLayout() {
           ...(collapseClick && {
             ml: '102px'
           }),
-          backgroundColor: '#F2F4FA'
+          ...(!isWallet && { backgroundColor: '#F2F4FA' })
         }}
       >
         <Outlet />
