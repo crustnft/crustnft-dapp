@@ -15,6 +15,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import App from './App';
 import { CollapseDrawerProvider } from './contexts/CollapseDrawerContext';
+import { AuthProvider } from './contexts/JWTContext';
 // contexts
 import { SettingsProvider } from './contexts/SettingsContext';
 import { WalletProvider } from './contexts/WalletContext';
@@ -25,27 +26,28 @@ import './locales/i18n';
 import { store } from './redux/store';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-// ----------------------------------------------------------------------
 
 ReactDOM.render(
   <StrictMode>
-    <HelmetProvider>
-      <ReduxProvider store={store}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <WalletProvider>
-            <Web3ContextProvider>
-              <SettingsProvider>
-                <CollapseDrawerProvider>
-                  <Router>
-                    <App />
-                  </Router>
-                </CollapseDrawerProvider>
-              </SettingsProvider>
-            </Web3ContextProvider>
-          </WalletProvider>
-        </LocalizationProvider>
-      </ReduxProvider>
-    </HelmetProvider>
+    <AuthProvider>
+      <HelmetProvider>
+        <ReduxProvider store={store}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <WalletProvider>
+              <Web3ContextProvider>
+                <SettingsProvider>
+                  <CollapseDrawerProvider>
+                    <Router>
+                      <App />
+                    </Router>
+                  </CollapseDrawerProvider>
+                </SettingsProvider>
+              </Web3ContextProvider>
+            </WalletProvider>
+          </LocalizationProvider>
+        </ReduxProvider>
+      </HelmetProvider>
+    </AuthProvider>
   </StrictMode>,
   document.getElementById('root')
 );

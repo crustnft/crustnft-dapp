@@ -1,10 +1,12 @@
-import { Box, Container, Grid } from '@mui/material';
+import { Box, Button, Container, Grid } from '@mui/material';
+import useAuth from 'hooks/useAuth';
 import Page from '../../components/Page';
 import AccountBalanceCard from './components/AccountBalanceCard';
 import CallAction from './components/CallAction';
 import MyCollections from './components/MyCollections';
 
 export default function MyNFT() {
+  const { challengeLogin, login } = useAuth();
   return (
     <Page title="My NFTs">
       <Container maxWidth="lg">
@@ -16,6 +18,22 @@ export default function MyNFT() {
             <AccountBalanceCard />
           </Grid>
         </Grid>
+        <Button
+          onClick={() => {
+            challengeLogin('0xe77E4cCa55e77bf2cbd4833c5982363217e1B695').then((res: string) => {
+              console.log(res.split('\n').at(-1));
+            });
+          }}
+        >
+          Click to console
+        </Button>
+        <Button
+          onClick={() => {
+            login('0xe77E4cCa55e77bf2cbd4833c5982363217e1B695', 'signe');
+          }}
+        >
+          Login
+        </Button>
         <Box>
           <MyCollections />
         </Box>
