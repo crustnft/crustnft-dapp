@@ -1,4 +1,5 @@
 // routes
+import { useEffect } from 'react';
 import { ProgressBarStyle } from './components/LoadingScreen';
 import NotistackProvider from './components/NotistackProvider';
 // components
@@ -11,6 +12,11 @@ import ThemeConfig from './theme';
 import GlobalStyles from './theme/globalStyles';
 
 export default function App() {
+  useEffect(() => {
+    window.process = {
+      ...window.process
+    };
+  }, []);
   return (
     <ThemeConfig>
       <ThemePrimaryColor>
