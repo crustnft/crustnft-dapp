@@ -117,6 +117,19 @@ function AuthProvider({ children }: AuthProviderProps) {
     // initialize();
   }, []);
 
+  const challengeLogin = async (account: string): Promise<string | undefined> => {
+    console.log('challengeLogin', account);
+    const response = await axios
+      .post(`${baseUrl}/api/v1/authentication/challenge-login`, { account })
+      .catch((e) => {
+        console.log('error challengeLogin', e.response);
+        return;
+      });
+    console.log('reus', response?.data?.data.split('\n').at(-1));
+    console.log('response', response?.data);
+    return response?.data?.data.split('\n').at(-1);
+  };
+
   const login = async (account: string, signature: string) => {
     const response = await axios
       .post(`${baseUrl}/api/v1/authentication/login`, {
@@ -138,17 +151,6 @@ function AuthProvider({ children }: AuthProviderProps) {
     //     user
     //   }
     // });
-  };
-
-  const challengeLogin = async (account: string) => {
-    const response = await axios
-      .post(`${baseUrl}/api/v1/authentication/challenge-login`, { account })
-      .catch((e) => {
-        console.log('error', e.response);
-        return;
-      });
-
-    return response?.data?.data;
   };
 
   const register = async (email: string, password: string, firstName: string, lastName: string) => {

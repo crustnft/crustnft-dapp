@@ -23,7 +23,7 @@ export type JWTContextType = {
   user: AuthUser;
   method: 'jwt';
   login: (email: string, password: string) => Promise<void>;
-  challengeLogin: (account: string) => Promise<string>;
+  challengeLogin: (account: string) => Promise<string | undefined>;
   register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
   logout: () => Promise<void>;
 };
