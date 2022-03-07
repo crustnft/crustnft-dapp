@@ -1,11 +1,11 @@
-import { Icon } from '@iconify/react';
 import arrowLeftFill from '@iconify/icons-eva/arrow-left-fill';
 import arrowRightFill from '@iconify/icons-eva/arrow-right-fill';
 import roundKeyboardArrowLeft from '@iconify/icons-ic/round-keyboard-arrow-left';
 import roundKeyboardArrowRight from '@iconify/icons-ic/round-keyboard-arrow-right';
-// material
-import { useTheme, styled } from '@mui/material/styles';
+import { Icon } from '@iconify/react';
 import { Box, BoxProps } from '@mui/material';
+// material
+import { styled, useTheme } from '@mui/material/styles';
 //
 import { MIconButton } from '../../@material-extend';
 
@@ -41,7 +41,7 @@ const ArrowStyle = styled(MIconButton)(({ theme }) => ({
   justifyContent: 'center',
   color: theme.palette.common.white,
   background: theme.palette.grey[900],
-  borderRadius: theme.shape.borderRadiusSm,
+  borderRadius: theme.shape.borderRadius,
   transition: theme.transitions.create('opacity'),
   '&:hover': {
     opacity: 1,

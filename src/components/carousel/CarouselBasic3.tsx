@@ -1,11 +1,11 @@
-import Slider from 'react-slick';
-import { useRef } from 'react';
-// material
-import { useTheme, styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
+// material
+import { styled, useTheme } from '@mui/material/styles';
+import { useRef } from 'react';
+import Slider from 'react-slick';
 // utils
 import mockData from '../../utils/mock-data'; //
-import { CarouselControlsPaging2, CarouselControlsArrowsBasic2 } from './controls';
+import { CarouselControlsArrowsBasic2, CarouselControlsPaging2 } from './controls';
 
 // ----------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ const RootStyle = styled(Box)(({ theme }) => ({
   position: 'relative',
   '& .slick-list': {
     boxShadow: theme.customShadows.z16,
-    borderRadius: theme.shape.borderRadiusMd
+    borderRadius: theme.shape.borderRadius
   }
 }));
 
