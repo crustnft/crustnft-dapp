@@ -27,8 +27,11 @@ const retryWrapper = (axios: AxiosInstance, options: any) => {
 
 export async function postContract(postContractObj: PostContractObj) {
   const instance = Axios.create();
-  retryWrapper(instance, { retry_time: 50 });
-  return instance.post(CONTRACT_API_V1, postContractObj);
+  retryWrapper(instance, { retry_time: 5 });
+  return instance.post(CONTRACT_API_V1, {
+    ...postContractObj,
+    contractContent: 'Shorten Contract Content'
+  });
 }
 
 export async function getContracts(pageSize: number) {
