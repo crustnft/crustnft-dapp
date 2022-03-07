@@ -14,7 +14,6 @@ import 'slick-carousel/slick/slick-theme.css';
 // slick-carousel
 import 'slick-carousel/slick/slick.css';
 import App from './App';
-import { CollapseDrawerProvider } from './contexts/CollapseDrawerContext';
 import { AuthProvider } from './contexts/JWTContext';
 // contexts
 import { SettingsProvider } from './contexts/SettingsContext';
@@ -36,11 +35,9 @@ ReactDOM.render(
             <WalletProvider>
               <Web3ContextProvider>
                 <SettingsProvider>
-                  <CollapseDrawerProvider>
-                    <Router>
-                      <App />
-                    </Router>
-                  </CollapseDrawerProvider>
+                  <Router>
+                    <App />
+                  </Router>
                 </SettingsProvider>
               </Web3ContextProvider>
             </WalletProvider>

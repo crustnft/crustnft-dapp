@@ -1,7 +1,6 @@
 import { styled, useTheme } from '@mui/material/styles';
 import { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
 import Footer from './Footer';
@@ -33,7 +32,6 @@ export default function DashboardLayout() {
   const { pathname } = useLocation();
   const isWallet = pathname.includes('wallet');
 
-  const { collapseClick } = useCollapseDrawer();
   const [open, setOpen] = useState(false);
 
   const onOpenSidebar = () => {
@@ -49,9 +47,7 @@ export default function DashboardLayout() {
           transition: theme.transitions.create('margin', {
             duration: theme.transitions.duration.complex
           }),
-          ...(collapseClick && {
-            ml: '102px'
-          }),
+
           ...(!isWallet && { backgroundColor: '#F2F4FA' })
         }}
       >
