@@ -14,16 +14,15 @@ export type AuthUser = null | Record<string, any>;
 export type AuthState = {
   isAuthenticated: boolean;
   isInitialized: boolean;
-  user: AuthUser;
+  accessToken: string;
 };
 
 export type JWTContextType = {
   isAuthenticated: boolean;
   isInitialized: boolean;
-  user: AuthUser;
+  accessToken: string;
   method: 'jwt';
   login: (email: string, password: string) => Promise<void>;
   challengeLogin: (account: string) => Promise<string | undefined>;
-  register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
   logout: () => Promise<void>;
 };

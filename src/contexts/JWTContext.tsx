@@ -1,28 +1,24 @@
 import axios from 'axios';
 import { CRUSTNFT_EXPLORE_API_V1 } from 'configs/crustnft-explore-api';
 import { createContext, ReactNode, useEffect, useReducer } from 'react';
-import { ActionMap, AuthState, AuthUser, JWTContextType } from '../@types/auth';
+import { ActionMap, AuthState, JWTContextType } from '../@types/auth';
 import { isValidToken, setSession } from '../utils/jwt';
 
 enum Types {
   Initial = 'INITIALIZE',
   Login = 'LOGIN',
-  Logout = 'LOGOUT',
-  Register = 'REGISTER'
+  Logout = 'LOGOUT'
 }
 
 type JWTAuthPayload = {
   [Types.Initial]: {
     isAuthenticated: boolean;
-    user: AuthUser;
+    accessToken: string;
   };
   [Types.Login]: {
-    user: AuthUser;
+    accessToken: string;
   };
   [Types.Logout]: undefined;
-  [Types.Register]: {
-    user: AuthUser;
-  };
 };
 
 export type JWTActions = ActionMap<JWTAuthPayload>[keyof ActionMap<JWTAuthPayload>];
@@ -30,7 +26,7 @@ export type JWTActions = ActionMap<JWTAuthPayload>[keyof ActionMap<JWTAuthPayloa
 const initialState: AuthState = {
   isAuthenticated: false,
   isInitialized: false,
-  user: null
+  accessToken: ''
 };
 
 const JWTReducer = (state: AuthState, action: JWTActions) => {
@@ -39,26 +35,21 @@ const JWTReducer = (state: AuthState, action: JWTActions) => {
       return {
         isAuthenticated: action.payload.isAuthenticated,
         isInitialized: true,
-        user: action.payload.user
+        accessToken: action.payload.accessToken
       };
     case 'LOGIN':
       return {
         ...state,
         isAuthenticated: true,
-        user: action.payload.user
+        accessToken: action.payload.accessToken
       };
     case 'LOGOUT':
       return {
         ...state,
         isAuthenticated: false,
-        user: null
+        accessToken: ''
       };
-    case 'REGISTER':
-      return {
-        ...state,
-        isAuthenticated: true,
-        user: action.payload.user
-      };
+
     default:
       return state;
   }
@@ -81,24 +72,24 @@ function AuthProvider({ children }: AuthProviderProps) {
 
         if (accessToken && isValidToken(accessToken)) {
           console.log('accessToken is valid');
-          setSession(accessToken);
+          setSession(accessToken); // TODO: actually not needed, can implement the function to observe when token is expired inside the setSession()
 
           // const response = await axios.get('/api/account/my-account');
           // const { user } = response.data;
 
-          // dispatch({
-          //   type: Types.Initial,
-          //   payload: {
-          //     isAuthenticated: true,
-          //     user
-          //   }
-          // });
+          dispatch({
+            type: Types.Initial,
+            payload: {
+              isAuthenticated: true,
+              accessToken: ''
+            }
+          });
         } else {
           dispatch({
             type: Types.Initial,
             payload: {
               isAuthenticated: false,
-              user: null
+              accessToken: ''
             }
           });
         }
@@ -108,7 +99,7 @@ function AuthProvider({ children }: AuthProviderProps) {
           type: Types.Initial,
           payload: {
             isAuthenticated: false,
-            user: null
+            accessToken: ''
           }
         });
       }
@@ -145,29 +136,11 @@ function AuthProvider({ children }: AuthProviderProps) {
     dispatch({
       type: Types.Login,
       payload: {
-        user: null
+        accessToken: ''
       }
     });
 
     return response?.data?.data;
-  };
-
-  const register = async (email: string, password: string, firstName: string, lastName: string) => {
-    const response = await axios.post('/api/account/register', {
-      email,
-      password,
-      firstName,
-      lastName
-    });
-    const { accessToken, user } = response.data;
-
-    window.localStorage.setItem('accessToken', accessToken);
-    dispatch({
-      type: Types.Register,
-      payload: {
-        user
-      }
-    });
   };
 
   const logout = async () => {
@@ -182,8 +155,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         method: 'jwt',
         login,
         challengeLogin,
-        logout,
-        register
+        logout
       }}
     >
       {children}
