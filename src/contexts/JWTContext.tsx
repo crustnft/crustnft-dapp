@@ -74,14 +74,11 @@ function AuthProvider({ children }: AuthProviderProps) {
           console.log('accessToken is valid');
           setSession(accessToken); // TODO: actually not needed, can implement the function to observe when token is expired inside the setSession()
 
-          // const response = await axios.get('/api/account/my-account');
-          // const { user } = response.data;
-
           dispatch({
             type: Types.Initial,
             payload: {
               isAuthenticated: true,
-              accessToken: ''
+              accessToken: accessToken
             }
           });
         } else {
@@ -109,7 +106,6 @@ function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   const challengeLogin = async (account: string): Promise<string | undefined> => {
-    console.log('challengeLogin', account);
     const response = await axios
       .post(`${CRUSTNFT_EXPLORE_API_V1}/authentication/challenge-login`, { account })
       .catch((e) => {
@@ -131,16 +127,16 @@ function AuthProvider({ children }: AuthProviderProps) {
         return;
       });
 
-    setSession(response?.data?.data);
+    const accessToken = response?.data?.data;
+    if (!accessToken) return;
 
+    setSession(accessToken);
     dispatch({
       type: Types.Login,
       payload: {
-        accessToken: ''
+        accessToken
       }
     });
-
-    return response?.data?.data;
   };
 
   const logout = async () => {
