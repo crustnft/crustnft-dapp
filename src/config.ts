@@ -60,7 +60,7 @@ export const ICON = {
 export const defaultSettings: SettingsValueProps = {
   themeMode: 'light',
   themeDirection: 'ltr',
-  themeColorPresets: 'default',
+  themeColorPresets: 'blue',
   themeLayout: 'horizontal',
   themeStretch: false
 };
