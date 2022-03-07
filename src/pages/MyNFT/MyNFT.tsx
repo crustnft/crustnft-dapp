@@ -50,7 +50,6 @@ export default function MyNFT() {
           onClick={async () => {
             try {
               if (!account) return;
-
               const nounce = await challengeLogin(account);
               console.log('nounce', nounce);
 
@@ -60,7 +59,7 @@ export default function MyNFT() {
 
               const signature = await signer?.signMessage(nounce);
               if (!signature) return;
-              const accessToken = login(account, signature);
+              const accessToken = await login(account, signature);
               console.log(accessToken);
             } catch (e) {
               console.log(e);

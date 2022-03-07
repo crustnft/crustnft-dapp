@@ -53,14 +53,12 @@ const JWTReducer = (state: AuthState, action: JWTActions) => {
         isAuthenticated: false,
         user: null
       };
-
     case 'REGISTER':
       return {
         ...state,
         isAuthenticated: true,
         user: action.payload.user
       };
-
     default:
       return state;
   }
@@ -79,20 +77,22 @@ function AuthProvider({ children }: AuthProviderProps) {
     const initialize = async () => {
       try {
         const accessToken = window.localStorage.getItem('accessToken');
+        console.log('init access token');
 
         if (accessToken && isValidToken(accessToken)) {
+          console.log('accessToken is valid');
           setSession(accessToken);
 
-          const response = await axios.get('/api/account/my-account');
-          const { user } = response.data;
+          // const response = await axios.get('/api/account/my-account');
+          // const { user } = response.data;
 
-          dispatch({
-            type: Types.Initial,
-            payload: {
-              isAuthenticated: true,
-              user
-            }
-          });
+          // dispatch({
+          //   type: Types.Initial,
+          //   payload: {
+          //     isAuthenticated: true,
+          //     user
+          //   }
+          // });
         } else {
           dispatch({
             type: Types.Initial,
@@ -114,7 +114,7 @@ function AuthProvider({ children }: AuthProviderProps) {
       }
     };
 
-    // initialize();
+    initialize();
   }, []);
 
   const challengeLogin = async (account: string): Promise<string | undefined> => {
@@ -125,8 +125,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         console.log('error challengeLogin', e.response);
         return;
       });
-    console.log('reus', response?.data?.data.split('\n').at(-1));
-    console.log('response', response?.data);
+
     return response?.data?.data.split('\n').at(-1);
   };
 
@@ -137,20 +136,20 @@ function AuthProvider({ children }: AuthProviderProps) {
         signature
       })
       .catch((err) => {
-        console.log('error', err.response);
+        console.log('Error login', err.response);
         return;
       });
 
-    return response?.data?.data;
-    //const { accessToken, user } = response.data;
+    setSession(response?.data?.data);
 
-    // setSession(accessToken);
-    // dispatch({
-    //   type: Types.Login,
-    //   payload: {
-    //     user
-    //   }
-    // });
+    dispatch({
+      type: Types.Login,
+      payload: {
+        user: null
+      }
+    });
+
+    return response?.data?.data;
   };
 
   const register = async (email: string, password: string, firstName: string, lastName: string) => {
