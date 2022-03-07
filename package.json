@@ -6,7 +6,6 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "preinstall": "npx npm-force-resolutions",
     "buildDev": "CI=false GENERATE_SOURCEMAP=false REACT_APP_STAGING=true react-scripts build",
     "build": "CI=false GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
@@ -124,7 +123,7 @@
     "react-redux": "^7.2.5",
     "react-router": "^6.0.0-beta.4",
     "react-router-dom": "^6.0.0-beta.4",
-    "react-scripts": "4.0.3",
+    "react-scripts": "4.0.1",
     "react-scroll": "^1.8.4",
     "react-slick": "^0.28.0",
     "react-spring": "^9.2.4",
@@ -154,7 +153,6 @@
   },
   "devDependencies": {
     "@arkweid/lefthook": "^0.7.7",
-    "react-error-overlay": "6.0.9",
     "@babel/core": "^7.15.5",
     "@babel/eslint-parser": "^7.15.4",
     "@types/autosuggest-highlight": "^3.1.1",
@@ -197,8 +195,5 @@
     "eslint-plugin-react": "^7.25.2",
     "eslint-plugin-react-hooks": "4.2.0",
     "prettier": "^2.4.1"
-  },
-  "resolutions": {
-    "react-error-overlay": "6.0.9"
   }
 }
