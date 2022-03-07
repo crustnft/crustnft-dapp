@@ -21,7 +21,7 @@ Identicons.svgPath = './static/identicons.min.svg';
 // const DRAWER_WIDTH = 280;
 // const COLLAPSE_WIDTH = 102;
 const DRAWER_WIDTH = 280;
-const COLLAPSE_WIDTH = 0;
+// const COLLAPSE_WIDTH = 0;
 
 const AccountStyle = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -38,9 +38,9 @@ type DashboardSidebarProps = {
 
 const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }: DashboardSidebarProps) => {
   const { pathname } = useLocation();
-  const { chain: selectedChain, selectedWallet } = useWallet();
+  const { chain: selectedChain } = useWallet();
   const [network, setNetwork] = useState<Chain>(selectedChain);
-  const { active: walletIsConnected, activate, account, deactivate, connectedChainId } = useWeb3();
+  const { active: walletIsConnected, account, connectedChainId } = useWeb3();
   useEffect(() => {
     const found = SUPPORTED_CHAINS.find((chain) => chain.chainId === connectedChainId);
     if (found) {
