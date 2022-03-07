@@ -1,8 +1,8 @@
 import axios from 'axios';
+import { CRUSTNFT_EXPLORE_API_V1 } from 'configs/crustnft-explore-api';
 import { createContext, ReactNode, useEffect, useReducer } from 'react';
 import { ActionMap, AuthState, AuthUser, JWTContextType } from '../@types/auth';
 import { isValidToken, setSession } from '../utils/jwt';
-const baseUrl = 'https://stage-explore-api-632jevcdbq-df.a.run.app';
 
 enum Types {
   Initial = 'INITIALIZE',
@@ -120,7 +120,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   const challengeLogin = async (account: string): Promise<string | undefined> => {
     console.log('challengeLogin', account);
     const response = await axios
-      .post(`${baseUrl}/api/v1/authentication/challenge-login`, { account })
+      .post(`${CRUSTNFT_EXPLORE_API_V1}/authentication/challenge-login`, { account })
       .catch((e) => {
         console.log('error challengeLogin', e.response);
         return;
@@ -131,7 +131,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   const login = async (account: string, signature: string) => {
     const response = await axios
-      .post(`${baseUrl}/api/v1/authentication/login`, {
+      .post(`${CRUSTNFT_EXPLORE_API_V1}/authentication/login`, {
         account,
         signature
       })
