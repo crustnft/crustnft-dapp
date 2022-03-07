@@ -4,7 +4,6 @@ import { AppBar, Box, Divider, IconButton, Stack, Toolbar } from '@mui/material'
 import { alpha, styled } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import Logo from '../../components/Logo';
-import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import ConnectWalletPopover from './ConnectWalletPopover';
 import NetworkPopover from './NetworkPopover';
 
@@ -19,9 +18,6 @@ const RootStyle = styled(AppBar)(({ theme }) => ({
   backdropFilter: 'blur(6px)',
   WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
   backgroundColor: alpha(theme.palette.background.default, 1)
-  // [theme.breakpoints.up('lg')]: {
-  //   width: `calc(100% - ${DRAWER_WIDTH + 1}px)`
-  // }
 }));
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
@@ -32,23 +28,13 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
   }
 }));
 
-// ----------------------------------------------------------------------
-
 type DashboardNavbarProps = {
   onOpenSidebar: VoidFunction;
 };
 
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
-  const { isCollapse } = useCollapseDrawer();
-
   return (
-    <RootStyle
-      sx={{
-        ...(isCollapse && {
-          width: { lg: `calc(100% - ${COLLAPSE_WIDTH}px)` }
-        })
-      }}
-    >
+    <RootStyle>
       <ToolbarStyle>
         <IconButton onClick={onOpenSidebar} sx={{ color: 'text.primary' }}>
           <Icon icon={menu2Fill} />

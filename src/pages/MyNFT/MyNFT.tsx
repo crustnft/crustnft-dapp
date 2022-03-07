@@ -16,6 +16,7 @@ export default function MyNFT() {
             <AccountBalanceCard />
           </Grid>
         </Grid>
+
         <Box>
           <MyCollections />
         </Box>

@@ -21,7 +21,7 @@ export async function* deploySmartContract(
     const txReceipt = await deployingContract.deployTransaction.wait(1);
     console.log('TransactionReceipt: ', txReceipt);
     return txReceipt;
-  } catch (e) {
+  } catch (e: any) {
     if (e.reason === 'repriced') {
       return e.receipt;
     } else {
