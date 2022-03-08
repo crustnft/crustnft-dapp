@@ -92,12 +92,14 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           <Button
             variant="contained"
             startIcon={<Iconify icon="bx:plus" />}
-            sx={{
-              backgroundColor: '#3772FF',
-              color: '#ffffff',
-              borderRadius: '32px',
-              '&.MuiButton-startIcon': { mr: 0 }
-            }}
+            sx={[
+              {
+                backgroundColor: '#3772FF',
+                color: '#ffffff',
+                borderRadius: '32px'
+              },
+              { '& .MuiButton-startIcon': { mr: 1 } }
+            ]}
           >
             Create
           </Button>
