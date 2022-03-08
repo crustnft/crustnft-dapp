@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import {
   AppBar,
   Box,
+  Button,
   Divider,
   IconButton,
   Stack,
@@ -12,6 +13,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
+import Iconify from 'components/Iconify';
 import { Link as RouterLink } from 'react-router-dom';
 import LogoLong from '../../components/LogoLong';
 import ConnectWalletPopover from './ConnectWalletPopover';
@@ -87,6 +89,18 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
 
         <Box sx={{ flexGrow: 1 }} />
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
+          <Button
+            variant="contained"
+            startIcon={<Iconify icon="bx:plus" />}
+            sx={{
+              backgroundColor: '#3772FF',
+              color: '#ffffff',
+              borderRadius: '32px',
+              '&.MuiButton-startIcon': { mr: 0 }
+            }}
+          >
+            Create
+          </Button>
           <ConnectWalletPopover />
           <Divider orientation="vertical" flexItem />
           <NetworkPopover />
