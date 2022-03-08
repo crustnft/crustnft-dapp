@@ -2,6 +2,7 @@ import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 import { Icon } from '@iconify/react';
 import {
   AppBar,
+  Avatar,
   Box,
   Button,
   Divider,
@@ -11,6 +12,7 @@ import {
   ToolbarProps,
   Typography
 } from '@mui/material';
+import ButtonBase from '@mui/material/ButtonBase';
 import { styled } from '@mui/material/styles';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Iconify from 'components/Iconify';
@@ -98,11 +100,37 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
                 color: '#ffffff',
                 borderRadius: '32px'
               },
-              { '& .MuiButton-startIcon': { mr: 1 } }
+              { '& .MuiButton-startIcon': { mr: 0.5 } }
             ]}
           >
             Create
           </Button>
+
+          <ButtonBase>
+            <Box
+              sx={{
+                border: '2px solid #00000033',
+                borderRadius: '20px',
+                height: '100%',
+                padding: '2px'
+              }}
+            >
+              <Stack direction="row" alignItems="center" sx={{ height: '100%' }} spacing={1}>
+                <Avatar
+                  alt="Dog Avatar"
+                  src="https://avatarfiles.alphacoders.com/865/thumb-86573.jpg"
+                  sx={{ width: 28, height: 28 }}
+                />
+                <Typography color="#000000" variant="subtitle2" sx={{ lineHeight: 0 }}>
+                  0.000
+                </Typography>
+
+                <Typography variant="subtitle2" color="#45B26B" sx={{ lineHeight: 0 }}>
+                  RIN
+                </Typography>
+              </Stack>
+            </Box>
+          </ButtonBase>
           <ConnectWalletPopover />
           <Divider orientation="vertical" flexItem />
           <NetworkPopover />
