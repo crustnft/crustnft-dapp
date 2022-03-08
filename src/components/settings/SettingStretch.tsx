@@ -1,10 +1,10 @@
-import { Icon } from '@iconify/react';
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
-// material
-import { Paper, CardActionArea, Stack } from '@mui/material';
+import { Icon } from '@iconify/react';
 // hooks
 import useSettings from '../../hooks/useSettings';
+// material
+import { CardActionArea, Paper, Stack } from '../@c-components';
 
 // ----------------------------------------------------------------------
 
