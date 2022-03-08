@@ -1,15 +1,15 @@
-import Slider from 'react-slick';
-import { useRef } from 'react';
-import { Icon } from '@iconify/react';
 import moreHorizontalFill from '@iconify/icons-eva/more-horizontal-fill';
+import { Icon } from '@iconify/react';
 // material
-import { alpha, useTheme, styled } from '@mui/material/styles';
-import { Box, Card, Typography } from '@mui/material';
+import { alpha, styled, useTheme } from '@mui/material/styles';
+import { useRef } from 'react';
+import Slider from 'react-slick';
 // utils
 import mockData from '../../utils/mock-data'; //
-import { CarouselControlsArrowsBasic2 } from './controls';
+import { Box, Card, Typography } from '../@c-components';
 //
 import { MIconButton } from '../@material-extend';
+import { CarouselControlsArrowsBasic2 } from './controls';
 
 // ----------------------------------------------------------------------
 

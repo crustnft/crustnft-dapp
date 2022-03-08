@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
 // material
-import { Box, BoxProps } from '@mui/material';
+import { motion } from 'framer-motion';
+import { Box, BoxProps } from '../@c-components';
 //
 import { varWrapEnter } from './variants';
 

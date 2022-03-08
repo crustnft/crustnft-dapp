@@ -1,4 +1,4 @@
-import { Card, Stack, Typography } from '@mui/material';
+import { Card, Stack, Typography } from '../../../components/@c-components';
 import type { PropertyProps } from '../AssetViewer.types';
 
 export default function Property({ propType, name }: PropertyProps) {

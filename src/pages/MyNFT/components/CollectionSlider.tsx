@@ -1,4 +1,4 @@
-import { Box, Button, CardHeader, Link, Stack, useMediaQuery } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -13,6 +13,7 @@ import {
 } from 'services/smartContract/evmCompatible';
 import { getChainNameByChainId, getRpcUrlByChainId } from 'utils/blockchainHandlers';
 import { parseNftUri } from 'utils/tokenUriHandlers';
+import { Box, Button, CardHeader, Link, Stack } from '../../../components/@c-components';
 import CarouselArrows from './CarouselArrows';
 import NftCard from './NftCard';
 

@@ -1,7 +1,7 @@
-import { Container, Stack } from '@mui/material';
 import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
 import { useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { Container, Stack } from '../../components/@c-components';
 import Page from '../../components/Page';
 import { getBoard, persistCard, persistColumn } from '../../redux/slices/imagesGCS';
 import { useDispatch, useSelector } from '../../redux/store';

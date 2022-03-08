@@ -1,4 +1,3 @@
-import { Box, Container } from '@mui/material';
 import Identicons from '@nimiq/identicons';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { useEffect, useMemo, useState } from 'react';
@@ -7,6 +6,7 @@ import { getDataFromTokenUri } from 'services/http';
 import { connectContract, getOwner, getTokenURI } from 'services/smartContract/evmCompatible';
 import { getRpcUrlByNetworkName } from 'utils/blockchainHandlers';
 import { parseNftUri } from 'utils/tokenUriHandlers';
+import { Box, Container } from '../../components/@c-components';
 import Page from '../../components/Page';
 import type { AssetAndOwnerType } from './AssetViewer.types';
 import { Asset } from './components';

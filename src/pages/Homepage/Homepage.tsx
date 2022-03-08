@@ -1,15 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  colors,
-  Container,
-  Divider,
-  Grid,
-  Typography
-} from '@mui/material';
+import { colors } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useState } from 'react';
@@ -17,6 +6,17 @@ import CountUp from 'react-countup';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Typed from 'react-typed';
 import VisibilitySensor from 'react-visibility-sensor';
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Divider,
+  Grid,
+  Typography
+} from '../../components/@c-components';
 import Page from '../../components/Page';
 
 const mock = [

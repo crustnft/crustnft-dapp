@@ -1,8 +1,8 @@
-import { motion } from 'framer-motion';
 // material
-import { Box, BoxProps } from '@mui/material';
+import { motion } from 'framer-motion';
+import { Box, BoxProps } from '../@c-components';
 //
-import { varSmallClick, varMediumClick } from './variants';
+import { varMediumClick, varSmallClick } from './variants';
 
 // ----------------------------------------------------------------------
 

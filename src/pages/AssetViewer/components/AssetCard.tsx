@@ -1,6 +1,6 @@
-import { Box, Card, Stack } from '@mui/material';
 import { useState } from 'react';
 import { LineScalePulseOutRapid } from 'react-pure-loaders';
+import { Box, Card, Stack } from '../../../components/@c-components';
 import { AssetAndOwnerType } from '../AssetViewer.types';
 
 export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOwnerType }) {

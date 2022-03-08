@@ -1,3 +1,8 @@
+import Iconify from 'components/Iconify';
+import LightTooltip from 'components/LightTooltip';
+import useWallet from 'hooks/useWallet';
+import useWeb3 from 'hooks/useWeb3';
+import { useContext } from 'react';
 import {
   Box,
   Grid,
@@ -10,12 +15,7 @@ import {
   StepLabel,
   Stepper,
   Typography
-} from '@mui/material';
-import Iconify from 'components/Iconify';
-import LightTooltip from 'components/LightTooltip';
-import useWallet from 'hooks/useWallet';
-import useWeb3 from 'hooks/useWeb3';
-import { useContext } from 'react';
+} from '../../../components/@c-components';
 import { DoingIcon, ErrorIcon, SuccessIcon } from '../../../components/StepperIcons';
 import { NftCreationStatusContext } from './NftForm';
 

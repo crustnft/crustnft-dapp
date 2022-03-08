@@ -1,3 +1,8 @@
+import Iconify from 'components/Iconify';
+import Scrollbar from 'components/Scrollbar';
+import useWallet from 'hooks/useWallet';
+import useWeb3 from 'hooks/useWeb3';
+import { useRef, useState } from 'react';
 import {
   Box,
   Button,
@@ -6,12 +11,7 @@ import {
   MenuItem,
   Stack,
   Typography
-} from '@mui/material';
-import Iconify from 'components/Iconify';
-import Scrollbar from 'components/Scrollbar';
-import useWallet from 'hooks/useWallet';
-import useWeb3 from 'hooks/useWeb3';
-import { useRef, useState } from 'react';
+} from '../../components/@c-components';
 import MenuPopover from '../../components/MenuPopover';
 import { SUPPORTED_CHAINS } from '../../constants/chains';
 const ITEM_HEIGHT = 50;

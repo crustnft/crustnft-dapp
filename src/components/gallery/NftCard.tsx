@@ -1,11 +1,10 @@
-import { useState } from 'react';
-import { Typography, Box, Paper, Stack, Link } from '@mui/material';
-import { BallClipRotateMultiple } from 'react-pure-loaders';
 import { Icon } from '@iconify/react';
-import { contractAddress } from 'utils/contractAddress';
-import { useTheme } from '@mui/material/styles';
-import { styled } from '@mui/material/styles';
 import Button, { ButtonProps } from '@mui/material/Button';
+import { styled, useTheme } from '@mui/material/styles';
+import { useState } from 'react';
+import { BallClipRotateMultiple } from 'react-pure-loaders';
+import { contractAddress } from 'utils/contractAddress';
+import { Box, Link, Paper, Stack, Typography } from '../@c-components';
 
 // To be moved to its place
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({

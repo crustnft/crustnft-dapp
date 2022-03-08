@@ -1,15 +1,20 @@
-import { Icon } from '@iconify/react';
-import twitterFill from '@iconify/icons-eva/twitter-fill';
-import linkedinFill from '@iconify/icons-eva/linkedin-fill';
-import facebookFill from '@iconify/icons-eva/facebook-fill';
 import instagramFilled from '@iconify/icons-ant-design/instagram-filled';
+import facebookFill from '@iconify/icons-eva/facebook-fill';
+import linkedinFill from '@iconify/icons-eva/linkedin-fill';
+import twitterFill from '@iconify/icons-eva/twitter-fill';
+import { Icon } from '@iconify/react';
 // material
-import { alpha, styled } from '@mui/material/styles';
-import { Box, Card, Grid, Avatar, Tooltip, Divider, Typography, IconButton } from '@mui/material';
-// utils
-import { fShortenNumber } from 'utils/formatNumber';
+import { styled } from '@mui/material/styles';
 //
 import SvgIconStyle from 'components/SvgIconStyle';
+import {
+  Avatar,
+  Box,
+  Card,
+  IconButton,
+  Tooltip,
+  Typography
+} from '../../../components/@c-components';
 
 const SOCIALS = [
   {

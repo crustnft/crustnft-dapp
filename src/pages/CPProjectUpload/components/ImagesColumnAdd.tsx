@@ -1,5 +1,5 @@
-import { Button, ClickAwayListener, OutlinedInput, Paper } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
+import { Button, ClickAwayListener, OutlinedInput, Paper } from '../../../components/@c-components';
 import Iconify from '../../../components/Iconify';
 import { createColumn } from '../../../redux/slices/imagesGCS';
 import { useDispatch } from '../../../redux/store';
