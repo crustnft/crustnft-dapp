@@ -9,11 +9,11 @@ import {
   Button,
   Dialog,
   IconButton,
-  Slide,
   Toolbar,
   Tooltip,
   Typography
 } from '@mui/material';
+import Slide from '@mui/material/Slide';
 import { useTheme } from '@mui/material/styles';
 import { TransitionProps } from '@mui/material/transitions';
 import { getContract } from 'constants/contract';
@@ -21,14 +21,15 @@ import { forwardRef, useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { androidstudio } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 
-const Transition = forwardRef(
-  (
-    props: TransitionProps & {
-      children?: React.ReactElement;
-    },
-    ref: React.Ref<unknown>
-  ) => <Slide direction="up" ref={ref} {...props} />
-);
+const Transition = forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement;
+  },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 export default function SmartContractDialogs() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);

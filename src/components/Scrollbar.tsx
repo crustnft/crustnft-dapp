@@ -1,13 +1,11 @@
-import SimpleBarReact, { Props } from 'simplebar-react';
-// material
+import { Box, SxProps } from '@mui/material';
+// @mui
 import { alpha, styled } from '@mui/material/styles';
-import { Box, BoxProps } from '@mui/material';
-import { SxProps } from '@mui/system';
-import React from 'react';
+import SimpleBarReact, { Props as ScrollbarProps } from 'simplebar-react';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('div')(({ theme }) => ({
+const RootStyle = styled('div')(() => ({
   flexGrow: 1,
   height: '100%',
   overflow: 'hidden'
@@ -36,13 +34,14 @@ const SimpleBarStyle = styled(SimpleBarReact)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-interface SxRootProps {
-  sxRoot?: SxProps;
+interface Props extends ScrollbarProps {
+  sx?: SxProps;
 }
-const Scrollbar = ({ children, sx, sxRoot, ...other }: BoxProps & SxRootProps & Props) => {
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  );
+
+export default function Scrollbar({ children, sx, ...other }: Props) {
+  const userAgent = typeof navigator === 'undefined' ? 'SSR' : navigator.userAgent;
+
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 
   if (isMobile) {
     return (
@@ -53,12 +52,10 @@ const Scrollbar = ({ children, sx, sxRoot, ...other }: BoxProps & SxRootProps & 
   }
 
   return (
-    <RootStyle sx={sxRoot}>
-      <SimpleBarStyle timeout={500} clickOnTrack={true} sx={sx} {...other}>
+    <RootStyle>
+      <SimpleBarStyle timeout={500} clickOnTrack={false} sx={sx} {...other}>
         {children}
       </SimpleBarStyle>
     </RootStyle>
   );
-};
-
-export default React.memo(Scrollbar);
+}
