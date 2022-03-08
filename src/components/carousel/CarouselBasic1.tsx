@@ -1,10 +1,11 @@
-import Slider from 'react-slick';
-import { useState, useRef } from 'react';
+import { Box } from '@mui/material';
 // material
 import { useTheme } from '@mui/material/styles';
-import { Box, Card } from '@mui/material';
+import { useRef, useState } from 'react';
+import Slider from 'react-slick';
 // utils
 import mockData from '../../utils/mock-data'; //
+import { Card } from '../@c-components';
 import { CarouselControlsArrowsIndex } from './controls';
 
 // ----------------------------------------------------------------------

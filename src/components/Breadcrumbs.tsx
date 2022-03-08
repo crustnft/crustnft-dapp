@@ -1,12 +1,7 @@
-import {
-  Box,
-  Breadcrumbs as MUIBreadcrumbs,
-  BreadcrumbsProps,
-  Link,
-  Typography
-} from '@mui/material';
+import { Box, BreadcrumbsProps, Link } from '@mui/material';
 import { ReactElement } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { Breadcrumbs as MUIBreadcrumbs, Typography } from './@c-components';
 
 type TLink = {
   href?: string;

@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Typography } from '../@c-components';
 import CountdownStyle from './CountDown.style';
 import Separator from './Separator';
 
