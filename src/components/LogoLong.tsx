@@ -15,5 +15,5 @@ export default function LogoLong({ sx }: BoxProps) {
     }
   }, [themeMode]);
 
-  return <Box sx={{ height: 25, ...sx }} component="img" src={logoUrl} />;
+  return <Box sx={{ height: 24, ...sx }} component="img" src={logoUrl} />;
 }
