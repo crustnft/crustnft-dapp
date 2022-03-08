@@ -1,6 +1,13 @@
 import { Icon } from '@iconify/react';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { Avatar, Box, Drawer, Link, Stack, Tooltip, Typography } from '@mui/material';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
 import { styled } from '@mui/material/styles';
+import Switch from '@mui/material/Switch';
 import Identicons from '@nimiq/identicons';
 import { EMPTY_CHAIN, SUPPORTED_CHAINS } from 'constants/chains';
 import useWallet from 'hooks/useWallet';
@@ -12,6 +19,7 @@ import Logo from '../../components/Logo';
 import NavSection from '../../components/NavSection';
 import Scrollbar from '../../components/Scrollbar';
 import { DISCORD, MEDIUM, TELEGRAM, TWITTER } from '../../constants/COMMON_VARIABLES';
+import useSettings from '../../hooks/useSettings';
 import { Chain } from '../../interfaces/chain';
 import { shortenAddress } from '../../utils/formatAddress';
 import sidebarConfig from './SidebarConfig';
@@ -21,13 +29,13 @@ Identicons.svgPath = './static/identicons.min.svg';
 // const DRAWER_WIDTH = 280;
 // const COLLAPSE_WIDTH = 102;
 const DRAWER_WIDTH = 280;
-const COLLAPSE_WIDTH = 0;
+// const COLLAPSE_WIDTH = 0;
 
 const AccountStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(2, 2.5),
-  borderRadius: theme.shape.borderRadiusSm,
+  borderRadius: theme.shape.borderRadius,
   backgroundColor: theme.palette.grey[500_12]
 }));
 
@@ -38,9 +46,10 @@ type DashboardSidebarProps = {
 
 const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }: DashboardSidebarProps) => {
   const { pathname } = useLocation();
-  const { chain: selectedChain, selectedWallet } = useWallet();
+  const { chain: selectedChain } = useWallet();
   const [network, setNetwork] = useState<Chain>(selectedChain);
-  const { active: walletIsConnected, activate, account, deactivate, connectedChainId } = useWeb3();
+  const { active: walletIsConnected, account, connectedChainId } = useWeb3();
+  const { themeMode, onToggleMode } = useSettings();
   useEffect(() => {
     const found = SUPPORTED_CHAINS.find((chain) => chain.chainId === connectedChainId);
     if (found) {
@@ -145,6 +154,27 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }: DashboardSidebarPro
             <Icon icon="ant-design:medium-square-filled" width={24} height={24} />
           </MIconButton>
         </Tooltip>
+      </Box>
+      <Box>
+        <List
+          sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+          subheader={<ListSubheader>Settings</ListSubheader>}
+        >
+          <ListItem>
+            <ListItemIcon>
+              <DarkModeIcon />
+            </ListItemIcon>
+            <ListItemText id="switch-list-label-wifi" primary="Dark mode" />
+            <Switch
+              edge="end"
+              onChange={onToggleMode}
+              checked={themeMode === 'dark'}
+              inputProps={{
+                'aria-labelledby': 'switch-list-label-wifi'
+              }}
+            />
+          </ListItem>
+        </List>
       </Box>
     </Scrollbar>
   );

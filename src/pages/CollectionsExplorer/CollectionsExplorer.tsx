@@ -5,7 +5,7 @@ import Page from '../../components/Page';
 import SimpleCollectionCard from './components/SimpleCollectionCard';
 import SkeletonCollectionCard from './components/SkeletonCollectionCard';
 
-export default function MyNFT() {
+export default function CollectionsExplorer() {
   const [collections, setCollections] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function MyNFT() {
   }, [collections]);
 
   return (
-    <Page title="My NFTs">
+    <Page title="Collection Explore">
       <Container maxWidth="lg">
         <Grid container spacing={3}>
           {loading ? skeletonLoading() : collectionsLoaded()}

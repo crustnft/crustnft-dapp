@@ -21,8 +21,8 @@ const CardMediaStyle = styled('div')(({ theme }) => ({
     position: 'absolute',
     backdropFilter: 'blur(3px)',
     WebkitBackdropFilter: 'blur(3px)', // Fix on Mobile
-    borderTopLeftRadius: theme.shape.borderRadiusMd,
-    borderTopRightRadius: theme.shape.borderRadiusMd,
+    borderTopLeftRadius: theme.shape.borderRadius,
+    borderTopRightRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.primary.darker, 0.72)
   }
 }));

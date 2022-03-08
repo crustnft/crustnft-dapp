@@ -1,13 +1,12 @@
-import { merge } from 'lodash';
 import { Theme } from '@mui/material/styles';
+//
 import Fab from './Fab';
 import Card from './Card';
 import Chip from './Chip';
 import Tabs from './Tabs';
 import Menu from './Menu';
-import Grid from './Grid';
 import Link from './Link';
-import Lists from './Lists';
+import Lists from './List';
 import Table from './Table';
 import Alert from './Alert';
 import Badge from './Badge';
@@ -26,22 +25,19 @@ import SvgIcon from './SvgIcon';
 import Tooltip from './Tooltip';
 import Popover from './Popover';
 import Stepper from './Stepper';
-import Pickers from './Pickers';
 import DataGrid from './DataGrid';
 import Skeleton from './Skeleton';
 import Backdrop from './Backdrop';
-import Snackbar from './Snackbar';
 import Progress from './Progress';
 import Timeline from './Timeline';
 import TreeView from './TreeView';
 import Checkbox from './Checkbox';
-import Container from './Container';
 import Accordion from './Accordion';
 import Typography from './Typography';
 import Pagination from './Pagination';
-import IconButton from './IconButton';
 import Breadcrumbs from './Breadcrumbs';
 import ButtonGroup from './ButtonGroup';
+import CssBaseline from './CssBaseline';
 import Autocomplete from './Autocomplete';
 import ToggleButton from './ToggleButton';
 import ControlLabel from './ControlLabel';
@@ -50,13 +46,12 @@ import LoadingButton from './LoadingButton';
 // ----------------------------------------------------------------------
 
 export default function ComponentsOverrides(theme: Theme) {
-  return merge(
+  return Object.assign(
     Fab(theme),
     Tabs(theme),
     Chip(theme),
     Card(theme),
     Menu(theme),
-    Grid(theme),
     Link(theme),
     Input(theme),
     Radio(theme),
@@ -73,7 +68,6 @@ export default function ComponentsOverrides(theme: Theme) {
     Avatar(theme),
     Slider(theme),
     Drawer(theme),
-    Pickers(theme),
     Stepper(theme),
     Tooltip(theme),
     Popover(theme),
@@ -84,15 +78,13 @@ export default function ComponentsOverrides(theme: Theme) {
     Timeline(theme),
     TreeView(theme),
     Backdrop(theme),
-    Snackbar(theme),
     Progress(theme),
-    Container(theme),
     Accordion(theme),
-    IconButton(theme),
     Typography(theme),
     Pagination(theme),
     ButtonGroup(theme),
     Breadcrumbs(theme),
+    CssBaseline(theme),
     Autocomplete(theme),
     ControlLabel(theme),
     ToggleButton(theme),
