@@ -1,4 +1,4 @@
-import { Container } from '@mui/material';
+import { Container } from '../../components/@c-components';
 import Page from '../../components/Page';
 import NftForm from './components/NftForm';
 

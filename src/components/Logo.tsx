@@ -1,5 +1,6 @@
-import { Box, BoxProps, useMediaQuery } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { Box, BoxProps } from './@c-components';
 
 export default function Logo({ sx }: BoxProps) {
   const theme = useTheme();

@@ -1,9 +1,9 @@
-import NProgress from 'nprogress';
-import { useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
 // material
 import { alpha, styled, useTheme } from '@mui/material/styles';
-import { Box, GlobalStyles } from '@mui/material';
+import { motion } from 'framer-motion';
+import NProgress from 'nprogress';
+import { useEffect, useMemo } from 'react';
+import { Box, GlobalStyles } from './@c-components';
 //
 import Logo from './Logo';
 

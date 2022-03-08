@@ -1,8 +1,8 @@
-import { Box, Button, Link, Stack, Typography } from '@mui/material';
 // material
 import { styled } from '@mui/material/styles';
 // import Trianglify from 'trianglify';
 import Trianglify from 'react-trianglify';
+import { Box, Button, Link, Stack, Typography } from '../../../components/@c-components';
 
 const WrapStyle = styled(Box)(({ theme }) => ({
   // backgroundImage: 'url("./static/glassmorphism/trianglify-lowres.png")',

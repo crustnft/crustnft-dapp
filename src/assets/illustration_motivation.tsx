@@ -1,7 +1,6 @@
 // material
-import { BoxProps } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Box } from '../components/@c-components';
+import { Box, BoxProps } from '../components/@c-components';
 
 // ----------------------------------------------------------------------
 

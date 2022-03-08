@@ -1,8 +1,7 @@
 // form
 // @mui
-import { FormControlLabelProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormControlLabel, Switch } from '../@c-components';
+import { FormControlLabel, FormControlLabelProps, Switch } from '../@c-components';
 
 // ----------------------------------------------------------------------
 

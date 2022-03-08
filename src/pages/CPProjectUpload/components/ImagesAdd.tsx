@@ -1,8 +1,8 @@
-import { Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { ImageCard as ImageCardProps } from '../../../@types/imagesGCS';
+import { Stack, Typography } from '../../../components/@c-components';
 import Iconify from '../../../components/Iconify';
 import uuidv4 from '../../../utils/uuidv4';
 

@@ -1,18 +1,18 @@
-import { Icon } from '@iconify/react';
 import moonFill from '@iconify/icons-eva/moon-fill';
 import sunFill from '@iconify/icons-eva/sun-fill';
+import { Icon } from '@iconify/react';
+// hooks
+import useSettings from '../../hooks/useSettings';
 // material
 import {
   Box,
-  Grid,
-  Radio,
-  Paper,
-  RadioGroup,
   CardActionArea,
-  FormControlLabel
-} from '@mui/material';
-// hooks
-import useSettings from '../../hooks/useSettings';
+  FormControlLabel,
+  Grid,
+  Paper,
+  Radio,
+  RadioGroup
+} from '../@c-components';
 
 // ----------------------------------------------------------------------
 

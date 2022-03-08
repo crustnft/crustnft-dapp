@@ -1,9 +1,8 @@
-import { Box, Typography } from '@mui/material';
 // material
 import { Theme } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
 import { ReactNode } from 'react';
-import { Card, CardHeader } from './@c-components';
+import { Box, Card, CardHeader, Typography } from './@c-components';
 
 // ----------------------------------------------------------------------
 

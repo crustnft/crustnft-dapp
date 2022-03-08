@@ -1,5 +1,4 @@
 import { Icon } from '@iconify/react';
-import { Avatar, Box, Drawer, Link, Stack, Tooltip, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Identicons from '@nimiq/identicons';
 import { EMPTY_CHAIN, SUPPORTED_CHAINS } from 'constants/chains';
@@ -7,6 +6,15 @@ import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
+import {
+  Avatar,
+  Box,
+  Drawer,
+  Link,
+  Stack,
+  Tooltip,
+  Typography
+} from '../../components/@c-components';
 import { MIconButton } from '../../components/@material-extend';
 import Logo from '../../components/Logo';
 import NavSection from '../../components/NavSection';

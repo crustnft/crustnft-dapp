@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
-import { Icon } from '@iconify/react';
 import closeFill from '@iconify/icons-eva/close-fill';
 import options2Fill from '@iconify/icons-eva/options-2-fill';
+import { Icon } from '@iconify/react';
+import { useEffect, useState } from 'react';
 // material
-import { Box, Backdrop, Paper, Tooltip, Divider, Typography, Stack } from '@mui/material';
+import { Backdrop, Box, Divider, Paper, Stack, Tooltip, Typography } from '../@c-components';
+import { MIconButton } from '../@material-extend';
 //
 import Scrollbar from '../Scrollbar';
-import { MIconButton } from '../@material-extend';
-import SettingMode from './SettingMode';
 import SettingColor from './SettingColor';
-import SettingStretch from './SettingStretch';
 import SettingDirection from './SettingDirection';
 import SettingFullscreen from './SettingFullscreen';
+import SettingMode from './SettingMode';
+import SettingStretch from './SettingStretch';
 
 // ----------------------------------------------------------------------
 

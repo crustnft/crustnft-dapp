@@ -1,8 +1,8 @@
 // material
-import { Box, BoxProps } from '@mui/material';
 import { motion, MotionProps, useAnimation } from 'framer-motion';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { Box, BoxProps } from '../@c-components';
 
 // ----------------------------------------------------------------------
 

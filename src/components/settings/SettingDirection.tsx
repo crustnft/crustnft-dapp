@@ -1,7 +1,14 @@
-import { Box } from '@mui/material';
 // hooks
 import useSettings from '../../hooks/useSettings';
-import { CardActionArea, FormControlLabel, Grid, Paper, Radio, RadioGroup } from '../@c-components';
+import {
+  Box,
+  CardActionArea,
+  FormControlLabel,
+  Grid,
+  Paper,
+  Radio,
+  RadioGroup
+} from '../@c-components';
 
 // ----------------------------------------------------------------------
 

@@ -1,10 +1,9 @@
-import { Box, Typography } from '@mui/material';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { FileRejection } from 'react-dropzone';
 // utils
 import { fData } from '../../utils/formatNumber';
-import { Paper } from '../@c-components';
+import { Box, Paper, Typography } from '../@c-components';
 // type
 import { CustomFile } from './type';
 

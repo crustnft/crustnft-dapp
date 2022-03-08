@@ -3,10 +3,9 @@ import arrowRightFill from '@iconify/icons-eva/arrow-right-fill';
 import roundKeyboardArrowLeft from '@iconify/icons-ic/round-keyboard-arrow-left';
 import roundKeyboardArrowRight from '@iconify/icons-ic/round-keyboard-arrow-right';
 import { Icon } from '@iconify/react';
-import { Box, BoxProps } from '@mui/material';
 // material
 import { alpha, styled, useTheme } from '@mui/material/styles';
-import { Typography } from '../../@c-components';
+import { Box, BoxProps, Typography } from '../../@c-components';
 //
 import { MIconButton } from '../../@material-extend';
 

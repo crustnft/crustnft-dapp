@@ -1,17 +1,16 @@
-import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
-import { Box, Button, AppBar, Toolbar, Container } from '@mui/material';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { AppBar, Box, Button, Container, Toolbar } from '../../components/@c-components';
+import { MHidden } from '../../components/@material-extend';
 // hooks
 // import useOffSetTop from '../../hooks/useOffSetTop';
 // components
 import Logo from '../../components/Logo';
-import Label from '../../components/Label';
-import { MHidden } from '../../components/@material-extend';
+import navConfig from './MenuConfig';
 //
 import MenuDesktop from './MenuDesktop';
 import MenuMobile from './MenuMobile';
-import navConfig from './MenuConfig';
 
 // ----------------------------------------------------------------------
 

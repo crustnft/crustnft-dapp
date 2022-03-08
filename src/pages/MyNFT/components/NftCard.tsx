@@ -1,8 +1,8 @@
-import { Box, Link, Paper, Stack, Typography } from '@mui/material';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import { BallClipRotateMultiple } from 'react-pure-loaders';
+import { Box, Link, Paper, Stack, Typography } from '../../../components/@c-components';
 // To be moved to its place
 import type { NftCardCollectionViewerProps } from '../MyNFT.types';
 

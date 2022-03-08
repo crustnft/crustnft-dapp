@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 // material
 import { alpha, styled, useTheme } from '@mui/material/styles';
 import { motion } from 'framer-motion';
@@ -6,7 +5,7 @@ import { useRef, useState } from 'react';
 import Slider from 'react-slick';
 // utils
 import mockData from '../../utils/mock-data';
-import { Button, Card, CardContent, Paper, Typography } from '../@c-components';
+import { Box, Button, Card, CardContent, Paper, Typography } from '../@c-components';
 //
 import { MotionContainer, varFadeInRight } from '../animate';
 import { CarouselControlsArrowsIndex } from './controls';

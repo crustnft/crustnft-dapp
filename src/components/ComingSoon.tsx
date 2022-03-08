@@ -1,9 +1,8 @@
 import { Icon } from '@iconify/react';
-import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { DISCORD, MEDIUM, TELEGRAM, TWITTER } from '../constants/COMMON_VARIABLES';
 import useCountdown from '../hooks/useCountdown';
-import { Tooltip, Typography } from './@c-components';
+import { Box, Tooltip, Typography } from './@c-components';
 import { MIconButton } from './@material-extend';
 
 const CountdownStyle = styled('div')({

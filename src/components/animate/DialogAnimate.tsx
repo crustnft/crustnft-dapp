@@ -1,7 +1,6 @@
 // material
-import { Box, DialogProps } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Dialog, Paper } from '../@c-components';
+import { Box, Dialog, DialogProps, Paper } from '../@c-components';
 //
 import { varFadeInUp } from './variants';
 

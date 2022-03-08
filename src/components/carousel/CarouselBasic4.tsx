@@ -1,13 +1,12 @@
 import moreHorizontalFill from '@iconify/icons-eva/more-horizontal-fill';
 import { Icon } from '@iconify/react';
-import { Box } from '@mui/material';
 // material
 import { alpha, styled, useTheme } from '@mui/material/styles';
 import { useRef } from 'react';
 import Slider from 'react-slick';
 // utils
 import mockData from '../../utils/mock-data'; //
-import { Card, Typography } from '../@c-components';
+import { Box, Card, Typography } from '../@c-components';
 //
 import { MIconButton } from '../@material-extend';
 import { CarouselControlsArrowsBasic2 } from './controls';

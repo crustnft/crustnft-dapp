@@ -1,9 +1,8 @@
-import { GlobalStyles } from '@mui/material';
 // @mui
 import { alpha, useTheme } from '@mui/material/styles';
 import { useEffect } from 'react';
 import Lightbox, { ILightBoxProps } from 'react-image-lightbox';
-import { Typography } from './@c-components';
+import { GlobalStyles, Typography } from './@c-components';
 
 // ----------------------------------------------------------------------
 

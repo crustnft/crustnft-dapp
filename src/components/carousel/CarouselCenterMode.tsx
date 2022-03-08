@@ -1,6 +1,5 @@
 import arrowForwardFill from '@iconify/icons-eva/arrow-forward-fill';
 import { Icon } from '@iconify/react';
-import { Box, Link } from '@mui/material';
 // material
 import { alpha, styled, useTheme } from '@mui/material/styles';
 import { useRef } from 'react';
@@ -8,7 +7,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import Slider from 'react-slick';
 // utils
 import mockData from '../../utils/mock-data'; //
-import { CardContent, Paper, Typography } from '../@c-components';
+import { Box, CardContent, Link, Paper, Typography } from '../@c-components';
 import { CarouselControlsArrowsBasic2 } from './controls';
 
 // ----------------------------------------------------------------------

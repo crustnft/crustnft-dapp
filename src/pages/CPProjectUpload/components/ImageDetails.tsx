@@ -1,7 +1,14 @@
-import { Divider, Drawer, OutlinedInput, Stack, Tooltip, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
 import { ImageCard } from '../../../@types/imagesGCS';
+import {
+  Divider,
+  Drawer,
+  OutlinedInput,
+  Stack,
+  Tooltip,
+  Typography
+} from '../../../components/@c-components';
 import { IconButtonAnimate } from '../../../components/animate';
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';

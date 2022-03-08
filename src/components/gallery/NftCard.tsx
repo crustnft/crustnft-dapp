@@ -1,11 +1,10 @@
 import { Icon } from '@iconify/react';
-import { Box, Link } from '@mui/material';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
 import { useState } from 'react';
 import { BallClipRotateMultiple } from 'react-pure-loaders';
 import { contractAddress } from 'utils/contractAddress';
-import { Paper, Stack, Typography } from '../@c-components';
+import { Box, Link, Paper, Stack, Typography } from '../@c-components';
 
 // To be moved to its place
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({

@@ -1,8 +1,7 @@
-import { Box, BreadcrumbsProps, Link } from '@mui/material';
 import { last } from 'lodash';
 import { ReactElement } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Breadcrumbs, Typography } from '../@c-components';
+import { Box, Breadcrumbs, BreadcrumbsProps, Link, Typography } from '../@c-components';
 
 // ----------------------------------------------------------------------
 

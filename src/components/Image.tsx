@@ -1,7 +1,7 @@
-import { Box, BoxProps } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
 import { LazyLoadImage, LazyLoadImageProps } from 'react-lazy-load-image-component';
+import { Box, BoxProps } from './@c-components';
 
 export type ImageRato = '4/3' | '3/4' | '6/4' | '4/6' | '16/9' | '9/16' | '21/9' | '9/21' | '1/1';
 

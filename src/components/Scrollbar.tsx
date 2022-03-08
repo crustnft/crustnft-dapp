@@ -1,10 +1,9 @@
-import { BoxProps } from '@mui/material';
 // material
 import { alpha, styled } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
 import React from 'react';
 import SimpleBarReact, { Props } from 'simplebar-react';
-import { Box } from '../components/@c-components';
+import { Box, BoxProps } from '../components/@c-components';
 
 // ----------------------------------------------------------------------
 

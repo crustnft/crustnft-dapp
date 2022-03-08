@@ -2,7 +2,6 @@ import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak';
 import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions';
 import PodcastsIcon from '@mui/icons-material/Podcasts';
 import SailingIcon from '@mui/icons-material/Sailing';
-import { Avatar, Box, Card, Divider, Link, Stack, Tooltip, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
@@ -19,6 +18,16 @@ import {
 } from 'services/smartContract/evmCompatible';
 import { getChainByChainId, getRpcUrlByChainId } from 'utils/blockchainHandlers';
 import { shortenAddress } from 'utils/formatAddress';
+import {
+  Avatar,
+  Box,
+  Card,
+  Divider,
+  Link,
+  Stack,
+  Tooltip,
+  Typography
+} from '../../../components/@c-components';
 
 export type CollectionData = {
   contractAddress: string;

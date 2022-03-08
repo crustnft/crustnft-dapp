@@ -1,8 +1,7 @@
-import { FabProps } from '@mui/material';
 // material
 import { useTheme } from '@mui/material/styles';
 import { forwardRef } from 'react';
-import { Fab } from '../@c-components';
+import { Fab, FabProps } from '../@c-components';
 //
 import { ButtonAnimate } from '../animate';
 

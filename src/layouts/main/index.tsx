@@ -1,6 +1,6 @@
-import { Box, Container, Link, Typography } from '@mui/material';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
+import { Box, Container, Link, Typography } from '../../components/@c-components';
 import Logo from '../../components/Logo';
 //
 import MainFooter from './MainFooter';

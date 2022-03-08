@@ -1,9 +1,9 @@
-import { Stack, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { getContractsByAccount } from 'clients/crustnft-explore-api';
 import Iconify from 'components/Iconify';
 import useWeb3 from 'hooks/useWeb3';
 import { useEffect, useState } from 'react';
+import { Stack, Typography } from '../../../components/@c-components';
 import CollectionSlider from './CollectionSlider';
 
 export default function MyCollections() {

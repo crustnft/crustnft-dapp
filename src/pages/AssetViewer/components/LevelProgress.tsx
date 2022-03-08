@@ -1,6 +1,6 @@
-import { LinearProgress, Stack, Typography } from '@mui/material';
 import { linearProgressClasses } from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
+import { LinearProgress, Stack, Typography } from '../../../components/@c-components';
 import type { LevelProps } from '../AssetViewer.types';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({

@@ -1,6 +1,5 @@
-import { FormControlLabelProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
-import { Checkbox, FormControlLabel, FormGroup } from '../@c-components';
+import { Checkbox, FormControlLabel, FormControlLabelProps, FormGroup } from '../@c-components';
 
 interface RHFCheckboxProps extends Omit<FormControlLabelProps, 'control'> {
   name: string;

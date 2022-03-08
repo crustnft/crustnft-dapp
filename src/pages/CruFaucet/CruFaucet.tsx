@@ -1,19 +1,18 @@
+import FaucetHookForm from 'components/faucet/FaucetHookForm';
 import { useState } from 'react';
+import { Tweet } from 'react-twitter-widgets';
 import {
+  Alert,
+  Button,
   Card,
   CardContent,
   CardHeader,
   Container,
   Grid,
-  Stack,
-  Alert,
-  Button
-} from '@mui/material';
-
-import useSettings from '../../hooks/useSettings';
+  Stack
+} from '../../components/@c-components';
 import Page from '../../components/Page';
-import FaucetHookForm from 'components/faucet/FaucetHookForm';
-import { Tweet } from 'react-twitter-widgets';
+import useSettings from '../../hooks/useSettings';
 import { ResponseFaucetRequest } from '../../interfaces/faucet';
 
 export default function CruFaucet() {
