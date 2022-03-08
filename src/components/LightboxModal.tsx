@@ -1,8 +1,8 @@
+// @mui
+import { alpha, useTheme } from '@mui/material/styles';
 import { useEffect } from 'react';
 import Lightbox, { ILightBoxProps } from 'react-image-lightbox';
-// @mui
-import { useTheme, alpha } from '@mui/material/styles';
-import { Typography, GlobalStyles } from '@mui/material';
+import { GlobalStyles, Typography } from './@c-components';
 
 // ----------------------------------------------------------------------
 
@@ -28,11 +28,11 @@ function LightboxModalStyles() {
       display: 'block',
       width: ICON_SIZE,
       height: ICON_SIZE,
-      content: getIcon(icon),
+      content: getIcon(icon)
     },
     '&:hover': {
-      opacity: 0.72,
-    },
+      opacity: 0.72
+    }
   });
 
   return (
@@ -40,14 +40,14 @@ function LightboxModalStyles() {
       styles={{
         '& .ReactModalPortal': {
           '& .ril__outer': {
-            backgroundColor: alpha(theme.palette.grey[900], 0.96),
+            backgroundColor: alpha(theme.palette.grey[900], 0.96)
           },
 
           // Toolbar
           '& .ril__toolbar': {
             height: 'auto !important',
             padding: theme.spacing(2, 3),
-            backgroundColor: 'transparent',
+            backgroundColor: 'transparent'
           },
           '& .ril__toolbarLeftSide': { display: 'none' },
           '& .ril__toolbarRightSide': {
@@ -58,17 +58,17 @@ function LightboxModalStyles() {
             alignItems: 'center',
             '& li': {
               display: 'flex',
-              alignItems: 'center',
+              alignItems: 'center'
             },
             '& li:first-of-type': {
-              flexGrow: 1,
+              flexGrow: 1
             },
             '& li:not(:first-of-type)': {
               width: 40,
               height: 40,
               justifyContent: 'center',
-              marginLeft: theme.spacing(2),
-            },
+              marginLeft: theme.spacing(2)
+            }
           },
 
           // Button
@@ -78,22 +78,22 @@ function LightboxModalStyles() {
             height: '100%',
             '&.ril__zoomInButton': Icon('zoom-in'),
             '&.ril__zoomOutButton': Icon('zoom-out'),
-            '&.ril__closeButton': Icon('close'),
+            '&.ril__closeButton': Icon('close')
           },
           '& .ril__navButtons': {
             padding: theme.spacing(3),
             '&.ril__navButtonPrev': {
               right: 'auto',
               left: theme.spacing(2),
-              ...Icon(isRTL ? 'arrow-right' : 'arrow-left'),
+              ...Icon(isRTL ? 'arrow-right' : 'arrow-left')
             },
             '&.ril__navButtonNext': {
               left: 'auto',
               right: theme.spacing(2),
-              ...Icon(isRTL ? 'arrow-left' : 'arrow-right'),
-            },
-          },
-        },
+              ...Icon(isRTL ? 'arrow-left' : 'arrow-right')
+            }
+          }
+        }
       }}
     />
   );
@@ -131,8 +131,8 @@ export default function LightboxModal({
 
   const customStyles = {
     overlay: {
-      zIndex: 9999,
-    },
+      zIndex: 9999
+    }
   };
 
   return (
