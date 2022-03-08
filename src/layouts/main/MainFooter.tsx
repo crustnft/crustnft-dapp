@@ -1,15 +1,15 @@
-import { Icon } from '@iconify/react';
-import googleFill from '@iconify/icons-eva/google-fill';
-import twitterFill from '@iconify/icons-eva/twitter-fill';
 import facebookFill from '@iconify/icons-eva/facebook-fill';
+import googleFill from '@iconify/icons-eva/google-fill';
 import linkedinFill from '@iconify/icons-eva/linkedin-fill';
-import { Link as ScrollLink } from 'react-scroll';
-import { Link as RouterLink } from 'react-router-dom';
+import twitterFill from '@iconify/icons-eva/twitter-fill';
+import { Icon } from '@iconify/react';
+import { Container, Divider, Grid, IconButton, Link, Stack, Typography } from '@mui/material';
 // material
 import { styled } from '@mui/material/styles';
-import { Grid, Link, Divider, Container, Typography, IconButton, Stack } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import { Link as ScrollLink } from 'react-scroll';
 //
-import Logo from '../../components/Logo';
+import LogoLong from '../../components/LogoLong';
 
 // ----------------------------------------------------------------------
 
@@ -61,7 +61,7 @@ export default function MainFooter() {
         >
           <Grid item xs={12} sx={{ mb: 3 }}>
             <ScrollLink to="move_top" spy smooth>
-              <Logo sx={{ mx: { xs: 'auto', md: 'inherit' } }} />
+              <LogoLong sx={{ mx: { xs: 'auto', md: 'inherit' } }} />
             </ScrollLink>
           </Grid>
           <Grid item xs={8} md={3}>

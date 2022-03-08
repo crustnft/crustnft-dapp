@@ -15,7 +15,7 @@ import useWeb3 from 'hooks/useWeb3';
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { MIconButton } from '../../components/@material-extend';
-import Logo from '../../components/Logo';
+import LogoLong from '../../components/LogoLong';
 import NavSection from '../../components/NavSection';
 import Scrollbar from '../../components/Scrollbar';
 import { DISCORD, MEDIUM, TELEGRAM, TWITTER } from '../../constants/COMMON_VARIABLES';
@@ -105,7 +105,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }: DashboardSidebarPro
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
-            <Logo />
+            <LogoLong />
           </Box>
         </Stack>
         {walletIsConnected && (

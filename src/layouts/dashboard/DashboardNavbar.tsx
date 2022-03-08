@@ -1,9 +1,9 @@
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 import { Icon } from '@iconify/react';
 import { AppBar, Box, Divider, IconButton, Stack, Toolbar } from '@mui/material';
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
-import Logo from '../../components/Logo';
+import LogoLong from '../../components/LogoLong';
 import ConnectWalletPopover from './ConnectWalletPopover';
 import NetworkPopover from './NetworkPopover';
 
@@ -14,10 +14,9 @@ const APPBAR_MOBILE = 64;
 const APPBAR_DESKTOP = 64;
 
 const RootStyle = styled(AppBar)(({ theme }) => ({
-  boxShadow: theme.customShadows.z1,
-  backdropFilter: 'blur(6px)',
-  WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
-  backgroundColor: alpha(theme.palette.background.default, 1)
+  backdropFilter: 'blur(32px)',
+  WebkitBackdropFilter: 'blur(32px)', // Fix on Mobile
+  backgroundColor: 'rgba(242, 244, 250, 0.63)'
 }));
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
@@ -45,7 +44,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           to="/"
           sx={{ display: 'inline-flex', pl: { xs: '5px', sm: '15px', lg: '25px' } }}
         >
-          <Logo />
+          <LogoLong />
         </Box>
 
         <Box sx={{ flexGrow: 1 }} />
