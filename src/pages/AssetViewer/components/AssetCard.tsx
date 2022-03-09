@@ -8,7 +8,7 @@ export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOw
 
   return (
     <Card>
-      <Stack spacing={3} sx={{ p: 3 }}>
+      <Stack spacing={3} sx={{ p: 3, padding: '0px' }}>
         <Box>
           <Stack direction="row" alignItems="center" justifyContent="center" sx={{ width: '100%' }}>
             <Box
