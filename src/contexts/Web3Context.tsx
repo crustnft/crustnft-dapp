@@ -97,10 +97,6 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
             {
               walletName: 'walletConnect',
               infuraKey: '741c5f1257a24106934fe4105c784478'
-            },
-            {
-              walletName: 'ledger',
-              infuraKey: '741c5f1257a24106934fe4105c784478'
             }
           ]
         },
