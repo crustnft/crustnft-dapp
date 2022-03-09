@@ -99,31 +99,31 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
             Create
           </Button>
 
-          <ButtonBase>
-            <Box
-              sx={{
-                border: theme.palette.header.walletButtonBorder,
-                borderColor: theme.palette.header.menuText,
-                borderRadius: '20px',
-                height: '100%',
-                padding: '2px'
-              }}
-            >
-              <Stack direction="row" alignItems="center" sx={{ height: '100%' }} spacing={1}>
-                <Avatar
-                  alt="Dog Avatar"
-                  src="https://avatarfiles.alphacoders.com/865/thumb-86573.jpg"
-                  sx={{ width: 28, height: 28 }}
-                />
-                <Typography color="#000000" variant="subtitle2" sx={{ lineHeight: 0 }}>
-                  0.000
-                </Typography>
+          <ButtonBase
+            sx={{
+              border: theme.palette.header.walletButtonBorder,
+              borderColor: theme.palette.header.menuText,
+              borderRadius: '20px',
+              height: '100%',
+              padding: '2px',
+              pr: '10px',
+              overflow: 'hidden'
+            }}
+          >
+            <Stack direction="row" alignItems="center" sx={{ height: '100%' }} spacing={1}>
+              <Avatar
+                alt="Dog Avatar"
+                src="https://avatarfiles.alphacoders.com/865/thumb-86573.jpg"
+                sx={{ width: 28, height: 28 }}
+              />
+              <Typography color="text.primary" variant="subtitle2" sx={{ lineHeight: 0 }}>
+                0.000
+              </Typography>
 
-                <Typography variant="subtitle2" color="#45B26B" sx={{ lineHeight: 0 }}>
-                  RIN
-                </Typography>
-              </Stack>
-            </Box>
+              <Typography variant="subtitle2" color="#45B26B" sx={{ lineHeight: 0 }}>
+                RIN
+              </Typography>
+            </Stack>
           </ButtonBase>
           <ConnectWalletPopover />
           <Divider orientation="vertical" flexItem />
