@@ -154,6 +154,9 @@ const COMMON = {
   chart: CHART_COLORS,
   divider: GREY[500_24],
   button: { blue: '#3772FF', yellow: '#FFC107' },
+  menu: { hoverOpacity: 0.63 },
+  item: { selected: '#FF8C00' },
+  listArrow: { color: '#000000', opacity: 0.28 },
   action: {
     hover: GREY[500_8],
     selected: GREY[500_16],
@@ -170,15 +173,19 @@ const palette = {
     ...COMMON,
     mode: 'light',
     text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
-    background: { paper: '#fff', default: '#fff', neutral: GREY[200], page: '#F2F4FA' },
-    action: { active: GREY[600], ...COMMON.action }
+    background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
+    themeBackground: '#F2F4FA',
+    action: { active: GREY[600], ...COMMON.action },
+    menu: { background: '#F2F4FA', ...COMMON.menu }
   },
   dark: {
     ...COMMON,
     mode: 'dark',
     text: { primary: '#fff', secondary: GREY[500], disabled: GREY[600] },
     background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16], page: '#141416' },
-    action: { active: GREY[500], ...COMMON.action }
+    themeBackground: '#141416',
+    action: { active: GREY[500], ...COMMON.action },
+    menu: { background: '#141416', ...COMMON.menu }
   }
 } as const;
 
