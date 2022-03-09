@@ -1,20 +1,21 @@
-import { useMemo, ReactNode } from 'react';
 // @mui
 import { CssBaseline } from '@mui/material';
 import {
   createTheme,
-  ThemeOptions,
-  ThemeProvider as MUIThemeProvider,
   StyledEngineProvider,
+  ThemeOptions,
+  ThemeProvider as MUIThemeProvider
 } from '@mui/material/styles';
+import { ReactNode, useMemo } from 'react';
 // hooks
 import useSettings from '../hooks/useSettings';
-//
-import palette from './palette';
-import typography from './typography';
+import additionalPalette from './additionalPalette';
 import breakpoints from './breakpoints';
 import componentsOverride from './overrides';
+//
+import palette from './palette';
 import shadows, { customShadows } from './shadows';
+import typography from './typography';
 
 // ----------------------------------------------------------------------
 
@@ -35,6 +36,7 @@ export default function ThemeProvider({ children }: Props) {
       direction: themeDirection,
       shadows: isLight ? shadows.light : shadows.dark,
       customShadows: isLight ? customShadows.light : customShadows.dark,
+      additionalPalette: isLight ? additionalPalette.light : additionalPalette.dark
     }),
     [isLight, themeDirection]
   );

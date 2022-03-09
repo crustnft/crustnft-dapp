@@ -47,7 +47,7 @@ export default function DashboardLayout() {
           transition: theme.transitions.create('margin', {
             duration: theme.transitions.duration.complex
           }),
-          backgroundColor: theme.palette.themeBackground,
+          backgroundColor: theme.additionalPalette.themeBackground,
           ...(!isWallet && { backgroundColor: '#F2F4FA' })
         }}
       >
