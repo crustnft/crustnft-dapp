@@ -1,10 +1,4 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import FormControl from '@mui/material/FormControl';
-import InputAdornment from '@mui/material/InputAdornment';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import { alpha, styled } from '@mui/material/styles';
-import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
 import {
   Button,
   Dialog,
@@ -17,7 +11,13 @@ import {
   Stack,
   TextField,
   Typography
-} from '../../../components/@c-components';
+} from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import InputAdornment from '@mui/material/InputAdornment';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import { alpha, styled } from '@mui/material/styles';
+import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import Iconify from '../../../components/Iconify';
 import type { BoostProps } from '../MintNft.types';
 

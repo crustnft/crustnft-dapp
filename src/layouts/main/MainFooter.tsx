@@ -3,18 +3,11 @@ import googleFill from '@iconify/icons-eva/google-fill';
 import linkedinFill from '@iconify/icons-eva/linkedin-fill';
 import twitterFill from '@iconify/icons-eva/twitter-fill';
 import { Icon } from '@iconify/react';
+import { Container, Divider, Grid, IconButton, Link, Stack, Typography } from '@mui/material';
+// material
 import { styled } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
-import {
-  Container,
-  Divider,
-  Grid,
-  IconButton,
-  Link,
-  Stack,
-  Typography
-} from '../../components/@c-components';
 //
 import LogoLong from '../../components/LogoLong';
 

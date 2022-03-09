@@ -1,6 +1,6 @@
+import { Container, Grid } from '@mui/material';
 import { getContracts } from 'clients/crustnft-explore-api';
 import { useEffect, useState } from 'react';
-import { Container, Grid } from '../../components/@c-components';
 import Page from '../../components/Page';
 import SimpleCollectionCard from './components/SimpleCollectionCard';
 import SkeletonCollectionCard from './components/SkeletonCollectionCard';

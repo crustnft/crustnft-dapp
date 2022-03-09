@@ -1,7 +1,3 @@
-import { Chain } from 'interfaces/chain';
-import { useEffect, useState } from 'react';
-import { getChainByNetworkName } from 'utils/blockchainHandlers';
-import { shortenAddress } from 'utils/formatAddress';
 import {
   Box,
   ButtonBase,
@@ -11,7 +7,11 @@ import {
   Stack,
   Tooltip,
   Typography
-} from '../../../components/@c-components';
+} from '@mui/material';
+import { Chain } from 'interfaces/chain';
+import { useEffect, useState } from 'react';
+import { getChainByNetworkName } from 'utils/blockchainHandlers';
+import { shortenAddress } from 'utils/formatAddress';
 import useLocales from '../../../hooks/useLocales';
 import { AssetAndOwnerType } from '../AssetViewer.types';
 export default function AssetDetails({ assetAndOwner }: { assetAndOwner: AssetAndOwnerType }) {

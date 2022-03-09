@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, Divider, Skeleton, Stack } from '../../../components/@c-components';
+import { Avatar, Box, Card, Divider, Skeleton, Stack } from '@mui/material';
 
 export default function skeletonLoadingCard() {
   return (

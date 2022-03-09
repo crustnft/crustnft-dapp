@@ -1,13 +1,13 @@
-// material
-import { alpha, styled, useTheme } from '@mui/material/styles';
-import { motion } from 'framer-motion';
-import { useRef, useState } from 'react';
 import Slider from 'react-slick';
+import { motion } from 'framer-motion';
+import { useState, useRef } from 'react';
+// material
+import { alpha, useTheme, styled } from '@mui/material/styles';
+import { Box, Card, Paper, Button, Typography, CardContent } from '@mui/material';
 // utils
 import mockData from '../../utils/mock-data';
-import { Box, Button, Card, CardContent, Paper, Typography } from '../@c-components';
 //
-import { MotionContainer, varFadeInRight } from '../animate';
+import { varFadeInRight, MotionContainer } from '../animate';
 import { CarouselControlsArrowsIndex } from './controls';
 
 // ----------------------------------------------------------------------

@@ -1,8 +1,4 @@
 import { Icon } from '@iconify/react';
-import { useMediaQuery, useTheme } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { Link as RouterLink } from 'react-router-dom';
-import { animateScroll as scroll } from 'react-scroll';
 import {
   Box,
   Container,
@@ -11,8 +7,13 @@ import {
   Link,
   Stack,
   Tooltip,
-  Typography
-} from '../../components/@c-components';
+  Typography,
+  useMediaQuery,
+  useTheme
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Link as RouterLink } from 'react-router-dom';
+import { animateScroll as scroll } from 'react-scroll';
 import { MIconButton } from '../../components/@material-extend';
 import { DISCORD, MEDIUM, TELEGRAM, TWITTER } from '../../constants/COMMON_VARIABLES';
 

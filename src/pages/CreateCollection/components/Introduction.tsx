@@ -1,6 +1,5 @@
-import { useMediaQuery } from '@mui/material';
+import { Box, Button, Typography, useMediaQuery } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
-import { Box, Button, Typography } from '../../../components/@c-components';
 
 export default function Introduction() {
   const theme = useTheme();

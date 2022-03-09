@@ -1,7 +1,7 @@
+import { CircularProgress } from '@mui/material';
 import { StepIconProps } from '@mui/material/StepIcon';
 import { styled } from '@mui/material/styles';
 import Iconify from 'components/Iconify';
-import { CircularProgress } from './@c-components';
 
 const SuccessIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
   ({ theme, ownerState }) => ({

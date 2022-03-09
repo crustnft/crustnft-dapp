@@ -1,11 +1,11 @@
+import { FileRejection } from 'react-dropzone';
 // @mui
 import { alpha } from '@mui/material/styles';
-import { FileRejection } from 'react-dropzone';
-// utils
-import { fData } from '../../utils/formatNumber';
-import { Box, Paper, Typography } from '../@c-components';
+import { Box, Paper, Typography } from '@mui/material';
 // type
 import { CustomFile } from './type';
+// utils
+import { fData } from '../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +22,7 @@ export default function RejectionFiles({ fileRejections }: Props) {
         px: 2,
         mt: 3,
         borderColor: 'error.light',
-        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08)
+        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08),
       }}
     >
       {fileRejections.map(({ file, errors }) => {

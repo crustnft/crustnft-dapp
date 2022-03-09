@@ -1,8 +1,8 @@
+import { ReactNode } from 'react';
 // material
 import { Theme } from '@mui/material/styles';
+import { Card, CardHeader, Box, Typography } from '@mui/material';
 import { SxProps } from '@mui/system';
-import { ReactNode } from 'react';
-import { Box, Card, CardHeader, Typography } from './@c-components';
 
 // ----------------------------------------------------------------------
 

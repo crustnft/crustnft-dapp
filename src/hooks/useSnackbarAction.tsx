@@ -1,7 +1,8 @@
-import closeFill from '@iconify/icons-eva/close-fill';
 import { Icon } from '@iconify/react';
+import { Button, IconButton, Typography } from '@mui/material';
+
 import { useSnackbar, VariantType } from 'notistack';
-import { Button, IconButton, Typography } from '../components/@c-components';
+import closeFill from '@iconify/icons-eva/close-fill';
 
 export default function useSnackbarAction() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();

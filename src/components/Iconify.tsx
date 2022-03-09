@@ -1,8 +1,8 @@
 // icons
 import { Icon, IconifyIcon } from '@iconify/react';
-import { SxProps } from '@mui/system';
 // @mui
-import { Box, BoxProps } from './@c-components';
+import { Box, BoxProps } from '@mui/material';
+import { SxProps } from '@mui/system';
 // ----------------------------------------------------------------------
 
 interface Props extends BoxProps {

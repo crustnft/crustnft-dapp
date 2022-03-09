@@ -1,4 +1,4 @@
-import { Box, BoxProps } from '../components/@c-components';
+import { Box, BoxProps } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

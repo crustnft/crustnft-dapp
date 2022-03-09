@@ -1,7 +1,7 @@
 // form
+import { useFormContext, Controller } from 'react-hook-form';
 // @mui
-import { Controller, useFormContext } from 'react-hook-form';
-import { TextField, TextFieldProps } from '../@c-components';
+import { TextField, TextFieldProps } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

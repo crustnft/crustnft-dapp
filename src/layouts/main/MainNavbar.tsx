@@ -1,6 +1,6 @@
+import { AppBar, Box, Button, Container, Toolbar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
-import { AppBar, Box, Button, Container, Toolbar } from '../../components/@c-components';
 import { MHidden } from '../../components/@material-extend';
 import LogoLong from '../../components/LogoLong';
 import navConfig from './MenuConfig';

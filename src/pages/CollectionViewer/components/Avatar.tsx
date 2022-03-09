@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { Avatar as MUIAvatar, AvatarProps } from '../../../components/@c-components';
+import { Avatar as MUIAvatar, AvatarProps } from '@mui/material';
 
 type AvatarColor = 'default' | 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
 

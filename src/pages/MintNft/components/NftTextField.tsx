@@ -1,11 +1,5 @@
+import { Box, Stack, TextField, TextFieldProps, Typography } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
-import {
-  Box,
-  Stack,
-  TextField,
-  TextFieldProps,
-  Typography
-} from '../../../components/@c-components';
 
 interface IProps {
   name: string;

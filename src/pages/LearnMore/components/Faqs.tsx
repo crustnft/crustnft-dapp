@@ -1,15 +1,12 @@
+import { Container, Typography } from '@mui/material';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
-import { Icon } from '@iconify/react';
-import { styled } from '@mui/material/styles';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Container,
-  Typography
-} from '../../../components/@c-components';
-import { MotionInView, varFadeIn } from '../../../components/animate/index';
+import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { varFadeIn, MotionInView } from '../../../components/animate/index';
 import Page from '../../../components/Page';
+import { styled } from '@mui/material/styles';
+
+import { Icon } from '@iconify/react';
+
 import { FaqsType } from './FaqsConfig';
 
 // ----------------------------------------------------------------------

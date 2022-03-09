@@ -1,6 +1,6 @@
-import { useTheme } from '@mui/material/styles';
 import { forwardRef } from 'react';
-import { Avatar, AvatarProps } from '../@c-components';
+import { useTheme } from '@mui/material/styles';
+import { Avatar, AvatarProps } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

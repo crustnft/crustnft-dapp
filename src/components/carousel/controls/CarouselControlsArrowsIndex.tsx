@@ -1,11 +1,11 @@
+import { Icon } from '@iconify/react';
 import arrowLeftFill from '@iconify/icons-eva/arrow-left-fill';
 import arrowRightFill from '@iconify/icons-eva/arrow-right-fill';
 import roundKeyboardArrowLeft from '@iconify/icons-ic/round-keyboard-arrow-left';
 import roundKeyboardArrowRight from '@iconify/icons-ic/round-keyboard-arrow-right';
-import { Icon } from '@iconify/react';
 // material
-import { alpha, styled, useTheme } from '@mui/material/styles';
-import { Box, BoxProps, Typography } from '../../@c-components';
+import { alpha, useTheme, styled } from '@mui/material/styles';
+import { Typography, Box, BoxProps } from '@mui/material';
 //
 import { MIconButton } from '../../@material-extend';
 

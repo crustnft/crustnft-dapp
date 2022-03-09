@@ -1,8 +1,8 @@
 // @mui
+import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import isString from 'lodash/isString';
 import { useDropzone } from 'react-dropzone';
-import { Typography } from '../@c-components';
 import Iconify from '../Iconify';
 //
 import Image from '../Image';

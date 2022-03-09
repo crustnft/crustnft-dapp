@@ -1,16 +1,7 @@
+import { Avatar, Box, Card, Divider, Grid, IconButton, Tooltip, Typography } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 import Identicons from '@nimiq/identicons';
 import { shortenAddress } from 'utils/formatAddress';
-import {
-  Avatar,
-  Box,
-  Card,
-  Divider,
-  Grid,
-  IconButton,
-  Tooltip,
-  Typography
-} from '../../../components/@c-components';
 import SvgIconStyle from '../../../components/SvgIconStyle';
 import { AssetAndOwnerType } from '../AssetViewer.types';
 

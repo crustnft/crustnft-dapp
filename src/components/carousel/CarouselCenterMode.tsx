@@ -1,13 +1,13 @@
-import arrowForwardFill from '@iconify/icons-eva/arrow-forward-fill';
-import { Icon } from '@iconify/react';
-// material
-import { alpha, styled, useTheme } from '@mui/material/styles';
-import { useRef } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import Slider from 'react-slick';
+import { useRef } from 'react';
+import { Icon } from '@iconify/react';
+import { Link as RouterLink } from 'react-router-dom';
+import arrowForwardFill from '@iconify/icons-eva/arrow-forward-fill';
+// material
+import { alpha, useTheme, styled } from '@mui/material/styles';
+import { Box, Paper, Link, Typography, CardContent } from '@mui/material';
 // utils
 import mockData from '../../utils/mock-data'; //
-import { Box, CardContent, Link, Paper, Typography } from '../@c-components';
 import { CarouselControlsArrowsBasic2 } from './controls';
 
 // ----------------------------------------------------------------------

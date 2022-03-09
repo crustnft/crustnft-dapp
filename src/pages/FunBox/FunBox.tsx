@@ -1,4 +1,4 @@
-import { Container, Grid, Typography } from '../../components/@c-components';
+import { Container, Grid, Typography } from '@mui/material';
 import Page from '../../components/Page';
 import ComponentCard from './components/ComponentCard';
 

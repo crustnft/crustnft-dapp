@@ -1,6 +1,7 @@
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
+import { Alert, Box, Button, Card, Grid, Stack, Typography } from '@mui/material';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
@@ -12,15 +13,6 @@ import { useParams } from 'react-router-dom';
 import { connectRWContract } from 'services/smartContract/evmCompatible';
 import { AUTH_HEADER, pinW3Crust } from 'services/w3AuthIpfs';
 import * as Yup from 'yup';
-import {
-  Alert,
-  Box,
-  Button,
-  Card,
-  Grid,
-  Stack,
-  Typography
-} from '../../../components/@c-components';
 import { FormProvider, RHFUploadNftCard } from '../../../components/hook-form';
 import Iconify from '../../../components/Iconify';
 import { fData } from '../../../utils/formatNumber';

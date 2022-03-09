@@ -1,7 +1,7 @@
 // material
+import { Grid, Stack } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Grid, Stack } from '../../../components/@c-components';
 // import ProfileSocialInfo from './ProfileSocialInfo';
 import { AssetAndOwnerType } from '../AssetViewer.types';
 import AssetAttributes from './AssetAttributes';

@@ -1,6 +1,5 @@
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Container, Divider, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Container, Divider, Stack, Typography } from '../../components/@c-components';
 
 const LINKS = [
   {

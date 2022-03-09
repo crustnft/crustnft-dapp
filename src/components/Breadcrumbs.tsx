@@ -1,12 +1,12 @@
-import { ReactElement } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
   Breadcrumbs as MUIBreadcrumbs,
   BreadcrumbsProps,
   Link,
   Typography
-} from './@c-components';
+} from '@mui/material';
+import { ReactElement } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 type TLink = {
   href?: string;

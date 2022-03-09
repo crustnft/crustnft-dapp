@@ -1,17 +1,3 @@
-import { postContract } from 'clients/crustnft-explore-api';
-import Iconify from 'components/Iconify';
-import { getContract, setAuthorInfo, setName, setSymbol } from 'constants/contract';
-import { SOLIDITY_COMPILER_VERSION, SPDX_LICENSE_IDENTIFIER } from 'constants/solcEnvironments';
-import useWallet from 'hooks/useWallet';
-import useWeb3 from 'hooks/useWeb3';
-import { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import {
-  compileSmartContract,
-  deploySmartContract,
-  getPublishingStatus,
-  publishSmartContract
-} from 'services/createSmartContract/evmCompatible/';
 import {
   Box,
   Button,
@@ -26,7 +12,21 @@ import {
   Stepper,
   Tooltip,
   Typography
-} from '../../../components/@c-components';
+} from '@mui/material';
+import { postContract } from 'clients/crustnft-explore-api';
+import Iconify from 'components/Iconify';
+import { getContract, setAuthorInfo, setName, setSymbol } from 'constants/contract';
+import { SOLIDITY_COMPILER_VERSION, SPDX_LICENSE_IDENTIFIER } from 'constants/solcEnvironments';
+import useWallet from 'hooks/useWallet';
+import useWeb3 from 'hooks/useWeb3';
+import { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+import {
+  compileSmartContract,
+  deploySmartContract,
+  getPublishingStatus,
+  publishSmartContract
+} from 'services/createSmartContract/evmCompatible/';
 import LightTooltip from '../../../components/LightTooltip';
 import { DoingIcon, ErrorIcon, SuccessIcon } from '../../../components/StepperIcons';
 

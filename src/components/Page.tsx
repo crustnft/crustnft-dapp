@@ -1,7 +1,7 @@
-// material
-import { forwardRef, ReactNode } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Box, BoxProps } from '../components/@c-components';
+import { forwardRef, ReactNode } from 'react';
+// material
+import { Box, BoxProps } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

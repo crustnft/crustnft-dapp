@@ -1,5 +1,6 @@
 import { Icon } from '@iconify/react';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import { Avatar, Box, Drawer, Link, Stack, Tooltip, Typography } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -13,15 +14,6 @@ import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
-import {
-  Avatar,
-  Box,
-  Drawer,
-  Link,
-  Stack,
-  Tooltip,
-  Typography
-} from '../../components/@c-components';
 import { MIconButton } from '../../components/@material-extend';
 import LogoLong from '../../components/LogoLong';
 import NavSection from '../../components/NavSection';

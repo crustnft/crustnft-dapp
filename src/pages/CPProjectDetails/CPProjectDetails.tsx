@@ -1,16 +1,7 @@
 import { Icon } from '@iconify/react';
-import { useTheme } from '@mui/material';
+import { Box, Card, Container, Grid, Link, Stack, Typography, useTheme } from '@mui/material';
 import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
 import { Link as RouterLink } from 'react-router-dom';
-import {
-  Box,
-  Card,
-  Container,
-  Grid,
-  Link,
-  Stack,
-  Typography
-} from '../../components/@c-components';
 import Page from '../../components/Page';
 
 export default function CPProjectDetails() {

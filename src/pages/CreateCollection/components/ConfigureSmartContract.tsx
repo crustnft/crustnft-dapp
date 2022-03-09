@@ -1,6 +1,3 @@
-import useWallet from 'hooks/useWallet';
-import useWeb3 from 'hooks/useWeb3';
-import { Controller, useFormContext } from 'react-hook-form';
 import {
   Box,
   Button,
@@ -13,7 +10,10 @@ import {
   Stack,
   TextField,
   Typography
-} from '../../../components/@c-components';
+} from '@mui/material';
+import useWallet from 'hooks/useWallet';
+import useWeb3 from 'hooks/useWeb3';
+import { Controller, useFormContext } from 'react-hook-form';
 import SmartContractDialogs from './SmartContractDialogs';
 
 export default function ConfigureSmartContract({ startedCreation }: { startedCreation: boolean }) {

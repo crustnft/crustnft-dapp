@@ -1,15 +1,15 @@
+import { ReactNode } from 'react';
+import { Icon, IconifyIcon } from '@iconify/react';
+import { SnackbarProvider } from 'notistack';
+import infoFill from '@iconify/icons-eva/info-fill';
 import alertCircleFill from '@iconify/icons-eva/alert-circle-fill';
 import alertTriangleFill from '@iconify/icons-eva/alert-triangle-fill';
 import checkmarkCircle2Fill from '@iconify/icons-eva/checkmark-circle-2-fill';
-import infoFill from '@iconify/icons-eva/info-fill';
-import { Icon, IconifyIcon } from '@iconify/react';
 // material
 import { alpha, useTheme } from '@mui/material/styles';
-import { SnackbarProvider } from 'notistack';
-import { ReactNode } from 'react';
+import { Box, GlobalStyles } from '@mui/material';
 // @types
 import { ColorSchema } from '../@types/theme';
-import { Box, GlobalStyles } from './@c-components';
 
 // ----------------------------------------------------------------------
 

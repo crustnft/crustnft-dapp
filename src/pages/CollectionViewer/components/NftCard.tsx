@@ -1,9 +1,9 @@
 import { Icon } from '@iconify/react';
+import { Box, Link, Paper, Stack, Typography } from '@mui/material';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import { BallClipRotateMultiple } from 'react-pure-loaders';
-import { Box, Link, Paper, Stack, Typography } from '../../../components/@c-components';
 import type { NftCardCollectionViewerProps } from '../CollectionViewer.types';
 
 // To be moved to its place

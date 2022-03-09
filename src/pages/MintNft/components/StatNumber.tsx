@@ -1,4 +1,4 @@
-import { Card, Stack, Typography } from '../../../components/@c-components';
+import { Card, Stack, Typography } from '@mui/material';
 import type { StatProps } from '../MintNft.types';
 
 export default function StatNumber({ statType, max, value }: StatProps) {

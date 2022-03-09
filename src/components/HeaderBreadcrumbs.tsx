@@ -1,6 +1,6 @@
+import { Box, Link, Typography } from '@mui/material';
 import isString from 'lodash/isString';
 import { ReactNode } from 'react';
-import { Box, Link, Typography } from './@c-components';
 //
 import Breadcrumbs, { Props as BreadcrumbsProps } from './Breadcrumbs';
 

@@ -1,7 +1,7 @@
+import { Box, Paper, Typography } from '@mui/material';
 import { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { ImageCard as ImageCardType } from '../../../@types/imagesGCS';
-import { Box, Paper, Typography } from '../../../components/@c-components';
 import Image from '../../../components/Image';
 import ImageDetails from './ImageDetails';
 

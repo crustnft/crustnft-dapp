@@ -1,7 +1,7 @@
+import { Box, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { Box, Stack, Typography } from '../../../components/@c-components';
 import type { BoostProps } from '../MintNft.types';
 
 export default function StatNumber({ boostType, displayType, value }: BoostProps) {

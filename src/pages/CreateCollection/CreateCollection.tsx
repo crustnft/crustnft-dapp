@@ -1,8 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Card, Container } from '@mui/material';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
-import { Card, Container } from '../../components/@c-components';
 import Page from '../../components/Page';
 import ConfigureSmartContract from './components/ConfigureSmartContract';
 import DeploySmartContract from './components/DeploySmartContract';

@@ -1,11 +1,14 @@
-import { Icon } from '@iconify/react';
-import { Box, Container, Tooltip, Typography } from '../../components/@c-components';
-import { MIconButton } from '../../components/@material-extend';
-import Page from '../../components/Page';
-import { DISCORD, MEDIUM, TELEGRAM, TWITTER } from '../../constants/COMMON_VARIABLES';
+import { Container, Typography, Box, Tooltip } from '@mui/material';
 import useSettings from '../../hooks/useSettings';
+import Page from '../../components/Page';
 import Faqs from './components/Faqs';
+
 import { DappStructure, NftExchange, NftMinting, Others } from './components/FaqsConfig';
+
+import { Icon } from '@iconify/react';
+import { MIconButton } from '../../components/@material-extend';
+
+import { TELEGRAM, TWITTER, DISCORD, MEDIUM } from '../../constants/COMMON_VARIABLES';
 
 // ----------------------------------------------------------------------
 

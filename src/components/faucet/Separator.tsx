@@ -1,5 +1,5 @@
+import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Typography } from '../@c-components';
 
 const Separator = styled(Typography)(({ theme }) => ({
   margin: theme.spacing(0, 1),

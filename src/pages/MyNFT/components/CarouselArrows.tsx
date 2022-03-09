@@ -1,17 +1,11 @@
+import { ReactNode } from 'react';
 import { IconifyIcon } from '@iconify/react';
 // @mui
-import { styled, useTheme } from '@mui/material/styles';
-import { IconButtonAnimate } from 'components/animate';
+import { useTheme, styled } from '@mui/material/styles';
+import { Box, BoxProps, Stack, StackProps, IconButtonProps } from '@mui/material';
 //
 import Iconify from 'components/Iconify';
-import { ReactNode } from 'react';
-import {
-  Box,
-  BoxProps,
-  IconButtonProps,
-  Stack,
-  StackProps
-} from '../../../components/@c-components';
+import { IconButtonAnimate } from 'components/animate';
 
 // ----------------------------------------------------------------------
 

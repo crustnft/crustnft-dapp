@@ -1,11 +1,4 @@
 import { Icon } from '@iconify/react';
-import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import Identicons from '@nimiq/identicons';
-import Iconify from 'components/Iconify';
-import { EMPTY_CHAIN, SUPPORTED_CHAINS } from 'constants/chains';
-import useWeb3 from 'hooks/useWeb3';
-import React, { useEffect, useRef, useState } from 'react';
 import {
   Box,
   Button,
@@ -15,15 +8,21 @@ import {
   Link,
   Stack,
   SvgIcon,
-  Typography
-} from '../../components/@c-components';
+  Typography,
+  useMediaQuery
+} from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import Identicons from '@nimiq/identicons';
+import Iconify from 'components/Iconify';
+import { EMPTY_CHAIN, SUPPORTED_CHAINS } from 'constants/chains';
+import useWeb3 from 'hooks/useWeb3';
+import React, { useEffect, useRef, useState } from 'react';
 import MenuPopover from '../../components/MenuPopover';
 import useLocales from '../../hooks/useLocales';
 import useSnackbarAction from '../../hooks/useSnackbarAction';
 import useWallet from '../../hooks/useWallet';
 import { Chain } from '../../interfaces/chain';
 import { shortenAddress, shortenAddressHeader } from '../../utils/formatAddress';
-
 Identicons.svgPath = './static/identicons.min.svg';
 
 const ConnectWalletPopover = () => {

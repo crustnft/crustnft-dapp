@@ -1,9 +1,9 @@
+import { Box, GlobalStyles } from '@mui/material';
 // material
 import { alpha, styled, useTheme } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import NProgress from 'nprogress';
 import { useEffect, useMemo } from 'react';
-import { Box, GlobalStyles } from './@c-components';
 //
 import LogoLong from './LogoLong';
 

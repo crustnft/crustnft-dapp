@@ -1,3 +1,4 @@
+import { Container, Grid, Pagination, Stack } from '@mui/material';
 import Identicons from '@nimiq/identicons';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -12,7 +13,6 @@ import {
 } from 'services/smartContract/evmCompatible';
 import { getRpcUrlByNetworkName } from 'utils/blockchainHandlers';
 import { parseNftUri } from 'utils/tokenUriHandlers';
-import { Container, Grid, Pagination, Stack } from '../../components/@c-components';
 import Page from '../../components/Page';
 import { NB_NFT_PER_PAGE } from '../../configs/general';
 import { SIMPLIFIED_ERC721_ABI } from '../../constants/simplifiedERC721ABI';

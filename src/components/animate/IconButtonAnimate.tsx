@@ -1,7 +1,7 @@
-// @mui
 import { m } from 'framer-motion';
 import { forwardRef, ReactNode } from 'react';
-import { Box, IconButton, IconButtonProps } from '../@c-components';
+// @mui
+import { Box, IconButton, IconButtonProps } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

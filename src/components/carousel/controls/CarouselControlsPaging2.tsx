@@ -1,6 +1,6 @@
-import { styled } from '@mui/material/styles';
 import { ReactNode } from 'react';
-import { Box, BoxProps } from '../../@c-components';
+import { styled } from '@mui/material/styles';
+import { Box, BoxProps } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

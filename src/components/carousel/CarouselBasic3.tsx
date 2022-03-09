@@ -1,10 +1,10 @@
+import { Box } from '@mui/material';
 // material
 import { styled, useTheme } from '@mui/material/styles';
 import { useRef } from 'react';
 import Slider from 'react-slick';
 // utils
 import mockData from '../../utils/mock-data'; //
-import { Box } from '../@c-components';
 import { CarouselControlsArrowsBasic2, CarouselControlsPaging2 } from './controls';
 
 // ----------------------------------------------------------------------

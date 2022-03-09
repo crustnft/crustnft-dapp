@@ -1,5 +1,5 @@
+import { FormHelperText } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormHelperText } from '../@c-components';
 import { UploadAvatar, UploadNftCard, UploadProps } from '../upload';
 
 interface Props extends Omit<UploadProps, 'file'> {

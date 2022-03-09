@@ -1,5 +1,5 @@
+import { Avatar, Container, Grid, Stack, Typography } from '@mui/material';
 import Iconify from 'components/Iconify';
-import { Avatar, Container, Grid, Stack, Typography } from '../../components/@c-components';
 import Page from '../../components/Page';
 import Introduction from './components/Introduction';
 import ProjectCard from './components/ProjectCard';

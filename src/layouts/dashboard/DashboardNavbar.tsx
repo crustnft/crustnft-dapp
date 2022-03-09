@@ -1,9 +1,5 @@
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 import { Icon } from '@iconify/react';
-import { styled } from '@mui/material/styles';
-import useScrollTrigger from '@mui/material/useScrollTrigger';
-import Iconify from 'components/Iconify';
-import { Link as RouterLink } from 'react-router-dom';
 import {
   AppBar,
   Box,
@@ -14,7 +10,11 @@ import {
   Toolbar,
   ToolbarProps,
   Typography
-} from '../../components/@c-components';
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
+import Iconify from 'components/Iconify';
+import { Link as RouterLink } from 'react-router-dom';
 import LogoLong from '../../components/LogoLong';
 import ConnectWalletPopover from './ConnectWalletPopover';
 import NetworkPopover from './NetworkPopover';

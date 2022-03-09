@@ -1,6 +1,6 @@
+import { Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import useWeb3 from 'hooks/useWeb3';
-import { Box, Typography } from '../../../components/@c-components';
 import Image from './Image';
 import MyAvatar from './MyAvatar';
 
