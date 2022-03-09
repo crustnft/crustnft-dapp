@@ -25,6 +25,27 @@ interface ChartPaletteOptions {
   red: string[];
 }
 
+interface HeaderColor {
+  background: string;
+  menuText: string;
+  menuTextHover: string;
+}
+
+interface AdditionalColor {
+  button: number;
+  menuHoverOpacity: number;
+  itemSelected: string;
+  listArrowColor: string;
+  listArrowOpacity: number;
+  yellowButton: string;
+  blueButton: string;
+}
+
+interface BackgroundColor {
+  menu: string;
+  themeBackground: string;
+}
+
 declare module '@mui/material/styles/createPalette' {
   interface TypeBackground {
     neutral: string;
@@ -40,10 +61,16 @@ declare module '@mui/material/styles/createPalette' {
   interface Palette {
     gradients: GradientsPaletteOptions;
     chart: ChartPaletteOptions;
+    header: HeaderColor;
+    additional: AdditionalColor;
+    customBackground: BackgroundColor;
   }
   interface PaletteOptions {
     gradients: GradientsPaletteOptions;
     chart: ChartPaletteOptions;
+    header: HeaderColor;
+    additional: AdditionalColor;
+    customBackground: BackgroundColor;
   }
 }
 
@@ -162,6 +189,15 @@ const COMMON = {
     focus: GREY[500_24],
     hoverOpacity: 0.08,
     disabledOpacity: 0.48
+  },
+  additional: {
+    button: 0.2,
+    menuHoverOpacity: 0.63,
+    itemSelected: '#FF8C00',
+    listArrowColor: '#000000',
+    listArrowOpacity: 0.28,
+    yellowButton: '#FFC107',
+    blueButton: '#3772FF'
   }
 };
 
@@ -171,14 +207,32 @@ const palette = {
     mode: 'light',
     text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
-    action: { active: GREY[600], ...COMMON.action }
+    action: { active: GREY[600], ...COMMON.action },
+    header: {
+      background: '#f2f4faa1',
+      menuText: '#161C24',
+      menuTextHover: '#000000'
+    },
+    customBackground: {
+      menu: '#F2F4FA',
+      themeBackground: '#F2F4FA'
+    }
   },
   dark: {
     ...COMMON,
     mode: 'dark',
     text: { primary: '#fff', secondary: GREY[500], disabled: GREY[600] },
     background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
-    action: { active: GREY[500], ...COMMON.action }
+    action: { active: GREY[500], ...COMMON.action },
+    header: {
+      background: '#141416a1',
+      menuText: '#F4F6F8',
+      menuTextHover: '#000000'
+    },
+    customBackground: {
+      menu: '#141416',
+      themeBackground: '#141416'
+    }
   }
 } as const;
 

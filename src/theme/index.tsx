@@ -9,7 +9,6 @@ import {
 import { ReactNode, useMemo } from 'react';
 // hooks
 import useSettings from '../hooks/useSettings';
-import additionalPalette from './additionalPalette';
 import breakpoints from './breakpoints';
 import componentsOverride from './overrides';
 //
@@ -35,8 +34,7 @@ export default function ThemeProvider({ children }: Props) {
       shape: { borderRadius: 8 },
       direction: themeDirection,
       shadows: isLight ? shadows.light : shadows.dark,
-      customShadows: isLight ? customShadows.light : customShadows.dark,
-      additionalPalette: isLight ? additionalPalette.light : additionalPalette.dark
+      customShadows: isLight ? customShadows.light : customShadows.dark
     }),
     [isLight, themeDirection]
   );

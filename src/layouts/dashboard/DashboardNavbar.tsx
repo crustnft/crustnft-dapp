@@ -25,7 +25,7 @@ const APPBAR_MIN_HEIGHT = 64;
 const RootStyle = styled(AppBar)(({ theme }) => ({
   backdropFilter: 'blur(32px)',
   WebkitBackdropFilter: 'blur(32px)', // Fix on Mobile
-  backgroundColor: 'rgba(242, 244, 250, 0.63)',
+  backgroundColor: theme.palette.header.background,
   boxShadow: 'none'
 }));
 
@@ -47,7 +47,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     // TODO: Define app bar style in custom-components
     <RootStyle>
       <ToolbarStyle sx={{ minHeight: 200 }}>
-        <IconButton onClick={onOpenSidebar} sx={{ color: 'text.primary' }}>
+        <IconButton onClick={onOpenSidebar} sx={{ color: 'header.menuText' }}>
           <Icon icon={menu2Fill} />
         </IconButton>
 
@@ -67,15 +67,15 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
             sx={{ borderRightWidth: 2, minHeight: '34px' }}
           />
 
-          <Typography variant="h6" color="text.primary" sx={{ opacity: 0.3 }}>
+          <Typography variant="h6" color="header.menuText" sx={{ opacity: 0.3 }}>
             Wallet
           </Typography>
 
-          <Typography variant="h6" color="text.primary" sx={{ opacity: 0.3 }}>
+          <Typography variant="h6" color="header.menuText" sx={{ opacity: 0.3 }}>
             Explore
           </Typography>
 
-          <Typography variant="h6" color="text.primary" sx={{ opacity: 0.3 }}>
+          <Typography variant="h6" color="header.menuText" sx={{ opacity: 0.3 }}>
             Docs
           </Typography>
         </Stack>
