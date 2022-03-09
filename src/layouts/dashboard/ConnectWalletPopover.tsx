@@ -147,7 +147,12 @@ const ConnectWalletPopover = () => {
         open={openWalletInfo}
         onClose={handleWalletInfoClose}
         anchorEl={walletInfoAnchorRef.current}
-        sx={{ width: 220 }}
+        sx={{
+          width: 220,
+          backgroundColor: 'header.walletPopoverBackground',
+          borderRadius: 'header.walletPopoverBorderRadius',
+          boxShadow: 'header.walletPopoverBoxShadow'
+        }}
       >
         <Stack alignItems="center" sx={{ mt: 2 }} spacing={1}>
           <Box component="img" src={uniqueIcon} sx={{ height: 50 }} />

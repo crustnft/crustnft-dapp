@@ -10,7 +10,8 @@ import {
   Stack,
   Toolbar,
   ToolbarProps,
-  Typography
+  Typography,
+  useTheme
 } from '@mui/material';
 import ButtonBase from '@mui/material/ButtonBase';
 import { styled } from '@mui/material/styles';
@@ -43,6 +44,7 @@ type DashboardNavbarProps = {
 };
 
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
+  const theme = useTheme();
   return (
     // TODO: Define app bar style in custom-components
     <RootStyle>
@@ -67,15 +69,15 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
             sx={{ borderRightWidth: 2, minHeight: '34px' }}
           />
 
-          <Typography variant="h6" color="header.menuText" sx={{ opacity: 0.3 }}>
+          <Typography variant="h6" color="header.menuText">
             Wallet
           </Typography>
 
-          <Typography variant="h6" color="header.menuText" sx={{ opacity: 0.3 }}>
+          <Typography variant="h6" color="header.menuText">
             Explore
           </Typography>
 
-          <Typography variant="h6" color="header.menuText" sx={{ opacity: 0.3 }}>
+          <Typography variant="h6" color="header.menuText">
             Docs
           </Typography>
         </Stack>
@@ -100,7 +102,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           <ButtonBase>
             <Box
               sx={{
-                border: '2px solid #00000033',
+                border: theme.palette.header.walletButtonBorder,
+                borderColor: theme.palette.header.menuText,
                 borderRadius: '20px',
                 height: '100%',
                 padding: '2px'
