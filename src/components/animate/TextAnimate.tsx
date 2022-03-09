@@ -1,6 +1,6 @@
-import { motion, MotionProps } from 'framer-motion';
 // material
-import { Box, BoxProps } from '@mui/material';
+import { motion, MotionProps } from 'framer-motion';
+import { Box, BoxProps } from '../@c-components';
 //
 import { varFadeInUp } from './variants';
 

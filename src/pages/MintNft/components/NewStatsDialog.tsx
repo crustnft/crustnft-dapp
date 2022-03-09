@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import {
   Button,
   Dialog,
@@ -6,9 +8,7 @@ import {
   Stack,
   TextField,
   Typography
-} from '@mui/material';
-import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+} from '../../../components/@c-components';
 import Iconify from '../../../components/Iconify';
 import type { StatProps } from '../MintNft.types';
 

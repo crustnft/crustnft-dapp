@@ -1,18 +1,3 @@
-import {
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  Link,
-  Paper,
-  Stack,
-  Step,
-  StepContent,
-  StepLabel,
-  Stepper,
-  Tooltip,
-  Typography
-} from '@mui/material';
 import { postContract } from 'clients/crustnft-explore-api';
 import Iconify from 'components/Iconify';
 import { getContract, setAuthorInfo, setName, setSymbol } from 'constants/contract';
@@ -27,6 +12,21 @@ import {
   getPublishingStatus,
   publishSmartContract
 } from 'services/createSmartContract/evmCompatible/';
+import {
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  Link,
+  Paper,
+  Stack,
+  Step,
+  StepContent,
+  StepLabel,
+  Stepper,
+  Tooltip,
+  Typography
+} from '../../../components/@c-components';
 import LightTooltip from '../../../components/LightTooltip';
 import { DoingIcon, ErrorIcon, SuccessIcon } from '../../../components/StepperIcons';
 

@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Container, Stack, Grid, Pagination } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import { LineScalePulseOutRapid } from 'react-pure-loaders';
-import Page from '../../components/Page';
-import { contractAddress } from '../../utils/contractAddress';
-import { NUMBER_OF_NFT_IN_MANAGER_PAGE } from '../../constants/COMMON_VARIABLES';
-
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Container, Grid, Pagination, Stack } from '../../components/@c-components';
 import NftCard from '../../components/gallery/NftCard';
-import { getNftByPage } from '../../utils/gallery/updateGallery';
-import { ABI_UNIVERSE_NFT } from '../../constants/ABI_UNIVERSE_NFT';
+import Page from '../../components/Page';
 import { CONTRACT_ADDRESS_UNIVERSE_NFT, POLYGON_RPC } from '../../constants';
+import { ABI_UNIVERSE_NFT } from '../../constants/ABI_UNIVERSE_NFT';
+import { NUMBER_OF_NFT_IN_MANAGER_PAGE } from '../../constants/COMMON_VARIABLES';
 import { connectContract } from '../../services/smartContract/evmCompatible';
+import { contractAddress } from '../../utils/contractAddress';
+import { getNftByPage } from '../../utils/gallery/updateGallery';
 
 export default function Universe() {
   const { pageUrl } = useParams();

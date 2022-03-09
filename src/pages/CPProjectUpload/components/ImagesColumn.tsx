@@ -1,8 +1,8 @@
-import { Paper, Stack } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
 import { ImagesColumn as Column } from '../../../@types/imagesGCS';
+import { Paper, Stack } from '../../../components/@c-components';
 import { addImage, deleteColumn, deleteTask, updateColumn } from '../../../redux/slices/imagesGCS';
 import { RootState, useDispatch } from '../../../redux/store';
 import ImageCard from './ImageCard';

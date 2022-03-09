@@ -1,5 +1,5 @@
 // @mui
-import { Box, Paper, Skeleton, Stack } from '@mui/material';
+import { Box, Paper, Skeleton, Stack } from '../../../components/@c-components';
 
 // ----------------------------------------------------------------------
 

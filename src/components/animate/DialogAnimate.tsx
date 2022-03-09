@@ -1,6 +1,6 @@
-import { motion, AnimatePresence } from 'framer-motion';
 // material
-import { Dialog, Box, Paper, DialogProps } from '@mui/material';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Box, Dialog, DialogProps, Paper } from '../@c-components';
 //
 import { varFadeInUp } from './variants';
 
@@ -26,7 +26,7 @@ export default function DialogAnimate({
           maxWidth="xs"
           open={open}
           onClose={onClose}
-          PaperComponent={(props) => (
+          PaperComponent={(props: any) => (
             <Box
               component={motion.div}
               {...(animate || varFadeInUp)}

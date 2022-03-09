@@ -1,8 +1,15 @@
 import { Link as RouterLink } from 'react-router-dom';
 // material
-import { Box, Link, Grid, Paper, Typography, CardActionArea } from '@mui/material';
+import {
+  Box,
+  CardActionArea,
+  Grid,
+  Link,
+  Paper,
+  Typography
+} from '../../../components/@c-components';
 //
-import { varFadeInUp, MotionInView } from '../../../components/animate';
+import { MotionInView, varFadeInUp } from '../../../components/animate';
 
 // ----------------------------------------------------------------------
 

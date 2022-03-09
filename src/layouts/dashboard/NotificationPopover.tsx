@@ -1,3 +1,11 @@
+import { noCase } from 'change-case';
+import { IconButtonAnimate } from 'components/animate';
+import Iconify from 'components/Iconify';
+import MenuPopover from 'components/MenuPopover';
+import Scrollbar from 'components/Scrollbar';
+import { sub } from 'date-fns';
+import { useState } from 'react';
+import { fToNow } from 'utils/formatTime';
 import {
   Avatar,
   Badge,
@@ -9,15 +17,7 @@ import {
   ListItemText,
   Tooltip,
   Typography
-} from '@mui/material';
-import { noCase } from 'change-case';
-import { IconButtonAnimate } from 'components/animate';
-import Iconify from 'components/Iconify';
-import MenuPopover from 'components/MenuPopover';
-import Scrollbar from 'components/Scrollbar';
-import { sub } from 'date-fns';
-import { useState } from 'react';
-import { fToNow } from 'utils/formatTime';
+} from '../../components/@c-components';
 
 const _mock = {
   id: (index: number) => `e99f09a7-dd88-49d5-b1c8-1daf80c2d7b${index + 1}`,

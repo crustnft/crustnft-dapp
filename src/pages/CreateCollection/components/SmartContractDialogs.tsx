@@ -3,6 +3,13 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GppGoodIcon from '@mui/icons-material/GppGood';
 import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions';
+import Slide from '@mui/material/Slide';
+import { useTheme } from '@mui/material/styles';
+import { TransitionProps } from '@mui/material/transitions';
+import { getContract } from 'constants/contract';
+import { forwardRef, useState } from 'react';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { androidstudio } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import {
   AppBar,
   Box,
@@ -12,14 +19,7 @@ import {
   Toolbar,
   Tooltip,
   Typography
-} from '@mui/material';
-import Slide from '@mui/material/Slide';
-import { useTheme } from '@mui/material/styles';
-import { TransitionProps } from '@mui/material/transitions';
-import { getContract } from 'constants/contract';
-import { forwardRef, useState } from 'react';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { androidstudio } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+} from '../../../components/@c-components';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
