@@ -9,6 +9,7 @@ export {
   DialogContentText,
   DialogTitle,
   GlobalStyles,
+  IconButton,
   InputAdornment,
   InputLabel,
   LinearProgress,
@@ -25,6 +26,7 @@ export {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography
 } from '@mui/material';
 export type {
@@ -69,7 +71,6 @@ export { default as FormControlLabel } from './FormControlLabel';
 export { default as FormGroup } from './FormGroup';
 export { default as FormHelperText } from './FormHelperText';
 export { default as Grid } from './Grid';
-export { default as IconButton } from './IconButton';
 export { default as ListItem } from './ListItem';
 export { default as ListItemAvatar } from './ListItemAvatar';
 export { default as ListItemButton } from './ListItemButton';
@@ -90,4 +91,3 @@ export { default as SvgIcon } from './SvgIcon';
 export { default as Switch } from './Switch';
 export { default as TextField } from './TextField';
 export { default as Toolbar } from './Toolbar';
-export { default as Tooltip } from './Tooltip';
