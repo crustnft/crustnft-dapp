@@ -40,7 +40,8 @@ const ConnectWalletPopover = () => {
     account,
     deactivate,
     connectedChainId,
-    balance
+    balance,
+    providerInfo
   } = useWeb3();
 
   const [openWalletInfo, setOpenWalletInfo] = useState(false);
@@ -159,7 +160,7 @@ const ConnectWalletPopover = () => {
         onClose={handleWalletInfoClose}
         anchorEl={walletInfoAnchorRef.current}
         sx={{
-          width: 220,
+          width: 250,
           backgroundColor: 'header.walletPopoverBackground',
           borderRadius: 'header.walletPopoverBorderRadius',
           boxShadow: 'header.walletPopoverBoxShadow',
@@ -169,10 +170,44 @@ const ConnectWalletPopover = () => {
         <Typography variant="h5" color="text.primary" align="center">
           Rinkeby Network
         </Typography>
-        <Stack direction="row">
-          <Typography variant="caption" noWrap sx={{ width: '100%' }}>
-            0xFeCda4613CCf92a39d144cF1917A76326D55Fb29
+        <Stack direction="row" alignItems="center">
+          <Typography variant="caption" noWrap color="text.secondary">
+            {account}
           </Typography>
+          <IconButton
+            size="small"
+            onClick={() => {
+              navigator.clipboard.writeText(account || '');
+            }}
+          >
+            <Iconify icon="ion:copy-outline" sx={{ height: '12px', color: 'text.primary' }} />
+          </IconButton>
+        </Stack>
+        <Stack
+          sx={{
+            border: theme.palette.header.yellowBorder,
+            borderRadius: '25px',
+            padding: '12px',
+            mt: 2
+          }}
+          direction="row"
+          alignItems="center"
+          justifyContent="space-around"
+        >
+          <Box component="img" src={providerInfo?.logo || ''} sx={{ height: '45px' }} />
+          <Stack direction="column">
+            <Typography variant="caption" noWrap color="text.secondary">
+              {providerInfo?.name}
+            </Typography>
+            <Stack direction="row" alignItems="center" spacing={0.5}>
+              <Typography variant="h5" color="text.primary">
+                {balance}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                RIN
+              </Typography>
+            </Stack>
+          </Stack>
         </Stack>
 
         <Stack alignItems="center" sx={{ mt: 2 }} spacing={1}>

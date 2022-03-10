@@ -33,6 +33,7 @@ interface HeaderColor {
   walletPopoverBoxShadow: string;
   walletPopoverBorderRadius: string;
   walletButtonBorder: string;
+  yellowBorder: string;
 }
 
 interface AdditionalColor {
@@ -218,7 +219,7 @@ const palette = {
   light: {
     ...COMMON,
     mode: 'light',
-    text: { primary: '#000', secondary: GREY[600], disabled: GREY[500] },
+    text: { primary: '#000', secondary: alpha('#000', 0.5), disabled: GREY[500] },
     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action },
     header: {
@@ -228,7 +229,8 @@ const palette = {
       walletPopoverBackground: '#FCFCFD',
       walletPopoverBoxShadow: '0px 0px 95px rgba(0, 0, 0, 0.25)',
       walletPopoverBorderRadius: '30px',
-      walletButtonBorder: '2px solid'
+      walletButtonBorder: '2px solid',
+      yellowBorder: '3.5px solid #FF8C00'
     },
     customBackground: {
       menu: '#F2F4FA',
@@ -238,7 +240,7 @@ const palette = {
   dark: {
     ...COMMON,
     mode: 'dark',
-    text: { primary: '#fff', secondary: GREY[500], disabled: GREY[600] },
+    text: { primary: '#fff', secondary: alpha('#fff', 0.5), disabled: GREY[600] },
     background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
     action: { active: GREY[500], ...COMMON.action },
     header: {
@@ -248,7 +250,8 @@ const palette = {
       walletPopoverBackground: '#23262F',
       walletPopoverBoxShadow: '0px 0px 95px rgba(0, 0, 0, 0.25)',
       walletPopoverBorderRadius: '30px',
-      walletButtonBorder: '2px solid'
+      walletButtonBorder: '2px solid',
+      yellowBorder: '3.5px solid #FF8C00'
     },
     customBackground: {
       menu: '#141416',
