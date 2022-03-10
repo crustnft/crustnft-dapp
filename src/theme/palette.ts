@@ -101,6 +101,14 @@ const PRIMARY = {
   darker: '#005249'
 };
 
+const CUSTOM_PRIMARY = {
+  lighter: '#F4F6F8',
+  light: '#F4F6F8',
+  main: '#454F5B',
+  dark: '#212B36',
+  darker: '#161C24'
+};
+
 const SECONDARY = {
   lighter: '#D6E4FF',
   light: '#84A9FF',
@@ -176,7 +184,7 @@ const CHART_COLORS = {
 
 const COMMON = {
   common: { black: '#000', white: '#fff' },
-  primary: { ...PRIMARY, contrastText: '#fff' },
+  primary: { ...CUSTOM_PRIMARY, contrastText: '#fff' },
   secondary: { ...SECONDARY, contrastText: '#fff' },
   info: { ...INFO, contrastText: '#fff' },
   success: { ...SUCCESS, contrastText: GREY[800] },
