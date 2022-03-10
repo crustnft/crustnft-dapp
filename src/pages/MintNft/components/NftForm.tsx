@@ -84,7 +84,7 @@ export default function NftForm() {
   const { chain: selectedChain } = useWallet();
   const [isNetworkCorrect, setIsNetworkCorrect] = useState(true);
 
-  const { account, library, onboard } = useWeb3();
+  const { account, library } = useWeb3();
   const [mintingState, setMintingState] = useState<'notstarted' | 'success' | 'error'>(
     'notstarted'
   );
@@ -281,7 +281,7 @@ export default function NftForm() {
             setActiveStep(2);
             setMintingNft(true);
             console.log('wallet Check');
-            await onboard?.walletCheck();
+            // await onboard?.walletCheck();
             console.log('get signer');
             const signer = library?.getSigner(account);
             console.log('compare signer');

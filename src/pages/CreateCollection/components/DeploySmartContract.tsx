@@ -42,7 +42,7 @@ export default function DeploySmartContract({
     handleSubmit,
     formState: { isValid }
   } = useFormContext();
-  const { active, account, library, onboard } = useWeb3();
+  const { active, account, library } = useWeb3();
   const { chain: selectedChain } = useWallet();
   const [activeStep, setActiveStep] = useState(0);
   const [source, setSource] = useState('');
@@ -87,7 +87,7 @@ export default function DeploySmartContract({
 
     if (compileResult) {
       setCompilingSuccess(true);
-      await onboard?.walletCheck();
+      // await onboard?.walletCheck();
       const signer = library?.getSigner(account);
 
       setActiveStep((prevActiveStep) => 1);

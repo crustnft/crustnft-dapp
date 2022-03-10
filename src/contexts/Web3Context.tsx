@@ -1,19 +1,55 @@
+import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 import { Web3Provider } from '@ethersproject/providers';
-import Onboard from 'bnc-onboard';
-import { API, Wallet } from 'bnc-onboard/dist/src/interfaces';
+import WalletConnect from '@walletconnect/web3-provider';
+import { ethers } from 'ethers';
 import useWallet from 'hooks/useWallet';
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
+import Web3Modal from 'web3modal';
 
 type Web3ContextProps = {
   active: boolean;
   library: Web3Provider | undefined;
   account: string | undefined;
-  provider: API | undefined;
-  onboard: API | undefined;
+  provider: any;
   activate: () => void;
   deactivate: () => void;
   pending: boolean;
   connectedChainId: number | null;
+};
+
+export const networkParams = {
+  '0x63564c40': {
+    chainId: '0x63564c40',
+    rpcUrls: ['https://api.harmony.one'],
+    chainName: 'Harmony Mainnet',
+    nativeCurrency: { name: 'ONE', decimals: 18, symbol: 'ONE' },
+    blockExplorerUrls: ['https://explorer.harmony.one'],
+    iconUrls: ['https://harmonynews.one/wp-content/uploads/2019/11/slfdjs.png']
+  },
+  '0xa4ec': {
+    chainId: '0xa4ec',
+    rpcUrls: ['https://forno.celo.org'],
+    chainName: 'Celo Mainnet',
+    nativeCurrency: { name: 'CELO', decimals: 18, symbol: 'CELO' },
+    blockExplorerUrl: ['https://explorer.celo.org'],
+    iconUrls: ['https://celo.org/images/marketplace-icons/icon-celo-CELO-color-f.svg']
+  }
+};
+
+export const providerOptions = {
+  walletlink: {
+    package: CoinbaseWalletSDK,
+    options: {
+      appName: 'Web 3 Modal Demo',
+      infuraId: '741c5f1257a24106934fe4105c784478' // TODO: replace by JSON RPC url;
+    }
+  },
+  walletconnect: {
+    package: WalletConnect,
+    options: {
+      infuraId: '741c5f1257a24106934fe4105c784478'
+    }
+  }
 };
 
 const initialContext: Web3ContextProps = {
@@ -21,7 +57,7 @@ const initialContext: Web3ContextProps = {
   library: undefined,
   account: undefined,
   provider: undefined,
-  onboard: undefined,
+
   activate: () => {},
   deactivate: () => {},
   pending: false,
@@ -30,54 +66,30 @@ const initialContext: Web3ContextProps = {
 
 export const Web3Context = createContext(initialContext);
 
-const wallets = [
-  { walletName: 'metamask' },
-  {
-    walletName: 'walletConnect',
-    infuraKey: '741c5f1257a24106934fe4105c784478'
-  },
-  {
-    walletName: 'ledger',
-    infuraKey: '741c5f1257a24106934fe4105c784478'
-  }
-  // { walletName: 'coinbase' },
-  // { walletName: 'status' },
-  // {
-  //   walletName: 'lattice',
-  //   appName: 'Yearn Finance',
-  //   rpcUrl
-  // },
-  // { walletName: 'walletLink', rpcUrl },
-  // { walletName: 'torus' },
-  // { walletName: 'authereum', disableNotifications: true },
-  // { walletName: 'trust', rpcUrl },
-  // { walletName: 'opera' },
-  // { walletName: 'operaTouch' },
-  // { walletName: 'imToken', rpcUrl },
-  // { walletName: 'meetone' }
-];
-
 const dappId = process.env.BLOCKNATIVE_API_KEY;
-
 export function Web3ContextProvider({ children }: { children: React.ReactNode }) {
   const [active, setActive] = useState(false);
   const [library, setLibrary] = useState<Web3Provider | undefined>(undefined);
   const [account, setAccount] = useState<string | undefined>(undefined);
-  const [provider, setProvider] = useState<API | undefined>(undefined);
+  const [provider, setProvider] = useState<any>(undefined);
   const [pending, setPending] = useState(false);
   const [modalSelectedWallet, setModalSelectedWallet] = useState<null | string>(null);
   const [connectedChainId, setConnectedChainId] = useState<number | null>(null);
-  const {
-    chain,
-    selectedWallet: previousSelectedWallet,
-    onSelectWallet,
-    onDisconnectWallet
-  } = useWallet();
+  const [error, setError] = useState<any>();
+  const { chain } = useWallet();
+
+  const web3Modal = useMemo(
+    () =>
+      new Web3Modal({
+        cacheProvider: true, // optional
+        providerOptions // required,
+      }),
+    []
+  );
 
   useEffect(() => {
     if (account && provider && connectedChainId && modalSelectedWallet) {
       setActive(true);
-      onSelectWallet(modalSelectedWallet);
     } else {
       setActive(false);
     }
@@ -85,69 +97,32 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, provider, connectedChainId, modalSelectedWallet]);
 
-  const onboard = useMemo(
-    () =>
-      Onboard({
-        dappId,
-        hideBranding: true,
-        networkId: chain?.chainId || 1,
-        walletSelect: {
-          wallets: [
-            { walletName: 'metamask' },
-            {
-              walletName: 'walletConnect',
-              infuraKey: '741c5f1257a24106934fe4105c784478'
-            }
-          ]
-        },
-        subscriptions: {
-          wallet: (wallet: Wallet) => {
-            if (wallet.provider) {
-              setProvider(wallet.provider);
-              setLibrary(new Web3Provider(wallet.provider, 'any'));
-              setModalSelectedWallet(wallet.name);
-            } else {
-              setProvider(undefined);
-              setLibrary(undefined);
-            }
-          },
-          address: (address) => {
-            setAccount(address);
-          },
-          network: (network) => {
-            setConnectedChainId(network);
-          }
-        }
-      }),
-    [chain, setProvider, setLibrary, setAccount]
-  );
+  const activate = useCallback(async () => {
+    try {
+      setPending(true);
+      const provider = await web3Modal.connect();
+      const library = new ethers.providers.Web3Provider(provider);
+      const accounts = await library.listAccounts();
+      const network = await library.getNetwork();
+      setProvider(provider);
+      setLibrary(library);
+      if (accounts) setAccount(accounts[0]);
+      setConnectedChainId(network.chainId);
+    } catch (error) {
+      setError(error);
+    }
+  }, []);
 
-  const activate = useCallback(() => {
-    setPending(true);
-
-    onboard
-      .walletSelect(previousSelectedWallet)
-      .catch(console.error)
-      .then((res) => {
-        if (res) {
-          return onboard.walletCheck();
-        }
-      })
-      .then(() => {
-        setPending(false);
-      });
-  }, [previousSelectedWallet, onboard]);
+  const refreshState = () => {};
 
   const deactivate = useCallback(() => {
     setPending(true);
-    onboard.walletReset();
-    onDisconnectWallet();
-    setModalSelectedWallet(null);
-    onSelectWallet('');
+    web3Modal.clearCachedProvider();
+    refreshState();
     setPending(false);
     setActive(false);
     setAccount(undefined);
-  }, [onboard, onDisconnectWallet, onSelectWallet]);
+  }, []);
 
   return (
     <Web3Context.Provider
@@ -156,7 +131,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
         library,
         account,
         provider,
-        onboard,
+
         activate,
         deactivate,
         pending,
