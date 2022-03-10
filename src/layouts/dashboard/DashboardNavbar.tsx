@@ -14,6 +14,7 @@ import { styled } from '@mui/material/styles';
 import Iconify from 'components/Iconify';
 import useResponsive from 'hooks/useResponsive';
 import { Link as RouterLink } from 'react-router-dom';
+import LogoIcon from '../../components/LogoIcon';
 import LogoLong from '../../components/LogoLong';
 import MenuDesktop from './/MenuDesktop';
 import ConnectWalletPopover from './ConnectWalletPopover';
@@ -55,7 +56,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
             to="/"
             sx={{ display: 'inline-flex', pl: { xs: '5px', sm: '15px', lg: '25px' } }}
           >
-            <LogoLong />
+            {isDesktop ? <LogoLong /> : <LogoIcon />}
           </Box>
 
           {isDesktop && (
@@ -78,20 +79,26 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
 
         <Box sx={{ flexGrow: 1 }} />
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          <Button
-            variant="contained"
-            startIcon={<Iconify icon="bx:plus" />}
-            sx={[
-              {
-                backgroundColor: '#3772FF',
-                color: '#ffffff',
-                borderRadius: '32px'
-              },
-              { '& .MuiButton-startIcon': { mr: 0.5 } }
-            ]}
-          >
-            Create
-          </Button>
+          {isDesktop ? (
+            <Button
+              variant="contained"
+              startIcon={<Iconify icon="bx:plus" />}
+              sx={[
+                {
+                  backgroundColor: '#3772FF',
+                  color: '#ffffff',
+                  borderRadius: '32px'
+                },
+                { '& .MuiButton-startIcon': { mr: 0.5 } }
+              ]}
+            >
+              Create
+            </Button>
+          ) : (
+            <IconButton>
+              <Iconify icon="fluent:channel-add-28-regular" />
+            </IconButton>
+          )}
 
           <ConnectWalletPopover />
           <Divider orientation="vertical" flexItem />
