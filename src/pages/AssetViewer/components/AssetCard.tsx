@@ -80,7 +80,7 @@ export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOw
                       }?a=${assetAndOwner.tokenId}`}
                       target="_blank"
                     >
-                      <Box component="img" src={chain?.icon || ''} sx={{ height: 50 }} />
+                      <Box component="img" src={chain?.icon || ''} sx={{ height: 50, width: 50 }} />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Opensea Viewer">
