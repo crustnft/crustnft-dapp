@@ -33,6 +33,7 @@ interface HeaderColor {
   walletPopoverBoxShadow: string;
   walletPopoverBorderRadius: string;
   walletButtonBorder: string;
+  yellowBorder: string;
 }
 
 interface AdditionalColor {
@@ -100,6 +101,15 @@ const PRIMARY = {
   dark: '#007B55',
   darker: '#005249'
 };
+
+const CUSTOM_PRIMARY = {
+  lighter: '#F4F6F8',
+  light: '#F4F6F8',
+  main: '#454F5B',
+  dark: '#212B36',
+  darker: '#161C24'
+};
+
 const SECONDARY = {
   lighter: '#D6E4FF',
   light: '#84A9FF',
@@ -175,7 +185,7 @@ const CHART_COLORS = {
 
 const COMMON = {
   common: { black: '#000', white: '#fff' },
-  primary: { ...PRIMARY, contrastText: '#fff' },
+  primary: { ...CUSTOM_PRIMARY, contrastText: '#fff' },
   secondary: { ...SECONDARY, contrastText: '#fff' },
   info: { ...INFO, contrastText: '#fff' },
   success: { ...SUCCESS, contrastText: GREY[800] },
@@ -209,7 +219,7 @@ const palette = {
   light: {
     ...COMMON,
     mode: 'light',
-    text: { primary: '#000', secondary: GREY[600], disabled: GREY[500] },
+    text: { primary: '#000', secondary: alpha('#000', 0.5), disabled: GREY[500] },
     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action },
     header: {
@@ -219,7 +229,8 @@ const palette = {
       walletPopoverBackground: '#FCFCFD',
       walletPopoverBoxShadow: '0px 0px 95px rgba(0, 0, 0, 0.25)',
       walletPopoverBorderRadius: '30px',
-      walletButtonBorder: '2px solid'
+      walletButtonBorder: '2px solid',
+      yellowBorder: '3.5px solid #FF8C00'
     },
     customBackground: {
       menu: '#F2F4FA',
@@ -229,7 +240,7 @@ const palette = {
   dark: {
     ...COMMON,
     mode: 'dark',
-    text: { primary: '#fff', secondary: GREY[500], disabled: GREY[600] },
+    text: { primary: '#fff', secondary: alpha('#fff', 0.5), disabled: GREY[600] },
     background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
     action: { active: GREY[500], ...COMMON.action },
     header: {
@@ -239,7 +250,8 @@ const palette = {
       walletPopoverBackground: '#23262F',
       walletPopoverBoxShadow: '0px 0px 95px rgba(0, 0, 0, 0.25)',
       walletPopoverBorderRadius: '30px',
-      walletButtonBorder: '2px solid'
+      walletButtonBorder: '2px solid',
+      yellowBorder: '3.5px solid #FF8C00'
     },
     customBackground: {
       menu: '#141416',
