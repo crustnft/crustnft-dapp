@@ -4,7 +4,19 @@ import WalletConnect from '@walletconnect/web3-provider';
 import { ethers, utils } from 'ethers';
 import useWallet from 'hooks/useWallet';
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
-import Web3Modal from 'web3modal';
+import Web3Modal, { getInjectedProvider, getProviderInfo } from 'web3modal';
+
+interface IProviderInfo {
+  id: string;
+  type: string;
+  check: string;
+  name: string;
+  logo: string;
+  description?: string;
+  package?: {
+    required?: string[];
+  };
+}
 
 type Web3ContextProps = {
   active: boolean;
@@ -17,6 +29,7 @@ type Web3ContextProps = {
   connectedChainId: number | null;
   connectWalletConnect: () => void;
   balance: number;
+  providerInfo: IProviderInfo | undefined;
 };
 
 export const truncateAddress = (address: string) => {
@@ -60,7 +73,8 @@ const initialContext: Web3ContextProps = {
   pending: false,
   connectedChainId: null,
   connectWalletConnect: () => {},
-  balance: 0
+  balance: 0,
+  providerInfo: undefined
 };
 
 const providerOptions = {
@@ -92,6 +106,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
   const [error, setError] = useState<any>();
   const { chain: selectedChain } = useWallet();
   const [wrongNetwork, setWrongNetwork] = useState(false);
+  const [providerInfo, setProviderInfo] = useState<IProviderInfo | undefined>(undefined);
 
   const web3Modal = useMemo(
     () =>
@@ -111,10 +126,12 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     try {
       setPending(true);
       const provider = await web3Modal.connect();
+      console.log(provider);
       const library = new ethers.providers.Web3Provider(provider);
       const accounts = await library.listAccounts();
       const network = await library.getNetwork();
       console.log(network);
+      console.log(getInjectedProvider());
       setProvider(provider);
       setLibrary(library);
       if (accounts) setAccount(accounts[0]);
@@ -139,6 +156,11 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
       });
     }
   }, [library, account]);
+
+  useEffect(() => {
+    const info = getProviderInfo(provider);
+    setProviderInfo(info as IProviderInfo);
+  }, [provider]);
 
   const refreshState = () => {};
 
@@ -214,7 +236,8 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
         pending,
         connectedChainId,
         connectWalletConnect,
-        balance
+        balance,
+        providerInfo
       }}
     >
       {children}
