@@ -8,9 +8,9 @@
 #     tests:
 #       run: npm test -- --watchAll=false
 
-pre-commit:
-  parallel: false
-  commands:
-    eslint:
-      glob: "*.{js,jsx,ts,tsx}"
-      run: npx eslint {staged_files}
+# pre-commit:
+#   parallel: false
+#   commands:
+#     eslint:
+#       glob: "*.{js,jsx,ts,tsx}"
+#       run: npx eslint {staged_files}
