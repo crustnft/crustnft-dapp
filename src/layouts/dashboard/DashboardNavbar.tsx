@@ -16,9 +16,11 @@ import {
 import ButtonBase from '@mui/material/ButtonBase';
 import { styled } from '@mui/material/styles';
 import Iconify from 'components/Iconify';
+import useResponsive from 'hooks/useResponsive';
 import useWeb3 from 'hooks/useWeb3';
 import { Link as RouterLink } from 'react-router-dom';
 import LogoLong from '../../components/LogoLong';
+import MenuDesktop from './/MenuDesktop';
 import ConnectWalletPopover from './ConnectWalletPopover';
 import NetworkPopover from './NetworkPopover';
 const APPBAR_MIN_HEIGHT = 64;
@@ -46,6 +48,7 @@ type DashboardNavbarProps = {
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
   const theme = useTheme();
   const { balance } = useWeb3();
+  const isDesktop = useResponsive('up', 'md');
   return (
     // TODO: Define app bar style in custom-components
     <RootStyle>
@@ -69,18 +72,14 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
             flexItem
             sx={{ borderRightWidth: 2, minHeight: '34px' }}
           />
-
-          <Typography variant="h6" color="header.menuText">
-            Wallet
-          </Typography>
-
-          <Typography variant="h6" color="header.menuText">
-            Explore
-          </Typography>
-
-          <Typography variant="h6" color="header.menuText">
-            Docs
-          </Typography>
+          {isDesktop && (
+            <MenuDesktop
+              navConfig={[
+                { title: 'Wallet', path: 'wallet' },
+                { title: 'Explore', path: 'collection-explore' }
+              ]}
+            />
+          )}
         </Stack>
 
         <Box sx={{ flexGrow: 1 }} />
