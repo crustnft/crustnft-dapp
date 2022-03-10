@@ -100,6 +100,7 @@ const PRIMARY = {
   dark: '#007B55',
   darker: '#005249'
 };
+
 const SECONDARY = {
   lighter: '#D6E4FF',
   light: '#84A9FF',
