@@ -19,53 +19,32 @@ import {
 import { useTheme } from '@mui/material/styles';
 import Identicons from '@nimiq/identicons';
 import Iconify from 'components/Iconify';
-import { EMPTY_CHAIN, SUPPORTED_CHAINS } from 'constants/chains';
 import useWeb3 from 'hooks/useWeb3';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import MenuPopover from '../../components/MenuPopover';
 import useLocales from '../../hooks/useLocales';
-import useSnackbarAction from '../../hooks/useSnackbarAction';
 import useWallet from '../../hooks/useWallet';
-import { Chain } from '../../interfaces/chain';
 Identicons.svgPath = './static/identicons.min.svg';
 
 const ConnectWalletPopover = () => {
   const theme = useTheme();
-  const onSnackbarAction = useSnackbarAction();
   const smUp = useMediaQuery(theme.breakpoints.up('sm'));
   const { translate } = useLocales();
 
-  const { chain: selectedChain, selectedWallet } = useWallet();
+  const { chain: selectedChain } = useWallet();
 
   const {
     active: walletIsConnected,
     activate,
     account,
     deactivate,
-    connectedChainId,
+    connectedChain,
     balance,
     providerInfo
   } = useWeb3();
 
   const [openWalletInfo, setOpenWalletInfo] = useState(false);
   const walletInfoAnchorRef = useRef(null);
-  const [uniqueIcon, setUniqueIcon] = useState<string>('');
-  const [network, setNetwork] = useState<Chain>(selectedChain);
-
-  useEffect(() => {
-    const found = SUPPORTED_CHAINS.find((chain) => chain.chainId === connectedChainId);
-    if (found) {
-      setNetwork(found);
-    } else {
-      setNetwork(EMPTY_CHAIN);
-    }
-  }, [connectedChainId]);
-
-  useEffect(() => {
-    if (selectedWallet) {
-      activate();
-    }
-  }, [selectedWallet, activate]);
 
   const handleWalletModalOpen = async () => {
     activate();
@@ -82,23 +61,6 @@ const ConnectWalletPopover = () => {
   const handleDisconnectWallet = () => {
     deactivate();
     setOpenWalletInfo(false);
-  };
-
-  useEffect(() => {
-    if (account) {
-      Identicons.toDataUrl(`${network.currencySymbol.toLowerCase()}:${account}`).then(
-        (img: string) => {
-          setUniqueIcon(img);
-        }
-      );
-    }
-  }, [account, network.currencySymbol]);
-
-  const handleCopyAddress = () => {
-    if (account) {
-      navigator.clipboard.writeText(account);
-      onSnackbarAction('success', translate('connectWallet.copiedAddress'), 3000);
-    }
   };
 
   return (
@@ -152,7 +114,7 @@ const ConnectWalletPopover = () => {
             </Typography>
 
             <Typography variant="subtitle2" color="#45B26B" sx={{ lineHeight: 0 }}>
-              RIN
+              {connectedChain?.currencySymbol}
             </Typography>
           </Stack>
         </ButtonBase>
@@ -171,7 +133,7 @@ const ConnectWalletPopover = () => {
         }}
       >
         <Typography variant="h5" color="text.primary" align="center">
-          Rinkeby Network
+          {connectedChain?.name} Network
         </Typography>
         <Stack direction="row" alignItems="center">
           <Typography variant="caption" noWrap color="text.secondary">

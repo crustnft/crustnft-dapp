@@ -3,8 +3,10 @@ import { Web3Provider } from '@ethersproject/providers';
 import WalletConnect from '@walletconnect/web3-provider';
 import { ethers, utils } from 'ethers';
 import useWallet from 'hooks/useWallet';
+import { Chain } from 'interfaces/chain';
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
-import Web3Modal, { getInjectedProvider, getProviderInfo } from 'web3modal';
+import { getChainByChainId } from 'utils/blockchainHandlers';
+import Web3Modal, { getProviderInfo } from 'web3modal';
 
 interface IProviderInfo {
   id: string;
@@ -26,10 +28,11 @@ type Web3ContextProps = {
   activate: () => void;
   deactivate: () => void;
   pending: boolean;
-  connectedChainId: number | null;
+  connectedChain: Chain | null;
   connectWalletConnect: () => void;
   balance: number;
   providerInfo: IProviderInfo | undefined;
+  networkNotSupported: boolean;
 };
 
 export const truncateAddress = (address: string) => {
@@ -71,10 +74,11 @@ const initialContext: Web3ContextProps = {
   activate: () => {},
   deactivate: () => {},
   pending: false,
-  connectedChainId: null,
+  connectedChain: null,
   connectWalletConnect: () => {},
   balance: 0,
-  providerInfo: undefined
+  providerInfo: undefined,
+  networkNotSupported: false
 };
 
 const providerOptions = {
@@ -101,12 +105,13 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
   const [account, setAccount] = useState<string | undefined>(undefined);
   const [provider, setProvider] = useState<any>(undefined);
   const [pending, setPending] = useState(false);
+  const [connectedChain, setConnectedChain] = useState<Chain | null>(null);
   const [connectedChainId, setConnectedChainId] = useState<number | null>(null);
   const [balance, setBalance] = useState<number>(0);
   const [error, setError] = useState<any>();
   const { chain: selectedChain } = useWallet();
-  const [wrongNetwork, setWrongNetwork] = useState(false);
   const [providerInfo, setProviderInfo] = useState<IProviderInfo | undefined>(undefined);
+  const [networkNotSupported, setNetworkNotSupported] = useState(false);
 
   const web3Modal = useMemo(
     () =>
@@ -126,12 +131,9 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     try {
       setPending(true);
       const provider = await web3Modal.connect();
-      console.log(provider);
       const library = new ethers.providers.Web3Provider(provider);
       const accounts = await library.listAccounts();
       const network = await library.getNetwork();
-      console.log(network);
-      console.log(getInjectedProvider());
       setProvider(provider);
       setLibrary(library);
       if (accounts) setAccount(accounts[0]);
@@ -142,12 +144,14 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     }
   }, []);
 
+  // connect if cached
   useEffect(() => {
     if (web3Modal.cachedProvider) {
       activate();
     }
   }, [web3Modal, activate]);
 
+  // get balance
   useEffect(() => {
     if (library && account) {
       library.getBalance(account).then((_balance) => {
@@ -156,11 +160,6 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
       });
     }
   }, [library, account]);
-
-  useEffect(() => {
-    const info = getProviderInfo(provider);
-    setProviderInfo(info as IProviderInfo);
-  }, [provider]);
 
   const refreshState = () => {};
 
@@ -172,6 +171,17 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     setActive(false);
     setAccount(undefined);
   }, []);
+
+  useEffect(() => {
+    if (!connectedChainId) return;
+    const chain = getChainByChainId(connectedChainId);
+    if (chain) {
+      activate();
+      setConnectedChain(chain);
+    } else {
+      setNetworkNotSupported(true);
+    }
+  }, [connectedChainId]);
 
   // FIXME: can't use Web3Provider type
   const switchNetwork = async (library: any) => {
@@ -195,14 +205,17 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
   };
 
   useEffect(() => {
+    const info = getProviderInfo(provider);
+    setProviderInfo(info as IProviderInfo);
+
     if (provider?.on) {
       const handleAccountsChanged = (accounts: string[]) => {
         console.log('accountsChanged', accounts);
         if (accounts) setAccount(accounts[0]);
       };
 
-      const handleChainChanged = (_hexChainId: number) => {
-        setConnectedChainId(_hexChainId);
+      const handleChainChanged = (_hexChainId: string) => {
+        setConnectedChainId(parseInt(_hexChainId, 16));
       };
 
       const handleDisconnect = () => {
@@ -234,10 +247,11 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
         activate,
         deactivate,
         pending,
-        connectedChainId,
+        connectedChain,
         connectWalletConnect,
         balance,
-        providerInfo
+        providerInfo,
+        networkNotSupported
       }}
     >
       {children}

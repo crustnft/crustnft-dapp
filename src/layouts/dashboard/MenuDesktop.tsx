@@ -55,7 +55,7 @@ function MenuDesktopItem({ item }: MenuDesktopItemProps) {
       end={path === '/'}
       sx={{
         '&.active': {
-          color: 'primary.main'
+          color: 'text.primary'
         }
       }}
     >
