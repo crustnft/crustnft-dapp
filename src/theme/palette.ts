@@ -29,6 +29,10 @@ interface HeaderColor {
   background: string;
   menuText: string;
   menuTextHover: string;
+  walletPopoverBackground: string;
+  walletPopoverBoxShadow: string;
+  walletPopoverBorderRadius: string;
+  walletButtonBorder: string;
 }
 
 interface AdditionalColor {
@@ -205,13 +209,17 @@ const palette = {
   light: {
     ...COMMON,
     mode: 'light',
-    text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
+    text: { primary: '#000', secondary: GREY[600], disabled: GREY[500] },
     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action },
     header: {
       background: '#f2f4faa1',
-      menuText: '#161C24',
-      menuTextHover: '#000000'
+      menuText: '#0000004d',
+      menuTextHover: '#000000',
+      walletPopoverBackground: '#FCFCFD',
+      walletPopoverBoxShadow: '0px 0px 95px rgba(0, 0, 0, 0.25)',
+      walletPopoverBorderRadius: '30px',
+      walletButtonBorder: '2px solid'
     },
     customBackground: {
       menu: '#F2F4FA',
@@ -226,8 +234,12 @@ const palette = {
     action: { active: GREY[500], ...COMMON.action },
     header: {
       background: '#141416a1',
-      menuText: '#F4F6F8',
-      menuTextHover: '#000000'
+      menuText: '#ffffff4d',
+      menuTextHover: '#000000',
+      walletPopoverBackground: '#23262F',
+      walletPopoverBoxShadow: '0px 0px 95px rgba(0, 0, 0, 0.25)',
+      walletPopoverBorderRadius: '30px',
+      walletButtonBorder: '2px solid'
     },
     customBackground: {
       menu: '#141416',

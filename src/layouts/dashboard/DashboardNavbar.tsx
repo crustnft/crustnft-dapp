@@ -2,24 +2,22 @@ import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 import { Icon } from '@iconify/react';
 import {
   AppBar,
-  Avatar,
   Box,
   Button,
   Divider,
   IconButton,
   Stack,
   Toolbar,
-  ToolbarProps,
-  Typography
+  ToolbarProps
 } from '@mui/material';
-import ButtonBase from '@mui/material/ButtonBase';
 import { styled } from '@mui/material/styles';
 import Iconify from 'components/Iconify';
+import useResponsive from 'hooks/useResponsive';
 import { Link as RouterLink } from 'react-router-dom';
 import LogoLong from '../../components/LogoLong';
+import MenuDesktop from './/MenuDesktop';
 import ConnectWalletPopover from './ConnectWalletPopover';
 import NetworkPopover from './NetworkPopover';
-
 const APPBAR_MIN_HEIGHT = 64;
 
 const RootStyle = styled(AppBar)(({ theme }) => ({
@@ -43,8 +41,8 @@ type DashboardNavbarProps = {
 };
 
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
+  const isDesktop = useResponsive('up', 'md');
   return (
-    // TODO: Define app bar style in custom-components
     <RootStyle>
       <ToolbarStyle sx={{ minHeight: 200 }}>
         <IconButton onClick={onOpenSidebar} sx={{ color: 'header.menuText' }}>
@@ -60,24 +58,22 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
             <LogoLong />
           </Box>
 
-          <Divider
-            orientation="vertical"
-            variant="middle"
-            flexItem
-            sx={{ borderRightWidth: 2, minHeight: '34px' }}
-          />
-
-          <Typography variant="h6" color="header.menuText" sx={{ opacity: 0.3 }}>
-            Wallet
-          </Typography>
-
-          <Typography variant="h6" color="header.menuText" sx={{ opacity: 0.3 }}>
-            Explore
-          </Typography>
-
-          <Typography variant="h6" color="header.menuText" sx={{ opacity: 0.3 }}>
-            Docs
-          </Typography>
+          {isDesktop && (
+            <>
+              <Divider
+                orientation="vertical"
+                variant="middle"
+                flexItem
+                sx={{ borderRightWidth: 2, minHeight: '34px' }}
+              />
+              <MenuDesktop
+                navConfig={[
+                  { title: 'Wallet', path: 'wallet' },
+                  { title: 'Explore', path: 'collection-explore' }
+                ]}
+              />
+            </>
+          )}
         </Stack>
 
         <Box sx={{ flexGrow: 1 }} />
@@ -97,31 +93,6 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
             Create
           </Button>
 
-          <ButtonBase>
-            <Box
-              sx={{
-                border: '2px solid #00000033',
-                borderRadius: '20px',
-                height: '100%',
-                padding: '2px'
-              }}
-            >
-              <Stack direction="row" alignItems="center" sx={{ height: '100%' }} spacing={1}>
-                <Avatar
-                  alt="Dog Avatar"
-                  src="https://avatarfiles.alphacoders.com/865/thumb-86573.jpg"
-                  sx={{ width: 28, height: 28 }}
-                />
-                <Typography color="#000000" variant="subtitle2" sx={{ lineHeight: 0 }}>
-                  0.000
-                </Typography>
-
-                <Typography variant="subtitle2" color="#45B26B" sx={{ lineHeight: 0 }}>
-                  RIN
-                </Typography>
-              </Stack>
-            </Box>
-          </ButtonBase>
           <ConnectWalletPopover />
           <Divider orientation="vertical" flexItem />
           <NetworkPopover />
