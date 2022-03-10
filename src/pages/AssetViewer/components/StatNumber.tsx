@@ -5,7 +5,12 @@ export default function StatNumber({ statType, max, value }: StatProps) {
   return (
     <Stack spacing={1}>
       <Card
-        sx={{ p: 1, borderRadius: 1, backgroundColor: '#F4F6F8', borderColor: '#15B2E5' }}
+        sx={{
+          p: 1,
+          borderRadius: 1,
+          backgroundColor: 'background.neural',
+          borderColor: 'header.menuText'
+        }}
         variant="outlined"
       >
         <Stack direction="row" alignItems="center">
