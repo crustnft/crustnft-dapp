@@ -43,6 +43,7 @@ type DashboardNavbarProps = {
 
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
   const isDesktop = useResponsive('up', 'md');
+  const notSmall = useResponsive('up', 'sm');
   return (
     <RootStyle>
       <ToolbarStyle sx={{ minHeight: 200 }}>
@@ -79,7 +80,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
 
         <Box sx={{ flexGrow: 1 }} />
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          {isDesktop ? (
+          {notSmall ? (
             <Button
               variant="contained"
               startIcon={<Iconify icon="bx:plus" />}
