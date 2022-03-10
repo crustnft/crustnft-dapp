@@ -66,13 +66,13 @@ export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOw
                   textAlign: 'center',
                   mb: 2,
                   position: 'absolute',
-                  bottom: '-50px',
+                  bottom: '-40px',
                   borderRadius: '50px',
                   backgroundColor: 'header.background',
                   backgroundOpacity: 0.5
                 }}
               >
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" spacing={1}>
                   <Tooltip title="Transaction History">
                     <IconButton
                       href={`${chain?.blockExplorerUrl || ''}/token/${
@@ -80,7 +80,7 @@ export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOw
                       }?a=${assetAndOwner.tokenId}`}
                       target="_blank"
                     >
-                      <Box component="img" src={chain?.icon || ''} sx={{ height: 50, width: 50 }} />
+                      <Box component="img" src={chain?.icon || ''} sx={{ height: 30, width: 30 }} />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Opensea Viewer">
@@ -91,7 +91,7 @@ export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOw
                       <Box
                         component="img"
                         src="./static/icons/shared/opensea.svg"
-                        sx={{ height: 50 }}
+                        sx={{ height: 30 }}
                       />
                     </IconButton>
                   </Tooltip>
