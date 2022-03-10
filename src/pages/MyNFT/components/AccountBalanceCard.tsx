@@ -2,9 +2,8 @@ import { Icon } from '@iconify/react';
 import { Box, IconButton, Stack, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import Iconify from 'components/Iconify';
-import { utils } from 'ethers';
 import useWeb3 from 'hooks/useWeb3';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 const HEIGHT = 276;
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -29,22 +28,12 @@ const CardItemStyle = styled('div')(({ theme }) => ({
 
 export default function AccountBalanceCard() {
   const theme = useTheme();
-  const { account, library } = useWeb3();
+  const { account, library, balance } = useWeb3();
   const [showCurrency, setShowCurrency] = useState(true);
-  const [balance, setBalance] = useState(0);
 
   const onToggleShowCurrency = () => {
     setShowCurrency((prev) => !prev);
   };
-
-  useEffect(() => {
-    if (library && account) {
-      library.getBalance(account).then((_balance) => {
-        const _parsedBalance = Math.round(parseFloat(utils.formatEther(_balance)) * 10000) / 10000;
-        setBalance(_parsedBalance);
-      });
-    }
-  }, [library, account]);
 
   return (
     <RootStyle>

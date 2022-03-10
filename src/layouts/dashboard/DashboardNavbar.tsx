@@ -16,11 +16,11 @@ import {
 import ButtonBase from '@mui/material/ButtonBase';
 import { styled } from '@mui/material/styles';
 import Iconify from 'components/Iconify';
+import useWeb3 from 'hooks/useWeb3';
 import { Link as RouterLink } from 'react-router-dom';
 import LogoLong from '../../components/LogoLong';
 import ConnectWalletPopover from './ConnectWalletPopover';
 import NetworkPopover from './NetworkPopover';
-
 const APPBAR_MIN_HEIGHT = 64;
 
 const RootStyle = styled(AppBar)(({ theme }) => ({
@@ -45,6 +45,7 @@ type DashboardNavbarProps = {
 
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
   const theme = useTheme();
+  const { balance } = useWeb3();
   return (
     // TODO: Define app bar style in custom-components
     <RootStyle>
@@ -117,7 +118,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
                 sx={{ width: 28, height: 28 }}
               />
               <Typography color="text.primary" variant="subtitle2" sx={{ lineHeight: 0 }}>
-                0.000
+                {balance}
               </Typography>
 
               <Typography variant="subtitle2" color="#45B26B" sx={{ lineHeight: 0 }}>

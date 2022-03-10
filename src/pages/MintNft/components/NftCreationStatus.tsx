@@ -36,7 +36,7 @@ export default function NftCreationStatus() {
     imageCid,
     metadataCid
   } = useContext(NftCreationStatusContext);
-  const { active, account, library, onboard } = useWeb3();
+  const { active, account, library } = useWeb3();
 
   const { chain: selectedChain } = useWallet();
 
