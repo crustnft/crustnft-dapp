@@ -66,19 +66,21 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
             <LogoLong />
           </Box>
 
-          <Divider
-            orientation="vertical"
-            variant="middle"
-            flexItem
-            sx={{ borderRightWidth: 2, minHeight: '34px' }}
-          />
           {isDesktop && (
-            <MenuDesktop
-              navConfig={[
-                { title: 'Wallet', path: 'wallet' },
-                { title: 'Explore', path: 'collection-explore' }
-              ]}
-            />
+            <>
+              <Divider
+                orientation="vertical"
+                variant="middle"
+                flexItem
+                sx={{ borderRightWidth: 2, minHeight: '34px' }}
+              />
+              <MenuDesktop
+                navConfig={[
+                  { title: 'Wallet', path: 'wallet' },
+                  { title: 'Explore', path: 'collection-explore' }
+                ]}
+              />
+            </>
           )}
         </Stack>
 
