@@ -45,7 +45,7 @@ type DashboardNavbarProps = {
 
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
   const theme = useTheme();
-  const { activate, deactivate } = useWeb3();
+  const { balance } = useWeb3();
   return (
     // TODO: Define app bar style in custom-components
     <RootStyle>
@@ -99,8 +99,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           >
             Create
           </Button>
-          <Button onClick={activate}>Activate</Button>
-          <Button onClick={deactivate}>Disactivate</Button>
+
           <ButtonBase
             sx={{
               border: theme.palette.header.walletButtonBorder,
@@ -119,7 +118,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
                 sx={{ width: 28, height: 28 }}
               />
               <Typography color="text.primary" variant="subtitle2" sx={{ lineHeight: 0 }}>
-                0.000
+                {balance}
               </Typography>
 
               <Typography variant="subtitle2" color="#45B26B" sx={{ lineHeight: 0 }}>

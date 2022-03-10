@@ -1,7 +1,7 @@
 import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 import { Web3Provider } from '@ethersproject/providers';
 import WalletConnect from '@walletconnect/web3-provider';
-import { ethers } from 'ethers';
+import { ethers, utils } from 'ethers';
 import useWallet from 'hooks/useWallet';
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 import Web3Modal from 'web3modal';
@@ -15,6 +15,8 @@ type Web3ContextProps = {
   deactivate: () => void;
   pending: boolean;
   connectedChainId: number | null;
+  connectWalletConnect: () => void;
+  balance: number;
 };
 
 export const truncateAddress = (address: string) => {
@@ -48,7 +50,20 @@ export const networkParams: any = {
   }
 };
 
-export const providerOptions = {
+const initialContext: Web3ContextProps = {
+  active: false,
+  library: undefined,
+  account: undefined,
+  provider: undefined,
+  activate: () => {},
+  deactivate: () => {},
+  pending: false,
+  connectedChainId: null,
+  connectWalletConnect: () => {},
+  balance: 0
+};
+
+const providerOptions = {
   walletlink: {
     package: CoinbaseWalletSDK,
     options: {
@@ -64,17 +79,6 @@ export const providerOptions = {
   }
 };
 
-const initialContext: Web3ContextProps = {
-  active: false,
-  library: undefined,
-  account: undefined,
-  provider: undefined,
-  activate: () => {},
-  deactivate: () => {},
-  pending: false,
-  connectedChainId: null
-};
-
 export const Web3Context = createContext(initialContext);
 
 export function Web3ContextProvider({ children }: { children: React.ReactNode }) {
@@ -86,7 +90,8 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
   const [connectedChainId, setConnectedChainId] = useState<number | null>(null);
   const [balance, setBalance] = useState<number>(0);
   const [error, setError] = useState<any>();
-  const { chain } = useWallet();
+  const { chain: selectedChain } = useWallet();
+  const [wrongNetwork, setWrongNetwork] = useState(false);
 
   const web3Modal = useMemo(
     () =>
@@ -96,6 +101,11 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
       }),
     []
   );
+
+  const connectWalletConnect = async () => {
+    const provider = await web3Modal.connectTo('walletconnect');
+    console.log(provider);
+  };
 
   const activate = useCallback(async () => {
     try {
@@ -119,6 +129,15 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
       activate();
     }
   }, [web3Modal, activate]);
+
+  useEffect(() => {
+    if (library && account) {
+      library.getBalance(account).then((_balance) => {
+        const _parsedBalance = Math.round(parseFloat(utils.formatEther(_balance)) * 10000) / 10000;
+        setBalance(_parsedBalance);
+      });
+    }
+  }, [library, account]);
 
   const refreshState = () => {};
 
@@ -152,6 +171,36 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     }
   };
 
+  useEffect(() => {
+    if (provider?.on) {
+      const handleAccountsChanged = (accounts: string[]) => {
+        console.log('accountsChanged', accounts);
+        if (accounts) setAccount(accounts[0]);
+      };
+
+      const handleChainChanged = (_hexChainId: number) => {
+        setConnectedChainId(_hexChainId);
+      };
+
+      const handleDisconnect = () => {
+        console.log('disconnect', error);
+        deactivate();
+      };
+
+      provider.on('accountsChanged', handleAccountsChanged);
+      provider.on('chainChanged', handleChainChanged);
+      provider.on('disconnect', handleDisconnect);
+
+      return () => {
+        if (provider.removeListener) {
+          provider.removeListener('accountsChanged', handleAccountsChanged);
+          provider.removeListener('chainChanged', handleChainChanged);
+          provider.removeListener('disconnect', handleDisconnect);
+        }
+      };
+    }
+  }, [provider]);
+
   return (
     <Web3Context.Provider
       value={{
@@ -162,7 +211,9 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
         activate,
         deactivate,
         pending,
-        connectedChainId
+        connectedChainId,
+        connectWalletConnect,
+        balance
       }}
     >
       {children}
