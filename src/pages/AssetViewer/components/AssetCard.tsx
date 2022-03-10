@@ -68,7 +68,7 @@ export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOw
                   position: 'absolute',
                   bottom: '-50px',
                   borderRadius: '50px',
-                  backgroundColor: 'primary.lighter',
+                  backgroundColor: 'header.background',
                   backgroundOpacity: 0.5
                 }}
               >
