@@ -30,7 +30,6 @@ const MainStyle = styled('div')(({ theme }) => ({
 export default function DashboardLayout() {
   const theme = useTheme();
   const { pathname } = useLocation();
-  const isWallet = pathname.includes('wallet');
 
   const [open, setOpen] = useState(false);
 
@@ -47,8 +46,7 @@ export default function DashboardLayout() {
           transition: theme.transitions.create('margin', {
             duration: theme.transitions.duration.complex
           }),
-          backgroundColor: 'customBackground.themeBackground',
-          ...(!isWallet && { backgroundColor: '#F2F4FA' })
+          backgroundColor: 'customBackground.themeBackground'
         }}
       >
         <Outlet />

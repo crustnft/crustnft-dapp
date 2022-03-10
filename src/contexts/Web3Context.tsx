@@ -119,6 +119,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
       setLibrary(library);
       if (accounts) setAccount(accounts[0]);
       setConnectedChainId(network.chainId);
+      setActive(true);
     } catch (error) {
       setError(error);
     }

@@ -1,5 +1,6 @@
 import { Icon } from '@iconify/react';
 import {
+  Avatar,
   Box,
   Button,
   ButtonBase,
@@ -22,7 +23,7 @@ import useLocales from '../../hooks/useLocales';
 import useSnackbarAction from '../../hooks/useSnackbarAction';
 import useWallet from '../../hooks/useWallet';
 import { Chain } from '../../interfaces/chain';
-import { shortenAddress, shortenAddressHeader } from '../../utils/formatAddress';
+import { shortenAddress } from '../../utils/formatAddress';
 Identicons.svgPath = './static/identicons.min.svg';
 
 const ConnectWalletPopover = () => {
@@ -33,7 +34,14 @@ const ConnectWalletPopover = () => {
 
   const { chain: selectedChain, selectedWallet } = useWallet();
 
-  const { active: walletIsConnected, activate, account, deactivate, connectedChainId } = useWeb3();
+  const {
+    active: walletIsConnected,
+    activate,
+    account,
+    deactivate,
+    connectedChainId,
+    balance
+  } = useWeb3();
 
   const [openWalletInfo, setOpenWalletInfo] = useState(false);
   const walletInfoAnchorRef = useRef(null);
@@ -116,31 +124,34 @@ const ConnectWalletPopover = () => {
       )}
 
       {walletIsConnected && (
-        <Box
-          component={Button}
+        <ButtonBase
           ref={walletInfoAnchorRef}
           onClick={handleWalletInfoOpen}
-          color="primary"
-          size="small"
-          marginTop={{ xs: 2, sm: 0 }}
-          marginLeft={{ sm: 2 }}
-          endIcon={<Iconify height={12} icon={'akar-icons:chevron-down'} />}
+          sx={{
+            border: theme.palette.header.walletButtonBorder,
+            borderColor: theme.palette.header.menuText,
+            borderRadius: '20px',
+            height: '100%',
+            padding: '2px',
+            pr: '10px',
+            overflow: 'hidden'
+          }}
         >
-          <Stack direction="column">
-            <Stack direction="row">
-              <Typography variant="caption">{selectedWallet}</Typography>
-            </Stack>
-            <Stack direction="row" alignItems="center">
-              <Typography variant="caption" sx={{ fontWeight: 700 }}>{`${(
-                network?.currencySymbol || ''
-              ).toLowerCase()}:`}</Typography>
-              <Typography variant="caption">
-                {smUp && shortenAddress(account || '', 5)}
-                {!smUp && shortenAddressHeader(account || '', 5)}
-              </Typography>
-            </Stack>
+          <Stack direction="row" alignItems="center" sx={{ height: '100%' }} spacing={1}>
+            <Avatar
+              alt="Dog Avatar"
+              src="https://avatarfiles.alphacoders.com/865/thumb-86573.jpg"
+              sx={{ width: 28, height: 28 }}
+            />
+            <Typography color="text.primary" variant="subtitle2" sx={{ lineHeight: 0 }}>
+              {balance}
+            </Typography>
+
+            <Typography variant="subtitle2" color="#45B26B" sx={{ lineHeight: 0 }}>
+              RIN
+            </Typography>
           </Stack>
-        </Box>
+        </ButtonBase>
       )}
 
       <MenuPopover
@@ -151,11 +162,20 @@ const ConnectWalletPopover = () => {
           width: 220,
           backgroundColor: 'header.walletPopoverBackground',
           borderRadius: 'header.walletPopoverBorderRadius',
-          boxShadow: 'header.walletPopoverBoxShadow'
+          boxShadow: 'header.walletPopoverBoxShadow',
+          padding: 2
         }}
       >
+        <Typography variant="h5" color="text.primary" align="center">
+          Rinkeby Network
+        </Typography>
+        <Stack direction="row">
+          <Typography variant="caption" noWrap sx={{ width: '100%' }}>
+            0xFeCda4613CCf92a39d144cF1917A76326D55Fb29
+          </Typography>
+        </Stack>
+
         <Stack alignItems="center" sx={{ mt: 2 }} spacing={1}>
-          <Box component="img" src={uniqueIcon} sx={{ height: 50 }} />
           <Box sx={{ backgroundColor: '#EAECEF', padding: 0.5, borderRadius: 0.5 }}>
             <Stack direction="row" spacing={0.5}>
               <Stack direction="row" alignItems="center">
