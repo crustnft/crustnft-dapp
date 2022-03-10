@@ -17,7 +17,19 @@ type Web3ContextProps = {
   connectedChainId: number | null;
 };
 
-export const networkParams = {
+export const truncateAddress = (address: string) => {
+  if (!address) return 'No Account';
+  const match = address.match(/^(0x[a-zA-Z0-9]{2})[a-zA-Z0-9]+([a-zA-Z0-9]{2})$/);
+  if (!match) return address;
+  return `${match[1]}…${match[2]}`;
+};
+
+export const toHex = (num: number) => {
+  const val = Number(num);
+  return '0x' + val.toString(16);
+};
+
+export const networkParams: any = {
   '0x63564c40': {
     chainId: '0x63564c40',
     rpcUrls: ['https://api.harmony.one'],
@@ -57,7 +69,6 @@ const initialContext: Web3ContextProps = {
   library: undefined,
   account: undefined,
   provider: undefined,
-
   activate: () => {},
   deactivate: () => {},
   pending: false,
@@ -66,15 +77,14 @@ const initialContext: Web3ContextProps = {
 
 export const Web3Context = createContext(initialContext);
 
-const dappId = process.env.BLOCKNATIVE_API_KEY;
 export function Web3ContextProvider({ children }: { children: React.ReactNode }) {
   const [active, setActive] = useState(false);
   const [library, setLibrary] = useState<Web3Provider | undefined>(undefined);
   const [account, setAccount] = useState<string | undefined>(undefined);
   const [provider, setProvider] = useState<any>(undefined);
   const [pending, setPending] = useState(false);
-  const [modalSelectedWallet, setModalSelectedWallet] = useState<null | string>(null);
   const [connectedChainId, setConnectedChainId] = useState<number | null>(null);
+  const [balance, setBalance] = useState<number>(0);
   const [error, setError] = useState<any>();
   const { chain } = useWallet();
 
@@ -87,16 +97,6 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     []
   );
 
-  useEffect(() => {
-    if (account && provider && connectedChainId && modalSelectedWallet) {
-      setActive(true);
-    } else {
-      setActive(false);
-    }
-    // FIXME: adding onSelectWallet will cause infinite loop
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, provider, connectedChainId, modalSelectedWallet]);
-
   const activate = useCallback(async () => {
     try {
       setPending(true);
@@ -104,6 +104,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
       const library = new ethers.providers.Web3Provider(provider);
       const accounts = await library.listAccounts();
       const network = await library.getNetwork();
+      console.log(network);
       setProvider(provider);
       setLibrary(library);
       if (accounts) setAccount(accounts[0]);
@@ -112,6 +113,12 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
       setError(error);
     }
   }, []);
+
+  useEffect(() => {
+    if (web3Modal.cachedProvider) {
+      activate();
+    }
+  }, [web3Modal, activate]);
 
   const refreshState = () => {};
 
@@ -124,6 +131,27 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     setAccount(undefined);
   }, []);
 
+  // FIXME: can't use Web3Provider type
+  const switchNetwork = async (library: any) => {
+    try {
+      await library.provider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: toHex(42220) }]
+      });
+    } catch (switchError: any) {
+      if (switchError.code === 4902) {
+        try {
+          await library.provider.request({
+            method: 'wallet_addEthereumChain',
+            params: [networkParams[toHex(42220)]]
+          });
+        } catch (error) {
+          setError(error);
+        }
+      }
+    }
+  };
+
   return (
     <Web3Context.Provider
       value={{
@@ -131,7 +159,6 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
         library,
         account,
         provider,
-
         activate,
         deactivate,
         pending,
