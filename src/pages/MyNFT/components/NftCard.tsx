@@ -48,9 +48,9 @@ function NftCard({
         }
       }}
     >
-      <Box sx={{ p: 2, position: 'relative' }}>
+      <Box sx={{ p: 2, position: 'relative', paddingBottom: 0 }}>
         <Link href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}>
-          <Box sx={{ border: 1, borderRadius: '5px', borderColor: '#DFE3E8' }}>
+          <Box>
             <Stack
               sx={{
                 paddingTop: '100%',
@@ -84,10 +84,10 @@ function NftCard({
                   top: 0,
                   width: '100%',
                   height: '100%',
-                  objectFit: 'contain',
+                  objectFit: 'cover',
                   display: loading ? 'none !important' : 'block !important',
                   position: 'absolute',
-                  borderRadius: '5px'
+                  borderRadius: '18px'
                 }}
               />
             </Stack>
@@ -103,37 +103,12 @@ function NftCard({
             href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
             sx={{ maxWidth: '70%' }}
           >
-            <Typography variant="subtitle2" noWrap>
+            <Typography variant="h5" noWrap>
               {name}
             </Typography>
           </Link>
-          <ColorButton
-            variant="contained"
-            size="small"
-            disableElevation
-            disableFocusRipple
-            disableRipple
-          >
-            <Typography variant="caption" noWrap>
-              {chainName}
-            </Typography>
-          </ColorButton>
-        </Stack>
 
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Link
-            color="inherit"
-            underline="none"
-            href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
-          >
-            <Stack direction="row" alignItems="center" spacing={0.5}>
-              <Typography variant="caption" noWrap>
-                Token ID
-              </Typography>
-            </Stack>
-          </Link>
-
-          <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
+          <Typography variant="h5" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
             #{tokenId || ''}
           </Typography>
         </Stack>
