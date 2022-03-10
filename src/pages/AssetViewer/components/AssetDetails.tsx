@@ -1,13 +1,4 @@
-import {
-  Box,
-  ButtonBase,
-  Card,
-  CardHeader,
-  IconButton,
-  Stack,
-  Tooltip,
-  Typography
-} from '@mui/material';
+import { ButtonBase, Card, CardHeader, Stack, Typography } from '@mui/material';
 import { Chain } from 'interfaces/chain';
 import { useEffect, useState } from 'react';
 import { getChainByNetworkName } from 'utils/blockchainHandlers';
@@ -53,26 +44,6 @@ export default function AssetDetails({ assetAndOwner }: { assetAndOwner: AssetAn
           <Typography variant="body2">{chain?.name || ''}</Typography>
         </Stack>
       </Stack>
-      <Box sx={{ textAlign: 'center', mb: 2 }}>
-        <Tooltip title="Transaction History">
-          <IconButton
-            href={`${chain?.blockExplorerUrl || ''}/token/${assetAndOwner.contractAddress}?a=${
-              assetAndOwner.tokenId
-            }`}
-            target="_blank"
-          >
-            <Box component="img" src={chain?.icon || ''} sx={{ height: 24 }} />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Opensea Viewer">
-          <IconButton
-            href={`https://testnets.opensea.io/assets/${assetAndOwner.contractAddress}/${assetAndOwner.tokenId}`}
-            target="_blank"
-          >
-            <Box component="img" src="./static/icons/shared/opensea.svg" sx={{ height: 24 }} />
-          </IconButton>
-        </Tooltip>
-      </Box>
     </Card>
   );
 }

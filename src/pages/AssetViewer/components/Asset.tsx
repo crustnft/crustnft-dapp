@@ -16,7 +16,7 @@ export default function Asset({ assetAndOwner }: { assetAndOwner: AssetAndOwnerT
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={6}>
-        <Stack spacing={3}>
+        <Stack spacing={5}>
           <AssetCard assetAndOwner={assetAndOwner} />
           <AssetDetails assetAndOwner={assetAndOwner} />
         </Stack>

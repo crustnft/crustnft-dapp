@@ -87,7 +87,7 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
     <Card sx={{ p: 3 }}>
       <Stack spacing={2}>
         <Stack>
-          <Typography variant="h5" sx={{ display: 'block' }}>
+          <Typography variant="h2" sx={{ display: 'block' }}>
             {assetAndOwner.name}
           </Typography>
           <Typography variant="caption">{assetAndOwner.description}</Typography>
