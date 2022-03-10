@@ -89,7 +89,7 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
         <Typography variant="h2" sx={{ display: 'block' }}>
           {assetAndOwner.name}
         </Typography>
-        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+        <Typography variant="h5" sx={{ color: 'text.secondary' }}>
           {assetAndOwner.description}
         </Typography>
         <Box sx={{ height: 5 }} />
