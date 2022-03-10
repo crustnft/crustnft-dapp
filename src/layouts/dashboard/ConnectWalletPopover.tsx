@@ -6,7 +6,11 @@ import {
   ButtonBase,
   Divider,
   IconButton,
-  Link,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
   Stack,
   SvgIcon,
   Typography,
@@ -23,7 +27,6 @@ import useLocales from '../../hooks/useLocales';
 import useSnackbarAction from '../../hooks/useSnackbarAction';
 import useWallet from '../../hooks/useWallet';
 import { Chain } from '../../interfaces/chain';
-import { shortenAddress } from '../../utils/formatAddress';
 Identicons.svgPath = './static/identicons.min.svg';
 
 const ConnectWalletPopover = () => {
@@ -210,57 +213,45 @@ const ConnectWalletPopover = () => {
           </Stack>
         </Stack>
 
-        <Stack alignItems="center" sx={{ mt: 2 }} spacing={1}>
-          <Box sx={{ backgroundColor: '#EAECEF', padding: 0.5, borderRadius: 0.5 }}>
-            <Stack direction="row" spacing={0.5}>
-              <Stack direction="row" alignItems="center">
-                <Typography variant="subtitle2">{`${(
-                  network?.currencySymbol || ''
-                ).toLowerCase()}:`}</Typography>
-                <Typography variant="body2">{shortenAddress(account || '', 5)}</Typography>
-              </Stack>
-              <Stack direction="row">
-                <IconButton
-                  color="primary"
-                  aria-label="copy"
-                  component="span"
-                  size="small"
-                  onClick={handleCopyAddress}
-                >
-                  <Iconify icon={'akar-icons:copy'} />
-                </IconButton>
-                <Link href={network?.blockExplorerUrl + '/address/' + account} target="_blank">
-                  <IconButton color="primary" aria-label="copy" component="span" size="small">
-                    <Iconify icon={'bx:bx-link-external'} />
-                  </IconButton>
-                </Link>
-              </Stack>
-            </Stack>
-          </Box>
+        <Stack>
+          <List sx={{ color: 'text.secondary' }}>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <Iconify icon="fa6-regular:image" />
+                </ListItemIcon>
+                <ListItemText primary="My Collections" />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <Iconify icon="icon-park-outline:setting-one" />
+                </ListItemIcon>
+                <ListItemText primary="Settings" />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <Iconify icon="bx:moon" />
+                </ListItemIcon>
+                <ListItemText primary="Dark Mode" />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            <ListItem disablePadding onClick={handleDisconnectWallet}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <Iconify icon="bx:log-out" />
+                </ListItemIcon>
+                <ListItemText primary="Disconnect" />
+              </ListItemButton>
+            </ListItem>
+          </List>
         </Stack>
-
-        <Divider sx={{ my: 1 }} />
-
-        <Box sx={{ mx: 2 }}>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="body2">Wallet</Typography>
-            <Typography variant="body2">{selectedWallet}</Typography>
-          </Stack>
-        </Box>
-        <Divider sx={{ my: 1 }} />
-
-        <Box sx={{ mx: 2 }}>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="body2">Network</Typography>
-            <Typography variant="body2">{network?.name}</Typography>
-          </Stack>
-        </Box>
-        <Divider sx={{ mt: 1 }} />
-        <Box sx={{ p: 2 }}>
-          <Button fullWidth color="inherit" variant="outlined" onClick={handleDisconnectWallet}>
-            {translate(`dashboard.disconnect`)}
-          </Button>
-        </Box>
       </MenuPopover>
     </>
   );
