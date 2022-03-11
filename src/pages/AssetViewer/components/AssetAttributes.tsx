@@ -1,5 +1,6 @@
 import { Box, Card, Grid, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { pxToRem } from 'utils/getFontValue';
 import Iconify from '../../../components/Iconify';
 import {
   AssetAndOwnerType,
@@ -86,16 +87,16 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
   return (
     <Stack spacing={2}>
       <Stack>
-        <Typography variant="h2" sx={{ display: 'block' }}>
+        <Typography variant="h3" sx={{ display: 'block' }}>
           {assetAndOwner.name}
         </Typography>
-        <Typography variant="h5" sx={{ color: 'text.secondary' }}>
+        <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: pxToRem(16) }}>
           {assetAndOwner.description}
         </Typography>
         <Box sx={{ height: 5 }} />
       </Stack>
 
-      <Stack spacing={3}>
+      <Stack spacing={2}>
         <Stack>
           <Card sx={{ p: 3 }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
