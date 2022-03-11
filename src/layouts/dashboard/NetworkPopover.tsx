@@ -27,7 +27,7 @@ export default function LanguagePopover() {
         component={Button}
         ref={anchorRef}
         onClick={() => setOpen(true)}
-        color="primary"
+        color="text.primary"
         size="small"
         marginTop={{ xs: 2, sm: 0 }}
         marginLeft={{ sm: 2 }}
