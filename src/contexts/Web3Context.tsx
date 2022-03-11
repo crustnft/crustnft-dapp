@@ -29,6 +29,7 @@ type Web3ContextProps = {
   deactivate: () => void;
   pending: boolean;
   connectedChain: Chain | null;
+  connectedChainId: number | null;
   connectWalletConnect: () => void;
   balance: number;
   providerInfo: IProviderInfo | undefined;
@@ -76,6 +77,7 @@ const initialContext: Web3ContextProps = {
   deactivate: () => {},
   pending: false,
   connectedChain: null,
+  connectedChainId: null,
   connectWalletConnect: () => {},
   balance: 0,
   providerInfo: undefined,
@@ -250,6 +252,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
         deactivate,
         pending,
         connectedChain,
+        connectedChainId,
         connectWalletConnect,
         balance,
         providerInfo,
