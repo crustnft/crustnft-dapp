@@ -220,7 +220,7 @@ const palette = {
     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action },
     header: {
-      background: '#f2f4faa1',
+      background: '#ffffffa1',
       menuText: '#0000004d',
       menuTextHover: '#000000',
       walletPopoverBackground: '#FCFCFD',
@@ -231,7 +231,7 @@ const palette = {
     },
     customBackground: {
       menu: '#F2F4FA',
-      themeBackground: '#F2F4FA'
+      themeBackground: '#fff'
     }
   },
   dark: {

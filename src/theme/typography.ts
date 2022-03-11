@@ -1,6 +1,6 @@
 import { pxToRem, responsiveFontSizes } from '../utils/getFontValue';
 
-const FONT_PRIMARY = 'SVN-Gilroy, sans-serif';
+const FONT_PRIMARY = 'Public Sans, sans-serif';
 
 // const FONT_SECONDARY = 'CircularStd, sans-serif'; // Local Font
 
