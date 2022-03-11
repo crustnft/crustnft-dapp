@@ -22,16 +22,11 @@ import Iconify from 'components/Iconify';
 import useWeb3 from 'hooks/useWeb3';
 import React, { useRef, useState } from 'react';
 import MenuPopover from '../../components/MenuPopover';
-import useLocales from '../../hooks/useLocales';
-import useWallet from '../../hooks/useWallet';
 Identicons.svgPath = './static/identicons.min.svg';
 
 const ConnectWalletPopover = () => {
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up('sm'));
-  const { translate } = useLocales();
-
-  const { chain: selectedChain } = useWallet();
 
   const {
     active: walletIsConnected,

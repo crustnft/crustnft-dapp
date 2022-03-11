@@ -33,6 +33,7 @@ type Web3ContextProps = {
   balance: number;
   providerInfo: IProviderInfo | undefined;
   networkNotSupported: boolean;
+  switchNetwork: (chainId: number) => void;
 };
 
 export const truncateAddress = (address: string) => {
@@ -78,7 +79,8 @@ const initialContext: Web3ContextProps = {
   connectWalletConnect: () => {},
   balance: 0,
   providerInfo: undefined,
-  networkNotSupported: false
+  networkNotSupported: false,
+  switchNetwork: () => {}
 };
 
 const providerOptions = {
@@ -108,8 +110,8 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
   const [connectedChain, setConnectedChain] = useState<Chain | null>(null);
   const [connectedChainId, setConnectedChainId] = useState<number | null>(null);
   const [balance, setBalance] = useState<number>(0);
-  const [error, setError] = useState<any>();
-  const { chain: selectedChain } = useWallet();
+  // const [error, setError] = useState<any>();
+  const { onNetworkChange } = useWallet();
   const [providerInfo, setProviderInfo] = useState<IProviderInfo | undefined>(undefined);
   const [networkNotSupported, setNetworkNotSupported] = useState(false);
 
@@ -131,7 +133,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     try {
       setPending(true);
       const provider = await web3Modal.connect();
-      const library = new ethers.providers.Web3Provider(provider);
+      const library = new ethers.providers.Web3Provider(provider, 'any');
       const accounts = await library.listAccounts();
       const network = await library.getNetwork();
       setProvider(provider);
@@ -140,9 +142,9 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
       setConnectedChainId(network.chainId);
       setActive(true);
     } catch (error) {
-      setError(error);
+      // setError(error);
     }
-  }, []);
+  }, [web3Modal]);
 
   // connect if cached
   useEffect(() => {
@@ -159,7 +161,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
         setBalance(_parsedBalance);
       });
     }
-  }, [library, account]);
+  }, [library, account, connectedChainId]);
 
   const refreshState = () => {};
 
@@ -170,35 +172,34 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     setPending(false);
     setActive(false);
     setAccount(undefined);
-  }, []);
+  }, [web3Modal]);
 
   useEffect(() => {
     if (!connectedChainId) return;
     const chain = getChainByChainId(connectedChainId);
     if (chain) {
-      activate();
       setConnectedChain(chain);
+      onNetworkChange(chain);
     } else {
       setNetworkNotSupported(true);
     }
-  }, [connectedChainId]);
+  }, [connectedChainId, onNetworkChange]);
 
-  // FIXME: can't use Web3Provider type
-  const switchNetwork = async (library: any) => {
+  const switchNetwork = async (chainId: number) => {
     try {
-      await library.provider.request({
+      await (library as any).provider.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: toHex(42220) }]
+        params: [{ chainId: toHex(chainId) }]
       });
     } catch (switchError: any) {
       if (switchError.code === 4902) {
         try {
-          await library.provider.request({
+          await (library as any).provider.request({
             method: 'wallet_addEthereumChain',
-            params: [networkParams[toHex(42220)]]
+            params: [networkParams[toHex(chainId)]]
           });
         } catch (error) {
-          setError(error);
+          // setError(error);
         }
       }
     }
@@ -215,10 +216,11 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
       };
 
       const handleChainChanged = (_hexChainId: string) => {
+        console.log('chainChanged', _hexChainId);
         setConnectedChainId(parseInt(_hexChainId, 16));
       };
 
-      const handleDisconnect = () => {
+      const handleDisconnect = (error: any) => {
         console.log('disconnect', error);
         deactivate();
       };
@@ -235,7 +237,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
         }
       };
     }
-  }, [provider]);
+  }, [provider, deactivate]);
 
   return (
     <Web3Context.Provider
@@ -251,7 +253,8 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
         connectWalletConnect,
         balance,
         providerInfo,
-        networkNotSupported
+        networkNotSupported,
+        switchNetwork
       }}
     >
       {children}
