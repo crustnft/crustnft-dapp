@@ -1,6 +1,5 @@
 // material
 import { Box, Grid, Stack } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { Contract } from 'ethers';
@@ -51,20 +50,15 @@ export default function Asset({ assetAndOwner }: { assetAndOwner: AssetAndOwnerT
     chainName: string;
     contractAddr: string;
   };
-  const theme = useTheme();
   const [chainID, setChainID] = useState(-1);
-  const [totalSupply, setTotalSupply] = useState(0);
-  const [nbFailedNft, setFailedNft] = useState(0);
   const [NftList, setNftList] = useState<NftItem[]>(emptyNftList);
-  const [nbEmptyCarouselItems, setNbEmptyCarouselItems] = useState(0);
-  const [nbOfFrames, setNbOfFrames] = useState(4);
+  const [displayTokenId, setDisplayTokenId] = useState(-1);
 
   useEffect(() => {
     async function getNftList(contract: Contract, chainID: number) {
       const _totalSupply = await getTotalSupply(contract).catch((e) => {
         console.log(e);
       });
-      setTotalSupply(_totalSupply || 0);
       const nbOfNftPerCarousel =
         _totalSupply < NB_OF_NFT_PER_PAGE ? (_totalSupply as number) : NB_OF_NFT_PER_PAGE;
       setNftList((prevList) => [...emptyNftList.slice(0, nbOfNftPerCarousel || 0)]);
@@ -100,7 +94,6 @@ export default function Asset({ assetAndOwner }: { assetAndOwner: AssetAndOwnerT
                 prevList[i] = { ...prevList[i], failToLoad: true };
                 return [...prevList];
               });
-              setFailedNft((prevNb) => prevNb + 1);
               console.log(`Error token ${tokenId}: `, e);
             });
         } else {
@@ -126,6 +119,12 @@ export default function Asset({ assetAndOwner }: { assetAndOwner: AssetAndOwnerT
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [assetAndOwner]);
+
+  useEffect(() => {
+    if (displayTokenId !== -1) {
+      window.location.reload();
+    }
+  }, [displayTokenId]);
 
   return (
     <Grid container spacing={3}>
@@ -153,7 +152,7 @@ export default function Asset({ assetAndOwner }: { assetAndOwner: AssetAndOwnerT
               {NftList.filter((nft) => !nft.failToLoad).map((nft) => (
                 <Grid item xs={6} md={3} key={nft.key}>
                   <Box>
-                    <NftCard {...nft} />
+                    <NftCard {...nft} setDisplayTokenId={setDisplayTokenId} />
                   </Box>
                 </Grid>
               ))}

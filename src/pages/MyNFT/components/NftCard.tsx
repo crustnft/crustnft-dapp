@@ -18,14 +18,19 @@ export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   borderRadius: '3px'
 }));
 
+interface setDisplayTokenIdType {
+  setDisplayTokenId?: React.Dispatch<React.SetStateAction<number>>;
+}
+
 function NftCard({
   tokenId,
   imageUrl,
   name,
   owner,
   chainName,
-  contractAddr
-}: NftCardCollectionViewerProps) {
+  contractAddr,
+  setDisplayTokenId
+}: NftCardCollectionViewerProps & setDisplayTokenIdType) {
   const theme = useTheme();
   const [loading, setLoading] = useState(true);
 
@@ -36,6 +41,12 @@ function NftCard({
   useEffect(() => {
     console.log(`NftCard: ${tokenId}, name: ${name}, loading: ${loading}`);
   }, [loading]);
+
+  const handleClick = (tokenId: number) => {
+    if (setDisplayTokenId !== undefined) {
+      setDisplayTokenId(tokenId);
+    }
+  };
   return (
     <Paper
       sx={{
@@ -49,7 +60,12 @@ function NftCard({
       }}
     >
       <Box sx={{ p: 2, position: 'relative', paddingBottom: 0 }}>
-        <Link href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}>
+        <Link
+          href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
+          onClick={() => {
+            handleClick(parseInt(tokenId));
+          }}
+        >
           <Box>
             <Stack
               sx={{
