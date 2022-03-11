@@ -69,7 +69,7 @@ export default function AssetViewer() {
     }
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [tokenId]);
 
   return (
     <Page title={`Asset Viewer - ${assetAndOwner.name}`}>

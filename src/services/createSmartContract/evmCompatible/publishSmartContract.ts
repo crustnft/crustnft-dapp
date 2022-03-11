@@ -37,7 +37,7 @@ export const publishSmartContract = async (
     }
     // return etherscan publishing hash
     return (verifiedResponse.data as any).result;
-  } catch (e) {
+  } catch (e: any) {
     console.log('Error on publishing', e);
     console.log(e.response || '');
   }
