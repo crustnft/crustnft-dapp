@@ -3,6 +3,7 @@ import Iconify from 'components/Iconify';
 import Page from '../../components/Page';
 import Introduction from './components/Introduction';
 import ProjectCard from './components/ProjectCard';
+import ProjectCardEmpty from './components/ProjectCardEmpty';
 
 export default function CPProjectsDashboard() {
   return (
@@ -16,11 +17,11 @@ export default function CPProjectsDashboard() {
             </Avatar>
           </Stack>
           <Stack>
-            <Typography variant="h5" sx={{ color: '#637381' }}>
+            <Typography variant="h5" sx={{ color: 'text.primary' }}>
               PROJECTS
             </Typography>
 
-            <Typography sx={{ color: '#919EAB' }}>
+            <Typography sx={{ color: 'text.secondary' }}>
               You have to connect to a wallet to see your projects.
             </Typography>
           </Stack>
@@ -33,33 +34,9 @@ export default function CPProjectsDashboard() {
             <ProjectCard />
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
-            <ProjectCard />
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <ProjectCard />
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <ProjectCard />
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <ProjectCard />
+            <ProjectCardEmpty />
           </Grid>
         </Grid>
-
-        <Stack direction="row" alignItems="center" spacing={2} sx={{ mt: 5 }}>
-          <Stack>
-            <Avatar>
-              <Iconify icon="ep:menu" />
-            </Avatar>
-          </Stack>
-          <Stack>
-            <Typography variant="h5" sx={{ color: '#637381' }}>
-              COLLECTIONS
-            </Typography>
-
-            <Typography sx={{ color: '#919EAB' }}>You have no collections.</Typography>
-          </Stack>
-        </Stack>
       </Container>
     </Page>
   );
