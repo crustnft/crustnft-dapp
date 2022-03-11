@@ -1,7 +1,4 @@
 import { alpha } from '@mui/material/styles';
-import { Palette as MuiPalette } from '@mui/material/styles/createPalette';
-
-// ----------------------------------------------------------------------
 
 function createGradient(color1: string, color2: string) {
   return `linear-gradient(to bottom, ${color1}, ${color2})`;
@@ -219,7 +216,7 @@ const palette = {
   light: {
     ...COMMON,
     mode: 'light',
-    text: { primary: '#000', secondary: alpha('#000', 0.5), disabled: GREY[500] },
+    text: { primary: '#000', secondary: '#637381', disabled: GREY[500] },
     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action },
     header: {
@@ -240,7 +237,7 @@ const palette = {
   dark: {
     ...COMMON,
     mode: 'dark',
-    text: { primary: '#fff', secondary: alpha('#fff', 0.5), disabled: GREY[600] },
+    text: { primary: '#fff', secondary: '#637381', disabled: GREY[600] },
     background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
     action: { active: GREY[500], ...COMMON.action },
     header: {

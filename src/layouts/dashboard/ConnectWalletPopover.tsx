@@ -22,16 +22,11 @@ import Iconify from 'components/Iconify';
 import useWeb3 from 'hooks/useWeb3';
 import React, { useRef, useState } from 'react';
 import MenuPopover from '../../components/MenuPopover';
-import useLocales from '../../hooks/useLocales';
-import useWallet from '../../hooks/useWallet';
 Identicons.svgPath = './static/identicons.min.svg';
 
 const ConnectWalletPopover = () => {
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up('sm'));
-  const { translate } = useLocales();
-
-  const { chain: selectedChain } = useWallet();
 
   const {
     active: walletIsConnected,
@@ -67,24 +62,25 @@ const ConnectWalletPopover = () => {
     <>
       {smUp && !walletIsConnected && (
         <Button
-          color="info"
-          variant="contained"
+          variant="outlined"
           onClick={handleWalletModalOpen}
-          sx={{ backgroundColor: '#377dff' }}
-          startIcon={
-            <SvgIcon color="action">
-              <Icon icon="fontisto:wallet" color="white" />
-            </SvgIcon>
-          }
+          sx={[
+            {
+              color: 'text.primary',
+              borderRadius: '32px',
+              border: theme.palette.header.walletButtonBorder,
+              borderColor: theme.palette.header.menuText
+            }
+          ]}
         >
-          {translate(`connectWallet.myWallet`)}
+          My Wallet
         </Button>
       )}
 
       {!smUp && !walletIsConnected && (
         <ButtonBase onClick={handleWalletModalOpen}>
           <SvgIcon>
-            <Icon icon="fontisto:wallet" color="#377dff" />
+            <Icon icon="fontisto:wallet" color={theme.palette.text.secondary} />
           </SvgIcon>
         </ButtonBase>
       )}
