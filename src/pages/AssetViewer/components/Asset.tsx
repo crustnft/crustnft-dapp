@@ -101,11 +101,6 @@ export default function Asset({ assetAndOwner }: { assetAndOwner: AssetAndOwnerT
           offset++;
         }
       }
-      setNftList((prevList) => {
-        let currentList = JSON.parse(JSON.stringify(prevList));
-        currentList.splice(parseInt(assetAndOwner.tokenId) - 1, 1);
-        return [...currentList];
-      });
     }
     if (assetAndOwner.chain) {
       const _chainID = getChainByNetworkName(assetAndOwner.chain)?.chainId as number;
