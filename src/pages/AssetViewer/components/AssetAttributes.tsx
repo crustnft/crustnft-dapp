@@ -84,25 +84,29 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
   }, [assetAndOwner.attributes]);
 
   return (
-    <Card sx={{ p: 3 }}>
-      <Stack spacing={2}>
-        <Stack>
-          <Typography variant="h5" sx={{ display: 'block' }}>
-            {assetAndOwner.name}
-          </Typography>
-          <Typography variant="caption">{assetAndOwner.description}</Typography>
-          <Box sx={{ height: 5 }} />
-        </Stack>
+    <Stack spacing={2}>
+      <Stack>
+        <Typography variant="h2" sx={{ display: 'block' }}>
+          {assetAndOwner.name}
+        </Typography>
+        <Typography variant="h5" sx={{ color: 'text.secondary' }}>
+          {assetAndOwner.description}
+        </Typography>
+        <Box sx={{ height: 5 }} />
+      </Stack>
 
-        <Stack spacing={1}>
-          <Stack>
+      <Stack spacing={3}>
+        <Stack>
+          <Card sx={{ p: 3 }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Stack>
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <Iconify icon="bxs:tag" rotate={2} />
                   <Typography variant="subtitle1">Properties</Typography>
                 </Stack>
-                <Typography variant="caption">Textual traits that show up as rectangles</Typography>
+                <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                  Textual traits that show up as rectangles
+                </Typography>
               </Stack>
             </Stack>
 
@@ -115,16 +119,18 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
                 ))}
               </Grid>
             </Stack>
-          </Stack>
+          </Card>
+        </Stack>
 
-          <Stack>
+        <Stack>
+          <Card sx={{ p: 3 }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Stack>
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <Iconify icon="bxs:star" />
                   <Typography variant="subtitle1">Levels</Typography>
                 </Stack>
-                <Typography variant="caption">
+                <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                   Numerical traits that show as a progress bar
                 </Typography>
               </Stack>
@@ -135,16 +141,18 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
                 <LevelProgress key={level.levelType + index} {...level} />
               ))}
             </Stack>
-          </Stack>
+          </Card>
+        </Stack>
 
-          <Stack>
+        <Stack>
+          <Card sx={{ p: 3 }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Stack>
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <Iconify icon="ion:stats-chart" />
                   <Typography variant="subtitle1">Stats</Typography>
                 </Stack>
-                <Typography variant="caption">
+                <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                   Numerical traits that just show as numbers
                 </Typography>
               </Stack>
@@ -159,16 +167,18 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
                 ))}
               </Grid>
             </Stack>
-          </Stack>
+          </Card>
+        </Stack>
 
-          <Stack>
+        <Stack>
+          <Card sx={{ p: 3 }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Stack>
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <Iconify icon="ic:baseline-flash-on" />
                   <Typography variant="subtitle1">Boosts</Typography>
                 </Stack>
-                <Typography variant="caption">
+                <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                   Number or percentage boosts that show up as a circular boost
                 </Typography>
               </Stack>
@@ -179,9 +189,9 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
                 <CircularBoost key={boost.boostType + index} {...boost} />
               ))}
             </Stack>
-          </Stack>
+          </Card>
         </Stack>
       </Stack>
-    </Card>
+    </Stack>
   );
 }
