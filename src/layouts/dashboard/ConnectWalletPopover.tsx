@@ -67,24 +67,25 @@ const ConnectWalletPopover = () => {
     <>
       {smUp && !walletIsConnected && (
         <Button
-          color="info"
-          variant="contained"
+          variant="outlined"
           onClick={handleWalletModalOpen}
-          sx={{ backgroundColor: '#377dff' }}
-          startIcon={
-            <SvgIcon color="action">
-              <Icon icon="fontisto:wallet" color="white" />
-            </SvgIcon>
-          }
+          sx={[
+            {
+              color: 'text.primary',
+              borderRadius: '32px',
+              border: theme.palette.header.walletButtonBorder,
+              borderColor: theme.palette.header.menuText
+            }
+          ]}
         >
-          {translate(`connectWallet.myWallet`)}
+          My Wallet
         </Button>
       )}
 
       {!smUp && !walletIsConnected && (
         <ButtonBase onClick={handleWalletModalOpen}>
           <SvgIcon>
-            <Icon icon="fontisto:wallet" color="#377dff" />
+            <Icon icon="fontisto:wallet" color={theme.palette.text.secondary} />
           </SvgIcon>
         </ButtonBase>
       )}
