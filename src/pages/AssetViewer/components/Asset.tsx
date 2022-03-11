@@ -27,7 +27,7 @@ import AssetCard from './AssetCard';
 import AssetDetails from './AssetDetails';
 
 export default function Asset({ assetAndOwner }: { assetAndOwner: AssetAndOwnerType }) {
-  const NB_OF_NFT_PER_PAGE = 5;
+  const NB_OF_NFT_PER_PAGE = 4;
   const emptyNftList = new Array(NB_OF_NFT_PER_PAGE).fill(null).map((_, index) => ({
     key: index.toString(),
     failToLoad: false,
@@ -149,13 +149,15 @@ export default function Asset({ assetAndOwner }: { assetAndOwner: AssetAndOwnerT
               <Typography variant="h3">More from this collection</Typography>
             </Stack>
 
-            <Stack direction="row" spacing={1}>
+            <Grid container xs={12}>
               {NftList.filter((nft) => !nft.failToLoad).map((nft) => (
-                <Box key={nft.key} sx={{ width: '20%' }}>
-                  <NftCard {...nft} />
-                </Box>
+                <Grid item xs={6} md={3} key={nft.key}>
+                  <Box>
+                    <NftCard {...nft} />
+                  </Box>
+                </Grid>
               ))}
-            </Stack>
+            </Grid>
           </Stack>
         </Grid>
       ) : (
