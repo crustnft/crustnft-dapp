@@ -23,6 +23,10 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
   const [stats, setStats] = useState<StatProps[]>([]);
   const [boosts, setBoosts] = useState<BoostProps[]>([]);
   useEffect(() => {
+    setProperties([]);
+    setLevels([]);
+    setStats([]);
+    setBoosts([]);
     if (assetAndOwner.attributes.length) {
       for (let i = 0; i < assetAndOwner.attributes.length; i++) {
         if (
