@@ -1,9 +1,12 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Icon } from '@iconify/react';
 import { LoadingButton } from '@mui/lab';
 import { Card, Dialog, DialogContent, Stack, Typography, useTheme } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import * as Yup from 'yup';
 import { FormProvider } from '../../../components/hook-form';
+import { CPProjectsContext } from '../CPProjectsDashboard';
 import TextField from './TextField';
 
 type FormValues = {
@@ -18,21 +21,34 @@ const defaultValues = {
 
 export default function ProjectCardEmpty() {
   const theme = useTheme();
+  const { CPProjects, setCPProjects } = useContext(CPProjectsContext);
+
   const [openDialogLevels, setOpenDialogLevels] = useState(false);
+
+  const NewProjectSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required'),
+    description: Yup.string()
+  });
 
   const methods = useForm<FormValues>({
     mode: 'onTouched',
+    resolver: yupResolver(NewProjectSchema),
     defaultValues
   });
 
   const {
     watch,
-    setValue,
     handleSubmit,
     formState: { isSubmitting }
   } = methods;
 
-  const onSubmit = async () => {};
+  const onSubmit = async () => {
+    const { name, description } = watch();
+    setCPProjects([
+      ...CPProjects,
+      { name, description: description || '', createdAt: new Date().getTime() }
+    ]);
+  };
   return (
     <>
       <Card
@@ -81,21 +97,21 @@ export default function ProjectCardEmpty() {
                   autoComplete="off"
                 />
               </Stack>
+              <Stack alignItems="flex-end" sx={{ mt: 3 }}>
+                <LoadingButton
+                  type="submit"
+                  variant="contained"
+                  color="info"
+                  loading={isSubmitting}
+                  sx={{
+                    backgroundColor: '#1A90FF',
+                    display: 'block'
+                  }}
+                >
+                  Create Project
+                </LoadingButton>
+              </Stack>
             </FormProvider>
-            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                color="info"
-                loading={isSubmitting}
-                sx={{
-                  backgroundColor: '#1A90FF',
-                  display: 'block'
-                }}
-              >
-                Create Project
-              </LoadingButton>
-            </Stack>
           </Stack>
         </DialogContent>
       </Dialog>
