@@ -24,6 +24,8 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
   const NB_OF_NFT_PER_ROW = upperMd ? 6 : 3;
   const [maxDisplayRows, setMaxDisplayRows] = useState(0);
   const [displayedRows, setDisplayedRows] = useState(1);
+  const [nbOfNftDisplayed, setNbOfNftDisplayed] = useState(0);
+  const [forceUpdate, setForceUpdate] = useState(true);
 
   const emptyNftList = new Array(NB_OF_NFT_PER_ROW).fill(null).map((_, index) => ({
     key: index.toString(),
@@ -60,13 +62,16 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
   useEffect(() => {
     if (upperMd) {
       setDisplayedRows((prev: number) => {
-        return Math.ceil(prev / 2);
+        return prev / 2;
       });
     } else {
-      setDisplayedRows((prev: number) => {
-        return prev * 2;
-      });
+      if (nbOfNftDisplayed > 3) {
+        setDisplayedRows((prev: number) => {
+          return prev * 2;
+        });
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [upperMd]);
 
   useEffect(() => {
@@ -79,12 +84,15 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
       setMaxDisplayRows(Math.ceil((totalSupply - 1) / NB_OF_NFT_PER_ROW));
       const tokenIds = Array.from(Array(totalSupply).keys()).map((x) => x + 1);
       tokenIds.splice(parseInt(assetAndOwner.tokenId) - 1, 1);
+      const _displayedRows = Math.ceil(displayedRows);
+      setDisplayedRows(_displayedRows);
 
       const nbOfNftDisplayed =
-        tokenIds.length < NB_OF_NFT_PER_ROW * displayedRows
+        tokenIds.length < NB_OF_NFT_PER_ROW * _displayedRows
           ? tokenIds.length
-          : NB_OF_NFT_PER_ROW * displayedRows;
-      if (displayedRows === 1) {
+          : NB_OF_NFT_PER_ROW * _displayedRows;
+      setNbOfNftDisplayed(nbOfNftDisplayed);
+      if (_displayedRows === 1) {
         setNftList([...emptyNftList.slice(0, nbOfNftDisplayed || 0)]);
       } else {
         setNftList((prev) => {
