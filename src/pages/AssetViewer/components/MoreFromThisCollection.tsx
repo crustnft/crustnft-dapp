@@ -49,6 +49,7 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
     contractAddr: string;
   };
   const [NftList, setNftList] = useState<NftItem[]>(emptyNftList);
+  const [totalSupply, setTotalSupply] = useState(0);
 
   const handleSeeMore = () => {
     setDisplayedRows((prev: number) => {
@@ -62,6 +63,7 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
         (await getTotalSupply(contract).catch((e) => {
           console.log(e);
         })) || 0;
+      setTotalSupply(totalSupply);
       setMaxDisplayRows(Math.ceil((totalSupply - 1) / NB_OF_NFT_PER_ROW));
       const tokenIds = Array.from(Array(totalSupply).keys()).map((x) => x + 1);
       tokenIds.splice(parseInt(assetAndOwner.tokenId) - 1, 1);
@@ -124,25 +126,29 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [assetAndOwner, displayedRows]);
 
-  console.log(NftList);
-
   return (
     <Stack direction="column">
-      <Stack>
-        <Typography variant="h3">More from this collection</Typography>
-      </Stack>
+      {totalSupply > 1 ? (
+        <>
+          <Stack>
+            <Typography variant="h3">More from this collection</Typography>
+          </Stack>
 
-      <Grid container xs={12}>
-        {NftList.filter((nft) => {
-          return nft && !nft.failToLoad; //&& nft.tokenId !== '';
-        }).map((nft) => (
-          <Grid item xs={4} md={2} key={nft.key}>
-            <Box>
-              <NftCard {...nft} />
-            </Box>
+          <Grid container xs={12}>
+            {NftList.filter((nft) => {
+              return nft && !nft.failToLoad; //&& nft.tokenId !== '';
+            }).map((nft) => (
+              <Grid item xs={4} md={2} key={nft.key}>
+                <Box>
+                  <NftCard {...nft} />
+                </Box>
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        </>
+      ) : (
+        <></>
+      )}
       {displayedRows < maxDisplayRows ? (
         <Button onClick={handleSeeMore}>
           <Typography variant="h4">More...</Typography>
