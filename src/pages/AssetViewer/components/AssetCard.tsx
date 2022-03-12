@@ -39,7 +39,8 @@ export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOw
             onLoad={() => setLoading(false)}
             sx={{
               display: loading ? 'none' : 'block',
-              borderRadius: '15px'
+              borderRadius: '15px',
+              width: '100%'
             }}
           />
           {loading ? (
