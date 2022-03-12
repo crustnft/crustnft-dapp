@@ -58,6 +58,18 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
   };
 
   useEffect(() => {
+    if (upperMd) {
+      setDisplayedRows((prev: number) => {
+        return Math.ceil(prev / 2);
+      });
+    } else {
+      setDisplayedRows((prev: number) => {
+        return prev * 2;
+      });
+    }
+  }, [upperMd]);
+
+  useEffect(() => {
     async function getNftList(contract: Contract, chainId: number) {
       const totalSupply =
         (await getTotalSupply(contract).catch((e) => {
