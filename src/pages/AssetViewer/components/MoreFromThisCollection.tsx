@@ -1,4 +1,4 @@
-import { Box, Grid, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Grid, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { Contract } from 'ethers';
 import NftCard from 'pages/MyNFT/components/NftCard';
@@ -21,9 +21,11 @@ import { AssetAndOwnerType } from '../AssetViewer.types';
 function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwnerType }) {
   const theme = useTheme();
   const upperMd = useMediaQuery(theme.breakpoints.up('md'));
-  const NB_OF_NFT_PER_PAGE = upperMd ? 6 : 3;
+  const NB_OF_NFT_PER_ROW = upperMd ? 6 : 3;
+  const [maxDisplayRows, setMaxDisplayRows] = useState(0);
+  const [displayedRows, setDisplayedRows] = useState(1);
 
-  const emptyNftList = new Array(NB_OF_NFT_PER_PAGE).fill(null).map((_, index) => ({
+  const emptyNftList = new Array(NB_OF_NFT_PER_ROW).fill(null).map((_, index) => ({
     key: index.toString(),
     failToLoad: false,
     tokenId: '',
@@ -48,27 +50,42 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
   };
   const [NftList, setNftList] = useState<NftItem[]>(emptyNftList);
 
+  const handleSeeMore = () => {
+    setDisplayedRows((prev: number) => {
+      return prev + 1;
+    });
+  };
+
   useEffect(() => {
     async function getNftList(contract: Contract, chainId: number) {
       const totalSupply =
         (await getTotalSupply(contract).catch((e) => {
           console.log(e);
         })) || 0;
-      const nbOfNftPerCarousel =
-        totalSupply < NB_OF_NFT_PER_PAGE ? totalSupply : NB_OF_NFT_PER_PAGE;
-      setNftList((prevList) => [...emptyNftList.slice(0, nbOfNftPerCarousel || 0)]);
+      setMaxDisplayRows(Math.ceil((totalSupply - 1) / NB_OF_NFT_PER_ROW));
+      const tokenIds = Array.from(Array(totalSupply).keys()).map((x) => x + 1);
+      tokenIds.splice(parseInt(assetAndOwner.tokenId) - 1, 1);
 
-      let offset = 1;
-      for (let i = 0; i < nbOfNftPerCarousel; i++) {
-        const tokenId = i + offset;
-        if (tokenId.toString() !== assetAndOwner.tokenId) {
+      const nbOfNftDisplayed =
+        tokenIds.length < NB_OF_NFT_PER_ROW * displayedRows
+          ? tokenIds.length
+          : NB_OF_NFT_PER_ROW * displayedRows;
+      if (displayedRows === 1) {
+        setNftList([...emptyNftList.slice(0, nbOfNftDisplayed || 0)]);
+      } else {
+        setNftList((prev) => {
+          return [...prev, ...emptyNftList.slice(0, nbOfNftDisplayed - prev.length || 0)];
+        });
+      }
+
+      tokenIds.forEach(function (tokenId, i) {
+        if (i < nbOfNftDisplayed && i >= nbOfNftDisplayed - NB_OF_NFT_PER_ROW) {
           getTokenURI(contract, tokenId)
             .then(async (tokenUri) => {
               const parsedTokenUri = parseNftUri(tokenUri);
               const data = await getDataFromTokenUri(parsedTokenUri);
               const owner = await getOwner(contract, tokenId);
               const parsedImageUrl = parseNftUri(data.image || '');
-              console.log('name', getChainNameByChainId(chainId));
               setNftList((prevList) => {
                 prevList[i] = {
                   key: assetAndOwner.contractAddress.slice(-4, -1) + tokenId,
@@ -92,11 +109,8 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
 
               console.log(`Error token ${tokenId}: `, e);
             });
-        } else {
-          i--;
-          offset++;
         }
-      }
+      });
     }
     if (assetAndOwner.chain) {
       const { chainId } = getChainByNetworkName(assetAndOwner.chain) || { chainId: -1 };
@@ -108,7 +122,10 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
       getNftList(contract, chainId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [assetAndOwner]);
+  }, [assetAndOwner, displayedRows]);
+
+  console.log(NftList);
+
   return (
     <Stack direction="column">
       <Stack>
@@ -116,7 +133,9 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
       </Stack>
 
       <Grid container xs={12}>
-        {NftList.filter((nft) => !nft.failToLoad).map((nft) => (
+        {NftList.filter((nft) => {
+          return nft && !nft.failToLoad; //&& nft.tokenId !== '';
+        }).map((nft) => (
           <Grid item xs={4} md={2} key={nft.key}>
             <Box>
               <NftCard {...nft} />
@@ -124,6 +143,13 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
           </Grid>
         ))}
       </Grid>
+      {displayedRows < maxDisplayRows ? (
+        <Button onClick={handleSeeMore}>
+          <Typography variant="h4">More...</Typography>
+        </Button>
+      ) : (
+        <></>
+      )}
     </Stack>
   );
 }
