@@ -19,7 +19,7 @@ import { parseNftUri } from 'utils/tokenUriHandlers';
 import { AssetAndOwnerType } from '../AssetViewer.types';
 
 function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwnerType }) {
-  const NB_OF_NFT_PER_PAGE = 4;
+  const NB_OF_NFT_PER_PAGE = 6;
   const emptyNftList = new Array(NB_OF_NFT_PER_PAGE).fill(null).map((_, index) => ({
     key: index.toString(),
     failToLoad: false,
@@ -114,7 +114,7 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
 
       <Grid container xs={12}>
         {NftList.filter((nft) => !nft.failToLoad).map((nft) => (
-          <Grid item xs={6} md={3} key={nft.key}>
+          <Grid item xs={4} md={2} key={nft.key}>
             <Box>
               <NftCard {...nft} />
             </Box>
