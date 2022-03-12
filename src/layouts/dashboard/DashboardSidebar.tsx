@@ -1,11 +1,8 @@
 import { Icon } from '@iconify/react';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import { Avatar, Box, Drawer, Link, Stack, Tooltip, Typography } from '@mui/material';
+import { Avatar, Box, Drawer, Link, ListItemText, Stack, Tooltip, Typography } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import Identicons from '@nimiq/identicons';
@@ -16,7 +13,11 @@ import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { MIconButton } from '../../components/@material-extend';
 import LogoLong from '../../components/LogoLong';
-import NavSection from '../../components/NavSection';
+import NavSection, {
+  ListItemIconStyle,
+  ListItemStyle,
+  ListSubheaderStyle
+} from '../../components/NavSection';
 import Scrollbar from '../../components/Scrollbar';
 import { DISCORD, MEDIUM, TELEGRAM, TWITTER } from '../../constants/COMMON_VARIABLES';
 import useSettings from '../../hooks/useSettings';
@@ -158,13 +159,28 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }: DashboardSidebarPro
       <Box>
         <List
           sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-          subheader={<ListSubheader>Settings</ListSubheader>}
+          subheader={<ListSubheaderStyle>Setting</ListSubheaderStyle>}
         >
-          <ListItem>
-            <ListItemIcon>
-              <DarkModeIcon />
-            </ListItemIcon>
-            <ListItemText id="switch-list-label-wifi" primary="Dark mode" />
+          <ListItem sx={{ p: '0px', pr: '10%' }}>
+            <ListItemStyle>
+              <ListItemIconStyle>
+                <Box
+                  component="span"
+                  sx={{
+                    width: 4,
+                    height: 4,
+                    display: 'flex',
+                    borderRadius: '50%',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  {' '}
+                  <DarkModeIcon />
+                </Box>
+              </ListItemIconStyle>
+              <ListItemText disableTypography primary={'Dark Mode'} />
+            </ListItemStyle>
             <Switch
               edge="end"
               onChange={onToggleMode}
