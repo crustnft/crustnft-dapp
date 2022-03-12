@@ -1,12 +1,8 @@
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { getContractsByAccount } from 'clients/crustnft-explore-api';
 import Iconify from 'components/Iconify';
 import useWeb3 from 'hooks/useWeb3';
-import {
-  TitleWithSubtitle,
-  TypographyWithSubtitle
-} from 'pages/CollectionsExplorer/components/TypographyWithSubtitle';
 import { useEffect, useState } from 'react';
 import CollectionSlider from './CollectionSlider';
 
@@ -14,24 +10,15 @@ export default function MyCollections() {
   const { account } = useWeb3();
   const [collections, setCollections] = useState([]);
   const [nbOfContractCreated, setNbOfContractCreated] = useState(0);
-  const [titleLoaded, setTitleLoaded] = useState(false);
-  const [titleWithSubtitle, setTitleWithSubtitle] = useState<TitleWithSubtitle>({
-    title: 'Your collections',
-    subTitle: String(nbOfContractCreated),
-    titleSize: 'h3',
-    subTitleSize: 'subtitle2'
-  });
 
   useEffect(() => {
-    if (account && !titleLoaded) {
+    if (account) {
       getContractsByAccount(10, account.toLowerCase()).then((res) => {
         setCollections(res.data?.data);
         setNbOfContractCreated(res.data?.data?.length || 0);
-        setTitleWithSubtitle({ ...titleWithSubtitle, subTitle: String(nbOfContractCreated) });
-        setTitleLoaded(true);
       });
     }
-  }, [account, nbOfContractCreated, titleLoaded, titleWithSubtitle]);
+  }, [account]);
 
   useEffect(() => {
     console.log('collections', collections);
@@ -45,7 +32,10 @@ export default function MyCollections() {
             <Iconify icon="ep:menu" />
           </Avatar>
         </Stack>
-        <TypographyWithSubtitle titleInput={titleWithSubtitle} />
+        <Stack direction="row" spacing={1} sx={{ opacity: 0.5 }} alignItems="baseline">
+          <Typography variant="h2">Your collections</Typography>
+          <Typography variant="subtitle1">({nbOfContractCreated})</Typography>
+        </Stack>
       </Stack>
       {collections.map((collection: any) => (
         <CollectionSlider

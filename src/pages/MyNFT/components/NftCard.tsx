@@ -1,26 +1,12 @@
-import { Box, Link, Paper, Stack, Typography } from '@mui/material';
-import Button, { ButtonProps } from '@mui/material/Button';
-import { styled, useTheme } from '@mui/material/styles';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import { Box, Card, Link, Stack, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import { useTheme } from '@mui/material/styles';
+import LightboxModal from 'components/LightboxModal';
 import React, { useEffect, useState } from 'react';
 import { BallClipRotateMultiple } from 'react-pure-loaders';
 // To be moved to its place
 import type { NftCardCollectionViewerProps } from '../MyNFT.types';
-
-export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
-  color: theme.palette.getContrastText('#EAECEF'),
-  backgroundColor: '#EAECEF',
-  '&:hover': {
-    backgroundColor: '#EAECEF'
-  },
-  boxShadow: 'none',
-  padding: '3px 8px',
-  minWidth: 0,
-  borderRadius: '3px'
-}));
-
-interface setDisplayTokenIdType {
-  setDisplayTokenId?: React.Dispatch<React.SetStateAction<number>>;
-}
 
 function NftCard({
   tokenId,
@@ -28,11 +14,11 @@ function NftCard({
   name,
   owner,
   chainName,
-  contractAddr,
-  setDisplayTokenId
-}: NftCardCollectionViewerProps & setDisplayTokenIdType) {
+  contractAddr
+}: NftCardCollectionViewerProps) {
   const theme = useTheme();
   const [loading, setLoading] = useState(true);
+  const [openLightbox, setOpenLightbox] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -42,30 +28,27 @@ function NftCard({
     console.log(`NftCard: ${tokenId}, name: ${name}, loading: ${loading}`);
   }, [loading]);
 
-  const handleClick = (tokenId: number) => {
-    if (setDisplayTokenId !== undefined) {
-      setDisplayTokenId(tokenId);
-    }
+  const handleOpenLightbox = (url: string) => {
+    setOpenLightbox(true);
   };
+
   return (
-    <Paper
+    <Card
       sx={{
-        borderRadius: 2,
         bgcolor: 'transparent',
         transition: 'all .2s ease-in-out',
+        boxShadow: 'none',
+        width: { lg: '230px', xs: '100px' },
+        height: { lg: '300px', xs: '130px' },
+        margin: '10px',
         '&:hover': {
           transform: `translateY(-${theme.spacing(1 / 4)})`,
-          boxShadow: (theme) => theme.shadows['4']
+          boxShadow: theme.shadows['4']
         }
       }}
     >
-      <Box sx={{ p: 2, position: 'relative', paddingBottom: 0 }}>
-        <Link
-          href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
-          onClick={() => {
-            handleClick(parseInt(tokenId));
-          }}
-        >
+      <Box sx={{ position: 'relative', paddingBottom: 0 }}>
+        <Link href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}>
           <Box>
             <Stack
               sx={{
@@ -106,12 +89,41 @@ function NftCard({
                   borderRadius: '18px'
                 }}
               />
+              {loading ? (
+                <></>
+              ) : (
+                <>
+                  <Button
+                    variant="contained"
+                    color="inherit"
+                    startIcon={<FullscreenIcon />}
+                    sx={{
+                      position: 'absolute',
+                      top: '5px',
+                      left: '5px',
+                      borderRadius: '15px',
+                      opacity: 0.5
+                    }}
+                    onClick={() => handleOpenLightbox(imageUrl)}
+                  >
+                    View Full
+                  </Button>
+                </>
+              )}
             </Stack>
           </Box>
         </Link>
-      </Box>
 
-      <Stack spacing={0.5} sx={{ p: 2, pt: 1, pb: 1 }}>
+        <LightboxModal
+          images={[imageUrl]}
+          mainSrc={imageUrl}
+          photoIndex={0}
+          setPhotoIndex={() => {}}
+          isOpen={openLightbox}
+          onCloseRequest={() => setOpenLightbox(false)}
+        />
+      </Box>
+      <Stack spacing={0.5} sx={{ p: 2, pt: 1, pb: 5 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Link
             color="inherit"
@@ -127,9 +139,24 @@ function NftCard({
           <Typography variant="h5" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
             #{tokenId || ''}
           </Typography>
+          <Button
+            variant="contained"
+            color="inherit"
+            startIcon={<FullscreenIcon />}
+            sx={{
+              position: 'absolute',
+              top: '5px',
+              left: '5px',
+              borderRadius: '15px',
+              opacity: 0.5
+            }}
+            onClick={() => handleOpenLightbox(imageUrl)}
+          >
+            View Full
+          </Button>
         </Stack>
       </Stack>
-    </Paper>
+    </Card>
   );
 }
 

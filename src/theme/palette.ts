@@ -66,6 +66,7 @@ declare module '@mui/material/styles/createPalette' {
     header: HeaderColor;
     additional: AdditionalColor;
     customBackground: BackgroundColor;
+    collectionSlider: string;
   }
   interface PaletteOptions {
     gradients: GradientsPaletteOptions;
@@ -73,6 +74,7 @@ declare module '@mui/material/styles/createPalette' {
     header: HeaderColor;
     additional: AdditionalColor;
     customBackground: BackgroundColor;
+    collectionSlider: string;
   }
 }
 
@@ -232,7 +234,8 @@ const palette = {
     customBackground: {
       menu: '#F2F4FA',
       themeBackground: '#fff'
-    }
+    },
+    collectionSlider: '#ffffff'
   },
   dark: {
     ...COMMON,
@@ -253,7 +256,8 @@ const palette = {
     customBackground: {
       menu: '#141416',
       themeBackground: '#141416'
-    }
+    },
+    collectionSlider: '#23262F'
   }
 } as const;
 
