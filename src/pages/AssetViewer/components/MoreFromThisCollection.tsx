@@ -1,4 +1,4 @@
-import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Box, Grid, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { Contract } from 'ethers';
 import NftCard from 'pages/MyNFT/components/NftCard';
@@ -19,7 +19,10 @@ import { parseNftUri } from 'utils/tokenUriHandlers';
 import { AssetAndOwnerType } from '../AssetViewer.types';
 
 function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwnerType }) {
-  const NB_OF_NFT_PER_PAGE = 6;
+  const theme = useTheme();
+  const upperMd = useMediaQuery(theme.breakpoints.up('md'));
+  const NB_OF_NFT_PER_PAGE = upperMd ? 6 : 3;
+
   const emptyNftList = new Array(NB_OF_NFT_PER_PAGE).fill(null).map((_, index) => ({
     key: index.toString(),
     failToLoad: false,
