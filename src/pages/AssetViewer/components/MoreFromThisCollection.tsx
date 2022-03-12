@@ -81,7 +81,7 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
       }
 
       tokenIds.forEach(function (tokenId, i) {
-        if (i < nbOfNftDisplayed && i >= nbOfNftDisplayed - NB_OF_NFT_PER_ROW) {
+        if (i < nbOfNftDisplayed) {
           getTokenURI(contract, tokenId)
             .then(async (tokenUri) => {
               const parsedTokenUri = parseNftUri(tokenUri);
