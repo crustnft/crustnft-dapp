@@ -9,13 +9,11 @@ import TextField from './TextField';
 type FormValues = {
   name: string;
   description: string;
-  externalLink: string;
 };
 
 const defaultValues = {
   name: '',
-  description: '',
-  externalLink: ''
+  description: ''
 };
 
 export default function ProjectCardEmpty() {
@@ -39,11 +37,12 @@ export default function ProjectCardEmpty() {
     <>
       <Card
         sx={{
-          backgroundColor: '#F4F6F8',
+          backgroundColor: 'background.paper',
           px: 2,
           py: 1,
           height: '151.13px',
-          border: '4px dashed #C4C4C4',
+          border: '3px dashed',
+          borderColor: 'text.secondary',
           borderRadius: '15px'
         }}
         onClick={() => {
@@ -73,7 +72,7 @@ export default function ProjectCardEmpty() {
           <Stack sx={{ px: 1 }} spacing={1}>
             <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
               <Stack spacing={2}>
-                <TextField name="name" label="Name" autoComplete="off" />
+                <TextField name="name" label="Name" required={true} autoComplete="off" />
                 <TextField
                   name="description"
                   label="Description"
