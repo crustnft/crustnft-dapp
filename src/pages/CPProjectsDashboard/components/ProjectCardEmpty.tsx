@@ -73,8 +73,14 @@ export default function ProjectCardEmpty() {
           <Stack sx={{ px: 1 }} spacing={1}>
             <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
               <Stack spacing={2}>
-                <TextField name="name" label="Name" />
-                <TextField name="description" label="Description" multiline minRows={4} />
+                <TextField name="name" label="Name" autoComplete="off" />
+                <TextField
+                  name="description"
+                  label="Description"
+                  multiline
+                  minRows={4}
+                  autoComplete="off"
+                />
               </Stack>
             </FormProvider>
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
