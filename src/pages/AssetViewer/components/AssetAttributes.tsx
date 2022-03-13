@@ -36,7 +36,6 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
         ) {
           if (typeof assetAndOwner.attributes[i].trait_type === 'string') {
             if (typeof assetAndOwner.attributes[i].value === 'string') {
-              console.log('set properties');
               setProperties((prev) => [
                 ...prev,
                 {

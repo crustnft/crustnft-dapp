@@ -172,7 +172,7 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
             <Typography variant="h3">More from this collection</Typography>
           </Stack>
 
-          <Grid container xs={12}>
+          <Grid container>
             {NftList.filter((nft) => {
               return nft && nft.tokenId !== assetAndOwner.tokenId && !nft.failToLoad;
             }).map((nft) => (
