@@ -1,7 +1,6 @@
 import { Box, Button, Grid, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { Contract } from 'ethers';
-import NftCard from 'pages/MyNFT/components/NftCard';
 import { useEffect, useState } from 'react';
 import { getDataFromTokenUri } from 'services/http';
 import {
@@ -17,6 +16,7 @@ import {
 } from 'utils/blockchainHandlers';
 import { parseNftUri } from 'utils/tokenUriHandlers';
 import { AssetAndOwnerType } from '../AssetViewer.types';
+import NftCard from './NftCard';
 
 function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwnerType }) {
   const theme = useTheme();
