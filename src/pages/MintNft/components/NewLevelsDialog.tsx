@@ -14,11 +14,9 @@ import type { LevelProps } from '../MintNft.types';
 
 export default function NewLevelsDialog({
   openDialogLevels,
-
   setOpenDialogLevels
 }: {
   openDialogLevels: boolean;
-
   setOpenDialogLevels: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [newLevelType, setNewLevelType] = useState('');
