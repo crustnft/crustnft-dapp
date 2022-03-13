@@ -35,11 +35,8 @@ function NftCard({
   return (
     <Card
       sx={{
-        bgcolor: 'transparent',
         transition: 'all .2s ease-in-out',
         boxShadow: 'none',
-        width: { lg: '230px', xs: '100px' },
-        height: { lg: '300px', xs: '130px' },
         margin: '10px',
         '&:hover': {
           transform: `translateY(-${theme.spacing(1 / 4)})`,
