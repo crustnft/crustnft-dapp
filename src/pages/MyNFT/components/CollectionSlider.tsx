@@ -218,13 +218,13 @@ export default function CollectionSlider({
                 {totalSupply !== 0 ? (
                   <Link href={`#/collection/${chainName}/${contractAddr}/1`}>
                     <Stack direction="row" spacing={1} alignItems="baseline">
-                      <Typography variant="h4">{name}</Typography>
+                      <Typography variant="h5">{name}</Typography>
                       <Typography variant="subtitle2">({totalSupply})</Typography>
                     </Stack>
                   </Link>
                 ) : (
-                  <Stack direction="row" spacing={1} sx={{ opacity: 0.5 }} alignItems="baseline">
-                    <Typography variant="h4">{name}</Typography>
+                  <Stack direction="row" spacing={1} alignItems="baseline">
+                    <Typography variant="h5">{name}</Typography>
                     <Typography variant="subtitle2">({totalSupply})</Typography>
                   </Stack>
                 )}

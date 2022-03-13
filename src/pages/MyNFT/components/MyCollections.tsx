@@ -1,7 +1,5 @@
 import { Stack, Typography } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
 import { getContractsByAccount } from 'clients/crustnft-explore-api';
-import Iconify from 'components/Iconify';
 import useWeb3 from 'hooks/useWeb3';
 import { useEffect, useState } from 'react';
 import CollectionSlider from './CollectionSlider';
@@ -27,13 +25,8 @@ export default function MyCollections() {
   return (
     <Stack spacing={3} sx={{ mt: 4 }}>
       <Stack direction="row" alignItems="center" spacing={2}>
-        <Stack>
-          <Avatar>
-            <Iconify icon="ep:menu" />
-          </Avatar>
-        </Stack>
-        <Stack direction="row" spacing={1} sx={{ opacity: 0.5 }} alignItems="baseline">
-          <Typography variant="h2">Your collections</Typography>
+        <Stack direction="row" spacing={1} sx={{ color: 'text.secondary' }} alignItems="baseline">
+          <Typography variant="h3">Your collections</Typography>
           <Typography variant="subtitle1">({nbOfContractCreated})</Typography>
         </Stack>
       </Stack>
