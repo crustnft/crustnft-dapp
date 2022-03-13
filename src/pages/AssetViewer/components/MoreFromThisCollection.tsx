@@ -10,11 +10,7 @@ import {
   getTokenURI,
   getTotalSupply
 } from 'services/smartContract/evmCompatible';
-import {
-  getChainByNetworkName,
-  getChainNameByChainId,
-  getRpcUrlByChainId
-} from 'utils/blockchainHandlers';
+import { getChainByNetworkName, getChainNameByChainId } from 'utils/blockchainHandlers';
 import { parseNftUri } from 'utils/tokenUriHandlers';
 import { AssetAndOwnerType } from '../AssetViewer.types';
 
@@ -25,7 +21,9 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
   const [maxDisplayRows, setMaxDisplayRows] = useState(0);
   const [displayedRows, setDisplayedRows] = useState(1);
   const [nbOfNftDisplayed, setNbOfNftDisplayed] = useState(0);
-  const [forceUpdate, setForceUpdate] = useState(true);
+  const [chainId, setChainId] = useState(-1);
+  const [contract, setContract] = useState<Contract>();
+  const [contractLoading, setContractLoading] = useState(true);
 
   const emptyNftList = new Array(NB_OF_NFT_PER_ROW).fill(null).map((_, index) => ({
     key: index.toString(),
@@ -59,6 +57,87 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
     });
   };
 
+  const getNftList = async (contract: Contract, chainId: number) => {
+    const totalSupply =
+      (await getTotalSupply(contract).catch((e) => {
+        console.log(e);
+      })) || 0;
+    setTotalSupply(totalSupply);
+    console.log('OKKKKKKK', totalSupply);
+    setMaxDisplayRows(Math.ceil((totalSupply - 1) / NB_OF_NFT_PER_ROW));
+    const tokenIds = Array.from(Array(totalSupply).keys()).map((x) => x + 1);
+    const _displayedRows = Math.ceil(displayedRows);
+    setDisplayedRows(_displayedRows);
+
+    const nbOfNftDisplayed =
+      tokenIds.length < NB_OF_NFT_PER_ROW * _displayedRows
+        ? tokenIds.length
+        : parseInt(assetAndOwner.tokenId) <= NB_OF_NFT_PER_ROW * _displayedRows
+        ? NB_OF_NFT_PER_ROW * _displayedRows + 1
+        : NB_OF_NFT_PER_ROW * _displayedRows;
+    setNbOfNftDisplayed(nbOfNftDisplayed);
+    if (_displayedRows === 1) {
+      setNftList([...emptyNftList.slice(0, nbOfNftDisplayed || 0)]);
+    } else {
+      setNftList((prev) => {
+        return [...prev, ...emptyNftList.slice(0, nbOfNftDisplayed - prev.length || 0)];
+      });
+    }
+
+    tokenIds.forEach(function (tokenId, i) {
+      console.log('not ok');
+      if (i < nbOfNftDisplayed) {
+        getTokenURI(contract, tokenId)
+          .then(async (tokenUri) => {
+            const parsedTokenUri = parseNftUri(tokenUri);
+            const data = await getDataFromTokenUri(parsedTokenUri);
+            const owner = await getOwner(contract, tokenId);
+            const parsedImageUrl = parseNftUri(data.image || '');
+            setNftList((prevList) => {
+              prevList[i] = {
+                key: assetAndOwner.contractAddress.slice(-4, -1) + tokenId,
+                failToLoad: false,
+                tokenId: tokenId.toString(),
+                tokenURI: tokenUri,
+                imageUrl: parsedImageUrl,
+                name: data.name || '',
+                owner,
+                chainName: getChainNameByChainId(chainId),
+                contractAddr: assetAndOwner.contractAddress
+              };
+              return [...prevList];
+            });
+          })
+          .catch((e) => {
+            setNftList((prevList) => {
+              prevList[i] = { ...prevList[i], failToLoad: true };
+              return [...prevList];
+            });
+
+            console.log(`Error token ${tokenId}: `, e);
+          });
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (assetAndOwner.chain && contractLoading) {
+      const { chainId, rpcUrl } = getChainByNetworkName(assetAndOwner.chain) || {
+        chainId: -1,
+        rpcUrl: ''
+      };
+      const contract = connectContract(
+        assetAndOwner.contractAddress || '',
+        SIMPLIFIED_ERC721_ABI,
+        rpcUrl
+      );
+      setChainId(chainId);
+      setContract(contract);
+      setContractLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [assetAndOwner]);
+
   useEffect(() => {
     if (upperMd) {
       setDisplayedRows((prev: number) => {
@@ -75,76 +154,11 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
   }, [upperMd]);
 
   useEffect(() => {
-    async function getNftList(contract: Contract, chainId: number) {
-      const totalSupply =
-        (await getTotalSupply(contract).catch((e) => {
-          console.log(e);
-        })) || 0;
-      setTotalSupply(totalSupply);
-      setMaxDisplayRows(Math.ceil((totalSupply - 1) / NB_OF_NFT_PER_ROW));
-      const tokenIds = Array.from(Array(totalSupply).keys()).map((x) => x + 1);
-      tokenIds.splice(parseInt(assetAndOwner.tokenId) - 1, 1);
-      const _displayedRows = Math.ceil(displayedRows);
-      setDisplayedRows(_displayedRows);
-
-      const nbOfNftDisplayed =
-        tokenIds.length < NB_OF_NFT_PER_ROW * _displayedRows
-          ? tokenIds.length
-          : NB_OF_NFT_PER_ROW * _displayedRows;
-      setNbOfNftDisplayed(nbOfNftDisplayed);
-      if (_displayedRows === 1) {
-        setNftList([...emptyNftList.slice(0, nbOfNftDisplayed || 0)]);
-      } else {
-        setNftList((prev) => {
-          return [...prev, ...emptyNftList.slice(0, nbOfNftDisplayed - prev.length || 0)];
-        });
-      }
-
-      tokenIds.forEach(function (tokenId, i) {
-        if (i < nbOfNftDisplayed) {
-          getTokenURI(contract, tokenId)
-            .then(async (tokenUri) => {
-              const parsedTokenUri = parseNftUri(tokenUri);
-              const data = await getDataFromTokenUri(parsedTokenUri);
-              const owner = await getOwner(contract, tokenId);
-              const parsedImageUrl = parseNftUri(data.image || '');
-              setNftList((prevList) => {
-                prevList[i] = {
-                  key: assetAndOwner.contractAddress.slice(-4, -1) + tokenId,
-                  failToLoad: false,
-                  tokenId: tokenId.toString(),
-                  tokenURI: tokenUri,
-                  imageUrl: parsedImageUrl,
-                  name: data.name || '',
-                  owner,
-                  chainName: getChainNameByChainId(chainId),
-                  contractAddr: assetAndOwner.contractAddress
-                };
-                return [...prevList];
-              });
-            })
-            .catch((e) => {
-              setNftList((prevList) => {
-                prevList[i] = { ...prevList[i], failToLoad: true };
-                return [...prevList];
-              });
-
-              console.log(`Error token ${tokenId}: `, e);
-            });
-        }
-      });
-    }
-    if (assetAndOwner.chain) {
-      const { chainId } = getChainByNetworkName(assetAndOwner.chain) || { chainId: -1 };
-      const contract = connectContract(
-        assetAndOwner.contractAddress || '',
-        SIMPLIFIED_ERC721_ABI,
-        getRpcUrlByChainId(chainId)
-      );
+    if (contract) {
       getNftList(contract, chainId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [assetAndOwner, displayedRows]);
+  }, [contract, displayedRows]);
 
   return (
     <Stack direction="column">
@@ -156,7 +170,7 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
 
           <Grid container xs={12}>
             {NftList.filter((nft) => {
-              return nft && !nft.failToLoad; //&& nft.tokenId !== '';
+              return nft && nft.tokenId !== assetAndOwner.tokenId && !nft.failToLoad;
             }).map((nft) => (
               <Grid item xs={4} md={2} key={nft.key}>
                 <Box>
