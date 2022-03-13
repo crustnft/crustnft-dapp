@@ -36,3 +36,12 @@ export type BoostProps = {
   displayType: 'boost_percentage' | 'boost_number';
   value: number;
 };
+
+export type NftCardCollectionViewerProps = {
+  tokenId: string;
+  imageUrl: string;
+  name: string;
+  owner?: string;
+  chainName: string;
+  contractAddr: string;
+};
