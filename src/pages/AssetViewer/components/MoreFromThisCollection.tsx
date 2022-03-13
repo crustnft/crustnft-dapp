@@ -63,7 +63,6 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
         console.log(e);
       })) || 0;
     setTotalSupply(totalSupply);
-    console.log('OKKKKKKK', totalSupply);
     setMaxDisplayRows(Math.ceil((totalSupply - 1) / NB_OF_NFT_PER_ROW));
     const tokenIds = Array.from(Array(totalSupply).keys()).map((x) => x + 1);
     const _displayedRows = Math.ceil(displayedRows);
@@ -85,8 +84,13 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
     }
 
     tokenIds.forEach(function (tokenId, i) {
-      console.log('not ok');
-      if (i < nbOfNftDisplayed) {
+      const nbNft2Load =
+        parseInt(assetAndOwner.tokenId) <= NB_OF_NFT_PER_ROW * _displayedRows
+          ? parseInt(assetAndOwner.tokenId) > NB_OF_NFT_PER_ROW * (_displayedRows - 1)
+            ? NB_OF_NFT_PER_ROW + 1
+            : NB_OF_NFT_PER_ROW
+          : NB_OF_NFT_PER_ROW;
+      if (i < nbOfNftDisplayed && i >= nbOfNftDisplayed - nbNft2Load) {
         getTokenURI(contract, tokenId)
           .then(async (tokenUri) => {
             const parsedTokenUri = parseNftUri(tokenUri);
