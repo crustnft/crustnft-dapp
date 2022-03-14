@@ -29,7 +29,7 @@ export default function CollectionsExplorer() {
   };
 
   const collectionsLoaded = () => {
-    return collections.map((collection: any) => (
+    return [collections[6]].map((collection: any) => (
       <Grid key={collection.contractAddress} item xs={12} sm={6} md={4}>
         <CollectionCardWithNFTImage collection={collection} />
       </Grid>

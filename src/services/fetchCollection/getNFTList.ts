@@ -36,32 +36,38 @@ export const getNftList4CollectionCard = async (
     contractAddr: ''
   }));
 
-  let nftList = [...emptyNftList.slice(0)];
+  let nftList = [...emptyNftList];
 
-  tokenIds.forEach(async function (tokenId, i) {
-    if (i < numLoadableNFT) {
-      const tokenUri = await getTokenURI(contract, tokenId).catch((e: any) => {
-        nftList[i] = { ...nftList[i], failToLoad: true };
-      });
-      if (!tokenUri) return;
-      const parsedTokenUri = parseNftUri(tokenUri);
-      const data = await getDataFromTokenUri(parsedTokenUri);
-      const owner = await getOwner(contract, tokenId);
-      const parsedImageUrl = parseNftUri(data.image || '');
-      nftList[i] = {
-        key: contract.address.slice(-4, -1) + tokenId,
-        failToLoad: false,
-        tokenId: tokenId.toString(),
-        tokenURI: tokenUri,
-        imageUrl: parsedImageUrl,
-        name: data.name || '',
-        owner,
-        chainName: getChainNameByChainId(chainId),
-        contractAddr: contract.address
-      };
-      console.log(nftList[i]);
-    }
-  });
+  console.log('tokenIds', tokenIds);
+
+  for (let i = 0; i < 4; i++) {
+    const tokenId = i + 1;
+    const tokenUri = await getTokenURI(contract, tokenId).catch((e: any) => {
+      nftList[i] = { ...nftList[i], failToLoad: true };
+    });
+    if (!tokenUri) return;
+    const parsedTokenUri = parseNftUri(tokenUri);
+    const data = await getDataFromTokenUri(parsedTokenUri);
+    const owner = await getOwner(contract, tokenId);
+    const parsedImageUrl = parseNftUri(data.image || '');
+    nftList[i] = {
+      key: contract.address.slice(-4, -1) + tokenId,
+      failToLoad: false,
+      tokenId: tokenId.toString(),
+      tokenURI: tokenUri,
+      imageUrl: parsedImageUrl,
+      name: data.name || '',
+      owner,
+      chainName: getChainNameByChainId(chainId),
+      contractAddr: contract.address
+    };
+    console.log(nftList[i]);
+  }
+  // tokenIds.forEach(async function (tokenId, i) {
+  //   if (i < numLoadableNFT) {
+
+  //   }
+  // });
   console.log('inside getNFTList', nftList, [...nftList]);
   return nftList;
 };
