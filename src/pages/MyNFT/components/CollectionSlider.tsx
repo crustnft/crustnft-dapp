@@ -1,4 +1,4 @@
-import { Box, Button, CardHeader, Link, Stack, useMediaQuery } from '@mui/material';
+import { Box, Button, Card, CardHeader, Link, Stack, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -196,11 +196,10 @@ export default function CollectionSlider({
               chainName={chainName}
             />
           ) : (
-            <Box
+            <Card
               sx={{
                 bgcolor: theme.palette.collectionSlider,
-                borderRadius: '32px',
-                border: '1px solid grey'
+                borderRadius: '32px'
               }}
             >
               <CardHeader
@@ -280,7 +279,7 @@ export default function CollectionSlider({
                   ))}
                 </Slider>
               </Stack>
-            </Box>
+            </Card>
           )}
         </Stack>
       )}
