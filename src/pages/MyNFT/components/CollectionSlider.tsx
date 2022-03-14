@@ -1,4 +1,4 @@
-import { Box, Button, CardHeader, Link, Stack, useMediaQuery } from '@mui/material';
+import { Box, Button, CardHeader, Link, Stack, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -180,6 +180,17 @@ export default function CollectionSlider({
     carouselRef.current?.slickNext();
   };
 
+  const collectionTitle = () => {
+    return (
+      <Stack direction="row" spacing={1} alignItems="baseline">
+        <Typography variant="h4">{name}</Typography>
+        <Typography variant="subtitle2" sx={{ opacity: 0.5 }}>
+          ({totalSupply} NFTs)
+        </Typography>
+      </Stack>
+    );
+  };
+
   return (
     <Box>
       {loading ? (
@@ -203,8 +214,7 @@ export default function CollectionSlider({
               }}
             >
               <CardHeader
-                title={name}
-                subheader={`${totalSupply} NFTs`}
+                title={collectionTitle()}
                 action={
                   <Stack sx={{ mr: 5 }}>
                     <CarouselArrows
@@ -217,14 +227,14 @@ export default function CollectionSlider({
                 }
                 sx={{
                   p: 0,
-                  mb: 1,
+                  mb: 0.5,
                   ml: 5,
                   mt: 2,
                   '& .MuiCardHeader-action': { alignSelf: 'center' }
                 }}
               />
 
-              <Stack direction="row" justifyContent="flex-end" spacing={2} sx={{ mr: 5 }}>
+              <Stack direction="row" spacing={2} sx={{ ml: 5 }}>
                 {totalSupply !== 0 && (
                   <Link href={`#/collection/${chainName}/${contractAddr}/1`}>
                     <Button
@@ -232,9 +242,8 @@ export default function CollectionSlider({
                       variant="contained"
                       sx={{
                         px: 3,
-                        py: 1,
+                        py: 0.5,
                         borderRadius: '26px',
-                        width: '110px',
                         bgcolor: theme.palette.additional.blueButton,
                         color: theme.palette.text.primary
                       }}
@@ -250,9 +259,8 @@ export default function CollectionSlider({
                     variant="contained"
                     sx={{
                       px: 3,
-                      py: 1,
+                      py: 0.5,
                       borderRadius: '26px',
-                      width: '110px',
                       bgcolor: theme.palette.additional.yellowButton,
                       color: theme.palette.text.primary
                     }}

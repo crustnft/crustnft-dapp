@@ -46,6 +46,17 @@ export default function EmptyCollectionBox({
       }
     ]
   };
+
+  const collectionTitleFill = () => {
+    return (
+      <Stack direction="row" spacing={1} alignItems="baseline">
+        <Typography variant="h4">{collectionTitle}</Typography>
+        <Typography variant="subtitle2" sx={{ opacity: 0.5 }}>
+          ({totalSupply} NFTs)
+        </Typography>
+      </Stack>
+    );
+  };
   return (
     <Box
       sx={{
@@ -54,58 +65,35 @@ export default function EmptyCollectionBox({
         border: '1px solid grey'
       }}
     >
-      <Stack direction="row" spacing={1} alignItems="center" sx={{ mr: 5 }}>
-        <Stack width="40%">
-          <CardHeader
-            title={collectionTitle}
-            subheader={`${totalSupply} NFTs`}
-            sx={{
-              p: 0,
-              mb: 1,
-              ml: 5,
-              mt: 2,
-              '& .MuiCardHeader-action': { alignSelf: 'center' }
-            }}
-          />
-        </Stack>
-        <Stack sx={{ mt: 2, mr: 5 }} justifyContent="flex-end" width="60%" direction="row">
-          {totalSupply !== 0 && (
-            <Link href={`#/collection/${chainName}/${contractAddr}/1`}>
+      <CardHeader
+        title={collectionTitleFill()}
+        action={
+          <Stack sx={{ mr: 5 }}>
+            <Link href={`#/mint-nft/${chainName}/${contractAddr}`}>
               <Button
                 size="small"
                 variant="contained"
                 sx={{
                   px: 3,
-                  py: 1,
                   borderRadius: '26px',
-                  width: '110px',
-                  bgcolor: theme.palette.additional.blueButton,
+                  py: 0.5,
+                  bgcolor: theme.palette.additional.yellowButton,
                   color: theme.palette.text.primary
                 }}
               >
-                View all
+                Mint NFT
               </Button>
             </Link>
-          )}
-
-          <Link href={`#/mint-nft/${chainName}/${contractAddr}`}>
-            <Button
-              size="small"
-              variant="contained"
-              sx={{
-                px: 3,
-                borderRadius: '26px',
-                width: '110px',
-                py: 1,
-                bgcolor: theme.palette.additional.yellowButton,
-                color: theme.palette.text.primary
-              }}
-            >
-              Mint NFT
-            </Button>
-          </Link>
-        </Stack>
-      </Stack>
+          </Stack>
+        }
+        sx={{
+          p: 0,
+          mb: 1,
+          ml: 5,
+          mt: 2,
+          '& .MuiCardHeader-action': { alignSelf: 'center' }
+        }}
+      />
 
       <Stack sx={{ mb: 2, mx: 3 }}>
         <Slider {...settings}>
