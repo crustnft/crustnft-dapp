@@ -198,8 +198,9 @@ export default function CollectionSlider({
           ) : (
             <Card
               sx={{
+                p: { xs: 1, sm: 2, md: 3 },
                 bgcolor: theme.palette.collectionSlider,
-                borderRadius: '32px'
+                borderRadius: '16px'
               }}
             >
               <CardHeader
@@ -212,7 +213,7 @@ export default function CollectionSlider({
                   />
                 }
                 action={
-                  <Stack sx={{ mr: 5 }}>
+                  <Stack sx={{ mr: 3 }}>
                     <CarouselArrows
                       customIcon={'ic:round-keyboard-arrow-right'}
                       onNext={handleNext}
@@ -223,14 +224,11 @@ export default function CollectionSlider({
                 }
                 sx={{
                   p: 0,
-                  mb: 0.5,
-                  ml: 5,
-                  mt: 2,
                   '& .MuiCardHeader-action': { alignSelf: 'center' }
                 }}
               />
 
-              <Stack direction="row" spacing={2} sx={{ ml: 5 }}>
+              <Stack direction="row" spacing={2} sx={{ mb: 1 }}>
                 {totalSupply !== 0 && (
                   <Link href={`#/collection/${chainName}/${contractAddr}/1`}>
                     <Button
@@ -266,7 +264,7 @@ export default function CollectionSlider({
                 </Link>
               </Stack>
 
-              <Stack sx={{ mb: 2, mx: 3 }}>
+              <Stack sx={{ mx: -1 }}>
                 <Slider ref={carouselRef} {...settings}>
                   {NftList.filter((nft) => !nft.failToLoad).map((nft) => (
                     <Box key={nft.key}>

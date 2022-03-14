@@ -64,7 +64,7 @@ function NftCard({
         }
       }}
     >
-      <Box sx={{ px: 3, py: 2, position: 'relative', paddingBottom: 0 }}>
+      <Box sx={{ p: 1, position: 'relative', paddingBottom: 0 }}>
         <Link
           href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
           onClick={() => {
@@ -141,7 +141,7 @@ function NftCard({
         )}
       </Box>
 
-      <Stack spacing={0.5} sx={{ p: 3, pt: 1, pb: 3 }}>
+      <Stack spacing={0.5} sx={{ p: 1, pb: 0 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Link
             color="inherit"
