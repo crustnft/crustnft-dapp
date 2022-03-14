@@ -1,9 +1,9 @@
-import { Box, ButtonBase, Card, CardMedia, Grid, Stack, Typography } from '@mui/material';
+import { Box, ButtonBase, Card, CardMedia, Grid, Link, Stack, Typography } from '@mui/material';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { useEffect, useMemo, useState } from 'react';
 import { getNftList4CollectionCard, NftItem } from 'services/fetchCollection/getNFTList';
 import { connectContract, getName, getTotalSupply } from 'services/smartContract/evmCompatible';
-import { getRpcUrlByChainId } from 'utils/blockchainHandlers';
+import { getChainByChainId, getRpcUrlByChainId } from 'utils/blockchainHandlers';
 import EmptyNFT, { cornerPosition } from './EmptyNFT';
 import { CollectionData } from './SimpleCollectionCard';
 
@@ -26,6 +26,7 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   }));
   const [nftList, setNftList] = useState<NftItem[]>(emptyNftList);
   const { contractAddress, chainId } = collection;
+  const [network, setNetwork] = useState('');
   const [name, setName] = useState('');
   const [totalSupply, setTotalSupply] = useState(0);
 
@@ -49,6 +50,8 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
       .catch((e) => {
         console.log('ee', e, contract.address);
       });
+    const chain = getChainByChainId(chainId);
+    setNetwork(chain?.name || '');
   }, []);
 
   useEffect(() => {
@@ -119,9 +122,18 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
             spacing={2}
             sx={{ alignItems: 'baseline', justifyContent: 'space-between', py: 1, pb: 2 }}
           >
-            <Typography variant="h5" sx={{ maxWidth: '70%' }} noWrap>
-              {name}
-            </Typography>
+            <Link
+              underline="hover"
+              href={`#/collection/${network.toLowerCase()}/${contractAddress}/1`}
+              target="_blank"
+              rel="noopener"
+              sx={{ maxWidth: '70%' }}
+            >
+              <Typography variant="h5" noWrap>
+                {name}
+              </Typography>
+            </Link>
+
             <Typography variant="caption">({totalSupply} NFTs)</Typography>
           </Stack>
           {totalSupply > 0 ? (
