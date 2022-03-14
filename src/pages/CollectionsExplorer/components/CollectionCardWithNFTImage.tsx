@@ -58,7 +58,7 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
         totalSupply,
         NB_NFT_TO_SHOW
       );
-      console.log('outside getNFTList', _nftList, [..._nftList], _nftList[0]);
+      if (!_nftList) return;
       setNftList(_nftList);
     };
     fetchData();

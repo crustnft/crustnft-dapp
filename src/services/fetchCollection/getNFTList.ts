@@ -38,30 +38,27 @@ export const getNftList4CollectionCard = async (
 
   let nftList = [...emptyNftList.slice(0)];
 
-  tokenIds.forEach(async function (tokenId, i) {
-    if (i < numLoadableNFT) {
-      const tokenUri = await getTokenURI(contract, tokenId).catch((e: any) => {
-        nftList[i] = { ...nftList[i], failToLoad: true };
-      });
-      if (!tokenUri) return;
-      const parsedTokenUri = parseNftUri(tokenUri);
-      const data = await getDataFromTokenUri(parsedTokenUri);
-      const owner = await getOwner(contract, tokenId);
-      const parsedImageUrl = parseNftUri(data.image || '');
-      nftList[i] = {
-        key: contract.address.slice(-4, -1) + tokenId,
-        failToLoad: false,
-        tokenId: tokenId.toString(),
-        tokenURI: tokenUri,
-        imageUrl: parsedImageUrl,
-        name: data.name || '',
-        owner,
-        chainName: getChainNameByChainId(chainId),
-        contractAddr: contract.address
-      };
-      console.log(nftList[i]);
-    }
-  });
-  console.log('inside getNFTList', nftList, [...nftList]);
+  for (let i = 0; i < numLoadableNFT; i++) {
+    const tokenId = i + 1;
+    const tokenUri = await getTokenURI(contract, tokenId).catch((e: any) => {
+      nftList[i] = { ...nftList[i], failToLoad: true };
+    });
+    if (!tokenUri) return;
+    const parsedTokenUri = parseNftUri(tokenUri);
+    const data = await getDataFromTokenUri(parsedTokenUri);
+    const owner = await getOwner(contract, tokenId);
+    const parsedImageUrl = parseNftUri(data.image || '');
+    nftList[i] = {
+      key: contract.address.slice(-4, -1) + tokenId,
+      failToLoad: false,
+      tokenId: tokenId.toString(),
+      tokenURI: tokenUri,
+      imageUrl: parsedImageUrl,
+      name: data.name || '',
+      owner,
+      chainName: getChainNameByChainId(chainId),
+      contractAddr: contract.address
+    };
+  }
   return nftList;
 };
