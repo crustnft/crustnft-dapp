@@ -49,7 +49,7 @@ export default function EmptyCollectionBox({
   };
 
   return (
-    <Card>
+    <Card sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
       <CardHeader
         title={
           <TypographyWithSubtitle
@@ -81,47 +81,43 @@ export default function EmptyCollectionBox({
         sx={{
           p: 0,
           mb: 1,
-          ml: 5,
-          mt: 2,
           '& .MuiCardHeader-action': { alignSelf: 'center' }
         }}
       />
 
-      <Stack sx={{ mb: 2, mx: 3 }}>
+      <Stack sx={{ mx: -1 }}>
         <Slider {...settings}>
-          <Box key="-1">
-            <Link href={`#/mint-nft/${chainName}/${contractAddr}`}>
-              <Box sx={{ px: 3, py: 0, position: 'relative' }}>
-                <Paper
-                  sx={{
-                    boxShadow: 'none',
-                    bgcolor: 'transparent',
-                    transition: 'all .2s ease-in-out',
-                    backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='18' ry='18' stroke='%23333' stroke-width='4' stroke-dasharray='12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e")`,
-                    borderRadius: '18px',
-                    opacity: 0.4,
-                    width: '100%',
-                    aspectRatio: '1 / 1.25'
-                  }}
+          <Link href={`#/mint-nft/${chainName}/${contractAddr}`}>
+            <Box sx={{ px: 1, py: 0, position: 'relative' }}>
+              <Paper
+                sx={{
+                  boxShadow: 'none',
+                  bgcolor: 'transparent',
+                  transition: 'all .2s ease-in-out',
+                  backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='18' ry='18' stroke='%23333' stroke-width='4' stroke-dasharray='12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e")`,
+                  borderRadius: '18px',
+                  opacity: 0.4,
+                  width: '100%',
+                  aspectRatio: '1 / 1.25'
+                }}
+              >
+                <Stack
+                  alignItems="center"
+                  justifyContent="center"
+                  direction="column"
+                  spacing={1}
+                  sx={{ height: '100%' }}
                 >
-                  <Stack
-                    alignItems="center"
-                    justifyContent="center"
-                    direction="column"
-                    spacing={1}
-                    sx={{ height: '100%' }}
-                  >
-                    <Icon width="53px" height="53px" icon="akar-icons:plus" />
-                    <Stack alignItems="center" justifyContent="center" sx={{ px: 1 }}>
-                      <Typography variant="subtitle2" align="center">
-                        Your collection is empty, add it now!
-                      </Typography>
-                    </Stack>
+                  <Icon width="53px" height="53px" icon="akar-icons:plus" />
+                  <Stack alignItems="center" justifyContent="center" sx={{ px: 1 }}>
+                    <Typography variant="subtitle2" align="center">
+                      Your collection is empty, add it now!
+                    </Typography>
                   </Stack>
-                </Paper>
-              </Box>
-            </Link>
-          </Box>
+                </Stack>
+              </Paper>
+            </Box>
+          </Link>
 
           {[...Array(3)].map((_, index) => (
             <Box key={index} />
