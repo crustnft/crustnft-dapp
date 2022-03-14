@@ -14,6 +14,7 @@ import {
 import { getChainNameByChainId, getRpcUrlByChainId } from 'utils/blockchainHandlers';
 import { parseNftUri } from 'utils/tokenUriHandlers';
 import CarouselArrows from './CarouselArrows';
+import CollectionSliderSkeleton from './CollectionSliderSkeleton';
 import EmptyCollectionBox from './EmptyCollectionBox';
 import NftCard from './NftCard';
 
@@ -63,6 +64,7 @@ export default function CollectionSlider({
   const [totalSupply, setTotalSupply] = useState(0);
   const [nbEmptyCarouselItems, setNbEmptyCarouselItems] = useState(0);
   const [NftList, setNftList] = useState<NftItem[]>(emptyNftList);
+  const [loading, setLoading] = useState(true);
   // const [filteredNftList, setFilteredNftList] = useState<NftItem[]>([]);
 
   useEffect(() => {
@@ -116,7 +118,9 @@ export default function CollectionSlider({
       }
     }
 
-    getNftList();
+    getNftList().then(() => {
+      setLoading(false);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -177,98 +181,104 @@ export default function CollectionSlider({
   };
 
   return (
-    <Stack>
-      {totalSupply === 0 ? (
-        <EmptyCollectionBox
-          contractAddr={contractAddr}
-          chainId={chainId}
-          totalSupply={totalSupply}
-          collectionTitle={name}
-          chainName={chainName}
-        />
+    <Box>
+      {loading ? (
+        <CollectionSliderSkeleton />
       ) : (
-        <Box
-          sx={{
-            bgcolor: theme.palette.collectionSlider,
-            borderRadius: '32px',
-            border: '1px solid grey'
-          }}
-        >
-          <CardHeader
-            title={name}
-            subheader={`${totalSupply} NFTs`}
-            action={
-              <Stack sx={{ mr: 5 }}>
-                <CarouselArrows
-                  customIcon={'ic:round-keyboard-arrow-right'}
-                  onNext={handleNext}
-                  onPrevious={handlePrevious}
-                  sx={{ '& .arrow': { width: 28, height: 28, p: 0, ml: 2 } }}
-                />
-              </Stack>
-            }
-            sx={{
-              p: 0,
-              mb: 1,
-              ml: 5,
-              mt: 2,
-              '& .MuiCardHeader-action': { alignSelf: 'center' }
-            }}
-          />
-
-          <Stack direction="row" justifyContent="flex-end" spacing={2} sx={{ mr: 5 }}>
-            {totalSupply !== 0 && (
-              <Link href={`#/collection/${chainName}/${contractAddr}/1`}>
-                <Button
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    px: 3,
-                    py: 1,
-                    borderRadius: '26px',
-                    width: '110px',
-                    bgcolor: theme.palette.additional.blueButton,
-                    color: theme.palette.text.primary
-                  }}
-                >
-                  View all
-                </Button>
-              </Link>
-            )}
-
-            <Link href={`#/mint-nft/${chainName}/${contractAddr}`}>
-              <Button
-                size="small"
-                variant="contained"
+        <Stack>
+          {totalSupply === 0 ? (
+            <EmptyCollectionBox
+              contractAddr={contractAddr}
+              chainId={chainId}
+              totalSupply={totalSupply}
+              collectionTitle={name}
+              chainName={chainName}
+            />
+          ) : (
+            <Box
+              sx={{
+                bgcolor: theme.palette.collectionSlider,
+                borderRadius: '32px',
+                border: '1px solid grey'
+              }}
+            >
+              <CardHeader
+                title={name}
+                subheader={`${totalSupply} NFTs`}
+                action={
+                  <Stack sx={{ mr: 5 }}>
+                    <CarouselArrows
+                      customIcon={'ic:round-keyboard-arrow-right'}
+                      onNext={handleNext}
+                      onPrevious={handlePrevious}
+                      sx={{ '& .arrow': { width: 28, height: 28, p: 0, ml: 2 } }}
+                    />
+                  </Stack>
+                }
                 sx={{
-                  px: 3,
-                  py: 1,
-                  borderRadius: '26px',
-                  width: '110px',
-                  bgcolor: theme.palette.additional.yellowButton,
-                  color: theme.palette.text.primary
+                  p: 0,
+                  mb: 1,
+                  ml: 5,
+                  mt: 2,
+                  '& .MuiCardHeader-action': { alignSelf: 'center' }
                 }}
-              >
-                Mint NFT
-              </Button>
-            </Link>
-          </Stack>
+              />
 
-          <Stack sx={{ mb: 2, mx: 3 }}>
-            <Slider ref={carouselRef} {...settings}>
-              {NftList.filter((nft) => !nft.failToLoad).map((nft) => (
-                <Box key={nft.key}>
-                  <NftCard {...nft} />
-                </Box>
-              ))}
+              <Stack direction="row" justifyContent="flex-end" spacing={2} sx={{ mr: 5 }}>
+                {totalSupply !== 0 && (
+                  <Link href={`#/collection/${chainName}/${contractAddr}/1`}>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      sx={{
+                        px: 3,
+                        py: 1,
+                        borderRadius: '26px',
+                        width: '110px',
+                        bgcolor: theme.palette.additional.blueButton,
+                        color: theme.palette.text.primary
+                      }}
+                    >
+                      View all
+                    </Button>
+                  </Link>
+                )}
 
-              {[...Array(nbEmptyCarouselItems)].map((_, index) => (
-                <Box key={index} />
-              ))}
-            </Slider>
-          </Stack>
-        </Box>
+                <Link href={`#/mint-nft/${chainName}/${contractAddr}`}>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      px: 3,
+                      py: 1,
+                      borderRadius: '26px',
+                      width: '110px',
+                      bgcolor: theme.palette.additional.yellowButton,
+                      color: theme.palette.text.primary
+                    }}
+                  >
+                    Mint NFT
+                  </Button>
+                </Link>
+              </Stack>
+
+              <Stack sx={{ mb: 2, mx: 3 }}>
+                <Slider ref={carouselRef} {...settings}>
+                  {NftList.filter((nft) => !nft.failToLoad).map((nft) => (
+                    <Box key={nft.key}>
+                      <NftCard {...nft} />
+                    </Box>
+                  ))}
+
+                  {[...Array(nbEmptyCarouselItems)].map((_, index) => (
+                    <Box key={index} />
+                  ))}
+                </Slider>
+              </Stack>
+            </Box>
+          )}
+        </Stack>
       )}
-    </Stack>
+    </Box>
   );
 }
