@@ -1,5 +1,5 @@
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
-import { Box, Link, Paper, Stack, Typography } from '@mui/material';
+import { Box, ButtonBase, Link, Paper, Stack, Typography } from '@mui/material';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
 import LightboxModal from 'components/LightboxModal';
@@ -40,10 +40,6 @@ function NftCard({
   useEffect(() => {
     setLoading(true);
   }, [imageUrl]);
-
-  useEffect(() => {
-    console.log(`NftCard: ${tokenId}, name: ${name}, loading: ${loading}`);
-  }, [loading]);
 
   const handleClick = (tokenId: number) => {
     if (setDisplayTokenId !== undefined) {
@@ -129,10 +125,7 @@ function NftCard({
         {loading ? (
           <></>
         ) : (
-          <Button
-            variant="contained"
-            color="inherit"
-            startIcon={<FullscreenIcon />}
+          <ButtonBase
             sx={{
               position: 'absolute',
               top: '20px',
@@ -142,7 +135,9 @@ function NftCard({
               opacity: 0.5
             }}
             onClick={() => handleOpenLightbox(imageUrl)}
-          ></Button>
+          >
+            <FullscreenIcon />
+          </ButtonBase>
         )}
       </Box>
 
