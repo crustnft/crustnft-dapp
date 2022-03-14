@@ -5,19 +5,14 @@ import { BallClipRotateMultiple } from 'react-pure-loaders';
 // To be moved to its place
 import type { NftCardCollectionViewerProps } from '../AssetViewer.types';
 
-interface setDisplayTokenIdType {
-  setDisplayTokenId?: React.Dispatch<React.SetStateAction<number>>;
-}
-
 function NftCard({
   tokenId,
   imageUrl,
   name,
   owner,
   chainName,
-  contractAddr,
-  setDisplayTokenId
-}: NftCardCollectionViewerProps & setDisplayTokenIdType) {
+  contractAddr
+}: NftCardCollectionViewerProps) {
   const theme = useTheme();
   const [loading, setLoading] = useState(true);
 
@@ -25,11 +20,6 @@ function NftCard({
     setLoading(true);
   }, [imageUrl]);
 
-  const handleClick = (tokenId: number) => {
-    if (setDisplayTokenId !== undefined) {
-      setDisplayTokenId(tokenId);
-    }
-  };
   return (
     <Paper
       sx={{
@@ -43,12 +33,7 @@ function NftCard({
       }}
     >
       <Box sx={{ p: 1, position: 'relative', paddingBottom: 0 }}>
-        <Link
-          href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
-          onClick={() => {
-            handleClick(parseInt(tokenId));
-          }}
-        >
+        <Link href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}>
           <Box>
             <Stack
               sx={{

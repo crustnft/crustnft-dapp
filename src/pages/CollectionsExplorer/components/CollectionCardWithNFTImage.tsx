@@ -1,8 +1,27 @@
-import { Box, ButtonBase, Card, CardMedia, Grid, Link, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  ButtonBase,
+  Card,
+  CardMedia,
+  Grid,
+  IconButton,
+  Link,
+  Stack,
+  Tooltip,
+  Typography
+} from '@mui/material';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
+import useWeb3 from 'hooks/useWeb3';
 import { useEffect, useMemo, useState } from 'react';
+import { getCollectionUrlOpensea } from 'services/fetchCollection/getCollectionUrlOpensea';
 import { getNftList4CollectionCard, NftItem } from 'services/fetchCollection/getNFTList';
-import { connectContract, getName, getTotalSupply } from 'services/smartContract/evmCompatible';
+import {
+  connectContract,
+  getContractOwner,
+  getName,
+  getTotalSupply
+} from 'services/smartContract/evmCompatible';
 import { getChainByChainId, getRpcUrlByChainId } from 'utils/blockchainHandlers';
 import EmptyNFT, { cornerPosition } from './EmptyNFT';
 import { CollectionData } from './SimpleCollectionCard';
@@ -12,6 +31,7 @@ type CollectionCardProps = {
 };
 
 const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
+  const { account } = useWeb3();
   const NB_NFT_TO_SHOW = 4;
   const emptyNftList = new Array(NB_NFT_TO_SHOW).fill(null).map((_, index) => ({
     key: index.toString(),
@@ -28,6 +48,8 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   const { contractAddress, chainId } = collection;
   const [network, setNetwork] = useState('');
   const [name, setName] = useState('');
+  const [contractOwner, setContractOwner] = useState('');
+  const [openseaLink, setOpenseaLink] = useState('');
   const [totalSupply, setTotalSupply] = useState(0);
 
   const contract = useMemo(() => {
@@ -50,9 +72,25 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
       .catch((e) => {
         console.log('ee', e, contract.address);
       });
+    getContractOwner(contract)
+      .then((contractOwner) => setContractOwner(contractOwner))
+      .catch((e) => {
+        console.log(e);
+      });
     const chain = getChainByChainId(chainId);
     setNetwork(chain?.name || '');
   }, []);
+
+  useEffect(() => {
+    const fetchOpenseaLink = async () => {
+      const _openseaLink = await getCollectionUrlOpensea(contractOwner, contract.address);
+
+      if (!_openseaLink) return;
+      console.log('link', _openseaLink);
+      setOpenseaLink(_openseaLink);
+    };
+    fetchOpenseaLink();
+  }, [contract.address, contractOwner, totalSupply]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,13 +122,17 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                 <Grid item xs={6} key={index}>
                   <ButtonBase>
                     {nft.imageUrl !== '' ? (
-                      <CardMedia
-                        component="img"
-                        image={nft.imageUrl}
-                        sx={{
-                          aspectRatio: '1.5'
-                        }}
-                      />
+                      <Link
+                        href={`#/assets/${network.toLowerCase()}/${contract.address}/${index + 1}`}
+                      >
+                        <CardMedia
+                          component="img"
+                          image={nft.imageUrl}
+                          sx={{
+                            aspectRatio: '1.5'
+                          }}
+                        />
+                      </Link>
                     ) : (
                       <Stack>
                         <ButtonBase>
@@ -145,6 +187,43 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
               </ButtonBase>
             </Stack>
           )}
+          <Stack
+            sx={{ width: '100%' }}
+            justifyContent="flex-end"
+            width="50%"
+            direction="row"
+            alignItems="center"
+          >
+            <Button
+              size="small"
+              variant="contained"
+              color="warning"
+              sx={{ m: 1, px: 3, py: 1, borderRadius: '26px' }}
+              href={`#/mint-nft/${network}/${contract.address}`}
+              disabled={
+                account && contractOwner
+                  ? account?.toLowerCase() !== contractOwner?.toLowerCase()
+                  : true
+              }
+            >
+              <Typography variant="caption" noWrap>
+                Mint NFT
+              </Typography>
+            </Button>
+            {openseaLink !== '' ? (
+              <Tooltip title="Opensea Viewer" sx={{ height: 50, width: 50 }}>
+                <IconButton href={openseaLink} target="_blank">
+                  <Box
+                    component="img"
+                    src="./static/icons/shared/opensea.svg"
+                    sx={{ height: 34, width: 34 }}
+                  />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <></>
+            )}
+          </Stack>
         </Stack>
       </Box>
     </Card>
