@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { getNftList4CollectionCard, NftItem } from 'services/fetchCollection/getNFTList';
 import { connectContract, getName, getTotalSupply } from 'services/smartContract/evmCompatible';
 import { getRpcUrlByChainId } from 'utils/blockchainHandlers';
+import EmptyNFT, { cornerPosition } from './EmptyNFT';
 import { CollectionData } from './SimpleCollectionCard';
 
 type CollectionCardProps = {
@@ -62,7 +63,47 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
       setNftList(_nftList);
     };
     fetchData();
-  }, [contract, totalSupply]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totalSupply]);
+
+  const FourNFT = () => {
+    return (
+      <Stack>
+        <Box
+          sx={{
+            borderRadius: '15px',
+            overflow: 'hidden'
+          }}
+        >
+          <Grid container spacing={0.5}>
+            {nftList.map((nft, index) => {
+              return (
+                <Grid item xs={6} key={index}>
+                  <ButtonBase>
+                    {nft.imageUrl !== '' ? (
+                      <CardMedia
+                        component="img"
+                        image={nft.imageUrl}
+                        sx={{
+                          aspectRatio: '1.5'
+                        }}
+                      />
+                    ) : (
+                      <Stack>
+                        <ButtonBase>
+                          <EmptyNFT text="Add More!" corner={cornerPosition[index]} />
+                        </ButtonBase>
+                      </Stack>
+                    )}
+                  </ButtonBase>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Box>
+      </Stack>
+    );
+  };
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -83,36 +124,15 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
             </Typography>
             <Typography variant="caption">({totalSupply} NFTs)</Typography>
           </Stack>
-          <Stack>
-            <Box
-              sx={{
-                borderRadius: '15px',
-                overflow: 'hidden'
-              }}
-            >
-              <Grid container spacing={0.5}>
-                {nftList.map((nft, index) => {
-                  return (
-                    <Grid item xs={6} key={index}>
-                      <ButtonBase>
-                        <CardMedia
-                          component="img"
-                          image={
-                            nft.imageUrl !== ''
-                              ? nft.imageUrl
-                              : './static/collection/empty_image.svg'
-                          }
-                          sx={{
-                            aspectRatio: '1.5'
-                          }}
-                        />
-                      </ButtonBase>
-                    </Grid>
-                  );
-                })}
-              </Grid>
-            </Box>
-          </Stack>
+          {totalSupply > 0 ? (
+            <FourNFT />
+          ) : (
+            <Stack>
+              <ButtonBase>
+                <EmptyNFT text="Your collection is empty, add it now!" corner={cornerPosition[0]} />
+              </ButtonBase>
+            </Stack>
+          )}
         </Stack>
       </Box>
     </Card>
