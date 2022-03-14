@@ -1,6 +1,8 @@
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import { Box, Link, Paper, Stack, Typography } from '@mui/material';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
+import LightboxModal from 'components/LightboxModal';
 import React, { useEffect, useState } from 'react';
 import { BallClipRotateMultiple } from 'react-pure-loaders';
 // To be moved to its place
@@ -33,6 +35,7 @@ function NftCard({
 }: NftCardCollectionViewerProps & setDisplayTokenIdType) {
   const theme = useTheme();
   const [loading, setLoading] = useState(true);
+  const [openLightbox, setOpenLightbox] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -47,6 +50,11 @@ function NftCard({
       setDisplayTokenId(tokenId);
     }
   };
+
+  const handleOpenLightbox = (url: string) => {
+    setOpenLightbox(true);
+  };
+
   return (
     <Paper
       sx={{
@@ -110,6 +118,32 @@ function NftCard({
             </Stack>
           </Box>
         </Link>
+        <LightboxModal
+          images={[imageUrl]}
+          mainSrc={imageUrl}
+          photoIndex={0}
+          setPhotoIndex={() => {}}
+          isOpen={openLightbox}
+          onCloseRequest={() => setOpenLightbox(false)}
+        />
+        {loading ? (
+          <></>
+        ) : (
+          <Button
+            variant="contained"
+            color="inherit"
+            startIcon={<FullscreenIcon />}
+            sx={{
+              position: 'absolute',
+              top: '20px',
+              left: '25px',
+              p: 1,
+              borderRadius: '15px',
+              opacity: 0.5
+            }}
+            onClick={() => handleOpenLightbox(imageUrl)}
+          ></Button>
+        )}
       </Box>
 
       <Stack spacing={0.5} sx={{ p: 3, pt: 1, pb: 3 }}>
