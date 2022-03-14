@@ -1,14 +1,4 @@
-import {
-  Box,
-  Button,
-  IconButton,
-  Link,
-  Stack,
-  styled,
-  Tooltip,
-  Typography,
-  useMediaQuery
-} from '@mui/material';
+import { Box, Button, CardHeader, Link, Stack, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -52,14 +42,6 @@ type NftItem = {
   chainName: string;
   contractAddr: string;
 };
-
-const RootStyle = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  '& .slick-list': {
-    boxShadow: theme.customShadows.z16,
-    borderRadius: theme.shape.borderRadius
-  }
-}));
 
 export default function CollectionSlider({
   contractAddr,
@@ -212,80 +194,79 @@ export default function CollectionSlider({
             border: '1px solid grey'
           }}
         >
-          <RootStyle>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Stack sx={{ ml: 4, my: 2 }} width="50%">
-                {totalSupply !== 0 ? (
-                  <Link href={`#/collection/${chainName}/${contractAddr}/1`}>
-                    <Stack direction="row" spacing={1} alignItems="baseline">
-                      <Typography variant="h4">{name}</Typography>
-                      <Typography variant="subtitle2">({totalSupply})</Typography>
-                    </Stack>
-                  </Link>
-                ) : (
-                  <Stack direction="row" spacing={1} sx={{ opacity: 0.5 }} alignItems="baseline">
-                    <Typography variant="h4">{name}</Typography>
-                    <Typography variant="subtitle2">({totalSupply})</Typography>
-                  </Stack>
-                )}
+          <CardHeader
+            title={name}
+            subheader={`${totalSupply} NFTs`}
+            action={
+              <Stack sx={{ mr: 5 }}>
+                <CarouselArrows
+                  customIcon={'ic:round-keyboard-arrow-right'}
+                  onNext={handleNext}
+                  onPrevious={handlePrevious}
+                  sx={{ '& .arrow': { width: 28, height: 28, p: 0, ml: 2 } }}
+                />
               </Stack>
-              <Stack sx={{ mt: 2 }} justifyContent="flex-end" width="50%" direction="row">
+            }
+            sx={{
+              p: 0,
+              mb: 1,
+              ml: 5,
+              mt: 2,
+              '& .MuiCardHeader-action': { alignSelf: 'center' }
+            }}
+          />
+
+          <Stack direction="row" justifyContent="flex-end" spacing={2} sx={{ mr: 5 }}>
+            {totalSupply !== 0 && (
+              <Link href={`#/collection/${chainName}/${contractAddr}/1`}>
                 <Button
                   size="small"
                   variant="contained"
-                  color="warning"
-                  sx={{ m: 1, px: 3, py: 1, borderRadius: '26px', width: '110px' }}
-                  href={`#/mint-nft/${chainName}/${contractAddr}`}
+                  sx={{
+                    px: 3,
+                    py: 1,
+                    borderRadius: '26px',
+                    width: '110px',
+                    bgcolor: theme.palette.additional.blueButton,
+                    color: theme.palette.text.primary
+                  }}
                 >
-                  Mint NFT
+                  View all
                 </Button>
-                <Tooltip title="Opensea Viewer">
-                  <IconButton
-                    href={`https://testnets.opensea.io/assets/${contractAddr}/1`}
-                    target="_blank"
-                  >
-                    <Box
-                      component="img"
-                      src="./static/icons/shared/opensea.svg"
-                      sx={{ height: 30 }}
-                    />
-                  </IconButton>
-                </Tooltip>
-              </Stack>
-            </Stack>
+              </Link>
+            )}
 
-            <Stack sx={{ overflow: 'hidden', ml: 3 }}>
-              <CarouselArrows
-                filled
-                onPrevious={handlePrevious}
-                onNext={handleNext}
-                customIcon={'akar-icons:chevron-right'}
+            <Link href={`#/mint-nft/${chainName}/${contractAddr}`}>
+              <Button
+                size="small"
+                variant="contained"
                 sx={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  '& .arrow': {
-                    '&.left': { left: 35 },
-                    '&.right': { right: 35 },
-                    '& button': { width: 42, height: 42, borderRadius: '50%', p: 0.75 }
-                  }
+                  px: 3,
+                  py: 1,
+                  borderRadius: '26px',
+                  width: '110px',
+                  bgcolor: theme.palette.additional.yellowButton,
+                  color: theme.palette.text.primary
                 }}
               >
-                <Stack>
-                  <Slider ref={carouselRef} {...settings}>
-                    {NftList.filter((nft) => !nft.failToLoad).map((nft) => (
-                      <Box key={nft.key}>
-                        <NftCard {...nft} />
-                      </Box>
-                    ))}
+                Mint NFT
+              </Button>
+            </Link>
+          </Stack>
 
-                    {[...Array(nbEmptyCarouselItems)].map((_, index) => (
-                      <Box key={index} />
-                    ))}
-                  </Slider>
-                </Stack>
-              </CarouselArrows>
-            </Stack>
-          </RootStyle>
+          <Stack sx={{ mb: 2, mx: 3 }}>
+            <Slider ref={carouselRef} {...settings}>
+              {NftList.filter((nft) => !nft.failToLoad).map((nft) => (
+                <Box key={nft.key}>
+                  <NftCard {...nft} />
+                </Box>
+              ))}
+
+              {[...Array(nbEmptyCarouselItems)].map((_, index) => (
+                <Box key={index} />
+              ))}
+            </Slider>
+          </Stack>
         </Box>
       )}
     </Stack>
