@@ -112,9 +112,10 @@ export default function EmptyCollectionBox({
                     sx={{ height: '100%' }}
                   >
                     <Icon width="53px" height="53px" icon="akar-icons:plus" />
-                    <Stack alignItems="center" justifyContent="center">
-                      <Typography variant="subtitle2">Your collection is empty,</Typography>
-                      <Typography variant="subtitle2">add it now!</Typography>
+                    <Stack alignItems="center" justifyContent="center" sx={{ px: 1 }}>
+                      <Typography variant="subtitle2" align="center">
+                        Your collection is empty, add it now!
+                      </Typography>
                     </Stack>
                   </Stack>
                 </Paper>
