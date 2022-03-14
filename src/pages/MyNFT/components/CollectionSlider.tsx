@@ -1,4 +1,4 @@
-import { Box, Button, CardHeader, Link, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Button, CardHeader, Link, Stack, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -17,6 +17,7 @@ import CarouselArrows from './CarouselArrows';
 import CollectionSliderSkeleton from './CollectionSliderSkeleton';
 import EmptyCollectionBox from './EmptyCollectionBox';
 import NftCard from './NftCard';
+import { TypographyWithSubtitle } from './TitleWithSubtitle';
 
 const NB_OF_NFT_PER_CAROUSEL = 10;
 
@@ -180,17 +181,6 @@ export default function CollectionSlider({
     carouselRef.current?.slickNext();
   };
 
-  const collectionTitle = () => {
-    return (
-      <Stack direction="row" spacing={1} alignItems="baseline">
-        <Typography variant="h4">{name}</Typography>
-        <Typography variant="subtitle2" sx={{ opacity: 0.5 }}>
-          ({totalSupply} NFTs)
-        </Typography>
-      </Stack>
-    );
-  };
-
   return (
     <Box>
       {loading ? (
@@ -214,7 +204,14 @@ export default function CollectionSlider({
               }}
             >
               <CardHeader
-                title={collectionTitle()}
+                title={
+                  <TypographyWithSubtitle
+                    title={name}
+                    subTitle={`(${totalSupply} NFTs)`}
+                    titleSize="h4"
+                    subTitleSize="subtitle2"
+                  />
+                }
                 action={
                   <Stack sx={{ mr: 5 }}>
                     <CarouselArrows

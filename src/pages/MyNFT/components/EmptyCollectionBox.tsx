@@ -2,6 +2,7 @@ import { Icon } from '@iconify/react';
 import { Box, Button, CardHeader, Link, Paper, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Slider from 'react-slick';
+import { TypographyWithSubtitle } from './TitleWithSubtitle';
 
 export default function EmptyCollectionBox({
   contractAddr,
@@ -47,16 +48,6 @@ export default function EmptyCollectionBox({
     ]
   };
 
-  const collectionTitleFill = () => {
-    return (
-      <Stack direction="row" spacing={1} alignItems="baseline">
-        <Typography variant="h4">{collectionTitle}</Typography>
-        <Typography variant="subtitle2" sx={{ opacity: 0.5 }}>
-          ({totalSupply} NFTs)
-        </Typography>
-      </Stack>
-    );
-  };
   return (
     <Box
       sx={{
@@ -66,7 +57,14 @@ export default function EmptyCollectionBox({
       }}
     >
       <CardHeader
-        title={collectionTitleFill()}
+        title={
+          <TypographyWithSubtitle
+            title={collectionTitle}
+            subTitle={`(${totalSupply} NFTs)`}
+            titleSize="h4"
+            subTitleSize="subtitle2"
+          />
+        }
         action={
           <Stack sx={{ mr: 5 }}>
             <Link href={`#/mint-nft/${chainName}/${contractAddr}`}>
