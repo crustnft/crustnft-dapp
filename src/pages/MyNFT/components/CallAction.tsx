@@ -33,14 +33,14 @@ export default function CallAction() {
           justifyContent={{ xs: 'flex-end', md: 'center' }}
           alignItems={{ xs: 'center', md: 'flex-start' }}
         >
-          <Typography gutterBottom variant="h4" color="#fff" sx={{ pointerEvents: 'none' }}>
+          <Typography gutterBottom variant="h2" color="#fff" sx={{ pointerEvents: 'none' }}>
             No Code Required
           </Typography>
           <Typography
             gutterBottom
             color="#fff"
             variant="body2"
-            sx={{ pointerEvents: 'none', maxWidth: '300px' }}
+            sx={{ pointerEvents: 'none', maxWidth: '300px', fontSize: '1.2rem' }}
             align={isDesktop ? 'left' : 'center'}
           >
             Create & manage your own NFT collection easily in minutes
