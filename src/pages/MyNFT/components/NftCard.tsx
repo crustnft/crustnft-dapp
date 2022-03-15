@@ -128,10 +128,10 @@ function NftCard({
           <ButtonBase
             sx={{
               position: 'absolute',
-              top: '20px',
-              left: '25px',
+              top: '10px',
+              left: '10px',
               p: 1,
-              borderRadius: '15px',
+              borderRadius: '50%',
               opacity: 0.5
             }}
             onClick={() => handleOpenLightbox(imageUrl)}
