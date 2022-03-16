@@ -1,17 +1,19 @@
 import { Icon } from '@iconify/react';
 import { Box, Card, Container, Grid, Link, Stack, Typography, useTheme } from '@mui/material';
 import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import Page from '../../components/Page';
 
 export default function CPProjectDetails() {
+  const { id } = useParams();
+  console.log(id);
   const theme = useTheme();
   return (
     <Page title="Crypto Punks Projects">
       <Container maxWidth="lg" sx={{ mt: { lg: -3 } }}>
         <HeaderBreadcrumbs
           heading="Dashboard"
-          links={[{ name: 'Project Name', href: '/projects-dashboard' }]}
+          links={[{ name: 'Project Name', href: '#/projects-dashboard' }]}
         />
         <Card sx={{ p: 3 }}>
           <Stack spacing={4}>
@@ -23,7 +25,7 @@ export default function CPProjectDetails() {
                 variant="body2"
                 component={RouterLink}
                 underline="none"
-                to={'/project-upload'}
+                to={`/project-upload/${id}`}
                 sx={{
                   lineHeight: 2,
                   display: 'flex',

@@ -1,9 +1,22 @@
-import { Box, Button, Card, Divider, IconButton, MenuItem, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  Divider,
+  IconButton,
+  Link,
+  MenuItem,
+  Stack,
+  Typography
+} from '@mui/material';
 import Iconify from 'components/Iconify';
 import MenuPopover from 'components/MenuPopover';
 import { useRef, useState } from 'react';
+import { TProject } from '../CPProjectsDashboard.type';
 
-export default function ProjectCard() {
+type ProjectCardProps = { project: TProject };
+
+export default function ProjectCard({ project }: ProjectCardProps) {
   const popoverRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -20,8 +33,10 @@ export default function ProjectCard() {
       <Box sx={{ backgroundColor: '#F4F6F8', px: 2, py: 1 }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
           <Stack direction="column">
-            <Typography variant="caption">Created on 28/02/2022 - 18h33</Typography>
-            <Typography variant="subtitle2">Name projects</Typography>
+            <Typography variant="caption">
+              Created at {project.createdAt ? new Date(project.createdAt).toLocaleDateString() : ''}
+            </Typography>
+            <Typography variant="subtitle2">{project.name}</Typography>
           </Stack>
           <IconButton
             size="small"
@@ -73,9 +88,11 @@ export default function ProjectCard() {
           </Typography>
         </Stack>
         <Stack>
-          <Button variant="outlined" size="small">
-            Open
-          </Button>
+          <Link href={`#/project-details/${project.id}`} sx={{ width: '100%' }}>
+            <Button fullWidth variant="outlined" size="small">
+              Open
+            </Button>
+          </Link>
         </Stack>
       </Stack>
     </Card>

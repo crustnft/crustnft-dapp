@@ -47,8 +47,8 @@ export default function Router() {
         { path: 'collection-explore', element: <CollectionsExplorer /> },
         { path: 'collection/:chain/:contractAddr/:pageNb', element: <CollectionViewer /> },
         { path: 'projects-dashboard', element: <CPProjectsDashboard /> },
-        { path: 'project-details', element: <CPProjectDetails /> },
-        { path: 'project-upload', element: <CPProjectUpload /> },
+        { path: 'project-details/:id', element: <CPProjectDetails /> },
+        { path: 'project-upload/:id', element: <CPProjectUpload /> },
         {
           path: 'faucets',
           children: [
