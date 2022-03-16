@@ -1,10 +1,9 @@
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
-import { Box, ButtonBase, Link, Paper, Stack, Typography } from '@mui/material';
+import { Box, ButtonBase, Link, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
 import LightboxModal from 'components/LightboxModal';
 import React, { useEffect, useState } from 'react';
-import { BallClipRotateMultiple } from 'react-pure-loaders';
 // To be moved to its place
 import type { NftCardCollectionViewerProps } from '../MyNFT.types';
 
@@ -93,7 +92,11 @@ function NftCard({
                   height: '100%'
                 }}
               >
-                <BallClipRotateMultiple color={'#637381'} loading={loading} />
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  sx={{ height: 'inherit', p: 2, borderRadius: '18px' }}
+                ></Skeleton>
               </Stack>
 
               <Box
@@ -140,50 +143,56 @@ function NftCard({
           </ButtonBase>
         )}
       </Box>
-
-      <Stack spacing={0.5} sx={{ p: 1, pb: 0 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Link
-            color="inherit"
-            underline="none"
-            href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
-            sx={{ maxWidth: '70%' }}
-          >
-            <Typography variant="subtitle2" noWrap>
-              {name}
-            </Typography>
-          </Link>
-          <ColorButton
-            variant="contained"
-            size="small"
-            disableElevation
-            disableFocusRipple
-            disableRipple
-          >
-            <Typography variant="caption" noWrap>
-              {chainName}
-            </Typography>
-          </ColorButton>
+      {loading ? (
+        <Stack sx={{ p: 1 }} spacing={1} direction="column">
+          <Skeleton animation="wave" height={15} width="100%" />
+          <Skeleton animation="wave" height={15} width="100%" />
         </Stack>
-
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Link
-            color="inherit"
-            underline="none"
-            href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
-          >
-            <Stack direction="row" alignItems="center" spacing={0.5}>
-              <Typography variant="caption" noWrap>
-                Token ID
+      ) : (
+        <Stack spacing={0.5} sx={{ p: 1, pb: 0 }}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Link
+              color="inherit"
+              underline="none"
+              href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
+              sx={{ maxWidth: '70%' }}
+            >
+              <Typography variant="subtitle2" noWrap>
+                {name}
               </Typography>
-            </Stack>
-          </Link>
+            </Link>
+            <ColorButton
+              variant="contained"
+              size="small"
+              disableElevation
+              disableFocusRipple
+              disableRipple
+            >
+              <Typography variant="caption" noWrap>
+                {chainName}
+              </Typography>
+            </ColorButton>
+          </Stack>
 
-          <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
-            #{tokenId || ''}
-          </Typography>
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Link
+              color="inherit"
+              underline="none"
+              href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
+            >
+              <Stack direction="row" alignItems="center" spacing={0.5}>
+                <Typography variant="caption" noWrap>
+                  Token ID
+                </Typography>
+              </Stack>
+            </Link>
+
+            <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
+              #{tokenId || ''}
+            </Typography>
+          </Stack>
         </Stack>
-      </Stack>
+      )}
     </Paper>
   );
 }
