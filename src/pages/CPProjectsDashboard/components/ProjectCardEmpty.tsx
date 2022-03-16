@@ -2,6 +2,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Icon } from '@iconify/react';
 import { LoadingButton } from '@mui/lab';
 import { Card, Dialog, DialogContent, Stack, Typography, useTheme } from '@mui/material';
+import axios from 'axios';
+import useAuth from 'hooks/useAuth';
 import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
@@ -20,6 +22,7 @@ const defaultValues = {
 };
 
 export default function ProjectCardEmpty() {
+  const { accessToken } = useAuth();
   const theme = useTheme();
   const { CPProjects, setCPProjects } = useContext(CPProjectsContext);
 
@@ -44,10 +47,27 @@ export default function ProjectCardEmpty() {
 
   const onSubmit = async () => {
     const { name, description } = watch();
-    setCPProjects([
-      ...CPProjects,
-      { name, description: description || '', createdAt: new Date().getTime() }
-    ]);
+
+    const response = await axios
+      .post(
+        'https://asia-east2-crustnft.cloudfunctions.net/stage-nft-generator-api/api/v1/ntf-collections',
+        {
+          images: [],
+          layers: [],
+          name,
+          description: description || '',
+          layerOrder: []
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      )
+      .catch((err) => {
+        console.log(err.response);
+        return;
+      });
+
+    if (!response?.data?.data?.id) return;
+
+    setCPProjects([...CPProjects, response.data.data.id]);
   };
   return (
     <>
