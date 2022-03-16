@@ -35,6 +35,7 @@ type Web3ContextProps = {
   providerInfo: IProviderInfo | undefined;
   networkNotSupported: boolean;
   switchNetwork: (chainId: number) => void;
+  signInWallet: () => void;
 };
 
 export const truncateAddress = (address: string) => {
@@ -82,7 +83,8 @@ const initialContext: Web3ContextProps = {
   balance: 0,
   providerInfo: undefined,
   networkNotSupported: false,
-  switchNetwork: () => {}
+  switchNetwork: () => {},
+  signInWallet: () => {}
 };
 
 const providerOptions = {
@@ -116,7 +118,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
   const { onNetworkChange } = useWallet();
   const [providerInfo, setProviderInfo] = useState<IProviderInfo | undefined>(undefined);
   const [networkNotSupported, setNetworkNotSupported] = useState(false);
-  const { logout: logOutAuth } = useAuth();
+  const { logout: logOutAuth, challengeLogin, login: loginAuth } = useAuth();
 
   const web3Modal = useMemo(
     () =>
@@ -176,7 +178,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     setPending(false);
     setActive(false);
     setAccount(undefined);
-  }, [web3Modal]);
+  }, [web3Modal, logOutAuth]);
 
   useEffect(() => {
     if (!connectedChainId) return;
@@ -245,7 +247,17 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
         }
       };
     }
-  }, [provider, deactivate]);
+  }, [provider, deactivate, logOutAuth]);
+
+  const signInWallet = useCallback(async () => {
+    if (library && account) {
+      const signingMessage = await challengeLogin(account);
+      if (!signingMessage) return;
+      const signer = library.getSigner(account);
+      const signature = await signer.signMessage(signingMessage);
+      loginAuth(account, signature);
+    }
+  }, [library, account, loginAuth, challengeLogin]);
 
   return (
     <Web3Context.Provider
@@ -263,7 +275,8 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
         balance,
         providerInfo,
         networkNotSupported,
-        switchNetwork
+        switchNetwork,
+        signInWallet
       }}
     >
       {children}

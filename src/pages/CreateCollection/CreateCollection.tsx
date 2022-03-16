@@ -34,8 +34,8 @@ const FormSmartContractSchema = Yup.object().shape({
 });
 
 export default function CreateCollection() {
-  const { active, account, library } = useWeb3();
-  const { isAuthenticated, challengeLogin, login } = useAuth();
+  const { signInWallet } = useWeb3();
+  const { isAuthenticated } = useAuth();
 
   const method = useForm<FormSmartContractConfig>({
     mode: 'onTouched',
@@ -45,19 +45,10 @@ export default function CreateCollection() {
   const [startedCreation, setStartedCreation] = useState(false);
 
   useEffect(() => {
-    const signIn = async () => {
-      if (active && account && library) {
-        if (!isAuthenticated) {
-          const signingMessage = await challengeLogin(account);
-          if (!signingMessage) return;
-          const signer = library.getSigner(account);
-          const signature = await signer.signMessage(signingMessage);
-          login(account, signature);
-        }
-      }
-    };
-    signIn();
-  }, [active, isAuthenticated, account, challengeLogin, library, login]);
+    if (!isAuthenticated) {
+      signInWallet();
+    }
+  }, [isAuthenticated, signInWallet]);
 
   return (
     <Page title="Create NFTs Collection">
