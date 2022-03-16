@@ -7,7 +7,6 @@ import { getBoard, persistCard, persistColumn } from '../../redux/slices/imagesG
 import { useDispatch, useSelector } from '../../redux/store';
 import ImagesColumn from './components/ImagesColumn';
 import ImagesColumnAdd from './components/ImagesColumnAdd';
-import SkeletonImagesColumn from './components/SkeletonImagesColumn';
 // ----------------------------------------------------------------------
 
 export default function CPProjectUpload() {
@@ -109,13 +108,9 @@ export default function CPProjectUpload() {
                 spacing={3}
                 sx={{ height: 'calc(100% - 32px)', overflowY: 'hidden' }}
               >
-                {!board.columnOrder.length ? (
-                  <SkeletonImagesColumn />
-                ) : (
-                  board.columnOrder.map((columnId, index) => (
-                    <ImagesColumn index={index} key={columnId} column={board.columns[columnId]} />
-                  ))
-                )}
+                {board.columnOrder.map((columnId, index) => (
+                  <ImagesColumn index={index} key={columnId} column={board.columns[columnId]} />
+                ))}
 
                 {provided.placeholder}
                 <ImagesColumnAdd />
