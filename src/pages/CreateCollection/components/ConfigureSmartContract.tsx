@@ -11,6 +11,7 @@ import {
   TextField,
   Typography
 } from '@mui/material';
+import useAuth from 'hooks/useAuth';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -21,12 +22,17 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
   const { active, account } = useWeb3();
   const { chain: selectedChain } = useWallet();
   const [name, symbol] = watch(['name', 'symbol']);
+  const { isAuthenticated } = useAuth();
 
   return (
     <>
       <Typography
         variant="overline"
-        sx={{ mb: 3, display: active ? 'none' : 'block', color: 'text.secondary' }}
+        sx={{
+          mb: 3,
+          display: active && isAuthenticated ? 'none' : 'block',
+          color: 'text.secondary'
+        }}
       >
         Select network & Connect wallet
       </Typography>
@@ -37,7 +43,7 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
           mt: 4,
           mb: 3,
           width: 1,
-          display: active ? 'none' : 'block',
+          display: active && isAuthenticated ? 'none' : 'block',
           border: (theme) => `solid 1px ${theme.palette.grey[500_32]}`
         }}
       >
@@ -46,7 +52,7 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
         </Typography>
       </Paper>
 
-      <Box sx={{ display: active ? 'block' : 'none' }}>
+      <Box sx={{ display: active && isAuthenticated ? 'block' : 'none' }}>
         <Grid container spacing={2} sx={{ mb: 2 }}>
           <Grid item xs={12} md={6}>
             <Paper
@@ -215,20 +221,6 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
               />
             )}
           />
-          {/*
-          <FormControlLabel
-            control={
-              <Controller
-                control={control}
-                name="agreement"
-                render={({ field, fieldState: { error } }) => {
-                  console.log('error', error);
-                  return <Checkbox {...field} defaultChecked />;
-                }}
-              />
-            }
-            label="I agree with the smart contract provided by Crustnft"
-          /> */}
         </Stack>
       </Box>
     </>
