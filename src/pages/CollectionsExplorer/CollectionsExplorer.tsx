@@ -2,7 +2,7 @@ import { Container, Grid } from '@mui/material';
 import { getContracts } from 'clients/crustnft-explore-api';
 import { useEffect, useState } from 'react';
 import Page from '../../components/Page';
-import SimpleCollectionCard from './components/SimpleCollectionCard';
+import CollectionCardWithNFTImage from './components/CollectionCardWithNFTImage';
 import SkeletonCollectionCard from './components/SkeletonCollectionCard';
 
 export default function CollectionsExplorer() {
@@ -31,7 +31,7 @@ export default function CollectionsExplorer() {
   const collectionsLoaded = () => {
     return collections.map((collection: any) => (
       <Grid key={collection.contractAddress} item xs={12} sm={6} md={4}>
-        <SimpleCollectionCard collection={collection} />
+        <CollectionCardWithNFTImage collection={collection} />
       </Grid>
     ));
   };

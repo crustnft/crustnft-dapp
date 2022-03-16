@@ -2,6 +2,7 @@ import { Box, Button, Grid, Stack, Typography, useMediaQuery, useTheme } from '@
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { Contract } from 'ethers';
 import { useEffect, useState } from 'react';
+import { NftItem } from 'services/fetchCollection/getNFTList';
 import { getDataFromTokenUri } from 'services/http';
 import {
   connectContract,
@@ -37,17 +38,6 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
     contractAddr: ''
   }));
 
-  type NftItem = {
-    key: string;
-    failToLoad: boolean;
-    tokenId: string;
-    tokenURI?: string;
-    imageUrl: string;
-    name: string;
-    owner?: string;
-    chainName: string;
-    contractAddr: string;
-  };
   const [NftList, setNftList] = useState<NftItem[]>(emptyNftList);
   const [totalSupply, setTotalSupply] = useState(0);
 
