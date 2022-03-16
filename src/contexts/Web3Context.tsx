@@ -2,12 +2,12 @@ import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 import { Web3Provider } from '@ethersproject/providers';
 import WalletConnect from '@walletconnect/web3-provider';
 import { ethers, utils } from 'ethers';
+import useAuth from 'hooks/useAuth';
 import useWallet from 'hooks/useWallet';
 import { Chain } from 'interfaces/chain';
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 import { getChainByChainId } from 'utils/blockchainHandlers';
 import Web3Modal, { getProviderInfo } from 'web3modal';
-
 interface IProviderInfo {
   id: string;
   type: string;
@@ -116,6 +116,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
   const { onNetworkChange } = useWallet();
   const [providerInfo, setProviderInfo] = useState<IProviderInfo | undefined>(undefined);
   const [networkNotSupported, setNetworkNotSupported] = useState(false);
+  const { logout: logOutAuth } = useAuth();
 
   const web3Modal = useMemo(
     () =>
@@ -169,6 +170,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
 
   const deactivate = useCallback(() => {
     setPending(true);
+    logOutAuth();
     web3Modal.clearCachedProvider();
     refreshState();
     setPending(false);
@@ -214,7 +216,11 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     if (provider?.on) {
       const handleAccountsChanged = (accounts: string[]) => {
         console.log('accountsChanged', accounts);
-        if (accounts) setAccount(accounts[0]);
+
+        if (accounts) {
+          logOutAuth();
+          setAccount(accounts[0]);
+        }
       };
 
       const handleChainChanged = (_hexChainId: string) => {

@@ -18,10 +18,8 @@ import SmartContractDialogs from './SmartContractDialogs';
 
 export default function ConfigureSmartContract({ startedCreation }: { startedCreation: boolean }) {
   const { control, watch } = useFormContext();
-
   const { active, account } = useWeb3();
   const { chain: selectedChain } = useWallet();
-
   const [name, symbol] = watch(['name', 'symbol']);
 
   return (

@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { CRUSTNFT_EXPLORE_API_V1 } from 'configs/crustnft-explore-api';
+import { isEmpty } from 'lodash';
 import { createContext, ReactNode, useEffect, useReducer } from 'react';
 import { ActionMap, AuthState, JWTContextType } from '../@types/auth';
 import { isValidToken, setSession } from '../utils/jwt';
-
 enum Types {
   Initial = 'INITIALIZE',
   Login = 'LOGIN',
@@ -105,21 +105,47 @@ function AuthProvider({ children }: AuthProviderProps) {
     initialize();
   }, []);
 
-  const challengeLogin = async (account: string): Promise<string | undefined> => {
+  const isExistingUser = async (account: string) => {
+    const response = await axios.get(`${CRUSTNFT_EXPLORE_API_V1}/users/${account.toLowerCase()}`);
+    console.log(response);
+    if (!isEmpty(response.data)) {
+      return true;
+    }
+    return false;
+  };
+
+  const createEmptyUser = async (account: string) => {
+    const _account = account.toLowerCase();
     const response = await axios
-      .post(`${CRUSTNFT_EXPLORE_API_V1}/authentication/challenge-login`, { account })
+      .post(`${CRUSTNFT_EXPLORE_API_V1}/users`, { account: _account, displayName: _account })
+      .catch((e) => {
+        console.log('error createEmptyUser', e.response);
+        return;
+      });
+
+    return response?.data?.data;
+  };
+
+  const challengeLogin = async (account: string): Promise<string | undefined> => {
+    const _account = account.toLowerCase();
+    const checkUser = await isExistingUser(_account);
+    if (!checkUser) {
+      await createEmptyUser(_account);
+    }
+    const response = await axios
+      .post(`${CRUSTNFT_EXPLORE_API_V1}/authentication/challenge-login`, { account: _account })
       .catch((e) => {
         console.log('error challengeLogin', e.response);
         return;
       });
 
-    return response?.data?.data.split('\n').at(-1);
+    return response?.data?.data;
   };
 
   const login = async (account: string, signature: string) => {
     const response = await axios
       .post(`${CRUSTNFT_EXPLORE_API_V1}/authentication/login`, {
-        account,
+        account: account.toLowerCase(),
         signature
       })
       .catch((err) => {
