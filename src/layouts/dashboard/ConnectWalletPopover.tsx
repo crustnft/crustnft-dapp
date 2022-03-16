@@ -165,7 +165,7 @@ const ConnectWalletPopover = () => {
                 {balance}
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                RIN
+                {connectedChain?.currencySymbol}
               </Typography>
             </Stack>
           </Stack>

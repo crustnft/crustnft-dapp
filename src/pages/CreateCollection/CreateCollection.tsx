@@ -1,6 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Card, Container } from '@mui/material';
-import { useState } from 'react';
+import useAuth from 'hooks/useAuth';
+import useWeb3 from 'hooks/useWeb3';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import Page from '../../components/Page';
@@ -32,12 +34,30 @@ const FormSmartContractSchema = Yup.object().shape({
 });
 
 export default function CreateCollection() {
+  const { active, account, library } = useWeb3();
+  const { isAuthenticated, challengeLogin, login } = useAuth();
+
   const method = useForm<FormSmartContractConfig>({
     mode: 'onTouched',
     resolver: yupResolver(FormSmartContractSchema),
     defaultValues: InitFormSmartContractConfig
   });
   const [startedCreation, setStartedCreation] = useState(false);
+
+  useEffect(() => {
+    const signIn = async () => {
+      if (active && account && library) {
+        if (!isAuthenticated) {
+          const signingMessage = await challengeLogin(account);
+          if (!signingMessage) return;
+          const signer = library.getSigner(account);
+          const signature = await signer.signMessage(signingMessage);
+          login(account, signature);
+        }
+      }
+    };
+    signIn();
+  }, [active, isAuthenticated, account, challengeLogin, library, login]);
 
   return (
     <Page title="Create NFTs Collection">

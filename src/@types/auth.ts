@@ -22,7 +22,7 @@ export type JWTContextType = {
   isInitialized: boolean;
   accessToken: string;
   method: 'jwt';
-  login: (email: string, password: string) => Promise<void>;
+  login: (account: string, signature: string) => Promise<void>;
   challengeLogin: (account: string) => Promise<string | undefined>;
   logout: () => Promise<void>;
 };

@@ -100,9 +100,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
               <Iconify icon="fluent:channel-add-28-regular" />
             </IconButton>
           )}
-
           <ConnectWalletPopover />
-          <Divider orientation="vertical" flexItem />
           <NetworkPopover />
         </Stack>
       </ToolbarStyle>
