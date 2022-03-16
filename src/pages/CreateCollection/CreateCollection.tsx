@@ -35,7 +35,7 @@ const FormSmartContractSchema = Yup.object().shape({
 
 export default function CreateCollection() {
   const { active, account, library } = useWeb3();
-  const { isAuthenticated, challengeLogin, login, accessToken } = useAuth();
+  const { isAuthenticated, challengeLogin, login } = useAuth();
 
   const method = useForm<FormSmartContractConfig>({
     mode: 'onTouched',
@@ -43,6 +43,7 @@ export default function CreateCollection() {
     defaultValues: InitFormSmartContractConfig
   });
   const [startedCreation, setStartedCreation] = useState(false);
+
   useEffect(() => {
     const signIn = async () => {
       if (active && account && library) {
