@@ -1,4 +1,5 @@
 import { Paper, Stack } from '@mui/material';
+import ScrollBar from 'components/Scrollbar';
 import { useSnackbar } from 'notistack';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
@@ -56,41 +57,44 @@ export default function ImagesColumn({ column, index }: Props) {
           {...provided.draggableProps}
           ref={provided.innerRef}
           variant="outlined"
-          sx={{ px: 2, bgcolor: 'grey.5008' }}
+          sx={{ px: 2, bgcolor: 'background.paper', width: '100%' }}
         >
-          <Stack spacing={3} {...provided.dragHandleProps}>
+          <Stack {...provided.dragHandleProps}>
             <ImagesColumnToolBar
               columnName={name}
               onDelete={handleDeleteColumn}
               onUpdate={handleUpdateColumn}
             />
-
-            {cardIds.length !== 0 && (
-              <Droppable droppableId={id} type="task">
-                {(provided) => (
-                  <Stack
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    spacing={2}
-                    width={280}
-                  >
-                    {cardIds.map((cardId, index) => (
-                      <ImageCard
-                        key={cardId}
-                        onDeleteTask={handleDeleteTask}
-                        card={board?.cards[cardId]}
-                        index={index}
-                      />
-                    ))}
-                    {provided.placeholder}
-                  </Stack>
+            <ScrollBar>
+              <Stack direction="row" spacing={2}>
+                {cardIds.length !== 0 && (
+                  <Droppable droppableId={id} type="task" direction="horizontal">
+                    {(provided) => (
+                      <Stack
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        spacing={2}
+                        direction="row"
+                      >
+                        {cardIds.map((cardId, index) => (
+                          <ImageCard
+                            key={cardId}
+                            onDeleteTask={handleDeleteTask}
+                            card={board?.cards[cardId]}
+                            index={index}
+                          />
+                        ))}
+                        {provided.placeholder}
+                      </Stack>
+                    )}
+                  </Droppable>
                 )}
-              </Droppable>
-            )}
 
-            <Stack>
-              <ImagesAdd onAddImage={handleAddImage} onCloseAddImage={() => {}} />
-            </Stack>
+                <Stack>
+                  <ImagesAdd onAddImage={handleAddImage} onCloseAddImage={() => {}} />
+                </Stack>
+              </Stack>
+            </ScrollBar>
           </Stack>
         </Paper>
       )}

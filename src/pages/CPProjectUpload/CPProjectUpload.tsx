@@ -98,12 +98,12 @@ export default function CPProjectUpload() {
         />
 
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="all-columns" direction="horizontal" type="column">
+          <Droppable droppableId="all-columns" direction="vertical" type="column">
             {(provided) => (
               <Stack
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                direction="row"
+                direction="column"
                 alignItems="flex-start"
                 spacing={3}
                 sx={{ height: 'calc(100% - 32px)', overflowY: 'hidden' }}

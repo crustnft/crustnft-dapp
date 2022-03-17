@@ -29,20 +29,16 @@ export default function ImageCard({ card, onDeleteTask, index }: Props) {
         <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
           <Paper
             sx={{
-              px: 2,
-              width: 1,
               position: 'relative',
               boxShadow: (theme) => theme.customShadows.z1,
               '&:hover': {
                 boxShadow: (theme) => theme.customShadows.z16
-              },
-              pt: 2
+              }
             }}
           >
             <Box onClick={handleOpenDetails} sx={{ cursor: 'pointer' }}>
               <Box
                 sx={{
-                  pt: '60%',
                   borderRadius: 1,
                   overflow: 'hidden',
                   position: 'relative',
@@ -52,7 +48,7 @@ export default function ImageCard({ card, onDeleteTask, index }: Props) {
                     })
                 }}
               >
-                <Image src={imageUrl} sx={{ position: 'absolute', top: 0, width: 1, height: 1 }} />
+                <Image src={imageUrl} sx={{ width: '200px', height: '200px' }} />
               </Box>
 
               <Typography
@@ -60,6 +56,7 @@ export default function ImageCard({ card, onDeleteTask, index }: Props) {
                 variant="subtitle2"
                 sx={{
                   py: 2,
+                  maxWidth: '200px',
                   transition: (theme) =>
                     theme.transitions.create('opacity', {
                       duration: theme.transitions.duration.shortest

@@ -1,10 +1,19 @@
-import { Button, ClickAwayListener, OutlinedInput, Paper } from '@mui/material';
+import {
+  Box,
+  ButtonBase,
+  ClickAwayListener,
+  OutlinedInput,
+  Stack,
+  Typography,
+  useTheme
+} from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import Iconify from '../../../components/Iconify';
 import { createColumn } from '../../../redux/slices/imagesGCS';
 import { useDispatch } from '../../../redux/store';
 
 export default function ImagesColumnAdd() {
+  const theme = useTheme();
   const nameRef = useRef<HTMLInputElement>(null);
 
   const dispatch = useDispatch();
@@ -52,18 +61,25 @@ export default function ImagesColumnAdd() {
   };
 
   return (
-    <Paper sx={{ minWidth: 280, width: 280 }}>
+    <Box
+      sx={{
+        height: '300px',
+        width: '100%',
+        borderRadius: '15px',
+        border: `dashed 5px ${theme.palette.divider}`
+      }}
+    >
       {!open && (
-        <Button
-          fullWidth
-          size="large"
-          color="inherit"
-          variant="outlined"
-          startIcon={<Iconify icon={'eva:plus-fill'} width={20} height={20} />}
-          onClick={handleOpen}
-        >
-          Add layer
-        </Button>
+        <Stack alignItems="center" spacing={3} justifyContent="center" sx={{ height: '100%' }}>
+          <Iconify icon={'eva:plus-fill'} width={50} height={50} />
+          <ButtonBase onClick={handleOpen}>
+            <Typography variant="h5">Add layer</Typography>
+          </ButtonBase>
+          <Typography variant="caption">
+            The lower layer will be displayed on top of the layers above, drag and drop if you want
+            to reorder the layers
+          </Typography>
+        </Stack>
       )}
 
       {open && (
@@ -79,6 +95,6 @@ export default function ImagesColumnAdd() {
           />
         </ClickAwayListener>
       )}
-    </Paper>
+    </Box>
   );
 }

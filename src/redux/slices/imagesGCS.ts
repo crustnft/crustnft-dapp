@@ -144,13 +144,33 @@ const mock_board_2 = {
       id: 'ab9cebca-6cb4-4847-aa17-3b261b3dd0fb',
       name: 'Multi',
       imageUrl: 'https://minimal-assets-api.vercel.app/assets/images/feeds/feed_4.jpg'
+    },
+    {
+      id: 'ab9cebca-6cb4-4847-aa17-3b261b3d1234',
+      name: 'Multi',
+      imageUrl: 'https://minimal-assets-api.vercel.app/assets/images/feeds/feed_1.jpg'
+    },
+    {
+      id: 'ab9cebca-6cb4-4847-aa17-3b261b3d1235',
+      name: 'Multi',
+      imageUrl: 'https://minimal-assets-api.vercel.app/assets/images/feeds/feed_3.jpg'
+    },
+    {
+      id: 'ab9cebca-6cb4-4847-aa17-3b261b3d1236',
+      name: 'Multi',
+      imageUrl: 'https://minimal-assets-api.vercel.app/assets/images/feeds/feed_5.jpg'
     }
   ],
   columns: [
     {
       id: '8cd887ec-b3bc-11eb-8529-0242ac130003',
       name: 'Background',
-      cardIds: ['98bf6e8b-becc-485b-9c3f-a7d09392c48d']
+      cardIds: [
+        '98bf6e8b-becc-485b-9c3f-a7d09392c48d',
+        'ab9cebca-6cb4-4847-aa17-3b261b3d1236',
+        'ab9cebca-6cb4-4847-aa17-3b261b3d1234',
+        'ab9cebca-6cb4-4847-aa17-3b261b3d1235'
+      ]
     },
     {
       id: '23008a1f-ad94-4771-b85c-3566755afab7',

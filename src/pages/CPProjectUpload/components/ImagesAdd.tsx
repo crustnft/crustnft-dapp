@@ -7,16 +7,16 @@ import Iconify from '../../../components/Iconify';
 import uuidv4 from '../../../utils/uuidv4';
 
 const DropZoneStyle = styled('div')(({ theme }) => ({
-  width: '100%',
+  width: '200px',
+  height: '200px',
   fontSize: 24,
   marginBottom: 20,
-  backgroundColor: '#fafafa',
   display: 'flex',
   cursor: 'pointer',
   alignItems: 'center',
   justifyContent: 'center',
   borderRadius: theme.shape.borderRadius,
-  border: `dashed 1px ${theme.palette.divider}`,
+  border: `dashed 3px ${theme.palette.divider}`,
   '&:hover': { opacity: 0.72 }
 }));
 

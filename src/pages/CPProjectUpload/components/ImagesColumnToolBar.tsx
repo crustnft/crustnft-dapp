@@ -56,14 +56,7 @@ export default function ImagesColumnToolBar({ columnName, onDelete, onUpdate }: 
 
   return (
     <>
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        spacing={1}
-        sx={{ pt: 3 }}
-        width={280}
-      >
+      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
         <OutlinedInput
           size="small"
           placeholder="Layer Name"
@@ -74,6 +67,7 @@ export default function ImagesColumnToolBar({ columnName, onDelete, onUpdate }: 
           inputRef={renameRef}
           sx={{
             typography: 'h6',
+            minWidth: '280px',
             fontWeight: 'fontWeightBold',
             '& .MuiOutlinedInput-notchedOutline': {
               borderColor: 'transparent'
