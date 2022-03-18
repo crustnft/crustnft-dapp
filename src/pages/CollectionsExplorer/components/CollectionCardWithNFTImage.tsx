@@ -4,8 +4,8 @@ import {
   ButtonBase,
   Card,
   CardMedia,
+  CircularProgress,
   Grid,
-  IconButton,
   Link,
   Stack,
   Tooltip,
@@ -14,7 +14,10 @@ import {
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWeb3 from 'hooks/useWeb3';
 import React, { useEffect, useMemo, useState } from 'react';
-import { getCollectionUrlOpensea } from 'services/fetchCollection/getCollectionUrlOpensea';
+import {
+  getCollectionUrlOpensea,
+  OPENSEA_LINK_NOT_FOUND
+} from 'services/fetchCollection/getCollectionUrlOpensea';
 import { getNftList4CollectionCard, NftItem } from 'services/fetchCollection/getNFTList';
 import {
   connectContract,
@@ -233,19 +236,41 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                 direction="row"
                 alignItems="center"
               >
-                {openseaLink !== '' ? (
-                  <Tooltip title="Opensea Viewer" sx={{ height: 50, width: 50 }}>
-                    <IconButton href={openseaLink} target="_blank">
-                      <Box
-                        component="img"
-                        src="./static/icons/shared/opensea.svg"
-                        sx={{ height: 34, width: 34 }}
+                <Tooltip title="Opensea Viewer" sx={{ height: 50, width: 50 }}>
+                  <ButtonBase
+                    href={openseaLink}
+                    target="_blank"
+                    disabled={openseaLink === OPENSEA_LINK_NOT_FOUND}
+                  >
+                    <Box
+                      component="img"
+                      src="./static/icons/shared/opensea.svg"
+                      sx={{
+                        height: 34,
+                        width: 34,
+                        opacity:
+                          openseaLink === '' || openseaLink === OPENSEA_LINK_NOT_FOUND
+                            ? '30%'
+                            : '100%'
+                      }}
+                    />
+                    {openseaLink !== '' ? (
+                      <></>
+                    ) : (
+                      <CircularProgress
+                        color="info"
+                        size={24}
+                        sx={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: '50%',
+                          marginTop: '-12px',
+                          marginLeft: '-12px'
+                        }}
                       />
-                    </IconButton>
-                  </Tooltip>
-                ) : (
-                  <></>
-                )}
+                    )}
+                  </ButtonBase>
+                </Tooltip>
                 <Button
                   size="small"
                   variant="contained"
