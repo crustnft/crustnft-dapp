@@ -1,5 +1,5 @@
-export const CONTRACT_FILE_NAME = 'EnumerableOwnable.sol';
-export const CONTRACT_NAME = 'EnumerableOwnable';
+export const API_POLYGONSCAN_URL = 'https://api.polygonscan.com/api?';
+
 export const ETHERSCAN_API_SECRET_KEY = 'G1UDIXWQ3YZRNQJ6CVVNYZQF1AAHD1JGTK';
 export const POLYGONSCAN_API_SECRET_KEY = '55NTQJTESXPJMPCHNFQYR53CPJBBNPMFM3';
 export const BSCSCAN_API_SECRET_KEY = 'D5YZCWPQ2J1QKUEUKVJDTF3VMAPK8PE5WE';

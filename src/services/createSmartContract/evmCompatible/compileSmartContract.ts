@@ -1,19 +1,19 @@
 import { baseURLBin, compile, CompilerAbstract, pathToURL } from '@remix-project/remix-solidity';
 import { SOLIDITY_COMPILER_VERSION } from '../../../constants/solcEnvironments';
 import { handleNpmImport } from '../../../utils/content-resolver';
-import { CONTRACT_FILE_NAME } from './constants';
 
 (function initSupportedSolcVersion() {
   (pathToURL as any)['soljson-v0.8.11+commit.d7f03943.js'] = baseURLBin;
 })();
 
 export const compileSmartContract = async (
-  source: string
+  source: string,
+  fileName: string
 ): Promise<CompilerAbstract | undefined> => {
   try {
     const response = (await compile(
       {
-        [CONTRACT_FILE_NAME]: {
+        [fileName]: {
           content: source
         }
       },

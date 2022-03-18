@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CRUSTNFT_EXPLORE_API_V1 } from 'configs/crustnft-explore-api';
+import { CRUSTNFT_EXPLORE_API_V1 } from 'constants/crustNftExploreApis';
 import { isEmpty } from 'lodash';
 import { createContext, ReactNode, useEffect, useReducer } from 'react';
 import { ActionMap, AuthState, JWTContextType } from '../@types/auth';

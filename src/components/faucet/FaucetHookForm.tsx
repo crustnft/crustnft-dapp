@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import { LoadingButton } from '@mui/lab';
 import { Button, Divider, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
-import { GET_FAUCET_API } from 'constants/COMMON_VARIABLES';
+import { GET_FAUCET_API } from 'constants/faucet';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import useLocales from '../../hooks/useLocales';

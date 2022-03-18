@@ -1,9 +1,9 @@
-import { Typography, Box, Tooltip } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import useCountdown from '../hooks/useCountdown';
 import { Icon } from '@iconify/react';
+import { Box, Tooltip, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { DISCORD, MEDIUM, TELEGRAM, TWITTER } from '../constants/socialMedias';
+import useCountdown from '../hooks/useCountdown';
 import { MIconButton } from './@material-extend';
-import { TELEGRAM, TWITTER, DISCORD, MEDIUM } from '../constants/COMMON_VARIABLES';
 
 const CountdownStyle = styled('div')({
   display: 'flex',

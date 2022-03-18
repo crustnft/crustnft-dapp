@@ -12,14 +12,14 @@ import {
   useTheme
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import LogoLong from 'components/LogoLong';
 import { Link as RouterLink } from 'react-router-dom';
-import { animateScroll as scroll } from 'react-scroll';
 import { MIconButton } from '../../components/@material-extend';
-import { DISCORD, MEDIUM, TELEGRAM, TWITTER } from '../../constants/COMMON_VARIABLES';
+import { DISCORD, MEDIUM, TELEGRAM, TWITTER } from '../../constants/socialMedias';
 
 const LINKS = [
   {
-    headline: 'Switchswap',
+    headline: 'CrustNFT',
     children: [
       { name: 'About us', href: '#' },
       { name: 'Contact us', href: '#' },
@@ -35,7 +35,7 @@ const LINKS = [
   },
   {
     headline: 'Contact',
-    children: [{ name: 'hi@switchswap.io', href: '#' }]
+    children: [{ name: 'hi@crustnft.io', href: '#' }]
   }
 ];
 
@@ -60,17 +60,7 @@ export default function MainFooter() {
         >
           <Grid item xs={12} sx={{ mb: 3 }}>
             <Stack alignItems={mdUp ? 'flex-start' : 'center'}>
-              <Box
-                component="img"
-                width={1}
-                src={'./static/logo/v1/long-logo-black.png'}
-                alt="..."
-                maxWidth={120}
-                marginBottom={2}
-                onClick={() => {
-                  scroll.scrollToTop();
-                }}
-              />
+              <LogoLong sx={{ height: '16px' }} />
             </Stack>
           </Grid>
           <Grid item xs={12} md={3}>
@@ -143,7 +133,7 @@ export default function MainFooter() {
             textAlign: { xs: 'center', md: 'left' }
           }}
         >
-          © 2021. All rights reserved
+          © 2022. All rights reserved
         </Typography>
       </Container>
     </RootStyle>

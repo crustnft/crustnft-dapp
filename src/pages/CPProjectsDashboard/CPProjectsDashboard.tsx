@@ -1,12 +1,10 @@
 import { Avatar, Button, Container, Grid, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import Iconify from 'components/Iconify';
-import { getContract } from 'constants/contract';
 import useAuth from 'hooks/useAuth';
 import useLocalStorage from 'hooks/useLocalStorage';
 import useWeb3 from 'hooks/useWeb3';
 import { createContext, useEffect, useState } from 'react';
-import { compileSmartContract } from 'services/createSmartContract/evmCompatible/';
 import Page from '../../components/Page';
 import Introduction from './components/Introduction';
 import ProjectCard from './components/ProjectCard';
@@ -61,8 +59,8 @@ export default function CPProjectsDashboard() {
           <Introduction />
           <Button
             onClick={async () => {
-              const compileResult = await compileSmartContract(getContract());
-              console.log(compileResult);
+              // const compileResult = await compileSmartContractCP(source);
+              // console.log(compileResult);
             }}
           >
             Compile to see
