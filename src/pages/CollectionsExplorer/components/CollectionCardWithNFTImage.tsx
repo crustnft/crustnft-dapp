@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWeb3 from 'hooks/useWeb3';
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { getCollectionUrlOpensea } from 'services/fetchCollection/getCollectionUrlOpensea';
 import { getNftList4CollectionCard, NftItem } from 'services/fetchCollection/getNFTList';
 import {
@@ -182,12 +182,12 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
           ) : (
             <Stack>
               <ButtonBase>
-                <EmptyNFT text="Your collection is empty, add it now!" corner={cornerPosition[0]} />
+                <EmptyNFT text="This collection is empty!" corner={cornerPosition[0]} />
               </ButtonBase>
             </Stack>
           )}
           <Stack
-            sx={{ width: '100%', my: 1 }}
+            sx={{ width: '100%', height: 50, my: 1 }}
             justifyContent="flex-end"
             width="50%"
             direction="row"
@@ -229,4 +229,4 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   );
 };
 
-export default CollectionCardWithNFTImage;
+export default React.memo(CollectionCardWithNFTImage);
