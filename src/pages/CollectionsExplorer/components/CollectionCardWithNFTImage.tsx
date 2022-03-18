@@ -298,4 +298,4 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   );
 };
 
-export default React.memo(CollectionCardWithNFTImage);
+export default CollectionCardWithNFTImage;
