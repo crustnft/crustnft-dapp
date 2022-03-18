@@ -1,8 +1,8 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-const WAIT_TIME_BASE_BEFORE_RETRY = 500;
+const WAIT_TIME_BASE_BEFORE_RETRY = 1000;
 const WAIT_TIME_VARIABLE = 500;
-const NB_RETRY_GET_DATA_FROM_TOKEN_URI = 10;
+const NB_RETRY_GET_DATA_FROM_TOKEN_URI = 100;
 
 const retryIfRequestError = (axiosInstance: AxiosInstance, options: any) => {
   const maxTime = options.retry_time || 0;
