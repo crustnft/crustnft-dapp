@@ -120,8 +120,8 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
             {nftList.map((nft, index) => {
               return (
                 <Grid item xs={6} key={index}>
-                  <ButtonBase>
-                    {nft.imageUrl !== '' ? (
+                  {nft.imageUrl !== '' ? (
+                    <ButtonBase>
                       <Link
                         href={`#/assets/${network.toLowerCase()}/${contract.address}/${index + 1}`}
                       >
@@ -133,14 +133,14 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                           }}
                         />
                       </Link>
-                    ) : (
-                      <Stack>
-                        <ButtonBase>
-                          <EmptyNFT text="Add More!" corner={cornerPosition[index]} />
-                        </ButtonBase>
-                      </Stack>
-                    )}
-                  </ButtonBase>
+                    </ButtonBase>
+                  ) : (
+                    <Stack>
+                      <ButtonBase>
+                        <EmptyNFT text="Add More!" corner={cornerPosition[index]} />
+                      </ButtonBase>
+                    </Stack>
+                  )}
                 </Grid>
               );
             })}
