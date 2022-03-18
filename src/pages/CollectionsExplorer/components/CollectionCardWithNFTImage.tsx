@@ -25,6 +25,7 @@ import {
 import { getChainByChainId, getRpcUrlByChainId } from 'utils/blockchainHandlers';
 import EmptyNFT, { cornerPosition } from './EmptyNFT';
 import { CollectionData } from './SimpleCollectionCard';
+import SkeletonCollectionCardWithNFTImage from './SkeletonCollectionCardWithNFTImage';
 
 type CollectionCardProps = {
   collection: CollectionData;
@@ -50,7 +51,8 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   const [name, setName] = useState('');
   const [contractOwner, setContractOwner] = useState('');
   const [openseaLink, setOpenseaLink] = useState('');
-  const [totalSupply, setTotalSupply] = useState(0);
+  const [totalSupply, setTotalSupply] = useState(-1);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const contract = useMemo(() => {
     console.log('RPC', getRpcUrlByChainId(chainId));
@@ -106,6 +108,12 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalSupply]);
 
+  useEffect(() => {
+    if (nftList[0].contractAddr !== '' || totalSupply === 0) {
+      setIsLoaded(true);
+    }
+  }, [nftList, totalSupply]);
+
   const FourNFT = () => {
     return (
       <Stack>
@@ -150,82 +158,88 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   };
 
   return (
-    <Card>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center'
-        }}
-      >
-        <Stack direction="column" sx={{ width: '90%' }}>
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{ alignItems: 'baseline', justifyContent: 'space-between', py: 1, pb: 2 }}
+    <>
+      {isLoaded ? (
+        <Card>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center'
+            }}
           >
-            <Link
-              underline="hover"
-              href={`#/collection/${network.toLowerCase()}/${contractAddress}/1`}
-              target="_blank"
-              rel="noopener"
-              sx={{ maxWidth: '70%' }}
-            >
-              <Typography variant="h5" noWrap>
-                {name}
-              </Typography>
-            </Link>
+            <Stack direction="column" sx={{ width: '90%' }}>
+              <Stack
+                direction="row"
+                spacing={2}
+                sx={{ alignItems: 'baseline', justifyContent: 'space-between', py: 1, pb: 2 }}
+              >
+                <Link
+                  underline="hover"
+                  href={`#/collection/${network.toLowerCase()}/${contractAddress}/1`}
+                  target="_blank"
+                  rel="noopener"
+                  sx={{ maxWidth: '70%' }}
+                >
+                  <Typography variant="h5" noWrap>
+                    {name}
+                  </Typography>
+                </Link>
 
-            <Typography variant="caption">({totalSupply} NFTs)</Typography>
-          </Stack>
-          {totalSupply > 0 ? (
-            <FourNFT />
-          ) : (
-            <Stack>
-              <ButtonBase>
-                <EmptyNFT text="This collection is empty!" corner={cornerPosition[0]} />
-              </ButtonBase>
+                <Typography variant="caption">({totalSupply} NFTs)</Typography>
+              </Stack>
+
+              {totalSupply > 0 ? (
+                <FourNFT />
+              ) : (
+                <Stack>
+                  <ButtonBase>
+                    <EmptyNFT text="This collection is empty!" corner={cornerPosition[0]} />
+                  </ButtonBase>
+                </Stack>
+              )}
+              <Stack
+                sx={{ width: '100%', height: 50, my: 1 }}
+                justifyContent="flex-end"
+                direction="row"
+                alignItems="center"
+              >
+                {openseaLink !== '' ? (
+                  <Tooltip title="Opensea Viewer" sx={{ height: 50, width: 50 }}>
+                    <IconButton href={openseaLink} target="_blank">
+                      <Box
+                        component="img"
+                        src="./static/icons/shared/opensea.svg"
+                        sx={{ height: 34, width: 34 }}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                ) : (
+                  <></>
+                )}
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="warning"
+                  sx={{ px: 3, py: 1, borderRadius: '26px' }}
+                  href={`#/mint-nft/${network}/${contract.address}`}
+                  disabled={
+                    account && contractOwner
+                      ? account?.toLowerCase() !== contractOwner?.toLowerCase()
+                      : true
+                  }
+                >
+                  <Typography variant="caption" noWrap>
+                    Mint NFT
+                  </Typography>
+                </Button>
+              </Stack>
             </Stack>
-          )}
-          <Stack
-            sx={{ width: '100%', height: 50, my: 1 }}
-            justifyContent="flex-end"
-            width="50%"
-            direction="row"
-            alignItems="center"
-          >
-            {openseaLink !== '' ? (
-              <Tooltip title="Opensea Viewer" sx={{ height: 50, width: 50 }}>
-                <IconButton href={openseaLink} target="_blank">
-                  <Box
-                    component="img"
-                    src="./static/icons/shared/opensea.svg"
-                    sx={{ height: 34, width: 34 }}
-                  />
-                </IconButton>
-              </Tooltip>
-            ) : (
-              <></>
-            )}
-            <Button
-              size="small"
-              variant="contained"
-              color="warning"
-              sx={{ px: 3, py: 1, borderRadius: '26px' }}
-              href={`#/mint-nft/${network}/${contract.address}`}
-              disabled={
-                account && contractOwner
-                  ? account?.toLowerCase() !== contractOwner?.toLowerCase()
-                  : true
-              }
-            >
-              <Typography variant="caption" noWrap>
-                Mint NFT
-              </Typography>
-            </Button>
-          </Stack>
-        </Stack>
-      </Box>
-    </Card>
+          </Box>
+        </Card>
+      ) : (
+        <SkeletonCollectionCardWithNFTImage />
+      )}
+    </>
   );
 };
 
