@@ -130,7 +130,11 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                   {nft.imageUrl !== '' ? (
                     <ButtonBase>
                       <Link
-                        href={`#/assets/${network.toLowerCase()}/${contract.address}/${index + 1}`}
+                        href={
+                          index === 3 && totalSupply > 4
+                            ? `#/collection/${network.toLowerCase()}/${contractAddress}/1`
+                            : `#/assets/${network.toLowerCase()}/${contract.address}/${index + 1}`
+                        }
                       >
                         <CardMedia
                           component="img"
@@ -139,6 +143,32 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                             aspectRatio: '1.5'
                           }}
                         />
+
+                        {index === 3 && totalSupply > 4 ? (
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            sx={{
+                              width: '100%',
+                              height: '100%',
+                              position: 'absolute',
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              aspectRatio: '1.5',
+                              opacity: '70%',
+                              backgroundColor: 'white'
+                            }}
+                          >
+                            <Typography variant="h3" noWrap sx={{ color: 'black' }}>
+                              {`+${totalSupply - 3}`}
+                            </Typography>
+                          </Box>
+                        ) : (
+                          <></>
+                        )}
                       </Link>
                     </ButtonBase>
                   ) : (
