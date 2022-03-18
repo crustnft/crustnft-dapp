@@ -1,15 +1,12 @@
 import { Icon } from '@iconify/react';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import { Avatar, Box, Drawer, Link, ListItemText, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Drawer, ListItemText, Stack, Tooltip } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import Identicons from '@nimiq/identicons';
-import { EMPTY_CHAIN, SUPPORTED_CHAINS } from 'constants/chains';
-import useWallet from 'hooks/useWallet';
-import useWeb3 from 'hooks/useWeb3';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { MIconButton } from '../../components/@material-extend';
 import LogoLong from '../../components/LogoLong';
@@ -21,8 +18,6 @@ import NavSection, {
 import Scrollbar from '../../components/Scrollbar';
 import { DISCORD, MEDIUM, TELEGRAM, TWITTER } from '../../constants/COMMON_VARIABLES';
 import useSettings from '../../hooks/useSettings';
-import { Chain } from '../../interfaces/chain';
-import { shortenAddress } from '../../utils/formatAddress';
 import sidebarConfig from './SidebarConfig';
 
 Identicons.svgPath = './static/identicons.min.svg';
@@ -47,18 +42,7 @@ type DashboardSidebarProps = {
 
 const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }: DashboardSidebarProps) => {
   const { pathname } = useLocation();
-  const { chain: selectedChain } = useWallet();
-  const [network, setNetwork] = useState<Chain>(selectedChain);
-  const { active: walletIsConnected, account, connectedChainId } = useWeb3();
   const { themeMode, onToggleMode } = useSettings();
-  useEffect(() => {
-    const found = SUPPORTED_CHAINS.find((chain) => chain.chainId === connectedChainId);
-    if (found) {
-      setNetwork(found);
-    } else {
-      setNetwork(EMPTY_CHAIN);
-    }
-  }, [connectedChainId]);
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -66,28 +50,6 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }: DashboardSidebarPro
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
-
-  const infoToDisplay = () => {
-    return (
-      <>
-        <Typography variant="subtitle1" noWrap>
-          {shortenAddress(account || '', 5)}
-        </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-          {network.name}
-        </Typography>
-      </>
-    );
-  };
-
-  const [uniqueIcon, setUniqueIcon] = useState<string>();
-  useEffect(() => {
-    Identicons.toDataUrl(`${network.currencySymbol.toLowerCase()}:${account}`).then(
-      (img: string) => {
-        setUniqueIcon(img);
-      }
-    );
-  }, [account, network.currencySymbol]);
 
   const renderContent = (
     <Scrollbar
@@ -104,27 +66,9 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }: DashboardSidebarPro
           pb: 2
         }}
       >
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
-            <LogoLong />
-          </Box>
-        </Stack>
-        {walletIsConnected && (
-          <Link underline="none" component={RouterLink} to="#">
-            <AccountStyle>
-              <Avatar alt="My Avatar" src={uniqueIcon} />
-              <Box
-                sx={{
-                  ml: 2,
-                  textOverflow: 'ellipsis',
-                  overflow: 'hidden'
-                }}
-              >
-                {infoToDisplay()}
-              </Box>
-            </AccountStyle>
-          </Link>
-        )}
+        <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
+          <LogoLong/>
+        </Box>
       </Stack>
 
       <NavSection navConfig={sidebarConfig} />
