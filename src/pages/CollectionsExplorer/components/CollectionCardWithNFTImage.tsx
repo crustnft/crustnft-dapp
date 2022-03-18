@@ -4,8 +4,8 @@ import {
   ButtonBase,
   Card,
   CardMedia,
+  CircularProgress,
   Grid,
-  IconButton,
   Link,
   Stack,
   Tooltip,
@@ -13,8 +13,11 @@ import {
 } from '@mui/material';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWeb3 from 'hooks/useWeb3';
-import { useEffect, useMemo, useState } from 'react';
-import { getCollectionUrlOpensea } from 'services/fetchCollection/getCollectionUrlOpensea';
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  getCollectionUrlOpensea,
+  OPENSEA_LINK_NOT_FOUND
+} from 'services/fetchCollection/getCollectionUrlOpensea';
 import { getNftList4CollectionCard, NftItem } from 'services/fetchCollection/getNFTList';
 import {
   connectContract,
@@ -25,6 +28,7 @@ import {
 import { getChainByChainId, getRpcUrlByChainId } from 'utils/blockchainHandlers';
 import EmptyNFT, { cornerPosition } from './EmptyNFT';
 import { CollectionData } from './SimpleCollectionCard';
+import SkeletonCollectionCardWithNFTImage from './SkeletonCollectionCardWithNFTImage';
 
 type CollectionCardProps = {
   collection: CollectionData;
@@ -50,7 +54,8 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   const [name, setName] = useState('');
   const [contractOwner, setContractOwner] = useState('');
   const [openseaLink, setOpenseaLink] = useState('');
-  const [totalSupply, setTotalSupply] = useState(0);
+  const [totalSupply, setTotalSupply] = useState(-1);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const contract = useMemo(() => {
     console.log('RPC', getRpcUrlByChainId(chainId));
@@ -86,7 +91,6 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
       const _openseaLink = await getCollectionUrlOpensea(contractOwner, contract.address);
 
       if (!_openseaLink) return;
-      console.log('link', _openseaLink);
       setOpenseaLink(_openseaLink);
     };
     fetchOpenseaLink();
@@ -107,6 +111,12 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalSupply]);
 
+  useEffect(() => {
+    if (nftList[0].contractAddr !== '' || totalSupply === 0) {
+      setIsLoaded(true);
+    }
+  }, [nftList, totalSupply]);
+
   const FourNFT = () => {
     return (
       <Stack>
@@ -120,10 +130,14 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
             {nftList.map((nft, index) => {
               return (
                 <Grid item xs={6} key={index}>
-                  <ButtonBase>
-                    {nft.imageUrl !== '' ? (
+                  {nft.imageUrl !== '' ? (
+                    <ButtonBase>
                       <Link
-                        href={`#/assets/${network.toLowerCase()}/${contract.address}/${index + 1}`}
+                        href={
+                          index === 3 && totalSupply > 4
+                            ? `#/collection/${network.toLowerCase()}/${contractAddress}/1`
+                            : `#/assets/${network.toLowerCase()}/${contract.address}/${index + 1}`
+                        }
                       >
                         <CardMedia
                           component="img"
@@ -132,15 +146,41 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                             aspectRatio: '1.5'
                           }}
                         />
+
+                        {index === 3 && totalSupply > 4 ? (
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            sx={{
+                              width: '100%',
+                              height: '100%',
+                              position: 'absolute',
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              aspectRatio: '1.5',
+                              opacity: '70%',
+                              backgroundColor: 'white'
+                            }}
+                          >
+                            <Typography variant="h3" noWrap sx={{ color: 'black' }}>
+                              {`+${totalSupply - 3}`}
+                            </Typography>
+                          </Box>
+                        ) : (
+                          <></>
+                        )}
                       </Link>
-                    ) : (
-                      <Stack>
-                        <ButtonBase>
-                          <EmptyNFT text="Add More!" corner={cornerPosition[index]} />
-                        </ButtonBase>
-                      </Stack>
-                    )}
-                  </ButtonBase>
+                    </ButtonBase>
+                  ) : (
+                    <Stack>
+                      <ButtonBase>
+                        <EmptyNFT text="Add More!" corner={cornerPosition[index]} />
+                      </ButtonBase>
+                    </Stack>
+                  )}
                 </Grid>
               );
             })}
@@ -151,82 +191,110 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center'
-        }}
-      >
-        <Stack direction="column" sx={{ width: '90%' }}>
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{ alignItems: 'baseline', justifyContent: 'space-between', py: 1, pb: 2 }}
+    <>
+      {isLoaded ? (
+        <Card>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center'
+            }}
           >
-            <Link
-              underline="hover"
-              href={`#/collection/${network.toLowerCase()}/${contractAddress}/1`}
-              target="_blank"
-              rel="noopener"
-              sx={{ maxWidth: '70%' }}
-            >
-              <Typography variant="h5" noWrap>
-                {name}
-              </Typography>
-            </Link>
+            <Stack direction="column" sx={{ width: '90%' }}>
+              <Stack
+                direction="row"
+                spacing={2}
+                sx={{ alignItems: 'baseline', justifyContent: 'space-between', py: 1, pb: 2 }}
+              >
+                <Link
+                  underline="hover"
+                  href={`#/collection/${network.toLowerCase()}/${contractAddress}/1`}
+                  target="_blank"
+                  rel="noopener"
+                  sx={{ maxWidth: '70%' }}
+                >
+                  <Typography variant="h5" noWrap>
+                    {name}
+                  </Typography>
+                </Link>
 
-            <Typography variant="caption">({totalSupply} NFTs)</Typography>
-          </Stack>
-          {totalSupply > 0 ? (
-            <FourNFT />
-          ) : (
-            <Stack>
-              <ButtonBase>
-                <EmptyNFT text="Your collection is empty, add it now!" corner={cornerPosition[0]} />
-              </ButtonBase>
+                <Typography variant="caption">({totalSupply} NFTs)</Typography>
+              </Stack>
+
+              {totalSupply > 0 ? (
+                <FourNFT />
+              ) : (
+                <Stack>
+                  <ButtonBase>
+                    <EmptyNFT text="This collection is empty!" corner={cornerPosition[0]} />
+                  </ButtonBase>
+                </Stack>
+              )}
+              <Stack
+                sx={{ width: '100%', height: 50, my: 1 }}
+                justifyContent="flex-end"
+                direction="row"
+                alignItems="center"
+              >
+                <Tooltip title="Opensea Viewer" sx={{ height: 50, width: 50 }}>
+                  <ButtonBase
+                    href={openseaLink}
+                    target="_blank"
+                    disabled={openseaLink === OPENSEA_LINK_NOT_FOUND}
+                  >
+                    <Box
+                      component="img"
+                      src="./static/icons/shared/opensea.svg"
+                      sx={{
+                        height: 34,
+                        width: 34,
+                        opacity:
+                          openseaLink === '' || openseaLink === OPENSEA_LINK_NOT_FOUND
+                            ? '30%'
+                            : '100%'
+                      }}
+                    />
+                    {openseaLink !== '' ? (
+                      <></>
+                    ) : (
+                      <CircularProgress
+                        color="info"
+                        size={24}
+                        sx={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: '50%',
+                          marginTop: '-12px',
+                          marginLeft: '-12px'
+                        }}
+                      />
+                    )}
+                  </ButtonBase>
+                </Tooltip>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="warning"
+                  sx={{ px: 3, py: 1, borderRadius: '26px' }}
+                  href={`#/mint-nft/${network}/${contract.address}`}
+                  disabled={
+                    account && contractOwner
+                      ? account?.toLowerCase() !== contractOwner?.toLowerCase()
+                      : true
+                  }
+                >
+                  <Typography variant="caption" noWrap>
+                    Mint NFT
+                  </Typography>
+                </Button>
+              </Stack>
             </Stack>
-          )}
-          <Stack
-            sx={{ width: '100%' }}
-            justifyContent="flex-end"
-            width="50%"
-            direction="row"
-            alignItems="center"
-          >
-            <Button
-              size="small"
-              variant="contained"
-              color="warning"
-              sx={{ m: 1, px: 3, py: 1, borderRadius: '26px' }}
-              href={`#/mint-nft/${network}/${contract.address}`}
-              disabled={
-                account && contractOwner
-                  ? account?.toLowerCase() !== contractOwner?.toLowerCase()
-                  : true
-              }
-            >
-              <Typography variant="caption" noWrap>
-                Mint NFT
-              </Typography>
-            </Button>
-            {openseaLink !== '' ? (
-              <Tooltip title="Opensea Viewer" sx={{ height: 50, width: 50 }}>
-                <IconButton href={openseaLink} target="_blank">
-                  <Box
-                    component="img"
-                    src="./static/icons/shared/opensea.svg"
-                    sx={{ height: 34, width: 34 }}
-                  />
-                </IconButton>
-              </Tooltip>
-            ) : (
-              <></>
-            )}
-          </Stack>
-        </Stack>
-      </Box>
-    </Card>
+          </Box>
+        </Card>
+      ) : (
+        <SkeletonCollectionCardWithNFTImage />
+      )}
+    </>
   );
 };
 
