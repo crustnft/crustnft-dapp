@@ -44,7 +44,6 @@ export const getCollectionUrlOpensea = async (assetOwner: string, collectionAddr
 
       const foundAddress = responseJson[i].primary_asset_contracts[0].address;
       if (collectionAddress.toLowerCase() === foundAddress.toLowerCase()) {
-        console.log('yeah');
         const slug = responseJson[i].slug;
         return `https://testnets.opensea.io/collection/${slug}`;
       }

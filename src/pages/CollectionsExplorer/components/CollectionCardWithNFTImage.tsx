@@ -150,7 +150,7 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card>
       <Box
         sx={{
           display: 'flex',
@@ -187,28 +187,12 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
             </Stack>
           )}
           <Stack
-            sx={{ width: '100%' }}
+            sx={{ width: '100%', my: 1 }}
             justifyContent="flex-end"
             width="50%"
             direction="row"
             alignItems="center"
           >
-            <Button
-              size="small"
-              variant="contained"
-              color="warning"
-              sx={{ m: 1, px: 3, py: 1, borderRadius: '26px' }}
-              href={`#/mint-nft/${network}/${contract.address}`}
-              disabled={
-                account && contractOwner
-                  ? account?.toLowerCase() !== contractOwner?.toLowerCase()
-                  : true
-              }
-            >
-              <Typography variant="caption" noWrap>
-                Mint NFT
-              </Typography>
-            </Button>
             {openseaLink !== '' ? (
               <Tooltip title="Opensea Viewer" sx={{ height: 50, width: 50 }}>
                 <IconButton href={openseaLink} target="_blank">
@@ -222,6 +206,22 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
             ) : (
               <></>
             )}
+            <Button
+              size="small"
+              variant="contained"
+              color="warning"
+              sx={{ px: 3, py: 1, borderRadius: '26px' }}
+              href={`#/mint-nft/${network}/${contract.address}`}
+              disabled={
+                account && contractOwner
+                  ? account?.toLowerCase() !== contractOwner?.toLowerCase()
+                  : true
+              }
+            >
+              <Typography variant="caption" noWrap>
+                Mint NFT
+              </Typography>
+            </Button>
           </Stack>
         </Stack>
       </Box>
