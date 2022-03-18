@@ -1,8 +1,8 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, Method } from 'axios';
 
-const WAIT_TIME_BASE_BEFORE_RETRY = 1000;
+const WAIT_TIME_BASE_BEFORE_RETRY = 500;
 const WAIT_TIME_VARIABLE = 500;
-const NB_RETRY_GET_DATA_FROM_TOKEN_URI = 100;
+const NB_RETRY_GET_DATA_FROM_TOKEN_URI = 10;
 
 const retryIfRequestError = (axiosInstance: AxiosInstance, options: any) => {
   const maxTime = options.retry_time || 0;
@@ -30,9 +30,13 @@ export const getCollectionUrlOpensea = async (assetOwner: string, collectionAddr
   const NUM_TRIES = 50;
   const instance = axios.create();
   retryIfRequestError(instance, { retry_time: NB_RETRY_GET_DATA_FROM_TOKEN_URI });
-  const response = await instance.get(
-    `https://testnets-api.opensea.io/api/v1/collections?asset_owner=${assetOwner}&offset=0&limit=${NUM_TRIES}`
-  );
+
+  const options = {
+    method: 'GET' as Method,
+    url: `https://testnets-api.opensea.io/api/v1/collections?asset_owner=${assetOwner}&offset=0&limit=${NUM_TRIES}`
+  };
+  const response = await instance.request(options);
+
   if (response.status === 200) {
     const responseJson = response.data;
     for (let i = 0; i < NUM_TRIES; i++) {

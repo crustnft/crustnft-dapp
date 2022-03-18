@@ -86,7 +86,6 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
       const _openseaLink = await getCollectionUrlOpensea(contractOwner, contract.address);
 
       if (!_openseaLink) return;
-      console.log('link', _openseaLink);
       setOpenseaLink(_openseaLink);
     };
     fetchOpenseaLink();
