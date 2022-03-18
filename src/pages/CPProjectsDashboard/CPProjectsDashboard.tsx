@@ -1,15 +1,18 @@
-import { Avatar, Container, Grid, Stack, Typography } from '@mui/material';
+import { Avatar, Button, Container, Grid, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import Iconify from 'components/Iconify';
+import { getContract } from 'constants/contract';
 import useAuth from 'hooks/useAuth';
 import useLocalStorage from 'hooks/useLocalStorage';
 import useWeb3 from 'hooks/useWeb3';
 import { createContext, useEffect, useState } from 'react';
+import { compileSmartContract } from 'services/createSmartContract/evmCompatible/';
 import Page from '../../components/Page';
 import Introduction from './components/Introduction';
 import ProjectCard from './components/ProjectCard';
 import ProjectCardEmpty from './components/ProjectCardEmpty';
 import { TProject } from './CPProjectsDashboard.type';
+
 const initProjects = { CPProjects: [], setCPProjects: (newValue: string[]) => {} };
 export const CPProjectsContext = createContext(initProjects);
 
@@ -56,6 +59,14 @@ export default function CPProjectsDashboard() {
       <Container maxWidth="lg">
         <CPProjectsContext.Provider value={{ CPProjects, setCPProjects }}>
           <Introduction />
+          <Button
+            onClick={async () => {
+              const compileResult = await compileSmartContract(getContract());
+              console.log(compileResult);
+            }}
+          >
+            Compile to see
+          </Button>
           <Stack direction="row" alignItems="center" spacing={2}>
             <Stack>
               <Avatar>

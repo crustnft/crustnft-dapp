@@ -26,8 +26,6 @@ export const compileSmartContract = async (
       console.log('error');
       return;
     }
-    console.log('success');
-    console.log('All contract compileResult: ', response);
     return response;
   } catch (e) {
     console.log('Error compiling contract: ', e);
