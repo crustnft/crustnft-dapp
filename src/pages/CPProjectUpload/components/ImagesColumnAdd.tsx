@@ -1,12 +1,4 @@
-import {
-  Box,
-  ButtonBase,
-  ClickAwayListener,
-  OutlinedInput,
-  Stack,
-  Typography,
-  useTheme
-} from '@mui/material';
+import { Box, ClickAwayListener, OutlinedInput, Stack, Typography, useTheme } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import Iconify from '../../../components/Iconify';
 import { createColumn } from '../../../redux/slices/imagesGCS';
@@ -70,12 +62,16 @@ export default function ImagesColumnAdd() {
       }}
     >
       {!open && (
-        <Stack alignItems="center" spacing={3} justifyContent="center" sx={{ height: '100%' }}>
+        <Stack
+          alignItems="center"
+          spacing={3}
+          justifyContent="center"
+          sx={{ height: '100%' }}
+          onClick={handleOpen}
+        >
           <Iconify icon={'eva:plus-fill'} width={50} height={50} />
-          <ButtonBase onClick={handleOpen}>
-            <Typography variant="h5">Add layer</Typography>
-          </ButtonBase>
-          <Typography variant="caption">
+          <Typography variant="h5">Add layer</Typography>
+          <Typography variant="caption" align="center">
             The lower layer will be displayed on top of the layers above, drag and drop if you want
             to reorder the layers
           </Typography>

@@ -86,11 +86,7 @@ export default function Router() {
   ]);
 }
 
-// IMPORT COMPONENTS
-
 // Dashboard
-const Universe = Loadable(lazy(() => import('../pages/Universe')));
-const NftManager = Loadable(lazy(() => import('../pages/NftManager')));
 const FunBox = Loadable(lazy(() => import('../pages/FunBox')));
 const CruFaucet = Loadable(lazy(() => import('../pages/CruFaucet')));
 const MaticFaucet = Loadable(lazy(() => import('../pages/MaticFaucet')));
@@ -99,7 +95,6 @@ const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 const TermsOfService = Loadable(lazy(() => import('../pages/TermsOfService')));
 const Disclaimer = Loadable(lazy(() => import('../pages/Disclaimer')));
 const AssetViewer = LoadWithoutSpinner(lazy(() => import('../pages/AssetViewer')));
-const Homepage = LoadWithoutSpinner(lazy(() => import('../pages/Homepage')));
 const CreateCollection = LoadWithoutSpinner(lazy(() => import('../pages/CreateCollection')));
 const MyNFT = LoadWithoutSpinner(lazy(() => import('../pages/MyNFT')));
 const CollectionViewer = LoadWithoutSpinner(lazy(() => import('../pages/CollectionViewer')));
