@@ -1,14 +1,14 @@
 import { JsonRpcSigner } from '@ethersproject/providers';
 import { CompilerAbstract } from '@remix-project/remix-solidity';
 import { ContractFactory } from 'ethers';
-import { CONTRACT_NAME } from './constants';
 
 export async function* deploySmartContract(
   compileResult: CompilerAbstract,
+  contractName: string,
   signer: JsonRpcSigner
 ): AsyncGenerator<any, any, any> {
   try {
-    const compiledContract = compileResult?.getContract(CONTRACT_NAME);
+    const compiledContract = compileResult?.getContract(contractName);
     const contractBinary = '0x' + compiledContract?.object.evm.bytecode.object;
     const contractABI = compiledContract?.object.abi;
     const contractFactory: ContractFactory = new ContractFactory(

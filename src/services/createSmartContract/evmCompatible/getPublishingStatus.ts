@@ -1,5 +1,5 @@
+import { EXPLORER_API_SECRET_KEY } from 'constants/explorerApis';
 import * as etherscanClient from '../../../clients/etherscan-client';
-import { EXPLORER_API_SECRET_KEY } from './constants';
 
 export const getPublishingStatus = async (etherscanPublishingHx: string, chainId: number) => {
   try {

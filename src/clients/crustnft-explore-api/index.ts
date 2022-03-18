@@ -1,5 +1,5 @@
 import Axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { CONTRACT_API_V1 } from 'configs/crustnft-explore-api';
+import { CONTRACT_API_V1 } from 'constants/crustNftExploreApis';
 import type { PostContractObj } from './types';
 
 const retryWrapper = (axios: AxiosInstance, options: any) => {

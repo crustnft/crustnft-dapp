@@ -3,9 +3,7 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { Box, Drawer, ListItemText, Stack, Tooltip } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
-import Identicons from '@nimiq/identicons';
 import React, { useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { MIconButton } from '../../components/@material-extend';
@@ -16,24 +14,11 @@ import NavSection, {
   ListSubheaderStyle
 } from '../../components/NavSection';
 import Scrollbar from '../../components/Scrollbar';
-import { DISCORD, MEDIUM, TELEGRAM, TWITTER } from '../../constants/COMMON_VARIABLES';
+import { DISCORD, MEDIUM, TELEGRAM, TWITTER } from '../../constants/socialMedias';
 import useSettings from '../../hooks/useSettings';
 import sidebarConfig from './SidebarConfig';
 
-Identicons.svgPath = './static/identicons.min.svg';
-
-// const DRAWER_WIDTH = 280;
-// const COLLAPSE_WIDTH = 102;
 const DRAWER_WIDTH = 280;
-// const COLLAPSE_WIDTH = 0;
-
-const AccountStyle = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(2, 2.5),
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: theme.palette.grey[500_12]
-}));
 
 type DashboardSidebarProps = {
   isOpenSidebar: boolean;
@@ -67,7 +52,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }: DashboardSidebarPro
         }}
       >
         <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
-          <LogoLong/>
+          <LogoLong />
         </Box>
       </Stack>
 

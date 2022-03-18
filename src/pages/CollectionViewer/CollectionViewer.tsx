@@ -14,7 +14,7 @@ import {
 import { getRpcUrlByNetworkName } from 'utils/blockchainHandlers';
 import { parseNftUri } from 'utils/tokenUriHandlers';
 import Page from '../../components/Page';
-import { NB_NFT_PER_PAGE } from '../../configs/general';
+import { NB_NFT_PER_PAGE } from '../../constants/pagination';
 import { SIMPLIFIED_ERC721_ABI } from '../../constants/simplifiedERC721ABI';
 import NftCard from './components/NftCard';
 import { ProfileCoverProps } from './components/ProfileCover';

@@ -15,7 +15,7 @@ import { styled } from '@mui/material/styles';
 import LogoLong from 'components/LogoLong';
 import { Link as RouterLink } from 'react-router-dom';
 import { MIconButton } from '../../components/@material-extend';
-import { DISCORD, MEDIUM, TELEGRAM, TWITTER } from '../../constants/COMMON_VARIABLES';
+import { DISCORD, MEDIUM, TELEGRAM, TWITTER } from '../../constants/socialMedias';
 
 const LINKS = [
   {

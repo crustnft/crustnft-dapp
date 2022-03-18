@@ -1,12 +1,10 @@
 import axios from 'axios';
+import { IPFS_GATEWAY_FOR_FETCHING_DATA } from 'constants/crustNetworkUrl';
+import { NUMBER_OF_NFT_IN_MANAGER_PAGE } from 'constants/pagination';
 import { ethers } from 'ethers';
-import { ipfsUriToCid } from './ipfsUriToCid';
-import {
-  IPFS_GATEWAY_FOR_FETCHING_DATA,
-  NUMBER_OF_NFT_IN_MANAGER_PAGE
-} from 'constants/COMMON_VARIABLES';
-import { contractAddress } from 'utils/contractAddress';
 import { ABI } from 'utils/abi';
+import { contractAddress } from 'utils/contractAddress';
+import { ipfsUriToCid } from './ipfsUriToCid';
 
 type setNftListType = React.Dispatch<
   React.SetStateAction<

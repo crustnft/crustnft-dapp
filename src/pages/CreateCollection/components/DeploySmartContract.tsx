@@ -15,7 +15,13 @@ import {
 } from '@mui/material';
 import { postContract } from 'clients/crustnft-explore-api';
 import Iconify from 'components/Iconify';
-import { getContract, setAuthorInfo, setName, setSymbol } from 'constants/contract';
+import {
+  getContract,
+  getContractName,
+  setAuthorInfo,
+  setName,
+  setSymbol
+} from 'constants/expandingCollectionContract';
 import { SOLIDITY_COMPILER_VERSION, SPDX_LICENSE_IDENTIFIER } from 'constants/solcEnvironments';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
@@ -82,7 +88,7 @@ export default function DeploySmartContract({
 
     setActiveStep((prevActiveStep) => 0);
     setCompiling(true);
-    const compileResult = await compileSmartContract(source);
+    const compileResult = await compileSmartContract(source, `${getContractName()}.sol`);
     setCompiling(false);
 
     if (compileResult) {
@@ -93,7 +99,7 @@ export default function DeploySmartContract({
       setActiveStep((prevActiveStep) => 1);
       setDeploying(true);
       if (signer) {
-        const deployTransaction = deploySmartContract(compileResult, signer);
+        const deployTransaction = deploySmartContract(compileResult, getContractName(), signer);
         const txResponseGenerator = await deployTransaction.next();
         setTxHash(txResponseGenerator?.value?.hash || '');
         const txReceiptGenerator = await deployTransaction.next();
@@ -121,6 +127,7 @@ export default function DeploySmartContract({
           setPublishing(true);
           const etherscanPublishingHx = await publishSmartContract(
             selectedChain.chainId,
+            getContractName(),
             txReceipt,
             compileResult
           );

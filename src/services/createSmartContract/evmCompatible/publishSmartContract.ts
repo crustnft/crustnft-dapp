@@ -1,14 +1,15 @@
 import { TransactionReceipt } from '@ethersproject/providers';
 import { CompilerAbstract } from '@remix-project/remix-solidity';
+import { EXPLORER_API_SECRET_KEY } from 'constants/explorerApis';
 import * as etherscanClient from '../../../clients/etherscan-client';
 import {
   SOLIDITY_COMPILER_VERSION,
   SPDX_LICENSE_IDENTIFIER
 } from '../../../constants/solcEnvironments';
-import { CONTRACT_FILE_NAME, CONTRACT_NAME, EXPLORER_API_SECRET_KEY } from './constants';
 
 export const publishSmartContract = async (
   chainId: number,
+  contractName: string,
   txReceipt?: TransactionReceipt,
   compileResult?: CompilerAbstract
 ): Promise<string | undefined> => {
@@ -18,7 +19,7 @@ export const publishSmartContract = async (
       chainId + '',
       {
         address: txReceipt?.contractAddress || '',
-        name: CONTRACT_FILE_NAME + ':' + CONTRACT_NAME,
+        name: contractName + '.sol:' + contractName,
         sourceCode: JSON.stringify({
           sources: compileResult?.source.sources,
           language: 'Solidity'

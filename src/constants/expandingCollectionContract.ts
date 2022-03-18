@@ -1,6 +1,7 @@
 let name = 'CrustNFT';
 let symbol = 'CRT';
 let authorInfo = '';
+let contractName = 'EnumerableOwnable';
 
 export const setName = (newName: string) => {
   newName && (name = newName);
@@ -17,6 +18,12 @@ export const setAuthorInfo = (newAuthorInfo: string) => {
     : '';
 };
 
+export const setContractName = (newContractName: string) => {
+  newContractName && (contractName = newContractName);
+};
+
+export const getContractName = () => contractName;
+
 export const getContract = () => `
 // SPDX-License-Identifier: MIT
 /// @version: v0.0.1
@@ -30,7 +37,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract EnumerableOwnable is
+contract ${contractName} is
     ERC721URIStorage,
     ERC721Enumerable,
     Ownable

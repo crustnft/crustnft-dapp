@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { API_POLYGONSCAN_URL, NB_RETRY_GET_DATA_FROM_API } from 'configs/general';
+import { API_POLYGONSCAN_URL } from 'constants/explorerApis';
+import { NB_RETRY_GET_DATA_FROM_API } from 'constants/httpConfig';
 import { INFTCollection } from 'interfaces/collection';
 
 const WAIT_TIME_BASE_BEFORE_RETRY = 2000;
