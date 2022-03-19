@@ -103,6 +103,7 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
         contract,
         chainId,
         totalSupply,
+        0,
         NB_NFT_TO_SHOW
       );
       if (!_nftList) return;

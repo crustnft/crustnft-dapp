@@ -9,16 +9,17 @@ export const getNftList4CollectionCard = async (
   contract: Contract,
   chainId: number,
   totalSupply: number,
-  numNFT2Load: number
+  startIndex: number,
+  stopIndex: number
 ) => {
-  const numLoadableNFT = numNFT2Load < totalSupply ? numNFT2Load : totalSupply;
+  const numLoadableNFT = stopIndex < totalSupply ? stopIndex : totalSupply;
   if (numLoadableNFT <= 0) return;
-  const emptyNftList = createEmptyNFTList(numLoadableNFT);
+  const emptyNftList = createEmptyNFTList(numLoadableNFT - startIndex);
 
   let nftList = [...emptyNftList.slice(0)];
 
-  for (let i = 0; i < numLoadableNFT; i++) {
-    const tokenId = i + 1;
+  for (let i = 0; i < numLoadableNFT - startIndex; i++) {
+    const tokenId = i + 1 + startIndex;
     const tokenUri = await getTokenURI(contract, tokenId).catch((e: any) => {
       nftList[i] = { ...nftList[i], failToLoad: true };
     });

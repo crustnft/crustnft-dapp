@@ -1,4 +1,4 @@
-import { Container, Grid, Pagination, Stack } from '@mui/material';
+import { Button, Container, Grid, Stack } from '@mui/material';
 import Identicons from '@nimiq/identicons';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -12,17 +12,17 @@ import {
 } from 'services/smartContract/evmCompatible';
 import { getChainByNetworkName, getRpcUrlByNetworkName } from 'utils/blockchainHandlers';
 import Page from '../../components/Page';
-import { NB_NFT_PER_PAGE } from '../../constants/pagination';
+import { NB_NFT_PER_ROW } from '../../constants/pagination';
 import { SIMPLIFIED_ERC721_ABI } from '../../constants/simplifiedERC721ABI';
 import NftCard from './components/NftCard';
 import { ProfileCoverProps } from './components/ProfileCover';
 Identicons.svgPath = './static/identicons.min.svg';
 
 export default function CollectionViewer() {
-  const { chain, contractAddr, pageNb } = useParams();
+  const { chain, contractAddr, rowNb } = useParams();
   const navigate = useNavigate();
-  const [page, setPage] = useState(parseInt(pageNb || '1'));
-  const [pageCount, setPageCount] = useState(1);
+  const [row, setRow] = useState(parseInt(rowNb || '1'));
+  const [rowCount, setRowCount] = useState(1);
   const [name, setName] = useState('');
   const [symbol, setSymbol] = useState('');
   const [totalSupply, setTotalSupply] = useState(-1);
@@ -36,20 +36,12 @@ export default function CollectionViewer() {
     );
   }, [contractAddr, chain]);
 
-  const handlePageChange = (event: any, value: number) => {
-    if (value) {
-      setPage(value);
-    }
-  };
-
   useEffect(() => {
     getTotalSupply(contract)
       .then((totalSupply) => {
-        setPageCount(Math.ceil(totalSupply / NB_NFT_PER_PAGE));
+        setRowCount(Math.ceil(totalSupply / NB_NFT_PER_ROW));
         setTotalSupply(totalSupply);
-        setNftList(
-          createEmptyNFTList(totalSupply < NB_NFT_PER_PAGE ? totalSupply : NB_NFT_PER_PAGE)
-        );
+        setNftList(createEmptyNFTList(totalSupply < NB_NFT_PER_ROW ? totalSupply : NB_NFT_PER_ROW));
       })
       .catch((e) => {
         console.log(e);
@@ -68,28 +60,39 @@ export default function CollectionViewer() {
   }, []);
 
   useEffect(() => {
-    setPage(parseInt(pageNb || '1'));
-  }, [pageNb]);
-
-  useEffect(() => {
-    navigate(`/collection/${chain}/${contractAddr}/${page}`);
     if (!chain) return;
     const chainInfo = getChainByNetworkName(chain);
     if (!chainInfo) return;
     const { chainId } = chainInfo;
+    if (row > 1) {
+      const emptyList = createEmptyNFTList(
+        NB_NFT_PER_ROW * row <= totalSupply
+          ? NB_NFT_PER_ROW
+          : totalSupply - NB_NFT_PER_ROW * (row - 1)
+      );
+      setNftList((prev) => [...prev, ...emptyList]);
+    }
+
     const fetchNftList = async () => {
       const _nftList = await getNftList4CollectionCard(
         contract,
         chainId,
         totalSupply,
-        NB_NFT_PER_PAGE * page
+        NB_NFT_PER_ROW * (row - 1),
+        NB_NFT_PER_ROW * row <= totalSupply ? NB_NFT_PER_ROW * row : totalSupply
       );
       if (!_nftList) return;
-      setNftList(_nftList);
+      setNftList((prev) => {
+        let current = JSON.parse(JSON.stringify(prev));
+        for (let i = 0; i < _nftList.length; i++) {
+          current[current.length - i - 1] = _nftList[_nftList.length - i - 1];
+        }
+        return current;
+      });
     };
     fetchNftList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, chain, totalSupply]);
+  }, [row, chain, totalSupply]);
 
   const [profileCover, setProfileCover] = useState<ProfileCoverProps>({
     coverUrl: 'https://public.nftstatic.com/static/nft/res/d06f4b2332c740658c1f081b2b74ed4b.png',
@@ -203,9 +206,21 @@ export default function CollectionViewer() {
             <></>
           )}
         </Grid>
-        <Stack direction="row" justifyContent="center" sx={{ pt: 6 }}>
-          <Pagination count={pageCount} page={page} onChange={handlePageChange} />
-        </Stack>
+        {row < rowCount ? (
+          <Stack direction="row" justifyContent="center" sx={{ pt: 6 }}>
+            <Button
+              onClick={() =>
+                setRow((prev) => {
+                  return prev + 1;
+                })
+              }
+            >
+              See More
+            </Button>
+          </Stack>
+        ) : (
+          <></>
+        )}
       </Container>
     </Page>
   );
