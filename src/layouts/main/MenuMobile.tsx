@@ -1,30 +1,30 @@
-import { Icon } from '@iconify/react';
-import { useState, useEffect, ReactNode } from 'react';
-import menu2Fill from '@iconify/icons-eva/menu-2-fill';
-import { NavLink as RouterLink, useLocation } from 'react-router-dom';
-import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
-// material
-import { alpha, styled } from '@mui/material/styles';
+import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
+import menu2Fill from '@iconify/icons-eva/menu-2-fill';
+import { Icon } from '@iconify/react';
 import {
   Box,
-  List,
-  Link,
-  Drawer,
   Collapse,
+  Drawer,
+  Link,
   LinkProps,
-  ListItemText,
-  ListItemIcon,
+  List,
   ListItemButton,
-  ListItemButtonProps
+  ListItemButtonProps,
+  ListItemIcon,
+  ListItemText
 } from '@mui/material';
+// material
+import { alpha, styled } from '@mui/material/styles';
+import { ReactNode, useEffect, useState } from 'react';
+import { NavLink as RouterLink, useLocation } from 'react-router-dom';
+import { MIconButton } from '../../components/@material-extend';
 // components
-import Logo from '../../components/Logo';
+import LogoLong from '../../components/LogoLong';
 import NavSection from '../../components/NavSection';
 import Scrollbar from '../../components/Scrollbar';
-import { MIconButton } from '../../components/@material-extend';
 //
-import { MenuProps, MenuItemProps } from './MainNavbar';
+import { MenuItemProps, MenuProps } from './MainNavbar';
 
 // ----------------------------------------------------------------------
 
@@ -190,7 +190,7 @@ export default function MenuMobile({ isOffset, isHome, navConfig }: MenuProps) {
       >
         <Scrollbar>
           <Link component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
-            <Logo sx={{ mx: PADDING, my: 3 }} />
+            <LogoLong sx={{ mx: PADDING, my: 3 }} />
           </Link>
 
           <List disablePadding>

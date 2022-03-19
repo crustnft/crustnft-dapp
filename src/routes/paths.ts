@@ -11,10 +11,13 @@ const ROOTS_DASHBOARD = '';
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
   app: {
-    homepage: path(ROOTS_DASHBOARD, '/home'),
-    nftMinting: path(ROOTS_DASHBOARD, '/nft-minting'),
-    nftManager: path(ROOTS_DASHBOARD, '/nft-manager/1'),
-    funBox: path(ROOTS_DASHBOARD, '/fun-box')
+    homepage: path(ROOTS_DASHBOARD, '/wallet'),
+    myNFT: path(ROOTS_DASHBOARD, '/my-nft'),
+    createCollection: path(ROOTS_DASHBOARD, '/create-collection'),
+    collectionExplore: path(ROOTS_DASHBOARD, '/collection-explore')
+  },
+  createCollection: {
+    expandableCollection: path(ROOTS_DASHBOARD, '/create-collection')
   },
   gallery: {
     root: path(ROOTS_DASHBOARD, '/gallery'),
@@ -24,8 +27,8 @@ export const PATH_DASHBOARD = {
     learnMore: path(ROOTS_DASHBOARD, '/learn-more')
   },
   funbox: {
-    cruFaucet: path(ROOTS_DASHBOARD, '/funbox/cru-faucet'),
-    maticFaucet: path(ROOTS_DASHBOARD, '/funbox/matic-faucet')
+    cruFaucet: path(ROOTS_DASHBOARD, '/faucets/crust'),
+    maticFaucet: path(ROOTS_DASHBOARD, '/faucets/polygon')
   },
   download: path(ROOTS_DASHBOARD, '/download')
 };

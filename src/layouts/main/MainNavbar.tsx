@@ -1,19 +1,11 @@
-import { Link as RouterLink, useLocation } from 'react-router-dom';
-// material
+import { AppBar, Box, Button, Container, Toolbar } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Box, Button, AppBar, Toolbar, Container } from '@mui/material';
-// hooks
-// import useOffSetTop from '../../hooks/useOffSetTop';
-// components
-import Logo from '../../components/Logo';
-import Label from '../../components/Label';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { MHidden } from '../../components/@material-extend';
-//
+import LogoLong from '../../components/LogoLong';
+import navConfig from './MenuConfig';
 import MenuDesktop from './MenuDesktop';
 import MenuMobile from './MenuMobile';
-import navConfig from './MenuConfig';
-
-// ----------------------------------------------------------------------
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 88;
@@ -90,7 +82,7 @@ export default function MainNavbar() {
           }}
         >
           <RouterLink to="/">
-            <Logo />
+            <LogoLong />
           </RouterLink>
 
           <Box sx={{ flexGrow: 1 }} />

@@ -1,43 +1,50 @@
 // scroll bar
-import 'simplebar/src/simplebar.css';
-// import i18n
-import './locales/i18n';
-// slick-carousel
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { Web3ContextProvider } from 'contexts/Web3Context';
+import { StrictMode } from 'react';
+import ReactDOM from 'react-dom';
+import { HelmetProvider } from 'react-helmet-async';
 // lightbox
 import 'react-image-lightbox/style.css';
-
-import ReactDOM from 'react-dom';
-import { StrictMode } from 'react';
+import { Provider as ReduxProvider } from 'react-redux';
 import { HashRouter as Router } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
+import 'simplebar/src/simplebar.css';
+import 'slick-carousel/slick/slick-theme.css';
+// slick-carousel
+import 'slick-carousel/slick/slick.css';
+import App from './App';
+import { AuthProvider } from './contexts/JWTContext';
 // contexts
 import { SettingsProvider } from './contexts/SettingsContext';
-import { CollapseDrawerProvider } from './contexts/CollapseDrawerContext';
-//
-import App from './App';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import reportWebVitals from './reportWebVitals';
-import { Provider } from 'react-redux';
-
+import { WalletProvider } from './contexts/WalletContext';
+// custom css
+import './index.css';
+// import i18n
+import './locales/i18n';
 import { store } from './redux/store';
-// ----------------------------------------------------------------------
+import reportWebVitals from './reportWebVitals';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 ReactDOM.render(
   <StrictMode>
-    <HelmetProvider>
-      <SettingsProvider>
-        <Provider store={store}>
-          <CollapseDrawerProvider>
-            <Router>
-              <App />
-            </Router>
-          </CollapseDrawerProvider>
-        </Provider>
-      </SettingsProvider>
-    </HelmetProvider>
+    <AuthProvider>
+      <HelmetProvider>
+        <ReduxProvider store={store}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <WalletProvider>
+              <Web3ContextProvider>
+                <SettingsProvider>
+                  <Router>
+                    <App />
+                  </Router>
+                </SettingsProvider>
+              </Web3ContextProvider>
+            </WalletProvider>
+          </LocalizationProvider>
+        </ReduxProvider>
+      </HelmetProvider>
+    </AuthProvider>
   </StrictMode>,
   document.getElementById('root')
 );

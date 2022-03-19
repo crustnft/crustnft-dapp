@@ -1,11 +1,9 @@
+import { Avatar, Box, Card, Divider, Grid, IconButton, Tooltip, Typography } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
-import { Box, Card, Grid, Avatar, Tooltip, Divider, Typography, IconButton } from '@mui/material';
-
-import { AssetAndOwnerType } from '../AssetViewer.types';
-
-import SvgIconStyle from '../../../components/SvgIconStyle';
 import Identicons from '@nimiq/identicons';
 import { shortenAddress } from 'utils/formatAddress';
+import SvgIconStyle from '../../../components/SvgIconStyle';
+import { AssetAndOwnerType } from '../AssetViewer.types';
 
 Identicons.svgPath = './static/identicons.min.svg';
 
@@ -23,8 +21,8 @@ const CardMediaStyle = styled('div')(({ theme }) => ({
     position: 'absolute',
     backdropFilter: 'blur(3px)',
     WebkitBackdropFilter: 'blur(3px)', // Fix on Mobile
-    borderTopLeftRadius: theme.shape.borderRadiusMd,
-    borderTopRightRadius: theme.shape.borderRadiusMd,
+    borderTopLeftRadius: theme.shape.borderRadius,
+    borderTopRightRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.primary.darker, 0.72)
   }
 }));
@@ -101,7 +99,7 @@ export default function UserCard({ assetAndOwner }: { assetAndOwner: AssetAndOwn
       <Divider />
 
       <Grid container sx={{ py: 3 }}>
-        {InfoItem('Total Minted NFT', assetAndOwner.balance)}
+        {InfoItem('Total Minted NFT', '0')}
         {InfoItem('Total rocket', '0')}
       </Grid>
     </Card>

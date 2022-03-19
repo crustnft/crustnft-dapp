@@ -1,8 +1,8 @@
-import Slider from 'react-slick';
-import { useState, useRef, useEffect } from 'react';
+import { Box } from '@mui/material';
 // material
 import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
+import Slider from 'react-slick';
 // utils
 import mockData from '../../utils/mock-data'; //
 import { CarouselControlsArrowsIndex } from './controls';
@@ -44,7 +44,7 @@ const ThumbImgStyle = styled('img')(({ theme }) => ({
   cursor: 'pointer',
   height: THUMB_SIZE,
   margin: theme.spacing(0, 1),
-  borderRadius: theme.shape.borderRadiusSm,
+  borderRadius: theme.shape.borderRadius,
   '&:hover': {
     opacity: 0.72,
     transition: theme.transitions.create('opacity')

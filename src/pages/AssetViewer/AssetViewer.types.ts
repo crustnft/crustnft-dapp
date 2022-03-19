@@ -3,11 +3,45 @@ export type AssetAndOwnerType = {
   contractAddress: string;
   tokenId: string;
   ownerIcon: string;
-  balance: string;
   imageUrl: string;
   name: string;
   description: string;
   contentId: string;
   nftCardId: string;
   metadataId: string;
+  externalUrl: string;
+  attributes: any;
+  chain: string;
+};
+
+export type PropertyProps = {
+  propType: string;
+  name: string;
+};
+
+export type LevelProps = {
+  levelType: string;
+  value: number;
+  max: number;
+};
+
+export type StatProps = {
+  statType: string;
+  value: number;
+  max: number;
+};
+
+export type BoostProps = {
+  boostType: string;
+  displayType: 'boost_percentage' | 'boost_number';
+  value: number;
+};
+
+export type NftCardCollectionViewerProps = {
+  tokenId: string;
+  imageUrl: string;
+  name: string;
+  owner?: string;
+  chainName: string;
+  contractAddr: string;
 };

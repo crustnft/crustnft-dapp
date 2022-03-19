@@ -101,7 +101,9 @@
     "select": "Chọn",
     "installCrust": "Cài đặt ví Crust!",
     "default": "Ví Crust được chọn mặc định",
-    "close": "Đóng"
+    "close": "Đóng",
+    "copiedAddress": "VI-Wallet address copied!",
+    "incorrectNetwork": "VI-You need to change your wallet to {{network}} network"
   },
   "nftMinting": {
     "config": "Cấu hình NFT",

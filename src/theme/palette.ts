@@ -1,10 +1,10 @@
 import { alpha } from '@mui/material/styles';
 
-// ----------------------------------------------------------------------
-
 function createGradient(color1: string, color2: string) {
   return `linear-gradient(to bottom, ${color1}, ${color2})`;
 }
+
+export type ColorSchema = 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
 
 interface GradientsPaletteOptions {
   primary: string;
@@ -22,6 +22,32 @@ interface ChartPaletteOptions {
   red: string[];
 }
 
+interface HeaderColor {
+  background: string;
+  menuText: string;
+  menuTextHover: string;
+  walletPopoverBackground: string;
+  walletPopoverBoxShadow: string;
+  walletPopoverBorderRadius: string;
+  walletButtonBorder: string;
+  yellowBorder: string;
+}
+
+interface AdditionalColor {
+  button: number;
+  menuHoverOpacity: number;
+  itemSelected: string;
+  listArrowColor: string;
+  listArrowOpacity: number;
+  yellowButton: string;
+  blueButton: string;
+}
+
+interface BackgroundColor {
+  menu: string;
+  themeBackground: string;
+}
+
 declare module '@mui/material/styles/createPalette' {
   interface TypeBackground {
     neutral: string;
@@ -37,10 +63,18 @@ declare module '@mui/material/styles/createPalette' {
   interface Palette {
     gradients: GradientsPaletteOptions;
     chart: ChartPaletteOptions;
+    header: HeaderColor;
+    additional: AdditionalColor;
+    customBackground: BackgroundColor;
+    collectionSlider: string;
   }
   interface PaletteOptions {
     gradients: GradientsPaletteOptions;
     chart: ChartPaletteOptions;
+    header: HeaderColor;
+    additional: AdditionalColor;
+    customBackground: BackgroundColor;
+    collectionSlider: string;
   }
 }
 
@@ -66,6 +100,15 @@ const PRIMARY = {
   dark: '#007B55',
   darker: '#005249'
 };
+
+const CUSTOM_PRIMARY = {
+  lighter: '#F4F6F8',
+  light: '#F4F6F8',
+  main: '#454F5B',
+  dark: '#212B36',
+  darker: '#161C24'
+};
+
 const SECONDARY = {
   lighter: '#D6E4FF',
   light: '#84A9FF',
@@ -141,7 +184,7 @@ const CHART_COLORS = {
 
 const COMMON = {
   common: { black: '#000', white: '#fff' },
-  primary: { ...PRIMARY, contrastText: '#fff' },
+  primary: { ...CUSTOM_PRIMARY, contrastText: '#fff' },
   secondary: { ...SECONDARY, contrastText: '#fff' },
   info: { ...INFO, contrastText: '#fff' },
   success: { ...SUCCESS, contrastText: GREY[800] },
@@ -159,22 +202,63 @@ const COMMON = {
     focus: GREY[500_24],
     hoverOpacity: 0.08,
     disabledOpacity: 0.48
+  },
+  additional: {
+    button: 0.2,
+    menuHoverOpacity: 0.63,
+    itemSelected: '#FF8C00',
+    listArrowColor: '#000000',
+    listArrowOpacity: 0.28,
+    yellowButton: '#FFC107',
+    blueButton: '#3772FF'
   }
 };
 
 const palette = {
   light: {
     ...COMMON,
-    text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
+    mode: 'light',
+    text: { primary: '#000', secondary: '#637381', disabled: GREY[500] },
     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
-    action: { active: GREY[600], ...COMMON.action }
+    action: { active: GREY[600], ...COMMON.action },
+    header: {
+      background: '#f0f2f5a1',
+      menuText: '#0000004d',
+      menuTextHover: '#000000',
+      walletPopoverBackground: '#FCFCFD',
+      walletPopoverBoxShadow: '0px 0px 95px rgba(0, 0, 0, 0.25)',
+      walletPopoverBorderRadius: '30px',
+      walletButtonBorder: '2px solid',
+      yellowBorder: '3.5px solid #FF8C00'
+    },
+    customBackground: {
+      menu: '#F2F4FA',
+      themeBackground: '#f0f2f5'
+    },
+    collectionSlider: '#ffffff'
   },
   dark: {
     ...COMMON,
-    text: { primary: '#fff', secondary: GREY[500], disabled: GREY[600] },
+    mode: 'dark',
+    text: { primary: '#fff', secondary: '#637381', disabled: GREY[600] },
     background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
-    action: { active: GREY[500], ...COMMON.action }
+    action: { active: GREY[500], ...COMMON.action },
+    header: {
+      background: '#141416a1',
+      menuText: '#ffffff4d',
+      menuTextHover: '#000000',
+      walletPopoverBackground: '#23262F',
+      walletPopoverBoxShadow: '0px 0px 95px rgba(0, 0, 0, 0.25)',
+      walletPopoverBorderRadius: '30px',
+      walletButtonBorder: '2px solid',
+      yellowBorder: '3.5px solid #FF8C00'
+    },
+    customBackground: {
+      menu: '#141416',
+      themeBackground: '#141416'
+    },
+    collectionSlider: '#23262F'
   }
-};
+} as const;
 
 export default palette;

@@ -67,6 +67,8 @@
     }
   },
   "connectWallet": {
-    "myWallet": "My Wallette"
+    "myWallet": "My Wallette",
+    "copiedAddress": "FR-Wallet address copied!",
+    "incorrectNetwork": "FR-You need to change your wallet to {{network}} network"
   }
 }

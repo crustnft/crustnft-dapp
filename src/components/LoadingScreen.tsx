@@ -1,11 +1,11 @@
-import NProgress from 'nprogress';
-import { useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { Box, GlobalStyles } from '@mui/material';
 // material
 import { alpha, styled, useTheme } from '@mui/material/styles';
-import { Box, GlobalStyles } from '@mui/material';
+import { motion } from 'framer-motion';
+import NProgress from 'nprogress';
+import { useEffect, useMemo } from 'react';
 //
-import Logo from './Logo';
+import LogoLong from './LogoLong';
 
 // ----------------------------------------------------------------------
 
@@ -85,7 +85,7 @@ export default function LoadingScreen({ ...other }) {
             repeat: Infinity
           }}
         >
-          <Logo sx={{ width: 64, height: 64 }} />
+          <LogoLong sx={{ width: 64, height: 64 }} />
         </motion.div>
 
         <Box

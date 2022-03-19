@@ -20,7 +20,14 @@
     "Gallery": "Gallery",
     "Universe": "Universal",
     "Funbox": "Funbox",
-    "Learn More": "Learn More"
+    "Learn More": "Learn More",
+    "Faucets": "Faucets",
+    "Collections Explore": "Collections Explore",
+    "My NFTs": "My NFTs",
+    "Wallet": "Wallet",
+    "Create Collection": "Create Collection",
+    "Expandable Collection": "Expandable Collection",
+    "Sharing Collection": "Sharing Collection"
   },
   "landingPage": {
     "title": "The starting point for your next project"
@@ -101,7 +108,9 @@
     "select": "Select",
     "installCrust": "Install Crust Wallet!",
     "default": "Crust Wallet is selected by default",
-    "close": "Close"
+    "close": "Close",
+    "copiedAddress": "Wallet address copied!",
+    "incorrectNetwork": "You need to change your wallet to {{network}} network"
   },
   "nftMinting": {
     "describe-1": "This is for configure Nft",

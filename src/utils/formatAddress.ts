@@ -2,8 +2,12 @@ import { Keyring } from '@polkadot/keyring';
 
 function shortenAddress(address: string, len: number) {
   return address.length > 2 * len + 3
-    ? `${address.substr(0, len)}...${address.substr(address.length - len, address.length)}`
+    ? `${address.substring(0, len)}...${address.substring(address.length - len, address.length)}`
     : address;
+}
+
+function shortenAddressHeader(address: string, len: number) {
+  return address.length > len ? address.substring(address.length - len, address.length) : address;
 }
 
 function getCrustMainnetAddress(address: string) {
@@ -12,4 +16,4 @@ function getCrustMainnetAddress(address: string) {
   return keyring.encodeAddress(decodedAddress, 66);
 }
 
-export { shortenAddress, getCrustMainnetAddress };
+export { shortenAddress, shortenAddressHeader, getCrustMainnetAddress };

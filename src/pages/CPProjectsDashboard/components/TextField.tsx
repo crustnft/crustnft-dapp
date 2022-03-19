@@ -1,0 +1,49 @@
+import { Box, Stack, TextField as MUITextField, TextFieldProps, Typography } from '@mui/material';
+import { Controller, useFormContext } from 'react-hook-form';
+
+interface IProps {
+  name: string;
+  label?: string;
+  description?: string;
+  required?: boolean;
+}
+
+export default function TextField({
+  name,
+  label,
+  description,
+  required,
+  ...other
+}: IProps & TextFieldProps) {
+  const { control } = useFormContext();
+
+  return (
+    <Stack>
+      <Typography variant="subtitle1" sx={{ display: 'block' }}>
+        {label}
+        <Typography
+          variant="subtitle1"
+          sx={{ color: '#FF4842', display: required ? 'inline' : 'none' }}
+        >
+          *
+        </Typography>
+      </Typography>
+      <Typography variant="caption">{description} </Typography>
+      <Box sx={{ height: 5 }} />
+      <Controller
+        name={name}
+        control={control}
+        render={({ field, fieldState: { error } }) => (
+          <MUITextField
+            size="small"
+            {...field}
+            fullWidth
+            error={!!error}
+            helperText={error?.message}
+            {...other}
+          />
+        )}
+      />
+    </Stack>
+  );
+}
