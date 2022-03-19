@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CRUSTNFT_EXPLORE_API_V1 } from 'constants/crustNftExploreApis';
+import { EXPLORE_API } from 'constants/crustNftExploreApis';
 import { isEmpty } from 'lodash';
 import { createContext, ReactNode, useEffect, useReducer } from 'react';
 import { ActionMap, AuthState, JWTContextType } from '../@types/auth';
@@ -106,7 +106,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   const isExistingUser = async (account: string) => {
-    const response = await axios.get(`${CRUSTNFT_EXPLORE_API_V1}/users/${account.toLowerCase()}`);
+    const response = await axios.get(`${EXPLORE_API}/users/${account.toLowerCase()}`);
     console.log(response);
     if (!isEmpty(response.data)) {
       return true;
@@ -117,7 +117,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   const createEmptyUser = async (account: string) => {
     const _account = account.toLowerCase();
     const response = await axios
-      .post(`${CRUSTNFT_EXPLORE_API_V1}/users`, { account: _account, displayName: _account })
+      .post(`${EXPLORE_API}/users`, { account: _account, displayName: _account })
       .catch((e) => {
         console.log('error createEmptyUser', e.response);
         return;
@@ -133,7 +133,7 @@ function AuthProvider({ children }: AuthProviderProps) {
       await createEmptyUser(_account);
     }
     const response = await axios
-      .post(`${CRUSTNFT_EXPLORE_API_V1}/authentication/challenge-login`, { account: _account })
+      .post(`${EXPLORE_API}/authentication/challenge-login`, { account: _account })
       .catch((e) => {
         console.log('error challengeLogin', e.response);
         return;
@@ -144,7 +144,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   const login = async (account: string, signature: string) => {
     const response = await axios
-      .post(`${CRUSTNFT_EXPLORE_API_V1}/authentication/login`, {
+      .post(`${EXPLORE_API}/authentication/login`, {
         account: account.toLowerCase(),
         signature
       })
