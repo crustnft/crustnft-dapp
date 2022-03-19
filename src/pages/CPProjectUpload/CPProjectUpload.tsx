@@ -2,14 +2,15 @@ import { Container, Stack } from '@mui/material';
 import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
 import { useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { useParams } from 'react-router-dom';
 import Page from '../../components/Page';
 import { getBoard, persistCard, persistColumn } from '../../redux/slices/imagesGCS';
 import { useDispatch, useSelector } from '../../redux/store';
 import ImagesColumn from './components/ImagesColumn';
 import ImagesColumnAdd from './components/ImagesColumnAdd';
-// ----------------------------------------------------------------------
 
 export default function CPProjectUpload() {
+  const { id } = useParams();
   const dispatch = useDispatch();
   const { board } = useSelector((state) => state.image);
 
@@ -90,7 +91,7 @@ export default function CPProjectUpload() {
         <HeaderBreadcrumbs
           heading="Dashboard"
           links={[
-            { name: 'Project Name', href: '/project-details' },
+            { name: 'Project Name', href: `/project-details/${id}` },
             {
               name: 'Upload Image'
             }
