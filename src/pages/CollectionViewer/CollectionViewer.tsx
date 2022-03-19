@@ -1,4 +1,5 @@
 import { Button, Container, Grid, Stack } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import Identicons from '@nimiq/identicons';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -24,6 +25,7 @@ export default function CollectionViewer() {
   const [row, setRow] = useState(parseInt(rowNb || '1'));
   const [rowCount, setRowCount] = useState(1);
   const [name, setName] = useState('');
+  const [loading, setLoading] = useState(true);
   const [symbol, setSymbol] = useState('');
   const [totalSupply, setTotalSupply] = useState(-1);
   const [NftList, setNftList] = useState<nftItem[]>([]);
@@ -89,6 +91,7 @@ export default function CollectionViewer() {
         }
         return current;
       });
+      setLoading(false);
     };
     fetchNftList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -207,15 +210,18 @@ export default function CollectionViewer() {
           )}
         </Grid>
         {row < rowCount ? (
-          <Stack direction="row" justifyContent="center" sx={{ pt: 6 }}>
+          <Stack direction="row" justifyContent="center" sx={{ pt: 3 }}>
             <Button
-              onClick={() =>
+              disabled={loading}
+              onClick={() => {
+                setLoading(true);
                 setRow((prev) => {
                   return prev + 1;
-                })
-              }
+                });
+              }}
+              sx={{ borderRadius: 3, px: 5 }}
             >
-              See More
+              <Typography variant="h5">See More</Typography>
             </Button>
           </Stack>
         ) : (
