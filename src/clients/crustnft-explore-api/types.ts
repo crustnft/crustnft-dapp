@@ -1,4 +1,4 @@
-export type PostContractObj = {
+export type TCreateContract = {
   txHash: string;
   contractAddress: string;
   account: string;

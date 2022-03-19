@@ -23,3 +23,4 @@ export const createEmptyUser = async (account: string) => {
   return response?.data?.data;
 };
 
+export const updateUser = async () => {};

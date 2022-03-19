@@ -13,7 +13,7 @@ import {
   Tooltip,
   Typography
 } from '@mui/material';
-import { postContract } from 'clients/crustnft-explore-api/contracts';
+import { createContract } from 'clients/crustnft-explore-api/contracts';
 import Iconify from 'components/Iconify';
 import {
   getContract,
@@ -108,7 +108,7 @@ export default function DeploySmartContract({
         if (txReceipt) {
           setDeployingSuccess(true);
 
-          postContract({
+          createContract({
             txHash: txReceipt.transactionHash || '',
             contractAddress: txReceipt.contractAddress,
             chainId: selectedChain?.chainId || 1,
