@@ -1,5 +1,5 @@
 import { Container, Grid } from '@mui/material';
-import { getContracts } from 'clients/crustnft-explore-api';
+import { getContracts } from 'clients/crustnft-explore-api/contracts';
 import { useEffect, useState } from 'react';
 import Page from '../../components/Page';
 import CollectionCardWithNFTImage from './components/CollectionCardWithNFTImage';

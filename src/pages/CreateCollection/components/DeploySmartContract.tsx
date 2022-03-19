@@ -13,7 +13,7 @@ import {
   Tooltip,
   Typography
 } from '@mui/material';
-import { postContract } from 'clients/crustnft-explore-api';
+import { postContract } from 'clients/crustnft-explore-api/contracts';
 import Iconify from 'components/Iconify';
 import {
   getContract,

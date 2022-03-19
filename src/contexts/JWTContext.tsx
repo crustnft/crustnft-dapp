@@ -1,9 +1,11 @@
-import axios from 'axios';
-import { EXPLORE_API } from 'constants/crustNftExploreApis';
-import { isEmpty } from 'lodash';
+import {
+  challengeLogin,
+  login as exploreApiLogin
+} from 'clients/crustnft-explore-api/authentication';
 import { createContext, ReactNode, useEffect, useReducer } from 'react';
 import { ActionMap, AuthState, JWTContextType } from '../@types/auth';
 import { isValidToken, setSession } from '../utils/jwt';
+
 enum Types {
   Initial = 'INITIALIZE',
   Login = 'LOGIN',
@@ -105,55 +107,9 @@ function AuthProvider({ children }: AuthProviderProps) {
     initialize();
   }, []);
 
-  const isExistingUser = async (account: string) => {
-    const response = await axios.get(`${EXPLORE_API}/users/${account.toLowerCase()}`);
-    console.log(response);
-    if (!isEmpty(response.data)) {
-      return true;
-    }
-    return false;
-  };
-
-  const createEmptyUser = async (account: string) => {
-    const _account = account.toLowerCase();
-    const response = await axios
-      .post(`${EXPLORE_API}/users`, { account: _account, displayName: _account })
-      .catch((e) => {
-        console.log('error createEmptyUser', e.response);
-        return;
-      });
-
-    return response?.data?.data;
-  };
-
-  const challengeLogin = async (account: string): Promise<string | undefined> => {
-    const _account = account.toLowerCase();
-    const checkUser = await isExistingUser(_account);
-    if (!checkUser) {
-      await createEmptyUser(_account);
-    }
-    const response = await axios
-      .post(`${EXPLORE_API}/authentication/challenge-login`, { account: _account })
-      .catch((e) => {
-        console.log('error challengeLogin', e.response);
-        return;
-      });
-
-    return response?.data?.data;
-  };
-
   const login = async (account: string, signature: string) => {
-    const response = await axios
-      .post(`${EXPLORE_API}/authentication/login`, {
-        account: account.toLowerCase(),
-        signature
-      })
-      .catch((err) => {
-        console.log('Error login', err.response);
-        return;
-      });
+    const accessToken = await exploreApiLogin(account, signature);
 
-    const accessToken = response?.data?.data;
     if (!accessToken) return;
 
     setSession(accessToken);

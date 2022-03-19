@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@mui/material';
-import { getContractsByAccount } from 'clients/crustnft-explore-api';
+import { getContractsByAccount } from 'clients/crustnft-explore-api/contracts';
 import useWeb3 from 'hooks/useWeb3';
 import { useEffect, useState } from 'react';
 import CollectionSlider from './CollectionSlider';
