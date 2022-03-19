@@ -192,7 +192,7 @@ export default function CollectionViewer() {
             </Paper>
           </Grid>
         </Grid> */}
-        <Grid container spacing={0}>
+        <Grid container spacing={4}>
           {totalSupply !== -1 ? (
             NftList.filter((nft) => !nft.failToLoad).map((nft) => (
               <Grid key={nft.key + '-' + nft.tokenId} item xs={12} sm={4} md={3}>

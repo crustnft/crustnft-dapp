@@ -1,4 +1,3 @@
-import { Icon } from '@iconify/react';
 import { Box, Link, Paper, Stack, Typography } from '@mui/material';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
@@ -19,6 +18,17 @@ export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   borderRadius: '3px'
 }));
 
+const randomColorList = [
+  '#dbbc21',
+  '#db4021',
+  '#91db21',
+  '#21db53',
+  '#21d2db',
+  '#2153db',
+  '#b621db',
+  '#db2187'
+];
+
 export default function NftCard({
   tokenId,
   imageUrl,
@@ -37,7 +47,7 @@ export default function NftCard({
     <Paper
       sx={{
         borderRadius: 2,
-        bgcolor: 'transparent',
+        bgcolor: (theme) => theme.palette.card.background,
         transition: 'all .2s ease-in-out',
         '&:hover': {
           transform: `translateY(-${theme.spacing(1 / 4)})`,
@@ -45,7 +55,26 @@ export default function NftCard({
         }
       }}
     >
-      <Box sx={{ p: 2, position: 'relative' }}>
+      <Stack direction="row" sx={{ p: 2, display: 'flex', alignItems: 'baseline' }}>
+        <Stack
+          sx={{
+            borderRadius: 5,
+            background: randomColorList[Math.floor(Math.random() * randomColorList.length)],
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <Typography variant="caption" noWrap sx={{ px: 2, fontSize: 13 }}>
+            #{tokenId || ''}
+          </Typography>
+        </Stack>
+        <Stack direction="row" justifyContent="flex-end" sx={{ width: '100%' }}>
+          <Typography variant="caption" noWrap sx={{ fontSize: 13 }}>
+            {chainName}
+          </Typography>
+        </Stack>
+      </Stack>
+      <Box sx={{ p: 2, pt: 0, position: 'relative' }}>
         <Link href={`#/assets/${chainName}/${contractAddr}/${tokenId}`}>
           <Box sx={{ border: 1, borderRadius: '5px', borderColor: '#DFE3E8' }}>
             <Stack
@@ -90,67 +119,17 @@ export default function NftCard({
         </Link>
       </Box>
 
-      <Stack spacing={0.5} sx={{ p: 2, pt: 1, pb: 1 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Link
-            color="inherit"
-            underline="none"
-            href={`#/assets/${chainName}/${contractAddr}/${tokenId}`}
-            sx={{ maxWidth: '70%' }}
-          >
-            <Typography variant="subtitle2" noWrap>
-              {name}
-            </Typography>
-          </Link>
-          <ColorButton
-            variant="contained"
-            size="small"
-            disableElevation
-            disableFocusRipple
-            disableRipple
-          >
-            <Typography variant="caption" noWrap>
-              {chainName}
-            </Typography>
-          </ColorButton>
-        </Stack>
-
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Link
-            color="inherit"
-            underline="none"
-            href={`#/assets/${chainName}/${contractAddr}/${tokenId}`}
-          >
-            <Stack direction="row" alignItems="center" spacing={0.5}>
-              <Typography variant="caption" noWrap>
-                Owner
-              </Typography>
-              <Icon icon="healthicons:miner-worker-outline" width={18} height={18} />
-            </Stack>
-          </Link>
-
-          <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
-            {owner || ''}
-          </Typography>
-        </Stack>
-
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Link
-            color="inherit"
-            underline="none"
-            href={`#/assets/${chainName}/${contractAddr}/${tokenId}`}
-          >
-            <Stack direction="row" alignItems="center" spacing={0.5}>
-              <Typography variant="caption" noWrap>
-                Token ID
-              </Typography>
-            </Stack>
-          </Link>
-
-          <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
-            #{tokenId || ''}
-          </Typography>
-        </Stack>
+      <Stack
+        direction="row"
+        spacing={0.5}
+        sx={{ px: 2, pb: 2, justifyContent: 'center', alignItems: 'baseline' }}
+      >
+        <Typography variant="h6" sx={{ fontSize: 13 }}>
+          0.00
+        </Typography>
+        <Typography variant="caption" sx={{ fontSize: 13 }}>
+          ETH
+        </Typography>
       </Stack>
     </Paper>
   );
