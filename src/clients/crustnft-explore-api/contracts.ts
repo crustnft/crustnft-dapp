@@ -1,5 +1,5 @@
 import Axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { CONTRACT_API_V1 } from 'constants/crustNftExploreApis';
+import { EXPLORE_API } from 'constants/crustNftExploreApis';
 import type { PostContractObj } from './types';
 
 const retryWrapper = (axios: AxiosInstance, options: any) => {
@@ -28,17 +28,17 @@ const retryWrapper = (axios: AxiosInstance, options: any) => {
 export async function postContract(postContractObj: PostContractObj) {
   const instance = Axios.create();
   retryWrapper(instance, { retry_time: 15 });
-  return instance.post(CONTRACT_API_V1, postContractObj);
+  return instance.post(EXPLORE_API + '/contracts', postContractObj);
 }
 
 export async function getContracts(pageSize: number) {
   const instance = Axios.create();
   retryWrapper(instance, { retry_time: 5 });
-  return instance.get(`${CONTRACT_API_V1}?pageSize=${pageSize}&order=createdAt desc`); // or asc
+  return instance.get(`${EXPLORE_API}/contracts?pageSize=${pageSize}&order=createdAt desc`); // or asc
 }
 
 export async function getContractsByAccount(pageSize: number, account: string) {
   const instance = Axios.create();
   retryWrapper(instance, { retry_time: 5 });
-  return instance.get(`${CONTRACT_API_V1}?pageSize=${pageSize}&account=${account}`); // or asc
+  return instance.get(`${EXPLORE_API}/contracts?pageSize=${pageSize}&account=${account}`); // or asc
 }
