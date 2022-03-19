@@ -14,11 +14,12 @@ import {
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWeb3 from 'hooks/useWeb3';
 import React, { useEffect, useMemo, useState } from 'react';
+import { nftItem } from 'services/fetchCollection/createEmptyNFTList';
 import {
   getCollectionUrlOpensea,
   OPENSEA_LINK_NOT_FOUND
 } from 'services/fetchCollection/getCollectionUrlOpensea';
-import { getNftList4CollectionCard, NftItem } from 'services/fetchCollection/getNFTList';
+import { getNftList4CollectionCard } from 'services/fetchCollection/getNFTList';
 import {
   connectContract,
   getContractOwner,
@@ -48,7 +49,7 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
     chainName: '',
     contractAddr: ''
   }));
-  const [nftList, setNftList] = useState<NftItem[]>(emptyNftList);
+  const [nftList, setNftList] = useState<nftItem[]>(emptyNftList);
   const { contractAddress, chainId } = collection;
   const [network, setNetwork] = useState('');
   const [name, setName] = useState('');

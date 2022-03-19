@@ -25,7 +25,7 @@ export default function NftCard({
   name,
   owner,
   contractAddr,
-  chain
+  chainName
 }: NftCardCollectionViewerProps) {
   const theme = useTheme();
   const [loading, setLoading] = useState(true);
@@ -46,7 +46,7 @@ export default function NftCard({
       }}
     >
       <Box sx={{ p: 2, position: 'relative' }}>
-        <Link href={`#/assets/${chain}/${contractAddr}/${tokenId}`}>
+        <Link href={`#/assets/${chainName}/${contractAddr}/${tokenId}`}>
           <Box sx={{ border: 1, borderRadius: '5px', borderColor: '#DFE3E8' }}>
             <Stack
               sx={{
@@ -95,7 +95,7 @@ export default function NftCard({
           <Link
             color="inherit"
             underline="none"
-            href={`#/assets/${chain}/${contractAddr}/${tokenId}`}
+            href={`#/assets/${chainName}/${contractAddr}/${tokenId}`}
             sx={{ maxWidth: '70%' }}
           >
             <Typography variant="subtitle2" noWrap>
@@ -110,7 +110,7 @@ export default function NftCard({
             disableRipple
           >
             <Typography variant="caption" noWrap>
-              {chain}
+              {chainName}
             </Typography>
           </ColorButton>
         </Stack>
@@ -119,7 +119,7 @@ export default function NftCard({
           <Link
             color="inherit"
             underline="none"
-            href={`#/assets/${chain}/${contractAddr}/${tokenId}`}
+            href={`#/assets/${chainName}/${contractAddr}/${tokenId}`}
           >
             <Stack direction="row" alignItems="center" spacing={0.5}>
               <Typography variant="caption" noWrap>
@@ -138,7 +138,7 @@ export default function NftCard({
           <Link
             color="inherit"
             underline="none"
-            href={`#/assets/${chain}/${contractAddr}/${tokenId}`}
+            href={`#/assets/${chainName}/${contractAddr}/${tokenId}`}
           >
             <Stack direction="row" alignItems="center" spacing={0.5}>
               <Typography variant="caption" noWrap>

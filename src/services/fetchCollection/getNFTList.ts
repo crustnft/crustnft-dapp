@@ -3,18 +3,7 @@ import { getDataFromTokenUri } from 'services/http';
 import { getOwner, getTokenURI } from 'services/smartContract/evmCompatible';
 import { getChainNameByChainId } from 'utils/blockchainHandlers';
 import { parseNftUri } from 'utils/tokenUriHandlers';
-
-export type NftItem = {
-  key: string;
-  failToLoad: boolean;
-  tokenId: string;
-  tokenURI?: string;
-  imageUrl: string;
-  name: string;
-  owner?: string;
-  chainName: string;
-  contractAddr: string;
-};
+import { createEmptyNFTList } from './createEmptyNFTList';
 
 export const getNftList4CollectionCard = async (
   contract: Contract,
@@ -23,18 +12,8 @@ export const getNftList4CollectionCard = async (
   numNFT2Load: number
 ) => {
   const numLoadableNFT = numNFT2Load < totalSupply ? numNFT2Load : totalSupply;
-  const tokenIds = Array.from(Array(numNFT2Load).keys()).map((x) => x + 1);
-  const emptyNftList = new Array(numNFT2Load).fill(null).map((_, index) => ({
-    key: index.toString(),
-    failToLoad: false,
-    tokenId: '',
-    tokenURI: '',
-    imageUrl: '',
-    name: '',
-    owner: '',
-    chainName: '',
-    contractAddr: ''
-  }));
+  if (numLoadableNFT <= 0) return;
+  const emptyNftList = createEmptyNFTList(numLoadableNFT);
 
   let nftList = [...emptyNftList.slice(0)];
 

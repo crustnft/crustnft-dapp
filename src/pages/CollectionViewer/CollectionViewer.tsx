@@ -2,34 +2,21 @@ import { Container, Grid, Pagination, Stack } from '@mui/material';
 import Identicons from '@nimiq/identicons';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getDataFromTokenUri } from 'services/http';
+import { createEmptyNFTList, nftItem } from 'services/fetchCollection/createEmptyNFTList';
+import { getNftList4CollectionCard } from 'services/fetchCollection/getNFTList';
 import {
   connectContract,
   getName,
-  getOwner,
   getSymbol,
-  getTokenURI,
   getTotalSupply
 } from 'services/smartContract/evmCompatible';
-import { getRpcUrlByNetworkName } from 'utils/blockchainHandlers';
-import { parseNftUri } from 'utils/tokenUriHandlers';
+import { getChainByNetworkName, getRpcUrlByNetworkName } from 'utils/blockchainHandlers';
 import Page from '../../components/Page';
 import { NB_NFT_PER_PAGE } from '../../constants/pagination';
 import { SIMPLIFIED_ERC721_ABI } from '../../constants/simplifiedERC721ABI';
 import NftCard from './components/NftCard';
 import { ProfileCoverProps } from './components/ProfileCover';
 Identicons.svgPath = './static/identicons.min.svg';
-
-const emptyNftList = new Array(NB_NFT_PER_PAGE).fill(null).map((_, index) => ({
-  key: index,
-  failToLoad: false,
-  tokenId: '',
-  imageUrl: '',
-  name: '',
-  owner: '',
-  contractAddr: '',
-  chain: ''
-}));
 
 export default function CollectionViewer() {
   const { chain, contractAddr, pageNb } = useParams();
@@ -38,6 +25,8 @@ export default function CollectionViewer() {
   const [pageCount, setPageCount] = useState(1);
   const [name, setName] = useState('');
   const [symbol, setSymbol] = useState('');
+  const [totalSupply, setTotalSupply] = useState(-1);
+  const [NftList, setNftList] = useState<nftItem[]>([]);
 
   const contract = useMemo(() => {
     return connectContract(
@@ -47,20 +36,6 @@ export default function CollectionViewer() {
     );
   }, [contractAddr, chain]);
 
-  const [NftList, setNftList] = useState<
-    {
-      key: number;
-      failToLoad: boolean;
-      tokenId: string;
-      tokenURI?: string;
-      imageUrl: string;
-      name: string;
-      owner?: string;
-      contractAddr: string;
-      chain: string;
-    }[]
-  >(emptyNftList);
-
   const handlePageChange = (event: any, value: number) => {
     if (value) {
       setPage(value);
@@ -69,7 +44,13 @@ export default function CollectionViewer() {
 
   useEffect(() => {
     getTotalSupply(contract)
-      .then((totalSupply) => setPageCount(Math.ceil(totalSupply / NB_NFT_PER_PAGE)))
+      .then((totalSupply) => {
+        setPageCount(Math.ceil(totalSupply / NB_NFT_PER_PAGE));
+        setTotalSupply(totalSupply);
+        setNftList(
+          createEmptyNFTList(totalSupply < NB_NFT_PER_PAGE ? totalSupply : NB_NFT_PER_PAGE)
+        );
+      })
       .catch((e) => {
         console.log(e);
       });
@@ -91,47 +72,24 @@ export default function CollectionViewer() {
   }, [pageNb]);
 
   useEffect(() => {
-    async function getNftList() {
-      // FIXME: If NB_NFT_PER_PAGE > totalSupply then there will be error
-      for (let i = 0; i < NB_NFT_PER_PAGE; i++) {
-        const tokenId = (page - 1) * NB_NFT_PER_PAGE + i + 1;
-        getTokenURI(contract, tokenId)
-          .then(async (tokenUri) => {
-            const parsedTokenUri = parseNftUri(tokenUri);
-            const data = await getDataFromTokenUri(parsedTokenUri);
-            const owner = await getOwner(contract, tokenId);
-            const parsedImageUrl = parseNftUri(data.image || '');
-            setNftList((prevList) => {
-              prevList[i] = {
-                key: i,
-                failToLoad: false,
-                tokenId: tokenId.toString(),
-                tokenURI: tokenUri,
-                imageUrl: parsedImageUrl,
-                name: data.name || '',
-                owner,
-                contractAddr: contractAddr || '',
-                chain: chain || ''
-              };
-              return [...prevList];
-            });
-          })
-          .catch((e) => {
-            setNftList((prevList) => {
-              prevList[i] = { ...prevList[i], failToLoad: true };
-              return [...prevList];
-            });
-            console.log(`Error token ${tokenId}: `, e);
-          });
-      }
-    }
     navigate(`/collection/${chain}/${contractAddr}/${page}`);
-    setNftList((prevList) => {
-      return [...emptyNftList];
-    });
-    getNftList();
+    if (!chain) return;
+    const chainInfo = getChainByNetworkName(chain);
+    if (!chainInfo) return;
+    const { chainId } = chainInfo;
+    const fetchNftList = async () => {
+      const _nftList = await getNftList4CollectionCard(
+        contract,
+        chainId,
+        totalSupply,
+        NB_NFT_PER_PAGE * page
+      );
+      if (!_nftList) return;
+      setNftList(_nftList);
+    };
+    fetchNftList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  }, [page, chain, totalSupply]);
 
   const [profileCover, setProfileCover] = useState<ProfileCoverProps>({
     coverUrl: 'https://public.nftstatic.com/static/nft/res/d06f4b2332c740658c1f081b2b74ed4b.png',
@@ -235,11 +193,15 @@ export default function CollectionViewer() {
           </Grid>
         </Grid> */}
         <Grid container spacing={0}>
-          {NftList.filter((nft) => !nft.failToLoad).map((nft) => (
-            <Grid key={nft.key + '-' + nft.tokenId} item xs={12} sm={4} md={3}>
-              <NftCard {...nft} />
-            </Grid>
-          ))}
+          {totalSupply !== -1 ? (
+            NftList.filter((nft) => !nft.failToLoad).map((nft) => (
+              <Grid key={nft.key + '-' + nft.tokenId} item xs={12} sm={4} md={3}>
+                <NftCard {...nft} />
+              </Grid>
+            ))
+          ) : (
+            <></>
+          )}
         </Grid>
         <Stack direction="row" justifyContent="center" sx={{ pt: 6 }}>
           <Pagination count={pageCount} page={page} onChange={handlePageChange} />
