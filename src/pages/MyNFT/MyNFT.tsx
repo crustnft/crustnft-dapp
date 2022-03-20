@@ -1,5 +1,4 @@
 import { Box, Button, Container, Grid } from '@mui/material';
-import { generateMedia } from 'clients/crustnft-explore-api/medias';
 import useAuth from 'hooks/useAuth';
 import Page from '../../components/Page';
 import CallAction from './components/CallAction';
@@ -17,7 +16,7 @@ export default function MyNFT() {
         </Grid>
         <Button
           onClick={() => {
-            generateMedia(accessToken);
+            //generateMedia(accessToken);
           }}
         >
           Click to get media link
