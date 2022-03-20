@@ -243,7 +243,7 @@ const palette = {
     },
     collectionSlider: '#ffffff',
     card: {
-      background: '#ededed'
+      background: '#ffffff'
     }
   },
   dark: {
