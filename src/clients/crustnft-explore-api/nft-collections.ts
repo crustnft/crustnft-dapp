@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { EXPLORE_API } from 'constants/crustNftExploreApis';
-import { CreateNftCollectionDto, UpdateNftCollectionDto } from './types';
+import { CreateNftCollectionDto, NftCollectionDto, UpdateNftCollectionDto } from './types';
 
 export const createCPCollection = async (
   createDto: CreateNftCollectionDto,
@@ -11,7 +11,7 @@ export const createCPCollection = async (
       headers: { Authorization: `Bearer ${accessToken}` }
     })
     .catch((err) => {
-      console.log(err.response);
+      console.log('create CP collection error', err.response);
       return;
     });
 
@@ -29,7 +29,7 @@ export const updateCPCollection = async (
       headers: { Authorization: `Bearer ${accessToken}` }
     })
     .catch((err) => {
-      console.log(err.response);
+      console.log('update CP Collection error', err.response);
       return;
     });
 
@@ -38,13 +38,16 @@ export const updateCPCollection = async (
   return response.data.data;
 };
 
-export const getCollections = async (accessToken: string, countOnly: boolean = false) => {
+export const getCollections = async (
+  accessToken: string,
+  countOnly: boolean = false
+): Promise<NftCollectionDto[] | undefined> => {
   const response = await axios
     .get(`${EXPLORE_API}/ntf-collections/?countOnly=${countOnly.toString()}`, {
       headers: { Authorization: `Bearer ${accessToken}` }
     })
     .catch((err) => {
-      console.log(err.response);
+      console.log('get collections error', err.response);
       return;
     });
 
@@ -55,7 +58,10 @@ export const getCollections = async (accessToken: string, countOnly: boolean = f
 export const getCollectionsSummary = async () => {};
 export const startGenerateNftCollection = async () => {};
 
-export const getCollectionInfo = async (accessToken: string, collectionId: string) => {
+export const getCollectionInfo = async (
+  accessToken: string,
+  collectionId: string
+): Promise<NftCollectionDto | undefined> => {
   const response = await axios
     .get(`${EXPLORE_API}/ntf-collections/${collectionId}`, {
       headers: { Authorization: `Bearer ${accessToken}` }

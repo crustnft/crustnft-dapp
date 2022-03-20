@@ -1,13 +1,12 @@
 import axios from 'axios';
 import { EXPLORE_API } from '../../constants/crustNftExploreApis';
-import uuidv4 from '../../utils/uuidv4';
 
-export const generateMedia = async (accessToken: string, contentType: string) => {
+export const generateMedia = async (accessToken: string, fileId: string, contentType: string) => {
   const response = await axios
     .post(
       `${EXPLORE_API}/medias`,
       {
-        fileName: uuidv4(),
+        fileName: fileId,
         contentType
       },
       {
@@ -21,9 +20,9 @@ export const generateMedia = async (accessToken: string, contentType: string) =>
   return response?.data?.data;
 };
 
-export const uploadImage = async (accessToken: string, file: File) => {
+export const uploadImage = async (accessToken: string, fileId: string, file: File) => {
   try {
-    const signedUrl = await generateMedia(accessToken, file.type);
+    const signedUrl = await generateMedia(accessToken, fileId, file.type);
 
     if (!signedUrl) return;
 
@@ -31,11 +30,10 @@ export const uploadImage = async (accessToken: string, file: File) => {
       method: 'PUT',
       body: file
     }).then((response) => {
-      console.log('response fetch', response);
       if (!response.ok) {
         throw new Error('Network response was not OK');
       }
-      return response.text();
+      return response;
     });
     return response;
   } catch (error) {

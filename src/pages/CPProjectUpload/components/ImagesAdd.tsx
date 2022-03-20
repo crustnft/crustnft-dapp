@@ -1,5 +1,7 @@
 import { Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { uploadImage } from 'clients/crustnft-explore-api/medias';
+import useAuth from 'hooks/useAuth';
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Image as ImageType } from '../../../@types/imagesGCS';
@@ -26,21 +28,36 @@ type UploadFileProps = {
 };
 
 export default function ImagesAdd({ onAddImage, onCloseAddImage }: UploadFileProps) {
+  const { accessToken } = useAuth();
+  const handleAddImage = async (file: File) => {
+    try {
+      const imageId = uuidv4();
+      await uploadImage(accessToken, imageId, file);
+      onAddImage({
+        name: file.name.split('.').slice(0, -1).join('.'),
+        id: imageId
+      });
+    } catch (e) {
+      console.log('Error uploading image to GCS', e);
+    }
+  };
+
   const handleDrop = useCallback(
     (acceptedFiles) => {
       acceptedFiles.forEach((file: File) => {
-        onAddImage({
-          imageUrl: URL.createObjectURL(file),
-          name: file.name.split('.').slice(0, -1).join('.'),
-          id: uuidv4()
-        });
+        handleAddImage(file);
+        // onAddImage({
+        //   name: file.name.split('.').slice(0, -1).join('.'),
+        //   id: uuidv4()
+        // });
       });
     },
     [onAddImage]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: handleDrop
+    onDrop: handleDrop,
+    accept: 'image/*'
   });
 
   return (

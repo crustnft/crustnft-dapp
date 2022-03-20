@@ -22,10 +22,10 @@ export interface Props extends BreadcrumbsProps {
 export default function Breadcrumbs({ links, activeLast = false, ...other }: Props) {
   const currentLink = links[links.length - 1].name;
 
-  const listDefault = links.map((link) => <LinkItem key={link.name} link={link} />);
+  const listDefault = links.map((link, index) => <LinkItem key={link.name} link={link} />);
 
-  const listActiveLast = links.map((link) => (
-    <div key={link.name}>
+  const listActiveLast = links.map((link, index) => (
+    <div key={link.name + index}>
       {link.name !== currentLink ? (
         <LinkItem link={link} />
       ) : (

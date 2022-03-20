@@ -1,4 +1,5 @@
 import { Box, Paper, Typography } from '@mui/material';
+import { UPLOAD_IMAGE_PUBLIC_BUCKET } from 'constants/gcpApis';
 import { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Image as ImageType } from '../../../@types/imagesGCS';
@@ -12,7 +13,9 @@ type Props = {
 };
 
 export default function ImageCard({ image, onDeleteImage, index }: Props) {
-  const { name, imageUrl } = image;
+  const { name, id } = image;
+
+  const imageUrl = UPLOAD_IMAGE_PUBLIC_BUCKET + '/' + id;
   const [openDetails, setOpenDetails] = useState(false);
 
   const handleOpenDetails = () => {

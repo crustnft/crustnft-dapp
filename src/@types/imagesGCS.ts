@@ -7,7 +7,6 @@ export type Assignee = {
 export type Image = {
   id: string;
   name: string;
-  imageUrl: string;
 };
 
 export type ImagesLayer = {

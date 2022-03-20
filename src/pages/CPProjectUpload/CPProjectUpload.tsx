@@ -1,8 +1,13 @@
 import { Container, Stack } from '@mui/material';
-import { getCollectionInfo } from 'clients/crustnft-explore-api/nft-collections';
+import {
+  getCollectionInfo,
+  updateCPCollection
+} from 'clients/crustnft-explore-api/nft-collections';
+import { NftCollectionDto, UpdateNftCollectionDto } from 'clients/crustnft-explore-api/types';
 import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
 import useAuth from 'hooks/useAuth';
 import useWeb3 from 'hooks/useWeb3';
+import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
@@ -15,10 +20,10 @@ import ImagesLayerAdd from './components/ImagesLayerAdd';
 export default function CPProjectUpload() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { board } = useSelector((state) => state.image);
+  const { board, isFirstLoaded } = useSelector((state) => state.image);
   const { accessToken, isAuthenticated } = useAuth();
   const { signInWallet } = useWeb3();
-  const [collectionInfo, setCollectionInfo] = useState<any>();
+  const [collectionInfo, setCollectionInfo] = useState<NftCollectionDto | undefined>(undefined);
   const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
@@ -27,9 +32,28 @@ export default function CPProjectUpload() {
     }
   }, [dispatch, accessToken, id]);
 
+  // FIXME: workaround for the first load
   useEffect(() => {
-    console.log('board', board);
+    if (!isEmpty(board.layers) && !isEmpty(board.layerOrder) && collectionInfo) {
+      const { id, name, description } = collectionInfo;
+      const updateDto = {
+        id,
+        name,
+        description
+      };
+      updateCPCollection(
+        {
+          ...updateDto,
+          layerOrder: board.layerOrder,
+          images: Object.values(board.images),
+          layers: Object.values(board.layers)
+        } as UpdateNftCollectionDto,
+        accessToken
+      );
+    }
   }, [board]);
+
+  useEffect(() => {}, [board, collectionInfo]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -124,7 +148,7 @@ export default function CPProjectUpload() {
         <HeaderBreadcrumbs
           heading="Dashboard"
           links={[
-            { name: collectionInfo?.name, href: `/project-details/${id}` },
+            { name: collectionInfo?.name || '', href: `/project-details/${id}` },
             {
               name: 'Upload Image'
             }

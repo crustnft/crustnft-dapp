@@ -1,5 +1,6 @@
 import { Divider, Drawer, OutlinedInput, Stack, Tooltip, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { UPLOAD_IMAGE_PUBLIC_BUCKET } from 'constants/gcpApis';
 import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
 import { Image } from '../../../@types/imagesGCS';
 import { IconButtonAnimate } from '../../../components/animate';
@@ -18,8 +19,6 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary
 }));
 
-// ----------------------------------------------------------------------
-
 type Props = {
   image: Image;
   isOpen: boolean;
@@ -33,7 +32,9 @@ export default function ImageDetails({ image, isOpen, onClose, onDeleteImage }: 
 
   const nameInputRef = useRef<HTMLInputElement>(null);
 
-  const { name, imageUrl, id } = image;
+  const { name, id } = image;
+  const imageUrl = UPLOAD_IMAGE_PUBLIC_BUCKET + '/' + id;
+
   const [localName, setLocalName] = useState(name);
 
   const handleChangeName = (event: ChangeEvent<HTMLInputElement>) => {

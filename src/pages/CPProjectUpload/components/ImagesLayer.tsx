@@ -46,8 +46,8 @@ export default function ImagesLayer({ layer, index }: Props) {
     }
   };
 
-  const handleAddImage = (task: any) => {
-    dispatch(addImage({ image: task, layerId: id }));
+  const handleAddImage = (image: any) => {
+    dispatch(addImage({ image, layerId: id }));
   };
 
   return (
