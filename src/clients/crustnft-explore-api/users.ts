@@ -4,7 +4,6 @@ import { isEmpty } from 'lodash';
 
 export const isExistingUser = async (account: string) => {
   const response = await axios.get(`${EXPLORE_API}/users/${account.toLowerCase()}`);
-  console.log(response);
   if (!isEmpty(response.data)) {
     return true;
   }

@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { EXPLORE_API } from 'constants/crustNftExploreApis';
-import uuidv4 from 'utils/uuidv4';
+import { EXPLORE_API } from '../../constants/crustNftExploreApis';
+import uuidv4 from '../../utils/uuidv4';
 
 export const generateMedia = async (accessToken: string, contentType: string) => {
   const response = await axios

@@ -2,7 +2,7 @@ import {
   challengeLogin,
   login as exploreApiLogin
 } from 'clients/crustnft-explore-api/authentication';
-import { createContext, ReactNode, useEffect, useReducer } from 'react';
+import { createContext, ReactNode, useCallback, useEffect, useReducer } from 'react';
 import { ActionMap, AuthState, JWTContextType } from '../@types/auth';
 import { isValidToken, setSession } from '../utils/jwt';
 
@@ -107,7 +107,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     initialize();
   }, []);
 
-  const login = async (account: string, signature: string) => {
+  const login = useCallback(async (account: string, signature: string) => {
     const accessToken = await exploreApiLogin(account, signature);
 
     if (!accessToken) return;
@@ -119,7 +119,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         accessToken
       }
     });
-  };
+  }, []);
 
   const logout = async () => {
     setSession(null);
