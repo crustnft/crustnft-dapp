@@ -48,6 +48,10 @@ interface BackgroundColor {
   themeBackground: string;
 }
 
+interface CardOptions {
+  background: string;
+}
+
 declare module '@mui/material/styles/createPalette' {
   interface TypeBackground {
     neutral: string;
@@ -67,6 +71,7 @@ declare module '@mui/material/styles/createPalette' {
     additional: AdditionalColor;
     customBackground: BackgroundColor;
     collectionSlider: string;
+    card: CardOptions;
   }
   interface PaletteOptions {
     gradients: GradientsPaletteOptions;
@@ -75,6 +80,7 @@ declare module '@mui/material/styles/createPalette' {
     additional: AdditionalColor;
     customBackground: BackgroundColor;
     collectionSlider: string;
+    card: CardOptions;
   }
 }
 
@@ -235,7 +241,10 @@ const palette = {
       menu: '#F2F4FA',
       themeBackground: '#f0f2f5'
     },
-    collectionSlider: '#ffffff'
+    collectionSlider: '#ffffff',
+    card: {
+      background: '#ffffff'
+    }
   },
   dark: {
     ...COMMON,
@@ -257,7 +266,10 @@ const palette = {
       menu: '#141416',
       themeBackground: '#141416'
     },
-    collectionSlider: '#23262F'
+    collectionSlider: '#23262F',
+    card: {
+      background: '#1d1f25'
+    }
   }
 } as const;
 

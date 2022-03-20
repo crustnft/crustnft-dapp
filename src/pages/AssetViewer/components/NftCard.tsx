@@ -87,12 +87,12 @@ function NftCard({
             href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
             sx={{ maxWidth: '70%' }}
           >
-            <Typography variant="h5" noWrap>
+            <Typography variant="body1" noWrap sx={{ fontSize: 13 }}>
               {name}
             </Typography>
           </Link>
 
-          <Typography variant="h5" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
+          <Typography variant="body1" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
             #{tokenId || ''}
           </Typography>
         </Stack>

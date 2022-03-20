@@ -14,11 +14,12 @@ import {
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWeb3 from 'hooks/useWeb3';
 import React, { useEffect, useMemo, useState } from 'react';
+import { nftItem } from 'services/fetchCollection/createEmptyNFTList';
 import {
   getCollectionUrlOpensea,
   OPENSEA_LINK_NOT_FOUND
 } from 'services/fetchCollection/getCollectionUrlOpensea';
-import { getNftList4CollectionCard, NftItem } from 'services/fetchCollection/getNFTList';
+import { getNftList4CollectionCard } from 'services/fetchCollection/getNFTList';
 import {
   connectContract,
   getContractOwner,
@@ -48,7 +49,7 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
     chainName: '',
     contractAddr: ''
   }));
-  const [nftList, setNftList] = useState<NftItem[]>(emptyNftList);
+  const [nftList, setNftList] = useState<nftItem[]>(emptyNftList);
   const { contractAddress, chainId } = collection;
   const [network, setNetwork] = useState('');
   const [name, setName] = useState('');
@@ -97,17 +98,20 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   }, [contract.address, contractOwner, totalSupply]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const _nftList = await getNftList4CollectionCard(
-        contract,
-        chainId,
-        totalSupply,
-        NB_NFT_TO_SHOW
-      );
-      if (!_nftList) return;
-      setNftList(_nftList);
-    };
-    fetchData();
+    if (chainId === 4) {
+      const fetchData = async () => {
+        const _nftList = await getNftList4CollectionCard(
+          contract,
+          chainId,
+          totalSupply,
+          0,
+          NB_NFT_TO_SHOW
+        );
+        if (!_nftList) return;
+        setNftList(_nftList);
+      };
+      fetchData();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalSupply]);
 
@@ -242,19 +246,23 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                     target="_blank"
                     disabled={openseaLink === OPENSEA_LINK_NOT_FOUND}
                   >
-                    <Box
-                      component="img"
-                      src="./static/icons/shared/opensea.svg"
-                      sx={{
-                        height: 34,
-                        width: 34,
-                        opacity:
-                          openseaLink === '' || openseaLink === OPENSEA_LINK_NOT_FOUND
-                            ? '30%'
-                            : '100%'
-                      }}
-                    />
-                    {openseaLink !== '' ? (
+                    {chainId === 4 ? (
+                      <Box
+                        component="img"
+                        src="./static/icons/shared/opensea.svg"
+                        sx={{
+                          height: 34,
+                          width: 34,
+                          opacity:
+                            openseaLink === '' || openseaLink === OPENSEA_LINK_NOT_FOUND
+                              ? '30%'
+                              : '100%'
+                        }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {chainId !== 4 || openseaLink !== '' ? (
                       <></>
                     ) : (
                       <CircularProgress
