@@ -8,15 +8,15 @@ import MenuPopover from '../../../components/MenuPopover';
 // ----------------------------------------------------------------------
 
 type Props = {
-  columnName: string;
+  layerName: string;
   onDelete: VoidFunction;
   onUpdate: (name: string) => void;
 };
 
-export default function ImagesColumnToolBar({ columnName, onDelete, onUpdate }: Props) {
+export default function ImagesLayerToolBar({ layerName, onDelete, onUpdate }: Props) {
   const renameRef = useRef<HTMLInputElement>(null);
 
-  const [value, setValue] = useState(columnName);
+  const [value, setValue] = useState(layerName);
 
   const [open, setOpen] = useState<HTMLElement | null>(null);
 
@@ -40,17 +40,17 @@ export default function ImagesColumnToolBar({ columnName, onDelete, onUpdate }: 
     handleClose();
   };
 
-  const handleChangeColumnName = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeLayerName = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
 
-  const handleKeyUpColumn = (event: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyUpLayer = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && renameRef.current) {
       renameRef.current.blur();
     }
   };
 
-  const handleUpdateColumn = () => {
+  const handleUpdateLayer = () => {
     onUpdate(value);
   };
 
@@ -61,9 +61,9 @@ export default function ImagesColumnToolBar({ columnName, onDelete, onUpdate }: 
           size="small"
           placeholder="Layer Name"
           value={value}
-          onBlur={handleUpdateColumn}
-          onChange={handleChangeColumnName}
-          onKeyUp={handleKeyUpColumn}
+          onBlur={handleUpdateLayer}
+          onChange={handleChangeLayerName}
+          onKeyUp={handleKeyUpLayer}
           inputRef={renameRef}
           sx={{
             typography: 'h6',

@@ -3,34 +3,34 @@ import ScrollBar from 'components/Scrollbar';
 import { useSnackbar } from 'notistack';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
-import { ImagesColumn as Column } from '../../../@types/imagesGCS';
-import { addImage, deleteColumn, deleteTask, updateColumn } from '../../../redux/slices/imagesGCS';
+import { ImagesLayer as Layer } from '../../../@types/imagesGCS';
+import { addImage, deleteLayer, deleteTask, updateLayer } from '../../../redux/slices/imagesGCS';
 import { RootState, useDispatch } from '../../../redux/store';
 import ImageCard from './ImageCard';
 import ImagesAdd from './ImagesAdd';
-import ImagesColumnToolBar from './ImagesColumnToolBar';
+import ImagesLayerToolBar from './ImagesLayerToolBar';
 type Props = {
-  column: Column;
+  layer: Layer;
   index: number;
 };
 
-export default function ImagesColumn({ column, index }: Props) {
+export default function ImagesLayer({ layer, index }: Props) {
   const dispatch = useDispatch();
 
   const { enqueueSnackbar } = useSnackbar();
 
   const { board } = useSelector((state: RootState) => state.image);
 
-  const { name, cardIds, id } = column;
+  const { name, imageIds, id } = layer;
 
-  const handleDeleteTask = (cardId: string) => {
-    dispatch(deleteTask({ cardId, columnId: id }));
+  const handleDeleteTask = (imageId: string) => {
+    dispatch(deleteTask({ imageId, layerId: id }));
   };
 
-  const handleUpdateColumn = async (newName: string) => {
+  const handleUpdateLayer = async (newName: string) => {
     try {
       if (newName !== name) {
-        dispatch(updateColumn(id, { ...column, name: newName }));
+        dispatch(updateLayer(id, { ...layer, name: newName }));
         enqueueSnackbar('Update success!');
       }
     } catch (error) {
@@ -38,16 +38,16 @@ export default function ImagesColumn({ column, index }: Props) {
     }
   };
 
-  const handleDeleteColumn = async () => {
+  const handleDeleteLayer = async () => {
     try {
-      dispatch(deleteColumn(id));
+      dispatch(deleteLayer(id));
     } catch (error) {
       console.error(error);
     }
   };
 
   const handleAddImage = (task: any) => {
-    dispatch(addImage({ card: task, columnId: id }));
+    dispatch(addImage({ image: task, layerId: id }));
   };
 
   return (
@@ -60,14 +60,14 @@ export default function ImagesColumn({ column, index }: Props) {
           sx={{ px: 2, bgcolor: 'background.paper', width: '100%' }}
         >
           <Stack {...provided.dragHandleProps}>
-            <ImagesColumnToolBar
-              columnName={name}
-              onDelete={handleDeleteColumn}
-              onUpdate={handleUpdateColumn}
+            <ImagesLayerToolBar
+              layerName={name}
+              onDelete={handleDeleteLayer}
+              onUpdate={handleUpdateLayer}
             />
             <ScrollBar>
               <Stack direction="row" spacing={2}>
-                {cardIds.length !== 0 && (
+                {imageIds.length !== 0 && (
                   <Droppable droppableId={id} type="task" direction="horizontal">
                     {(provided) => (
                       <Stack
@@ -76,11 +76,11 @@ export default function ImagesColumn({ column, index }: Props) {
                         spacing={2}
                         direction="row"
                       >
-                        {cardIds.map((cardId, index) => (
+                        {imageIds.map((imageId, index) => (
                           <ImageCard
-                            key={cardId}
+                            key={imageId}
                             onDeleteTask={handleDeleteTask}
-                            card={board?.cards[cardId]}
+                            image={board?.images[imageId]}
                             index={index}
                           />
                         ))}

@@ -46,7 +46,7 @@ export type CreateNftCollectionDto = Omit<
 
 export type UpdateNftCollectionDto = Omit<
   NftCollectionDto,
-  'collectionCID' | 'metadataCID' | 'createdAt' | 'status'
+  'collectionCID' | 'metadataCID' | 'createdAt' | 'status' | 'creator'
 >;
 
 export const EMPTY_CREATENFTCOLLECTIONDTO: CreateNftCollectionDto = {

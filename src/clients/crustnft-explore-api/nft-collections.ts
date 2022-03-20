@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { EXPLORE_API } from 'constants/crustNftExploreApis';
-import { CreateNftCollectionDto } from './types';
+import { CreateNftCollectionDto, UpdateNftCollectionDto } from './types';
 
 export const createCPCollection = async (
   createDto: CreateNftCollectionDto,
@@ -20,7 +20,23 @@ export const createCPCollection = async (
   return response.data.data;
 };
 
-export const updateCPCollection = async () => {};
+export const updateCPCollection = async (
+  updateDto: UpdateNftCollectionDto,
+  accessToken: string
+) => {
+  const response = await axios
+    .put(`${EXPLORE_API}/ntf-collections`, updateDto, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    })
+    .catch((err) => {
+      console.log(err.response);
+      return;
+    });
+
+  if (!response?.data?.data) return;
+
+  return response.data.data;
+};
 
 export const getCollections = async (accessToken: string, countOnly: boolean = false) => {
   const response = await axios

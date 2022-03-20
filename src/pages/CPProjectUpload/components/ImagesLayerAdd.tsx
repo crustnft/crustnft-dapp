@@ -1,10 +1,10 @@
 import { Box, ClickAwayListener, OutlinedInput, Stack, Typography, useTheme } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import Iconify from '../../../components/Iconify';
-import { createColumn } from '../../../redux/slices/imagesGCS';
+import { createLayer } from '../../../redux/slices/imagesGCS';
 import { useDispatch } from '../../../redux/store';
 
-export default function ImagesColumnAdd() {
+export default function ImagesLayerAdd() {
   const theme = useTheme();
   const nameRef = useRef<HTMLInputElement>(null);
 
@@ -34,10 +34,10 @@ export default function ImagesColumnAdd() {
     setName(event.target.value);
   };
 
-  const handleCreateColumn = async () => {
+  const handleCreateLayer = async () => {
     try {
       if (name) {
-        dispatch(createColumn({ name }));
+        dispatch(createLayer({ name }));
         setName('');
       }
       handleClose();
@@ -48,7 +48,7 @@ export default function ImagesColumnAdd() {
 
   const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      handleCreateColumn();
+      handleCreateLayer();
     }
   };
 
@@ -79,7 +79,7 @@ export default function ImagesColumnAdd() {
       )}
 
       {open && (
-        <ClickAwayListener onClickAway={handleCreateColumn}>
+        <ClickAwayListener onClickAway={handleCreateLayer}>
           <OutlinedInput
             fullWidth
             placeholder="New Layer"

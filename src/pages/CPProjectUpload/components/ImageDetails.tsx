@@ -1,7 +1,7 @@
 import { Divider, Drawer, OutlinedInput, Stack, Tooltip, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
-import { ImageCard } from '../../../@types/imagesGCS';
+import { Image } from '../../../@types/imagesGCS';
 import { IconButtonAnimate } from '../../../components/animate';
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
@@ -21,19 +21,19 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 type Props = {
-  card: ImageCard;
+  image: Image;
   isOpen: boolean;
   onClose: VoidFunction;
   onDeleteTask: VoidFunction;
 };
 
-export default function ImageDetails({ card, isOpen, onClose, onDeleteTask }: Props) {
+export default function ImageDetails({ image, isOpen, onClose, onDeleteTask }: Props) {
   const dispatch = useDispatch();
   const isDesktop = useResponsive('up', 'sm');
 
   const nameInputRef = useRef<HTMLInputElement>(null);
 
-  const { name, imageUrl, id } = card;
+  const { name, imageUrl, id } = image;
   const [localName, setLocalName] = useState(name);
 
   const handleChangeName = (event: ChangeEvent<HTMLInputElement>) => {

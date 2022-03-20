@@ -3,7 +3,7 @@ import { Box, Paper, Skeleton, Stack } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
-export default function SkeletonImagesColumn() {
+export default function SkeletonImagesLayer() {
   return (
     <Box
       sx={{

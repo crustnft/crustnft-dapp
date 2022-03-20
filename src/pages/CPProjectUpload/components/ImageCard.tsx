@@ -1,18 +1,18 @@
 import { Box, Paper, Typography } from '@mui/material';
 import { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { ImageCard as ImageCardType } from '../../../@types/imagesGCS';
+import { Image as ImageType } from '../../../@types/imagesGCS';
 import Image from '../../../components/Image';
 import ImageDetails from './ImageDetails';
 
 type Props = {
-  card: ImageCardType;
+  image: ImageType;
   onDeleteTask: (id: string) => void;
   index: number;
 };
 
-export default function ImageCard({ card, onDeleteTask, index }: Props) {
-  const { name, imageUrl } = card;
+export default function ImageCard({ image, onDeleteTask, index }: Props) {
+  const { name, imageUrl } = image;
   const [openDetails, setOpenDetails] = useState(false);
 
   const handleOpenDetails = () => {
@@ -24,7 +24,7 @@ export default function ImageCard({ card, onDeleteTask, index }: Props) {
   };
 
   return (
-    <Draggable draggableId={card.id} index={index}>
+    <Draggable draggableId={image.id} index={index}>
       {(provided) => (
         <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
           <Paper
@@ -69,10 +69,10 @@ export default function ImageCard({ card, onDeleteTask, index }: Props) {
           </Paper>
 
           <ImageDetails
-            card={card}
+            image={image}
             isOpen={openDetails}
             onClose={handleCloseDetails}
-            onDeleteTask={() => onDeleteTask(card.id)}
+            onDeleteTask={() => onDeleteTask(image.id)}
           />
         </div>
       )}

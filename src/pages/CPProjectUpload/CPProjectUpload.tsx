@@ -7,10 +7,10 @@ import { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
 import Page from '../../components/Page';
-import { getBoard, persistCard, persistColumn } from '../../redux/slices/imagesGCS';
+import { getBoard, persistCard, persistLayer } from '../../redux/slices/imagesGCS';
 import { useDispatch, useSelector } from '../../redux/store';
-import ImagesColumn from './components/ImagesColumn';
-import ImagesColumnAdd from './components/ImagesColumnAdd';
+import ImagesLayer from './components/ImagesLayer';
+import ImagesLayerAdd from './components/ImagesLayerAdd';
 
 export default function CPProjectUpload() {
   const { id } = useParams();
@@ -22,8 +22,14 @@ export default function CPProjectUpload() {
   const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
-    dispatch(getBoard());
-  }, [dispatch]);
+    if (accessToken && id) {
+      dispatch(getBoard(accessToken, id));
+    }
+  }, [dispatch, accessToken, id]);
+
+  useEffect(() => {
+    console.log('board', board);
+  }, [board]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -57,53 +63,55 @@ export default function CPProjectUpload() {
       return;
 
     if (type === 'column') {
-      const newColumnOrder = Array.from(board.columnOrder);
-      newColumnOrder.splice(source.index, 1);
-      newColumnOrder.splice(destination.index, 0, draggableId);
+      const newLayerOrder = Array.from(board.layerOrder);
+      newLayerOrder.splice(source.index, 1);
+      newLayerOrder.splice(destination.index, 0, draggableId);
 
-      dispatch(persistColumn(newColumnOrder));
+      console.log('newLayerOrder', newLayerOrder);
+
+      dispatch(persistLayer(newLayerOrder));
       return;
     }
 
-    const start = board.columns[source.droppableId];
-    const finish = board.columns[destination.droppableId];
+    const start = board.layers[source.droppableId];
+    const finish = board.layers[destination.droppableId];
 
     if (start.id === finish.id) {
-      const updatedCardIds = [...start.cardIds];
-      updatedCardIds.splice(source.index, 1);
-      updatedCardIds.splice(destination.index, 0, draggableId);
+      const updatedImageIds = [...start.imageIds];
+      updatedImageIds.splice(source.index, 1);
+      updatedImageIds.splice(destination.index, 0, draggableId);
 
-      const updatedColumn = {
+      const updatedLayer = {
         ...start,
-        cardIds: updatedCardIds
+        imageIds: updatedImageIds
       };
 
       dispatch(
         persistCard({
-          ...board.columns,
-          [updatedColumn.id]: updatedColumn
+          ...board.layers,
+          [updatedLayer.id]: updatedLayer
         })
       );
       return;
     }
 
-    const startCardIds = [...start.cardIds];
-    startCardIds.splice(source.index, 1);
+    const startImageIds = [...start.imageIds];
+    startImageIds.splice(source.index, 1);
     const updatedStart = {
       ...start,
-      cardIds: startCardIds
+      imageIds: startImageIds
     };
 
-    const finishCardIds = [...finish.cardIds];
-    finishCardIds.splice(destination.index, 0, draggableId);
+    const finishImageIds = [...finish.imageIds];
+    finishImageIds.splice(destination.index, 0, draggableId);
     const updatedFinish = {
       ...finish,
-      cardIds: finishCardIds
+      imageIds: finishImageIds
     };
 
     dispatch(
       persistCard({
-        ...board.columns,
+        ...board.layers,
         [updatedStart.id]: updatedStart,
         [updatedFinish.id]: updatedFinish
       })
@@ -134,12 +142,12 @@ export default function CPProjectUpload() {
                 spacing={3}
                 sx={{ height: 'calc(100% - 32px)', overflowY: 'hidden' }}
               >
-                {board.columnOrder.map((columnId, index) => (
-                  <ImagesColumn index={index} key={columnId} column={board.columns[columnId]} />
+                {board.layerOrder.map((layerId, index) => (
+                  <ImagesLayer index={index} key={layerId} layer={board.layers[layerId]} />
                 ))}
 
                 {provided.placeholder}
-                <ImagesColumnAdd />
+                <ImagesLayerAdd />
               </Stack>
             )}
           </Droppable>
