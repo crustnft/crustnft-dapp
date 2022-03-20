@@ -2,7 +2,7 @@ import { Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { ImageCard as ImageCardProps } from '../../../@types/imagesGCS';
+import { Image as ImageType } from '../../../@types/imagesGCS';
 import Iconify from '../../../components/Iconify';
 import uuidv4 from '../../../utils/uuidv4';
 
@@ -21,7 +21,7 @@ const DropZoneStyle = styled('div')(({ theme }) => ({
 }));
 
 type UploadFileProps = {
-  onAddImage: (task: ImageCardProps) => void;
+  onAddImage: (task: ImageType) => void;
   onCloseAddImage: VoidFunction;
 };
 

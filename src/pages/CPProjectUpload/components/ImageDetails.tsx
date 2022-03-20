@@ -1,7 +1,7 @@
 import { Divider, Drawer, OutlinedInput, Stack, Tooltip, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
-import { ImageCard } from '../../../@types/imagesGCS';
+import { Image } from '../../../@types/imagesGCS';
 import { IconButtonAnimate } from '../../../components/animate';
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
@@ -21,19 +21,19 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 type Props = {
-  card: ImageCard;
+  image: Image;
   isOpen: boolean;
   onClose: VoidFunction;
-  onDeleteTask: VoidFunction;
+  onDeleteImage: VoidFunction;
 };
 
-export default function ImageDetails({ card, isOpen, onClose, onDeleteTask }: Props) {
+export default function ImageDetails({ image, isOpen, onClose, onDeleteImage }: Props) {
   const dispatch = useDispatch();
   const isDesktop = useResponsive('up', 'sm');
 
   const nameInputRef = useRef<HTMLInputElement>(null);
 
-  const { name, imageUrl, id } = card;
+  const { name, imageUrl, id } = image;
   const [localName, setLocalName] = useState(name);
 
   const handleChangeName = (event: ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +47,7 @@ export default function ImageDetails({ card, isOpen, onClose, onDeleteTask }: Pr
   };
 
   const handleUpdateName = () => {
-    dispatch(updatePartialImage({ card: { id, name: localName } }));
+    dispatch(updatePartialImage({ image: { id, name: localName } }));
   };
 
   return (
@@ -71,7 +71,7 @@ export default function ImageDetails({ card, isOpen, onClose, onDeleteTask }: Pr
 
           <Stack direction="row" spacing={1} justifyContent="flex-end" flexGrow={1}>
             <Tooltip title="Delete task">
-              <IconButtonAnimate onClick={onDeleteTask} size="small">
+              <IconButtonAnimate onClick={onDeleteImage} size="small">
                 <Iconify icon={'eva:trash-2-outline'} width={20} height={20} />
               </IconButtonAnimate>
             </Tooltip>

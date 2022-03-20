@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getCollectionInfo } from 'clients/crustnft-explore-api/nft-collections';
 import omit from 'lodash/omit';
 import uuidv4 from 'utils/uuidv4';
-import { ImageCard, ImagesColumn } from '../../@types/imagesGCS';
+import { Image, ImagesLayer } from '../../@types/imagesGCS';
 import { dispatch } from '../store';
 
 function objFromArray<Type extends Record<string, any>>(array: Type[], key: string = 'id') {
@@ -15,9 +16,9 @@ type InitialState = {
   isLoading: boolean;
   error: Error | string | null;
   board: {
-    cards: Record<string, ImageCard>;
-    columns: Record<string, ImagesColumn>;
-    columnOrder: string[];
+    images: Record<string, Image>;
+    layers: Record<string, ImagesLayer>;
+    layerOrder: string[];
   };
 };
 
@@ -25,9 +26,9 @@ const initialState: InitialState = {
   isLoading: false,
   error: null,
   board: {
-    cards: {},
-    columns: {},
-    columnOrder: []
+    images: {},
+    layers: {},
+    layerOrder: []
   }
 };
 
@@ -50,78 +51,78 @@ const slice = createSlice({
     getBoardSuccess(state, action) {
       state.isLoading = false;
       const board = action.payload;
-      const cards = objFromArray<ImageCard>(board.cards);
-      const columns = objFromArray<ImagesColumn>(board.columns);
-      const { columnOrder } = board;
+      const images = objFromArray<Image>(board.images);
+      const layers = objFromArray<ImagesLayer>(board.layers);
+      const { layerOrder } = board;
       state.board = {
-        cards,
-        columns,
-        columnOrder
+        images,
+        layers,
+        layerOrder
       };
     },
 
-    // CREATE NEW COLUMN
-    createColumnSuccess(state, action) {
-      const newColumn = action.payload;
+    // CREATE NEW LAYER
+    createLayerSuccess(state, action) {
+      const newLayer = action.payload;
       state.isLoading = false;
-      state.board.columns = {
-        ...state.board.columns,
-        [newColumn.id]: newColumn
+      state.board.layers = {
+        ...state.board.layers,
+        [newLayer.id]: newLayer
       };
-      state.board.columnOrder.push(newColumn.id);
+      state.board.layerOrder.push(newLayer.id);
     },
 
-    persistCard(state, action) {
-      const columns = action.payload;
-      state.board.columns = columns;
+    persistImage(state, action) {
+      const layers = action.payload;
+      state.board.layers = layers;
     },
 
-    persistColumn(state, action) {
-      state.board.columnOrder = action.payload;
+    persistLayer(state, action) {
+      state.board.layerOrder = action.payload;
     },
 
     addImage(state, action) {
-      const { card, columnId } = action.payload;
+      const { image, layerId } = action.payload;
 
-      state.board.cards[card.id] = card;
-      state.board.columns[columnId].cardIds.push(card.id);
+      state.board.images[image.id] = image;
+      state.board.layers[layerId].imageIds.push(image.id);
     },
 
     updatePartialImage(state, action) {
-      const { card } = action.payload;
+      const { image } = action.payload;
 
-      if (state.board.cards.hasOwnProperty(card.id)) {
-        state.board.cards[card.id] = { ...state.board.cards[card.id], ...card };
+      if (state.board.images.hasOwnProperty(image.id)) {
+        state.board.images[image.id] = { ...state.board.images[image.id], ...image };
       }
     },
 
-    deleteTask(state, action) {
-      const { cardId, columnId } = action.payload;
+    deleteImage(state, action) {
+      const { imageId, layerId } = action.payload;
 
-      state.board.columns[columnId].cardIds = state.board.columns[columnId].cardIds.filter(
-        (id) => id !== cardId
+      state.board.layers[layerId].imageIds = state.board.layers[layerId].imageIds.filter(
+        (id) => id !== imageId
       );
 
-      state.board.cards = omit(state.board.cards, [cardId]);
+      state.board.images = omit(state.board.images, [imageId]);
     },
 
-    // UPDATE COLUMN
-    updateColumnSuccess(state, action) {
-      const column = action.payload;
+    // UPDATE LAYER
+    updateLayerSuccess(state, action) {
+      const layer = action.payload;
 
       state.isLoading = false;
-      state.board.columns[column.id] = column;
+      state.board.layers[layer.id] = layer;
     },
 
-    // DELETE COLUMN
-    deleteColumnSuccess(state, action) {
-      const { columnId } = action.payload;
-      const deletedColumn = state.board.columns[columnId];
+    // DELETE LAYER
+    deleteLayerSuccess(state, action) {
+      const { layerId } = action.payload;
+      const deletedLayer = state.board.layers[layerId];
 
       state.isLoading = false;
-      state.board.columns = omit(state.board.columns, [columnId]);
-      state.board.cards = omit(state.board.cards, [...deletedColumn.cardIds]);
-      state.board.columnOrder = state.board.columnOrder.filter((c) => c !== columnId);
+      state.board.layers = omit(state.board.layers, [layerId]);
+      state.board.images = omit(state.board.images, [...deletedLayer.imageIds]);
+      state.board.layerOrder = state.board.layerOrder.filter((c) => c !== layerId);
     }
   }
 });
@@ -134,7 +135,7 @@ export const { actions } = slice;
 // ----------------------------------------------------------------------
 
 const mock_board_2 = {
-  cards: [
+  images: [
     {
       id: '98bf6e8b-becc-485b-9c3f-a7d09392c48d',
       name: 'Yellow',
@@ -161,11 +162,11 @@ const mock_board_2 = {
       imageUrl: 'https://minimal-assets-api.vercel.app/assets/images/feeds/feed_5.jpg'
     }
   ],
-  columns: [
+  layers: [
     {
       id: '8cd887ec-b3bc-11eb-8529-0242ac130003',
       name: 'Background',
-      cardIds: [
+      imageIds: [
         '98bf6e8b-becc-485b-9c3f-a7d09392c48d',
         'ab9cebca-6cb4-4847-aa17-3b261b3d1236',
         'ab9cebca-6cb4-4847-aa17-3b261b3d1234',
@@ -175,18 +176,26 @@ const mock_board_2 = {
     {
       id: '23008a1f-ad94-4771-b85c-3566755afab7',
       name: 'Upper layer',
-      cardIds: ['ab9cebca-6cb4-4847-aa17-3b261b3dd0fb']
+      imageIds: ['ab9cebca-6cb4-4847-aa17-3b261b3dd0fb']
     }
   ],
-  columnOrder: ['8cd887ec-b3bc-11eb-8529-0242ac130003', '23008a1f-ad94-4771-b85c-3566755afab7']
+  layerOrder: ['8cd887ec-b3bc-11eb-8529-0242ac130003', '23008a1f-ad94-4771-b85c-3566755afab7']
 };
 
-export function getBoard() {
+export function getBoard(accessToken: string, collectionId: string) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      // const response = await axios.get('https://minimal-assets-api.vercel.app/api/kanban/board');
-      console.log(mock_board);
+      const collectionInfo = await getCollectionInfo(accessToken, collectionId);
+      console.log('collectionInfo', collectionInfo);
+
+      // dispatch(
+      //   slice.actions.getBoardSuccess({
+      //     cards: collectionInfo.images,
+      //     columns: collectionInfo.layers,
+      //     columnOrder: collectionInfo.layerOrder
+      //   })
+      // );
       dispatch(slice.actions.getBoardSuccess(mock_board_2));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -196,7 +205,7 @@ export function getBoard() {
 
 // ----------------------------------------------------------------------
 
-export function createColumn(newColumn: { name: string }) {
+export function createLayer(newLayer: { name: string }) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
@@ -206,7 +215,7 @@ export function createColumn(newColumn: { name: string }) {
       // );
 
       dispatch(
-        slice.actions.createColumnSuccess({ cardIds: [], id: uuidv4(), name: newColumn.name })
+        slice.actions.createLayerSuccess({ imageIds: [], id: uuidv4(), name: newLayer.name })
       );
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -216,18 +225,18 @@ export function createColumn(newColumn: { name: string }) {
 
 // ----------------------------------------------------------------------
 
-export function updateColumn(columnId: string, updateColumn: ImagesColumn) {
+export function updateLayer(layerId: string, updateLayer: ImagesLayer) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
       // const response = await axios.post(
       //   'https://minimal-assets-api.vercel.app/api/kanban/columns/update',
       //   {
-      //     columnId,
-      //     updateColumn
+      //     layerId,
+      //     updateLayer
       //   }
       // );
-      dispatch(slice.actions.updateColumnSuccess(updateColumn));
+      dispatch(slice.actions.updateLayerSuccess(updateLayer));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -236,14 +245,14 @@ export function updateColumn(columnId: string, updateColumn: ImagesColumn) {
 
 // ----------------------------------------------------------------------
 
-export function deleteColumn(columnId: string) {
+export function deleteLayer(layerId: string) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
       // await axios.post('https://minimal-assets-api.vercel.app/api/kanban/columns/delete', {
-      //   columnId
+      //   layerId
       // });
-      dispatch(slice.actions.deleteColumnSuccess({ columnId }));
+      dispatch(slice.actions.deleteLayerSuccess({ layerId }));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -252,46 +261,46 @@ export function deleteColumn(columnId: string) {
 
 // ----------------------------------------------------------------------
 
-export function persistColumn(newColumnOrder: string[]) {
+export function persistLayer(newLayerOrder: string[]) {
   return () => {
-    dispatch(slice.actions.persistColumn(newColumnOrder));
+    dispatch(slice.actions.persistLayer(newLayerOrder));
   };
 }
 
 // ----------------------------------------------------------------------
 
-export function persistCard(columns: Record<string, ImagesColumn>) {
+export function persistImage(layers: Record<string, ImagesLayer>) {
   return () => {
-    dispatch(slice.actions.persistCard(columns));
+    dispatch(slice.actions.persistImage(layers));
   };
 }
 
 // ----------------------------------------------------------------------
 
-export function addImage({ card, columnId }: { card: Partial<ImageCard>; columnId: string }) {
+export function addImage({ image, layerId }: { image: Partial<Image>; layerId: string }) {
   return () => {
-    dispatch(slice.actions.addImage({ card, columnId }));
+    dispatch(slice.actions.addImage({ image, layerId }));
   };
 }
 
 // ----------------------------------------------------------------------
 
-export function updatePartialImage({ card }: { card: Partial<ImageCard> }) {
+export function updatePartialImage({ image }: { image: Partial<Image> }) {
   return () => {
-    dispatch(slice.actions.updatePartialImage({ card }));
+    dispatch(slice.actions.updatePartialImage({ image }));
   };
 }
 
 // ----------------------------------------------------------------------
 
-export function deleteTask({ cardId, columnId }: { cardId: string; columnId: string }) {
+export function deleteImage({ imageId, layerId }: { imageId: string; layerId: string }) {
   return () => {
-    dispatch(slice.actions.deleteTask({ cardId, columnId }));
+    dispatch(slice.actions.deleteImage({ imageId, layerId }));
   };
 }
 
 const mock_board = {
-  cards: [
+  images: [
     {
       id: 'deb02f04-9cf8-4f1e-97e0-2fbda84cc6b3',
       name: 'Call with sales of HubSpot',
@@ -477,11 +486,11 @@ const mock_board = {
       completed: true
     }
   ],
-  columns: [
+  layers: [
     {
       id: '8cd887ec-b3bc-11eb-8529-0242ac130003',
       name: 'Backlog',
-      cardIds: [
+      imageIds: [
         'deb02f04-9cf8-4f1e-97e0-2fbda84cc6b3',
         '98bf6e8b-becc-485b-9c3f-a7d09392c48d',
         '99fbc02c-de89-4be3-9515-f8bd12227d38'
@@ -490,20 +499,20 @@ const mock_board = {
     {
       id: '23008a1f-ad94-4771-b85c-3566755afab7',
       name: 'Progress',
-      cardIds: ['ab9cebca-6cb4-4847-aa17-3b261b3dd0fb', 'ebf0d26a-78e5-414f-986f-003d8fcd3154']
+      imageIds: ['ab9cebca-6cb4-4847-aa17-3b261b3dd0fb', 'ebf0d26a-78e5-414f-986f-003d8fcd3154']
     },
     {
       id: '37a9a747-f732-4587-a866-88d51c037641',
       name: 'Q&A',
-      cardIds: []
+      imageIds: []
     },
     {
       id: '4ac3cd37-b3e1-466a-8e3b-d7d88f6f5d4f',
       name: 'Production',
-      cardIds: ['9d98ce30-3c51-4de3-8537-7a4b663ee3af']
+      imageIds: ['9d98ce30-3c51-4de3-8537-7a4b663ee3af']
     }
   ],
-  columnOrder: [
+  layerOrder: [
     '8cd887ec-b3bc-11eb-8529-0242ac130003',
     '23008a1f-ad94-4771-b85c-3566755afab7',
     '37a9a747-f732-4587-a866-88d51c037641',

@@ -76,7 +76,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             Uploaded Photos
           </Typography>
           <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
-            20
+            {project?.images?.length || 0}
           </Typography>
         </Stack>
         <Stack direction="row" alignItems="center" justifyContent="space-between">

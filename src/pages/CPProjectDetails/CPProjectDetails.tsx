@@ -1,17 +1,49 @@
 import { Icon } from '@iconify/react';
 import { Box, Card, Container, Grid, Link, Stack, Typography } from '@mui/material';
+import { getCollectionInfo } from 'clients/crustnft-explore-api/nft-collections';
 import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
+import useAuth from 'hooks/useAuth';
+import useWeb3 from 'hooks/useWeb3';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import Page from '../../components/Page';
 import DeployCollection from './components/DeployCollection';
+
 export default function CPProjectDetails() {
   const { id } = useParams();
+  const { accessToken, isAuthenticated } = useAuth();
+  const { signInWallet } = useWeb3();
+  const [error, setError] = useState<boolean>(false);
+  const [collectionInfo, setCollectionInfo] = useState<any>();
+
+  useEffect(() => {
+    const getCollection = async () => {
+      if (!id) return;
+      const _collectionInfo = await getCollectionInfo(accessToken, id);
+
+      if (!_collectionInfo) {
+        setError(true);
+        return;
+      }
+
+      setCollectionInfo(_collectionInfo);
+    };
+
+    getCollection();
+  }, [id]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      signInWallet();
+    }
+  }, [signInWallet]);
+
   return (
     <Page title="Crypto Punks Projects">
       <Container maxWidth="lg" sx={{ mt: { lg: -3 } }}>
         <HeaderBreadcrumbs
           heading="Dashboard"
-          links={[{ name: 'Project Name', href: '#/projects-dashboard' }]}
+          links={[{ name: collectionInfo?.name, href: '#/projects-dashboard' }]}
         />
         <Card sx={{ p: 3 }}>
           <Stack spacing={4}>

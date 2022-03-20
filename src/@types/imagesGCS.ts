@@ -4,20 +4,20 @@ export type Assignee = {
   name: string;
 };
 
-export type ImageCard = {
+export type Image = {
   id: string;
   name: string;
   imageUrl: string;
 };
 
-export type ImagesColumn = {
+export type ImagesLayer = {
   id: string;
   name: string;
-  cardIds: string[];
+  imageIds: string[];
 };
 
 export type ImagesBoard = {
-  cards: ImageCard[];
-  columns: ImagesColumn[];
-  columnOrder: string[];
+  images: Image[];
+  layers: ImagesLayer[];
+  layerOrder: string[];
 };

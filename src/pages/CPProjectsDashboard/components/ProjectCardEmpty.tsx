@@ -2,7 +2,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Icon } from '@iconify/react';
 import { LoadingButton } from '@mui/lab';
 import { Card, Dialog, DialogContent, Stack, Typography, useTheme } from '@mui/material';
-import axios from 'axios';
+import { createCPCollection } from 'clients/crustnft-explore-api/nft-collections';
+import { EMPTY_CREATENFTCOLLECTIONDTO } from 'clients/crustnft-explore-api/types';
 import useAuth from 'hooks/useAuth';
 import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -23,8 +24,8 @@ const defaultValues = {
 
 export default function ProjectCardEmpty() {
   const { accessToken } = useAuth();
+  const { getProjects } = useContext(CPProjectsContext);
   const theme = useTheme();
-  const { CPProjects, setCPProjects } = useContext(CPProjectsContext);
 
   const [openDialogLevels, setOpenDialogLevels] = useState(false);
 
@@ -48,26 +49,19 @@ export default function ProjectCardEmpty() {
   const onSubmit = async () => {
     const { name, description } = watch();
 
-    const response = await axios
-      .post(
-        'https://asia-east2-crustnft.cloudfunctions.net/stage-nft-generator-api/api/v1/ntf-collections',
-        {
-          images: [],
-          layers: [],
-          name,
-          description: description || '',
-          layerOrder: []
-        },
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      )
-      .catch((err) => {
-        console.log(err.response);
-        return;
-      });
+    const collection = await createCPCollection(
+      {
+        ...EMPTY_CREATENFTCOLLECTIONDTO,
+        name,
+        description: description || ''
+      },
+      accessToken
+    );
 
-    if (!response?.data?.data?.id) return;
+    setOpenDialogLevels(false);
 
-    setCPProjects([...CPProjects, response.data.data.id]);
+    if (!collection) return;
+    getProjects();
   };
   return (
     <>
