@@ -17,21 +17,27 @@ type Acceptedsize =
   | 'body2'
   | undefined;
 
+interface TypographyWithSubtitleProps {
+  title: string;
+  subTitle: string;
+  titleSize: Acceptedsize;
+  subTitleSize: Acceptedsize;
+  [key: string]: unknown;
+}
+
 export function TypographyWithSubtitle({
   title,
   subTitle,
   titleSize,
-  subTitleSize
-}: {
-  title: String;
-  subTitle: String;
-  titleSize: Acceptedsize;
-  subTitleSize: Acceptedsize;
-}) {
+  subTitleSize,
+  ...other
+}: TypographyWithSubtitleProps) {
   return (
     <Stack direction="row" spacing={1} alignItems="baseline">
-      <Typography variant={titleSize}>{title}</Typography>
-      <Typography variant={subTitleSize} sx={{ opacity: 0.5 }}>
+      <Typography variant={titleSize} {...other}>
+        {title}
+      </Typography>
+      <Typography variant={subTitleSize} sx={{ opacity: 0.5 }} {...other}>
         {subTitle}
       </Typography>
     </Stack>
