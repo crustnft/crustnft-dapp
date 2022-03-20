@@ -72,7 +72,7 @@ const slice = createSlice({
       state.board.layerOrder.push(newLayer.id);
     },
 
-    persistCard(state, action) {
+    persistImage(state, action) {
       const layers = action.payload;
       state.board.layers = layers;
     },
@@ -96,7 +96,7 @@ const slice = createSlice({
       }
     },
 
-    deleteTask(state, action) {
+    deleteImage(state, action) {
       const { imageId, layerId } = action.payload;
 
       state.board.layers[layerId].imageIds = state.board.layers[layerId].imageIds.filter(
@@ -269,9 +269,9 @@ export function persistLayer(newLayerOrder: string[]) {
 
 // ----------------------------------------------------------------------
 
-export function persistCard(layers: Record<string, ImagesLayer>) {
+export function persistImage(layers: Record<string, ImagesLayer>) {
   return () => {
-    dispatch(slice.actions.persistCard(layers));
+    dispatch(slice.actions.persistImage(layers));
   };
 }
 
@@ -285,17 +285,17 @@ export function addImage({ image, layerId }: { image: Partial<Image>; layerId: s
 
 // ----------------------------------------------------------------------
 
-export function updatePartialImage({ card }: { card: Partial<Image> }) {
+export function updatePartialImage({ image }: { image: Partial<Image> }) {
   return () => {
-    dispatch(slice.actions.updatePartialImage({ card }));
+    dispatch(slice.actions.updatePartialImage({ image }));
   };
 }
 
 // ----------------------------------------------------------------------
 
-export function deleteTask({ imageId, layerId }: { imageId: string; layerId: string }) {
+export function deleteImage({ imageId, layerId }: { imageId: string; layerId: string }) {
   return () => {
-    dispatch(slice.actions.deleteTask({ imageId, layerId }));
+    dispatch(slice.actions.deleteImage({ imageId, layerId }));
   };
 }
 

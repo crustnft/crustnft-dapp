@@ -24,10 +24,10 @@ type Props = {
   image: Image;
   isOpen: boolean;
   onClose: VoidFunction;
-  onDeleteTask: VoidFunction;
+  onDeleteImage: VoidFunction;
 };
 
-export default function ImageDetails({ image, isOpen, onClose, onDeleteTask }: Props) {
+export default function ImageDetails({ image, isOpen, onClose, onDeleteImage }: Props) {
   const dispatch = useDispatch();
   const isDesktop = useResponsive('up', 'sm');
 
@@ -47,7 +47,7 @@ export default function ImageDetails({ image, isOpen, onClose, onDeleteTask }: P
   };
 
   const handleUpdateName = () => {
-    dispatch(updatePartialImage({ card: { id, name: localName } }));
+    dispatch(updatePartialImage({ image: { id, name: localName } }));
   };
 
   return (
@@ -71,7 +71,7 @@ export default function ImageDetails({ image, isOpen, onClose, onDeleteTask }: P
 
           <Stack direction="row" spacing={1} justifyContent="flex-end" flexGrow={1}>
             <Tooltip title="Delete task">
-              <IconButtonAnimate onClick={onDeleteTask} size="small">
+              <IconButtonAnimate onClick={onDeleteImage} size="small">
                 <Iconify icon={'eva:trash-2-outline'} width={20} height={20} />
               </IconButtonAnimate>
             </Tooltip>

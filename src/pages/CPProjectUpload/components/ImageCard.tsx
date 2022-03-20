@@ -7,11 +7,11 @@ import ImageDetails from './ImageDetails';
 
 type Props = {
   image: ImageType;
-  onDeleteTask: (id: string) => void;
+  onDeleteImage: (id: string) => void;
   index: number;
 };
 
-export default function ImageCard({ image, onDeleteTask, index }: Props) {
+export default function ImageCard({ image, onDeleteImage, index }: Props) {
   const { name, imageUrl } = image;
   const [openDetails, setOpenDetails] = useState(false);
 
@@ -72,7 +72,7 @@ export default function ImageCard({ image, onDeleteTask, index }: Props) {
             image={image}
             isOpen={openDetails}
             onClose={handleCloseDetails}
-            onDeleteTask={() => onDeleteTask(image.id)}
+            onDeleteImage={() => onDeleteImage(image.id)}
           />
         </div>
       )}

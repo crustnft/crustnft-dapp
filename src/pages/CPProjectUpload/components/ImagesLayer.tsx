@@ -4,7 +4,7 @@ import { useSnackbar } from 'notistack';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
 import { ImagesLayer as Layer } from '../../../@types/imagesGCS';
-import { addImage, deleteLayer, deleteTask, updateLayer } from '../../../redux/slices/imagesGCS';
+import { addImage, deleteImage, deleteLayer, updateLayer } from '../../../redux/slices/imagesGCS';
 import { RootState, useDispatch } from '../../../redux/store';
 import ImageCard from './ImageCard';
 import ImagesAdd from './ImagesAdd';
@@ -23,8 +23,8 @@ export default function ImagesLayer({ layer, index }: Props) {
 
   const { name, imageIds, id } = layer;
 
-  const handleDeleteTask = (imageId: string) => {
-    dispatch(deleteTask({ imageId, layerId: id }));
+  const handleDeleteImage = (imageId: string) => {
+    dispatch(deleteImage({ imageId, layerId: id }));
   };
 
   const handleUpdateLayer = async (newName: string) => {
@@ -79,7 +79,7 @@ export default function ImagesLayer({ layer, index }: Props) {
                         {imageIds.map((imageId, index) => (
                           <ImageCard
                             key={imageId}
-                            onDeleteTask={handleDeleteTask}
+                            onDeleteImage={handleDeleteImage}
                             image={board?.images[imageId]}
                             index={index}
                           />

@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
 import Page from '../../components/Page';
-import { getBoard, persistCard, persistLayer } from '../../redux/slices/imagesGCS';
+import { getBoard, persistImage, persistLayer } from '../../redux/slices/imagesGCS';
 import { useDispatch, useSelector } from '../../redux/store';
 import ImagesLayer from './components/ImagesLayer';
 import ImagesLayerAdd from './components/ImagesLayerAdd';
@@ -87,7 +87,7 @@ export default function CPProjectUpload() {
       };
 
       dispatch(
-        persistCard({
+        persistImage({
           ...board.layers,
           [updatedLayer.id]: updatedLayer
         })
@@ -110,7 +110,7 @@ export default function CPProjectUpload() {
     };
 
     dispatch(
-      persistCard({
+      persistImage({
         ...board.layers,
         [updatedStart.id]: updatedStart,
         [updatedFinish.id]: updatedFinish
