@@ -3,20 +3,13 @@ import { useTheme } from '@mui/material/styles';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Slider from 'react-slick';
-import { getDataFromTokenUri } from 'services/http';
-import {
-  connectContract,
-  getName,
-  getOwner,
-  getTokenURI,
-  getTotalSupply
-} from 'services/smartContract/evmCompatible';
+import { getNftList4CollectionCard } from 'services/fetchCollection/getNFTList';
+import { connectContract, getName, getTotalSupply } from 'services/smartContract/evmCompatible';
 import { getChainNameByChainId, getRpcUrlByChainId } from 'utils/blockchainHandlers';
-import { parseNftUri } from 'utils/tokenUriHandlers';
+import NftCard from '../../../components/NftCard';
 import CarouselArrows from './CarouselArrows';
 import CollectionSliderSkeleton from './CollectionSliderSkeleton';
 import EmptyCollectionBox from './EmptyCollectionBox';
-import NftCard from './NftCard';
 import { TypographyWithSubtitle } from './TitleWithSubtitle';
 
 const NB_OF_NFT_PER_CAROUSEL = 10;
@@ -80,43 +73,21 @@ export default function CollectionSlider({
       const _totalSupply = await getTotalSupply(contract).catch((e) => {
         console.log(e);
       });
-      setTotalSupply(_totalSupply || 0);
+      if (!_totalSupply) return;
+      setTotalSupply(_totalSupply);
       const nbOfNftPerCarousel =
         _totalSupply < NB_OF_NFT_PER_CAROUSEL ? _totalSupply : NB_OF_NFT_PER_CAROUSEL;
 
       setNftList((prevList) => [...emptyNftList.slice(0, nbOfNftPerCarousel || 0)]);
-      for (let i = 0; i < nbOfNftPerCarousel; i++) {
-        const tokenId = i + 1;
-        getTokenURI(contract, tokenId)
-          .then(async (tokenUri) => {
-            const parsedTokenUri = parseNftUri(tokenUri);
-            const data = await getDataFromTokenUri(parsedTokenUri);
-            const owner = await getOwner(contract, tokenId);
-            const parsedImageUrl = parseNftUri(data.image || '');
-            setNftList((prevList) => {
-              prevList[i] = {
-                key: contractAddr.slice(-4, -1) + tokenId,
-                failToLoad: false,
-                tokenId: tokenId.toString(),
-                tokenURI: tokenUri,
-                imageUrl: parsedImageUrl,
-                name: data.name || '',
-                owner,
-                chainName: getChainNameByChainId(chainId),
-                contractAddr: contractAddr
-              };
-              return [...prevList];
-            });
-          })
-          .catch((e) => {
-            setNftList((prevList) => {
-              prevList[i] = { ...prevList[i], failToLoad: true };
-              return [...prevList];
-            });
-            setFailedNft((prevNb) => prevNb + 1);
-            console.log(`Error token ${tokenId}: `, e);
-          });
-      }
+      const _nftList = await getNftList4CollectionCard(
+        contract,
+        chainId,
+        _totalSupply,
+        0,
+        _totalSupply
+      );
+      if (!_nftList) return;
+      setNftList(_nftList);
     }
 
     getNftList().then(() => {
@@ -187,7 +158,7 @@ export default function CollectionSlider({
         <CollectionSliderSkeleton />
       ) : (
         <Stack>
-          {totalSupply === 0 ? (
+          {totalSupply <= 0 ? (
             <EmptyCollectionBox
               contractAddr={contractAddr}
               chainId={chainId}
@@ -199,8 +170,10 @@ export default function CollectionSlider({
             <Card
               sx={{
                 p: { xs: 1, sm: 2, md: 3 },
-                bgcolor: theme.palette.collectionSlider,
-                borderRadius: '16px'
+                bgcolor: 'transparent',
+                borderRadius: '16px',
+                border: 'none',
+                boxShadow: 'none'
               }}
             >
               <CardHeader
@@ -223,12 +196,12 @@ export default function CollectionSlider({
                   </Stack>
                 }
                 sx={{
-                  p: 0,
+                  p: 1,
                   '& .MuiCardHeader-action': { alignSelf: 'center' }
                 }}
               />
 
-              <Stack direction="row" spacing={2} sx={{ mb: 1 }}>
+              <Stack direction="row" spacing={2} sx={{ mb: 1, px: 1 }}>
                 {totalSupply !== 0 && (
                   <Link href={`#/collection/${chainName}/${contractAddr}/1`}>
                     <Button
@@ -267,7 +240,7 @@ export default function CollectionSlider({
               <Stack sx={{ mx: -1 }}>
                 <Slider ref={carouselRef} {...settings}>
                   {NftList.filter((nft) => !nft.failToLoad).map((nft) => (
-                    <Box key={nft.key}>
+                    <Box key={nft.key} sx={{ px: 2 }}>
                       <NftCard {...nft} />
                     </Box>
                   ))}

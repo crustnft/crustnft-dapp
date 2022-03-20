@@ -5,9 +5,9 @@ import SailingIcon from '@mui/icons-material/Sailing';
 import { Avatar, Box, Card, Divider, Link, Stack, Tooltip, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
+import { ColorButton } from 'components/NftCard';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWeb3 from 'hooks/useWeb3';
-import { ColorButton } from 'pages/CollectionViewer/components/NftCard';
 import { useEffect, useMemo, useState } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import {

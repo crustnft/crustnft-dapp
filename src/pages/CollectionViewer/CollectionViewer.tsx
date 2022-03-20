@@ -12,10 +12,10 @@ import {
   getTotalSupply
 } from 'services/smartContract/evmCompatible';
 import { getChainByNetworkName, getRpcUrlByNetworkName } from 'utils/blockchainHandlers';
+import NftCard from '../../components/NftCard';
 import Page from '../../components/Page';
 import { NB_NFT_PER_ROW } from '../../constants/pagination';
 import { SIMPLIFIED_ERC721_ABI } from '../../constants/simplifiedERC721ABI';
-import NftCard from './components/NftCard';
 import { ProfileCoverProps } from './components/ProfileCover';
 Identicons.svgPath = './static/identicons.min.svg';
 

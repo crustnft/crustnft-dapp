@@ -3,7 +3,7 @@ import Button, { ButtonProps } from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import { BallClipRotateMultiple } from 'react-pure-loaders';
-import type { NftCardCollectionViewerProps } from '../CollectionViewer.types';
+import type { NftCardCollectionViewerProps } from '../pages/CollectionViewer/CollectionViewer.types';
 
 // To be moved to its place
 export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
