@@ -28,7 +28,7 @@ export default function CPProjectsDashboard() {
   useEffect(() => {
     if (!isAuthenticated) return;
     getProjects();
-  }, [isAuthenticated, accessToken]);
+  }, [isAuthenticated, accessToken, getProjects]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -53,8 +53,10 @@ export default function CPProjectsDashboard() {
                 PROJECTS
               </Typography>
 
-              <Typography sx={{ color: 'text.secondary' }}>
-                You have to connect to a wallet to see your projects.
+              <Typography
+                sx={{ color: 'text.secondary', display: isAuthenticated ? 'none' : 'block' }}
+              >
+                You have to connect to a wallet and sign a message to see your projects.
               </Typography>
             </Stack>
           </Stack>

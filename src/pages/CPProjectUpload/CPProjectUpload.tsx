@@ -1,6 +1,9 @@
 import { Container, Stack } from '@mui/material';
+import { getCollectionInfo } from 'clients/crustnft-explore-api/nft-collections';
 import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
-import { useEffect } from 'react';
+import useAuth from 'hooks/useAuth';
+import useWeb3 from 'hooks/useWeb3';
+import { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
 import Page from '../../components/Page';
@@ -13,14 +16,36 @@ export default function CPProjectUpload() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { board } = useSelector((state) => state.image);
+  const { accessToken, isAuthenticated } = useAuth();
+  const { signInWallet } = useWeb3();
+  const [collectionInfo, setCollectionInfo] = useState<any>();
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     dispatch(getBoard());
   }, [dispatch]);
 
   useEffect(() => {
-    console.log('board', board);
-  }, [board]);
+    if (!isAuthenticated) {
+      signInWallet();
+    }
+  }, [signInWallet]);
+
+  useEffect(() => {
+    const getCollection = async () => {
+      if (!id) return;
+      const _collectionInfo = await getCollectionInfo(accessToken, id);
+
+      if (!_collectionInfo) {
+        setError(true);
+        return;
+      }
+
+      setCollectionInfo(_collectionInfo);
+    };
+
+    getCollection();
+  }, [id]);
 
   const onDragEnd = (result: DropResult) => {
     // Reorder card
@@ -91,7 +116,7 @@ export default function CPProjectUpload() {
         <HeaderBreadcrumbs
           heading="Dashboard"
           links={[
-            { name: 'Project Name', href: `/project-details/${id}` },
+            { name: collectionInfo?.name, href: `/project-details/${id}` },
             {
               name: 'Upload Image'
             }
