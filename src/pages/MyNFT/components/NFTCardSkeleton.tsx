@@ -1,4 +1,4 @@
-import { Card, Skeleton, Stack } from '@mui/material';
+import { Box, Card, Skeleton, Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
 export default function NFTCardSkeleton() {
@@ -26,7 +26,18 @@ export default function NFTCardSkeleton() {
           </Skeleton>
         </Stack>
       </Stack>
-      <Skeleton sx={{ height: '214px', mx: 2, borderRadius: '5px' }} variant="rectangular" />
+      <Box sx={{ px: 2 }}>
+        <Skeleton
+          sx={{
+            borderRadius: '5px',
+            height: 0,
+            overflow: 'hidden',
+            paddingTop: '100%',
+            position: 'relative'
+          }}
+          variant="rectangular"
+        />
+      </Box>
       <Stack direction="row" sx={{ p: 2, justifyContent: 'center' }}>
         <Skeleton variant="text">
           <Typography variant="h6" sx={{ fontSize: 13 }}>
