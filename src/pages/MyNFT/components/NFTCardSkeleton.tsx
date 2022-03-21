@@ -3,9 +3,7 @@ import Typography from '@mui/material/Typography';
 
 export default function NFTCardSkeleton() {
   return (
-    <Card
-      sx={{ width: '248px', borderRadius: 2, bgcolor: (theme) => theme.palette.card.background }}
-    >
+    <Card sx={{ borderRadius: 2, bgcolor: (theme) => theme.palette.card.background }}>
       <Stack direction="row" sx={{ p: 2, display: 'flex', alignItems: 'baseline' }}>
         <Stack
           sx={{
