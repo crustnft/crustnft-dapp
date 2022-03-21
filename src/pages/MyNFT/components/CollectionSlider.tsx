@@ -165,11 +165,7 @@ export default function CollectionSlider({
         ) : (
           <Card
             sx={{
-              p: { xs: 1, sm: 2, md: 3 },
-              bgcolor: 'transparent',
-              borderRadius: '16px',
-              border: 'none',
-              boxShadow: 'none'
+              p: { xs: 1, sm: 2, md: 3 }
             }}
           >
             <CardHeader

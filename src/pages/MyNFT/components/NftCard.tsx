@@ -52,16 +52,19 @@ export default function NftCard({
       ) : (
         <Paper
           sx={{
+            boxShadow: theme.shadows['4'],
             borderRadius: 2,
-            bgcolor: (theme) => theme.palette.card.background,
+            bgcolor: theme.palette.card.background,
             transition: 'all .2s ease-in-out',
             '&:hover': {
               transform: `translateY(-${theme.spacing(1 / 4)})`,
-              boxShadow: (theme) => theme.shadows['4']
-            }
+              boxShadow: theme.shadows['4']
+            },
+            p: 2,
+            my: 1
           }}
         >
-          <Stack direction="row" sx={{ p: 2, display: 'flex', alignItems: 'baseline' }}>
+          <Stack direction="row" sx={{ display: 'flex', alignItems: 'baseline' }}>
             <Stack
               sx={{
                 borderRadius: 5,
@@ -80,7 +83,7 @@ export default function NftCard({
               </Typography>
             </Stack>
           </Stack>
-          <Box sx={{ p: 2, py: 1, position: 'relative' }}>
+          <Box sx={{ py: 1, position: 'relative' }}>
             <Link href={`#/assets/${chainName}/${contractAddr}/${tokenId}`}>
               <Box sx={{ border: 1, borderRadius: '5px', borderColor: '#DFE3E8' }}>
                 <Stack
@@ -111,10 +114,7 @@ export default function NftCard({
             </Link>
           </Box>
 
-          <Stack
-            direction="row"
-            sx={{ px: 2, py: 0, justifyContent: 'center', alignItems: 'baseline' }}
-          >
+          <Stack direction="row" sx={{ justifyContent: 'center', alignItems: 'baseline' }}>
             <Typography variant="h6" noWrap>
               {name}
             </Typography>
@@ -123,7 +123,7 @@ export default function NftCard({
           <Stack
             direction="row"
             spacing={0.5}
-            sx={{ px: 2, pb: 2, justifyContent: 'center', alignItems: 'baseline' }}
+            sx={{ justifyContent: 'center', alignItems: 'baseline' }}
           >
             <Typography variant="subtitle2">0.00</Typography>
             <Typography variant="caption">ETH</Typography>

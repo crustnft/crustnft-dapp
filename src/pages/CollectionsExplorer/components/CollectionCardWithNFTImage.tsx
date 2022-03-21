@@ -59,7 +59,6 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const contract = useMemo(() => {
-    console.log('RPC', getRpcUrlByChainId(chainId));
     return connectContract(
       contractAddress || '',
       SIMPLIFIED_ERC721_ABI,
@@ -211,10 +210,8 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                 sx={{ alignItems: 'baseline', justifyContent: 'space-between', py: 1, pb: 2 }}
               >
                 <Link
-                  underline="hover"
+                  underline="none"
                   href={`#/collection/${network.toLowerCase()}/${contractAddress}/1`}
-                  target="_blank"
-                  rel="noopener"
                   sx={{ maxWidth: '70%' }}
                 >
                   <Typography variant="h5" noWrap>
