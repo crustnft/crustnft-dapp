@@ -113,10 +113,9 @@ export default function NftCard({
 
           <Stack
             direction="row"
-            spacing={0.5}
             sx={{ px: 2, py: 0, justifyContent: 'center', alignItems: 'baseline' }}
           >
-            <Typography variant="h6" sx={{ fontSize: 13 }}>
+            <Typography variant="h6" noWrap>
               {name}
             </Typography>
           </Stack>
@@ -126,12 +125,8 @@ export default function NftCard({
             spacing={0.5}
             sx={{ px: 2, pb: 2, justifyContent: 'center', alignItems: 'baseline' }}
           >
-            <Typography variant="h6" sx={{ fontSize: 13 }}>
-              0.00
-            </Typography>
-            <Typography variant="caption" sx={{ fontSize: 13 }}>
-              ETH
-            </Typography>
+            <Typography variant="subtitle2">0.00</Typography>
+            <Typography variant="caption">ETH</Typography>
           </Stack>
         </Paper>
       )}
