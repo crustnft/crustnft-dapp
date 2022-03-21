@@ -72,7 +72,7 @@ export default function CollectionSlider({
       const _totalSupply = await getTotalSupply(contract).catch((e) => {
         console.log(e);
       });
-      if (!_totalSupply) return;
+      if (_totalSupply === undefined || _totalSupply === null) return;
       setTotalSupply(_totalSupply);
       const nbOfNftPerCarousel =
         _totalSupply < NB_OF_NFT_PER_CAROUSEL ? _totalSupply : NB_OF_NFT_PER_CAROUSEL;
