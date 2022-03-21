@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, Method } from 'axios';
 
 const WAIT_TIME_BASE_BEFORE_RETRY = 500;
-const WAIT_TIME_VARIABLE = 500;
+const WAIT_TIME_VARIABLE = 1000;
 const NB_RETRY_GET_DATA_FROM_TOKEN_URI = 10;
 export const OPENSEA_LINK_NOT_FOUND = 'NotFound';
 
