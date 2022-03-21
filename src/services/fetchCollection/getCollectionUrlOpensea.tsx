@@ -34,7 +34,9 @@ export const getCollectionUrlOpensea = async (assetOwner: string, collectionAddr
 
   const options = {
     method: 'GET' as Method,
-    url: `https://testnets-api.opensea.io/api/v1/collections?asset_owner=${assetOwner}&offset=0&limit=${NUM_TRIES}`
+    url: 'https://testnets-api.opensea.io/api/v1/collections',
+    params: { asset_owner: assetOwner, offset: '0', limit: NUM_TRIES },
+    headers: { 'X-API-KEY': '' }
   };
   const response = await instance.request(options);
 
