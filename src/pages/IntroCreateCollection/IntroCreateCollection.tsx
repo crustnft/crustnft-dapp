@@ -27,7 +27,7 @@ export default function LearnMore() {
                 </Stack>
               </Card>
               <Stack alignItems="center" sx={{ pt: 2 }} spacing={2}>
-                <Link href="#/create-expandable-collection">
+                <Link href="#/tenK-collection">
                   <Button variant="outlined" sx={{ borderRadius: '20px', color: 'text.primary' }}>
                     Create 10K collection
                   </Button>
@@ -57,7 +57,7 @@ export default function LearnMore() {
                 </Stack>
               </Card>
               <Stack alignItems="center" sx={{ pt: 2 }} spacing={2}>
-                <Link href="#/tenK-collection">
+                <Link href="#/create-expandable-collection">
                   <Button variant="outlined" sx={{ borderRadius: '20px', color: 'text.primary' }}>
                     Create expandable collection
                   </Button>
