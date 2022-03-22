@@ -1,37 +1,24 @@
-import axios, { AxiosInstance, AxiosRequestConfig, Method } from 'axios';
+import axios, { Method } from 'axios';
+import axiosRetry from 'axios-retry';
 
-const WAIT_TIME_BASE_BEFORE_RETRY = 1500;
+const WAIT_TIME_BASE_BEFORE_RETRY = 1000;
 const WAIT_TIME_VARIABLE = 1000;
 const NB_RETRY_GET_DATA_FROM_TOKEN_URI = 100;
 export const OPENSEA_LINK_NOT_FOUND = 'NotFound';
 
-const retryIfRequestError = (axiosInstance: AxiosInstance, options: any) => {
-  const maxTime = options.retry_time || 0;
-  if (!maxTime) {
-    return axiosInstance;
-  }
-  let counter = 0;
-  axiosInstance.interceptors.response.use((response: { config: any; status: number }) => {
-    const config = response.config as AxiosRequestConfig;
-    if (counter < maxTime && response?.status === 429) {
-      counter++;
-      console.log('aaa');
-      return new Promise((resolve) => {
-        const waitTime = Math.floor(
-          WAIT_TIME_BASE_BEFORE_RETRY + Math.random() * WAIT_TIME_VARIABLE
-        );
-        setTimeout(() => resolve(axiosInstance(config)), waitTime);
-      });
-    }
-    return response;
-  });
-};
-
 export const getCollectionUrlOpensea = async (assetOwner: string, collectionAddress: string) => {
   if (assetOwner === '') return;
-  const NUM_TRIES = 50;
+  const NUM_TRIES = 300;
   const instance = axios.create();
-  retryIfRequestError(instance, { retry_time: NB_RETRY_GET_DATA_FROM_TOKEN_URI });
+  axiosRetry(instance, {
+    retryCondition: (error) => {
+      return error?.response?.status === 429;
+    },
+    retries: NB_RETRY_GET_DATA_FROM_TOKEN_URI,
+    retryDelay: () => {
+      return Math.floor(WAIT_TIME_BASE_BEFORE_RETRY + Math.random() * WAIT_TIME_VARIABLE);
+    }
+  });
 
   const options = {
     method: 'GET' as Method,
