@@ -15,14 +15,9 @@ import {
 } from '@mui/material';
 import { createContract } from 'clients/crustnft-explore-api/contracts';
 import Iconify from 'components/Iconify';
-import {
-  getContract,
-  getContractName,
-  setAuthorInfo,
-  setName,
-  setSymbol
-} from 'constants/expandingCollectionContract';
+import { getContract, getContractName } from 'constants/cryptopunkCollectionContract';
 import { SOLIDITY_COMPILER_VERSION, SPDX_LICENSE_IDENTIFIER } from 'constants/solcEnvironments';
+import { utils } from 'ethers';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
 import { useEffect, useState } from 'react';
@@ -35,6 +30,7 @@ import {
 } from 'services/createSmartContract/evmCompatible/';
 import LightTooltip from '../../../../components/LightTooltip';
 import { DoingIcon, ErrorIcon, SuccessIcon } from '../../../../components/StepperIcons';
+import { encodeArguments } from '../../service';
 
 export default function DeploySmartContract({
   startedCreation,
@@ -56,9 +52,6 @@ export default function DeploySmartContract({
   const [name, symbol, authorInfo] = watch(['name', 'symbol', 'authorInfo']);
 
   useEffect(() => {
-    setName(name);
-    setSymbol(symbol);
-    setAuthorInfo(authorInfo);
     setSource(getContract());
   }, [name, symbol, authorInfo]);
 
@@ -89,17 +82,39 @@ export default function DeploySmartContract({
     setActiveStep((prevActiveStep) => 0);
     setCompiling(true);
     const compileResult = await compileSmartContract(source, `${getContractName()}.sol`);
+    console.log('compileResult', compileResult);
+
+    console.log(compileResult?.data?.contracts['TenkeyCollection.sol']?.TenkeyCollection?.abi);
+
+    const testContructorArguments = [
+      'TOKENNAME',
+      'TOKENSYMBOL',
+      utils.parseEther('0.05'),
+      10000,
+      1,
+      'ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/hidden.json'
+    ];
+
+    const testEncodedArg = await encodeArguments(
+      compileResult?.data?.contracts['TenkeyCollection.sol']?.TenkeyCollection?.abi,
+      testContructorArguments
+    );
+
     setCompiling(false);
 
     if (compileResult) {
       setCompilingSuccess(true);
-      // await onboard?.walletCheck();
       const signer = library?.getSigner(account);
 
       setActiveStep((prevActiveStep) => 1);
       setDeploying(true);
       if (signer) {
-        const deployTransaction = deploySmartContract(compileResult, getContractName(), signer);
+        const deployTransaction = deploySmartContract(
+          compileResult,
+          getContractName(),
+          signer,
+          ...testContructorArguments
+        );
         const txResponseGenerator = await deployTransaction.next();
         setTxHash(txResponseGenerator?.value?.hash || '');
         const txReceiptGenerator = await deployTransaction.next();
@@ -129,7 +144,8 @@ export default function DeploySmartContract({
             selectedChain.chainId,
             getContractName(),
             txReceipt,
-            compileResult
+            compileResult,
+            testEncodedArg
           );
           setPublishing(false);
 

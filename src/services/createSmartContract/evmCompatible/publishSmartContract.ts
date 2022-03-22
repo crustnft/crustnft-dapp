@@ -11,7 +11,8 @@ export const publishSmartContract = async (
   chainId: number,
   contractName: string,
   txReceipt?: TransactionReceipt,
-  compileResult?: CompilerAbstract
+  compileResult?: CompilerAbstract,
+  constructorArguments?: string
 ): Promise<string | undefined> => {
   try {
     const verifiedResponse = await etherscanClient.verifyAndPublicContractSourceCode(
@@ -25,7 +26,8 @@ export const publishSmartContract = async (
           language: 'Solidity'
         }),
         compilerversion: 'v' + SOLIDITY_COMPILER_VERSION,
-        licenseType: SPDX_LICENSE_IDENTIFIER.MIT
+        licenseType: SPDX_LICENSE_IDENTIFIER.MIT,
+        constructorArguments: constructorArguments
       }
     );
     console.log('verifiedResponse: ', verifiedResponse.data);
