@@ -55,7 +55,7 @@ export default function CPProjectDetails() {
                 variant="body2"
                 component={RouterLink}
                 underline="none"
-                to={`/project-upload/${id}`}
+                to={`/collection-upload/${id}`}
                 sx={{
                   lineHeight: 2,
                   display: 'flex',

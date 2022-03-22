@@ -88,7 +88,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           </Typography>
         </Stack>
         <Stack>
-          <Link href={`#/project-details/${project.id}`} sx={{ width: '100%' }}>
+          <Link href={`#/collection-details/${project.id}`} sx={{ width: '100%' }}>
             <Button fullWidth variant="outlined" size="small">
               Open
             </Button>

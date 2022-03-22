@@ -38,7 +38,7 @@ export default function Introduction() {
               fontWeight: 700
             }}
           >
-            Create crypto punk alike projects and distribute easier than ever
+            Create your own collection like a pro
           </Typography>
           <Typography
             variant="h6"
@@ -47,7 +47,8 @@ export default function Introduction() {
             sx={{ fontWeight: 400 }}
             align={'center'}
           >
-            Crust NFT takes care of technical parts for your project
+            With CrustNFTs, generate collection, write smart contract and deploy it on blockchain in
+            minutes.
           </Typography>
         </Box>
         <Box

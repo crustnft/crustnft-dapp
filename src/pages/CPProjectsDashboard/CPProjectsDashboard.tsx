@@ -6,7 +6,6 @@ import useAuth from 'hooks/useAuth';
 import useWeb3 from 'hooks/useWeb3';
 import { createContext, useCallback, useEffect, useState } from 'react';
 import Page from '../../components/Page';
-import Introduction from './components/Introduction';
 import ProjectCard from './components/ProjectCard';
 import ProjectCardEmpty from './components/ProjectCardEmpty';
 
@@ -40,8 +39,6 @@ export default function CPProjectsDashboard() {
     <Page title="Crypto Punks Projects">
       <Container maxWidth="lg">
         <CPProjectsContext.Provider value={{ getProjects }}>
-          <Introduction />
-
           <Stack direction="row" alignItems="center" spacing={2}>
             <Stack>
               <Avatar>

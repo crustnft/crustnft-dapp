@@ -46,9 +46,9 @@ export default function Router() {
         { path: 'mint-nft/:chain/:contractAddr', element: <MintNft /> },
         { path: 'collection-explore', element: <CollectionsExplorer /> },
         { path: 'collection/:chain/:contractAddr/:pageNb', element: <CollectionViewer /> },
-        { path: 'projects-dashboard', element: <CPProjectsDashboard /> },
-        { path: 'project-details/:id', element: <CPProjectDetails /> },
-        { path: 'project-upload/:id', element: <CPProjectUpload /> },
+        { path: 'tenK-collection', element: <CPProjectsDashboard /> },
+        { path: 'collection-details/:id', element: <CPProjectDetails /> },
+        { path: 'collection-upload/:id', element: <CPProjectUpload /> },
         { path: 'create-collection', element: <IntroCreateCollection /> },
         {
           path: 'faucets',

@@ -8,7 +8,6 @@ import * as Yup from 'yup';
 import Page from '../../components/Page';
 import ConfigureSmartContract from './components/ConfigureSmartContract';
 import DeploySmartContract from './components/DeploySmartContract';
-import Introduction from './components/Introduction';
 
 type FormSmartContractConfig = {
   name: string;
@@ -53,7 +52,6 @@ export default function CreateCollection() {
   return (
     <Page title="Create NFTs Collection">
       <Container maxWidth={'lg'}>
-        <Introduction />
         <Card sx={{ p: 3 }}>
           <FormProvider {...method}>
             <ConfigureSmartContract startedCreation={startedCreation} />
