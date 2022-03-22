@@ -42,13 +42,14 @@ export default function Router() {
       children: [
         { element: <Navigate to="/wallet" replace /> },
         { path: 'wallet', element: <MyNFT /> },
-        { path: 'create-collection', element: <CreateCollection /> },
+        { path: 'create-expandable-collection', element: <CreateCollection /> },
         { path: 'mint-nft/:chain/:contractAddr', element: <MintNft /> },
         { path: 'collection-explore', element: <CollectionsExplorer /> },
         { path: 'collection/:chain/:contractAddr/:pageNb', element: <CollectionViewer /> },
-        { path: 'projects-dashboard', element: <CPProjectsDashboard /> },
-        { path: 'project-details/:id', element: <CPProjectDetails /> },
-        { path: 'project-upload/:id', element: <CPProjectUpload /> },
+        { path: 'tenK-collection', element: <CPProjectsDashboard /> },
+        { path: 'collection-details/:id', element: <CPProjectDetails /> },
+        { path: 'collection-upload/:id', element: <CPProjectUpload /> },
+        { path: 'create-collection', element: <IntroCreateCollection /> },
         {
           path: 'faucets',
           children: [
@@ -102,6 +103,10 @@ const MintNft = LoadWithoutSpinner(lazy(() => import('../pages/MintNft')));
 const CPProjectsDashboard = LoadWithoutSpinner(lazy(() => import('../pages/CPProjectsDashboard')));
 const CPProjectDetails = LoadWithoutSpinner(lazy(() => import('../pages/CPProjectDetails')));
 const CPProjectUpload = LoadWithoutSpinner(lazy(() => import('../pages/CPProjectUpload')));
+const IntroCreateCollection = LoadWithoutSpinner(
+  lazy(() => import('../pages/IntroCreateCollection'))
+);
+
 // const Universe = lazy(() => import('../pages/Universe'));
 // const NftMinting = lazy(() => import('../pages/NftMinting'));
 // const NftManager = lazy(() => import('../pages/NftManager'));
