@@ -30,7 +30,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
   return (
     <Card>
-      <Box sx={{ backgroundColor: '#F4F6F8', px: 2, py: 1 }}>
+      <Box sx={{ backgroundColor: 'customBackground.cpCardHeader', px: 2, py: 1 }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
           <Stack direction="column">
             <Typography variant="caption">

@@ -75,6 +75,10 @@ export async function verifyAndPublicContractSourceCode(
   bodyFormData.append('optimizationUsed', '0');
   bodyFormData.append('runs', '200');
   bodyFormData.append('licenseType', requestBody.licenseType);
+  if (requestBody.constructorArguments) {
+    bodyFormData.append('constructorArguments', requestBody.constructorArguments);
+  }
+
   const instance = Axios.create();
   retryWrapper(instance, { retry_time: 500 });
   return instance.post<any, EtherScanResponse>(API_ENDPOINTS[chainId], bodyFormData);

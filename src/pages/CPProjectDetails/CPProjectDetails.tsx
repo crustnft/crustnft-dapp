@@ -71,7 +71,7 @@ export default function CPProjectDetails() {
                         p: 3,
                         '&:hover': {
                           cursor: 'pointer',
-                          backgroundColor: '#F4F6F8',
+                          backgroundColor: 'background.neutral',
                           border: '1px solid #15B2E5'
                         }
                       }}
@@ -123,7 +123,7 @@ export default function CPProjectDetails() {
                       p: 3,
                       '&:hover': {
                         cursor: 'pointer',
-                        backgroundColor: '#F4F6F8',
+                        backgroundColor: 'background.neutral',
                         border: '1px solid #15B2E5'
                       }
                     }}
