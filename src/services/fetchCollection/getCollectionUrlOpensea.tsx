@@ -1,8 +1,8 @@
 import axios, { AxiosInstance, AxiosRequestConfig, Method } from 'axios';
 
-const WAIT_TIME_BASE_BEFORE_RETRY = 500;
+const WAIT_TIME_BASE_BEFORE_RETRY = 1500;
 const WAIT_TIME_VARIABLE = 1000;
-const NB_RETRY_GET_DATA_FROM_TOKEN_URI = 10;
+const NB_RETRY_GET_DATA_FROM_TOKEN_URI = 100;
 export const OPENSEA_LINK_NOT_FOUND = 'NotFound';
 
 const retryIfRequestError = (axiosInstance: AxiosInstance, options: any) => {
@@ -13,8 +13,9 @@ const retryIfRequestError = (axiosInstance: AxiosInstance, options: any) => {
   let counter = 0;
   axiosInstance.interceptors.response.use((response: { config: any; status: number }) => {
     const config = response.config as AxiosRequestConfig;
-    if (counter < maxTime && response?.status !== 429) {
+    if (counter < maxTime && response?.status === 429) {
       counter++;
+      console.log('aaa');
       return new Promise((resolve) => {
         const waitTime = Math.floor(
           WAIT_TIME_BASE_BEFORE_RETRY + Math.random() * WAIT_TIME_VARIABLE
@@ -36,7 +37,7 @@ export const getCollectionUrlOpensea = async (assetOwner: string, collectionAddr
     method: 'GET' as Method,
     url: 'https://testnets-api.opensea.io/api/v1/collections',
     params: { asset_owner: assetOwner, offset: '0', limit: NUM_TRIES },
-    headers: { 'X-API-KEY': '' }
+    headers: { 'X-API-KEY': ' ' }
   };
   const response = await instance.request(options);
 

@@ -57,7 +57,6 @@ export default function CollectionSlider({
   const [totalSupply, setTotalSupply] = useState(-1);
   const [nbEmptyCarouselItems, setNbEmptyCarouselItems] = useState(0);
   const [NftList, setNftList] = useState<NftItem[]>(emptyNftList);
-  const [loading, setLoading] = useState(true);
   // const [filteredNftList, setFilteredNftList] = useState<NftItem[]>([]);
 
   useEffect(() => {
@@ -65,33 +64,40 @@ export default function CollectionSlider({
   }, [chainId]);
 
   useEffect(() => {
+    let isSubscribed = true;
     async function getNftList() {
-      getName(contract)
-        .then((name: string) => setName(name))
-        .catch(() => setName('Unknown'));
-      const _totalSupply = await getTotalSupply(contract).catch((e) => {
-        console.log(e);
-      });
-      if (_totalSupply === undefined || _totalSupply === null) return;
-      setTotalSupply(_totalSupply);
-      const nbOfNftPerCarousel =
-        _totalSupply < NB_OF_NFT_PER_CAROUSEL ? _totalSupply : NB_OF_NFT_PER_CAROUSEL;
+      let isSubscribed = true;
+      const fetchData = async () => {
+        const name = await getName(contract);
+        const totalSupply = await getTotalSupply(contract);
 
-      setNftList((prevList) => [...emptyNftList.slice(0, nbOfNftPerCarousel || 0)]);
-      const _nftList = await getNftList4CollectionCard(
-        contract,
-        chainId,
-        _totalSupply,
-        0,
-        _totalSupply
-      );
-      if (!_nftList) return;
-      setNftList(_nftList);
+        if (isSubscribed) {
+          setName(name || 'Unknown');
+          setTotalSupply(totalSupply);
+          const nbOfNftPerCarousel =
+            totalSupply < NB_OF_NFT_PER_CAROUSEL ? totalSupply : NB_OF_NFT_PER_CAROUSEL;
+          setNftList((prevList) => [...emptyNftList.slice(0, nbOfNftPerCarousel || 0)]);
+          const nftList = await getNftList4CollectionCard(
+            contract,
+            chainId,
+            totalSupply,
+            0,
+            totalSupply
+          );
+          if (!nftList) return;
+          setNftList(nftList);
+        }
+      };
+      fetchData();
+      return () => {
+        isSubscribed = false;
+      };
     }
 
-    getNftList().then(() => {
-      setLoading(false);
-    });
+    getNftList();
+    return () => {
+      isSubscribed = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

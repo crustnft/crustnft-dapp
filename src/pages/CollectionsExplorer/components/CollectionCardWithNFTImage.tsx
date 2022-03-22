@@ -57,51 +57,66 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   }, [contractAddress, chainId]);
 
   useEffect(() => {
-    getName(contract)
-      .then((name) => setName(name))
-      .catch((e) => {
-        console.log(e);
-      });
-    getTotalSupply(contract)
-      .then((totalSupply) => setTotalSupply(totalSupply))
-      .catch((e) => {
-        console.log('ee', e, contract.address);
-      });
-    getContractOwner(contract)
-      .then((contractOwner) => setContractOwner(contractOwner))
-      .catch((e) => {
-        console.log(e);
-      });
-    const chain = getChainByChainId(chainId);
-    setNetwork(chain?.name || '');
+    let isSubscribed = true;
+    const fetchData = async () => {
+      const name = await getName(contract);
+      const totalSupply = await getTotalSupply(contract);
+      const contractOwner = await getContractOwner(contract);
+      const chain = getChainByChainId(chainId);
+      if (isSubscribed) {
+        setName(name || 'Unknown');
+        setTotalSupply(totalSupply);
+        setContractOwner(contractOwner);
+        setNetwork(chain?.name || '');
+      }
+    };
+    fetchData();
+    return () => {
+      isSubscribed = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    const fetchOpenseaLink = async () => {
-      const _openseaLink = await getCollectionUrlOpensea(contractOwner, contract.address);
+    let isSubscribed = true;
+    if (chainId === 4) {
+      const fetchOpenseaLink = async () => {
+        const _openseaLink = await getCollectionUrlOpensea(contractOwner, contract.address);
 
-      if (!_openseaLink) return;
-      setOpenseaLink(_openseaLink);
+        if (!_openseaLink) return;
+        if (isSubscribed) {
+          setOpenseaLink(_openseaLink);
+        }
+      };
+      fetchOpenseaLink();
+    }
+    return () => {
+      isSubscribed = false;
     };
-    fetchOpenseaLink();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract.address, contractOwner, totalSupply]);
 
   useEffect(() => {
-    if (chainId === 4) {
-      const fetchData = async () => {
-        const _nftList = await getNftList4CollectionCard(
-          contract,
-          chainId,
-          totalSupply,
-          0,
-          NB_NFT_TO_SHOW
-        );
-        if (!_nftList) return;
-        const emptyNft2FillIn = createEmptyNFTList(NB_NFT_TO_SHOW - _nftList.length);
+    let isSubscribed = true;
+    const fetchData = async () => {
+      const _nftList = await getNftList4CollectionCard(
+        contract,
+        chainId,
+        totalSupply,
+        0,
+        NB_NFT_TO_SHOW
+      );
+      if (!_nftList) return;
+      const emptyNft2FillIn = createEmptyNFTList(NB_NFT_TO_SHOW - _nftList.length);
+      if (isSubscribed) {
         setNftList([..._nftList, ...emptyNft2FillIn]);
-      };
-      fetchData();
-    }
+      }
+    };
+    fetchData();
+    return () => {
+      isSubscribed = false;
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalSupply]);
 
