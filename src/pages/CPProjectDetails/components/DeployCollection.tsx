@@ -63,13 +63,6 @@ export default function DeployCollection() {
         scroll="paper"
       >
         <DialogContent dividers={true}>
-          <Stack sx={{ p: 1, pb: 2 }} spacing={1}>
-            <Typography variant="h5">Add Levels</Typography>
-            <Typography variant="body2">
-              Levels show up underneath your item, are clickable, and can be filtered in your
-              collection's sidebar.
-            </Typography>
-          </Stack>
           <CreateCollection />
         </DialogContent>
       </Dialog>

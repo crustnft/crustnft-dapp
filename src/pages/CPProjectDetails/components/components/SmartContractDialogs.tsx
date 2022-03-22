@@ -16,7 +16,7 @@ import {
 import Slide from '@mui/material/Slide';
 import { useTheme } from '@mui/material/styles';
 import { TransitionProps } from '@mui/material/transitions';
-import { getContract } from 'constants/expandingCollectionContract';
+import { getContract } from 'constants/cryptopunkCollectionContract';
 import { forwardRef, useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { androidstudio } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
