@@ -3,7 +3,7 @@ import { SOLIDITY_COMPILER_VERSION } from '../../../constants/solcEnvironments';
 import { handleNpmImport } from '../../../utils/content-resolver';
 
 (function initSupportedSolcVersion() {
-  (pathToURL as any)['soljson-v0.8.11+commit.d7f03943.js'] = baseURLBin;
+  (pathToURL as any)[`soljson-v${SOLIDITY_COMPILER_VERSION}.js`] = baseURLBin;
 })();
 
 export const compileSmartContract = async (
