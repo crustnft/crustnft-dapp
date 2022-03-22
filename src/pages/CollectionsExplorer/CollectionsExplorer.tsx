@@ -24,10 +24,6 @@ export default function CollectionsExplorer() {
     ));
   };
 
-  useEffect(() => {
-    console.log(collections);
-  }, [collections]);
-
   return (
     <Page title="Collection Explore">
       <Container maxWidth="lg">

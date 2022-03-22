@@ -18,10 +18,6 @@ export default function MyCollections() {
     }
   }, [account]);
 
-  useEffect(() => {
-    console.log('collections', collections);
-  }, [collections]);
-
   return (
     <Stack spacing={3} sx={{ mt: 4 }}>
       <Stack direction="row" alignItems="center" spacing={2}>

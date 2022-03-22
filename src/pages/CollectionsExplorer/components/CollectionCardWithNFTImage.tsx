@@ -232,7 +232,7 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                 <FourNFT />
               ) : (
                 <Stack>
-                  <ButtonBase>
+                  <ButtonBase sx={{ borderRadius: 3.5, overflow: 'hidden' }}>
                     <EmptyNFT text="This collection is empty!" corner={cornerPosition[0]} />
                   </ButtonBase>
                 </Stack>
