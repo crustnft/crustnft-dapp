@@ -26,32 +26,6 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
 
   return (
     <>
-      <Typography
-        variant="overline"
-        sx={{
-          mb: 3,
-          display: active && isAuthenticated ? 'none' : 'block',
-          color: 'text.secondary'
-        }}
-      >
-        Select network & Connect wallet
-      </Typography>
-
-      <Paper
-        sx={{
-          p: 3,
-          mt: 4,
-          mb: 3,
-          width: 1,
-          display: active && isAuthenticated ? 'none' : 'block',
-          border: (theme) => `solid 1px ${theme.palette.grey[500_32]}`
-        }}
-      >
-        <Typography variant="subtitle2">
-          You need to connect a wallet to create the NFTs collection
-        </Typography>
-      </Paper>
-
       <Box sx={{ display: active && isAuthenticated ? 'block' : 'none' }}>
         <Grid container spacing={2} sx={{ mb: 2 }}>
           <Grid item xs={12} md={6}>

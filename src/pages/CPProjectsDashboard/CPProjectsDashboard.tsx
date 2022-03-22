@@ -37,7 +37,7 @@ export default function CPProjectsDashboard() {
   }, [signInWallet]);
 
   return (
-    <Page title="Crypto Punks Projects">
+    <Page title="Crypto Punks Collection">
       <Container maxWidth="lg">
         <CPProjectsContext.Provider value={{ getProjects }}>
           <Introduction />
@@ -50,13 +50,13 @@ export default function CPProjectsDashboard() {
             </Stack>
             <Stack>
               <Typography variant="h5" sx={{ color: 'text.primary' }}>
-                PROJECTS
+                COLLECTIONS
               </Typography>
 
               <Typography
                 sx={{ color: 'text.secondary', display: isAuthenticated ? 'none' : 'block' }}
               >
-                You have to connect to a wallet and sign a message to see your projects.
+                You have to connect to a wallet and sign a message to see your tenK collections.
               </Typography>
             </Stack>
           </Stack>

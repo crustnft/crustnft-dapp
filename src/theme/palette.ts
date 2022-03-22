@@ -46,6 +46,7 @@ interface AdditionalColor {
 interface BackgroundColor {
   menu: string;
   themeBackground: string;
+  cpCardHeader: string;
 }
 
 interface CardOptions {
@@ -239,7 +240,8 @@ const palette = {
     },
     customBackground: {
       menu: '#F2F4FA',
-      themeBackground: '#f0f2f5'
+      themeBackground: '#f0f2f5',
+      cpCardHeader: '#F4F6F8'
     },
     collectionSlider: '#ffffff',
     card: {
@@ -264,7 +266,8 @@ const palette = {
     },
     customBackground: {
       menu: '#141416',
-      themeBackground: '#141416'
+      themeBackground: '#141416',
+      cpCardHeader: '#161C24'
     },
     collectionSlider: '#23262F',
     card: {
