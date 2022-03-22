@@ -63,7 +63,7 @@ export default function LearnMore() {
                   </Button>
                 </Link>
                 <Typography variant="body2" color="text.secondary" align="center">
-                  Create a collection that can be expanded to include more arts of your
+                  Create a collection that can be expanded to include more arts at any time.
                 </Typography>
               </Stack>
             </Card>
