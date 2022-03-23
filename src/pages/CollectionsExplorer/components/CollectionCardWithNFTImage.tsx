@@ -6,6 +6,7 @@ import {
   CardMedia,
   CircularProgress,
   Grid,
+  IconButton,
   Link,
   Stack,
   Tooltip,
@@ -13,7 +14,8 @@ import {
 } from '@mui/material';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWeb3 from 'hooks/useWeb3';
-import React, { useEffect, useMemo, useState } from 'react';
+import { Chain } from 'interfaces/chain';
+import { useEffect, useMemo, useState } from 'react';
 import { createEmptyNFTList, nftItem } from 'services/fetchCollection/createEmptyNFTList';
 import {
   getCollectionUrlOpensea,
@@ -26,7 +28,11 @@ import {
   getName,
   getTotalSupply
 } from 'services/smartContract/evmCompatible';
-import { getChainByChainId, getRpcUrlByChainId } from 'utils/blockchainHandlers';
+import {
+  getChainByChainId,
+  getCollectionUrlByChainId,
+  getRpcUrlByChainId
+} from 'utils/blockchainHandlers';
 import EmptyNFT, { cornerPosition } from './EmptyNFT';
 import { CollectionData } from './SimpleCollectionCard';
 import SkeletonCollectionCardWithNFTImage from './SkeletonCollectionCardWithNFTImage';
@@ -45,8 +51,10 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   const [name, setName] = useState('');
   const [contractOwner, setContractOwner] = useState('');
   const [openseaLink, setOpenseaLink] = useState('');
+  const [collectionLink, setCollectionLink] = useState('');
   const [totalSupply, setTotalSupply] = useState(-1);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [chain, setChain] = useState<Chain | undefined>(undefined);
 
   const contract = useMemo(() => {
     return connectContract(
@@ -63,11 +71,14 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
       const totalSupply = await getTotalSupply(contract);
       const contractOwner = await getContractOwner(contract);
       const chain = getChainByChainId(chainId);
+      const _collectionLink = getCollectionUrlByChainId(chainId, contractAddress);
       if (isSubscribed) {
         setName(name || 'Unknown');
         setTotalSupply(totalSupply);
         setContractOwner(contractOwner);
         setNetwork(chain?.name || '');
+        setChain(chain);
+        setCollectionLink(_collectionLink);
       }
     };
     fetchData();
@@ -82,7 +93,6 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
     if (chainId === 4) {
       const fetchOpenseaLink = async () => {
         const _openseaLink = await getCollectionUrlOpensea(contractOwner, contract.address);
-
         if (!_openseaLink) return;
         if (isSubscribed) {
           setOpenseaLink(_openseaLink);
@@ -243,6 +253,11 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                 direction="row"
                 alignItems="center"
               >
+                <Tooltip title="Transaction History">
+                  <IconButton href={`${collectionLink}`} target="_blank">
+                    <Box component="img" src={chain?.icon || ''} sx={{ height: 34, width: 34 }} />
+                  </IconButton>
+                </Tooltip>
                 <Tooltip title="Opensea Viewer" sx={{ height: 50, width: 50 }}>
                   <ButtonBase
                     href={openseaLink}

@@ -24,3 +24,8 @@ export function getChainNameByChainId(chainId: number): string {
   const chainObj = getChainByChainId(chainId);
   return chainObj?.name || '';
 }
+
+export function getCollectionUrlByChainId(chainId: number, address: string): string {
+  const chainObj = getChainByChainId(chainId);
+  return chainObj ? chainObj.blockExplorerUrl + '/address/' + address : '';
+}

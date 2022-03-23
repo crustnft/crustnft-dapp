@@ -1,6 +1,7 @@
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import { Box, Button, Card, IconButton, Stack, Tooltip } from '@mui/material';
 import LightboxModal from 'components/LightboxModal';
+import openseaUrlDictionary from 'constants/openseaChainUrl';
 import { Chain } from 'interfaces/chain';
 import { useEffect, useState } from 'react';
 import { LineScalePulseOutRapid } from 'react-pure-loaders';
@@ -86,7 +87,9 @@ export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOw
                   </Tooltip>
                   <Tooltip title="Opensea Viewer">
                     <IconButton
-                      href={`https://testnets.opensea.io/assets/${assetAndOwner.contractAddress}/${assetAndOwner.tokenId}`}
+                      href={`${openseaUrlDictionary.get(chain?.name || '')}/${
+                        assetAndOwner.contractAddress
+                      }/${assetAndOwner.tokenId}`}
                       target="_blank"
                     >
                       <Box
