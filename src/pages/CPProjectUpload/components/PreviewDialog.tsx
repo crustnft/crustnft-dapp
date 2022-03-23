@@ -1,6 +1,10 @@
-import { Box, Button, Dialog, DialogContent, Grid, Paper, Stack, Typography } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Box, Dialog, DialogContent, Grid, Paper, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { getPublicUrlFromId } from 'utils/googleApisUtils';
+import { useSelector } from '../../../redux/store';
 import { normalizeAndMergeImages } from '../service';
+
 export default function PreviewDialog({
   open,
   setOpen
@@ -9,21 +13,30 @@ export default function PreviewDialog({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [image, setImage] = useState<any>();
+  const [loading, setLoading] = useState(false);
+  const { board } = useSelector((state) => state.image);
+
+  const getRandomImage = async () => {
+    setLoading(true);
+    const layerOrder = board.layerOrder;
+    const layers = board.layers;
+    const images: string[] = [];
+    for (let i = 0; i < layerOrder.length; i++) {
+      const imageIds = layers[layerOrder[i]].imageIds;
+      images.push(getPublicUrlFromId(imageIds[Math.floor(Math.random() * imageIds.length)]));
+    }
+    if (images.length > 0) {
+      const randomImage = await normalizeAndMergeImages(images);
+      setImage(randomImage);
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const loadImage = async () => {
-      const back = await normalizeAndMergeImages(
-        'https://cdn.pixabay.com/photo/2017/01/03/02/07/vine-1948358__340.png',
-        [
-          'https://static.remove.bg/remove-bg-web/581d704b6f77ec24f806185a708237a73ce0a356/assets/start_remove-c851bdf8d3127a24e2d137a55b1b427378cd17385b01aec6e59d5d4b5f39d2ec.png',
-          'https://storage.googleapis.com/stage-nft-generator-api-upload/006987c4-fdf1-45d1-ad5b-5c57170c45ba'
-        ]
-      );
-      setImage(back);
-    };
-
-    loadImage();
-  }, []);
+    if (open) {
+      getRandomImage();
+    }
+  }, [open]);
 
   return (
     <Dialog
@@ -36,16 +49,21 @@ export default function PreviewDialog({
       scroll="paper"
     >
       <DialogContent dividers={true}>
-        <Grid container>
-          <Grid item xs={12} sm={5} spacing={3}>
-            <Stack direction="column" alignItems="center" spacing={3}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={5}>
+            <Stack direction="column" alignItems="center" spacing={1}>
               <Typography variant="h5" sx={{ color: 'text.primary' }}>
                 Preview NFT
               </Typography>
-              <Box component="img" src={image} />
-              <Button variant="contained" color="info">
+              <LoadingButton
+                loading={loading}
+                variant="contained"
+                color="info"
+                onClick={getRandomImage}
+              >
                 Random another
-              </Button>
+              </LoadingButton>
+              <Box component="img" src={image} />
             </Stack>
           </Grid>
 

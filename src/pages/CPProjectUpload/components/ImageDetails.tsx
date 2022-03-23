@@ -1,7 +1,7 @@
 import { Divider, Drawer, OutlinedInput, Stack, Tooltip, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { UPLOAD_IMAGE_PUBLIC_BUCKET } from 'constants/gcpApis';
 import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
+import { getPublicUrlFromId } from 'utils/googleApisUtils';
 import { Image } from '../../../@types/imagesGCS';
 import { IconButtonAnimate } from '../../../components/animate';
 import Iconify from '../../../components/Iconify';
@@ -33,7 +33,7 @@ export default function ImageDetails({ image, isOpen, onClose, onDeleteImage }: 
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   const { name, id } = image;
-  const imageUrl = UPLOAD_IMAGE_PUBLIC_BUCKET + '/' + id;
+  const imageUrl = getPublicUrlFromId(id);
 
   const [localName, setLocalName] = useState(name);
 

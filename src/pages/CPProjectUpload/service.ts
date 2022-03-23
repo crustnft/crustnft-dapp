@@ -30,7 +30,10 @@ async function resizeImage(preferHeight: number, preferWidth: number, image: any
   return image;
 }
 
-export async function normalizeAndMergeImages(backgroundImage: string, layers: string[]) {
+export async function normalizeAndMergeImages(layers: string[]) {
+  const backgroundImage = layers[0];
+  layers.shift();
+
   const backgroundJimp = await Jimp.read(backgroundImage);
   const { height, width } = backgroundJimp.bitmap;
 
