@@ -6,7 +6,6 @@ import {
   CardMedia,
   CircularProgress,
   Grid,
-  IconButton,
   Link,
   Stack,
   Tooltip,
@@ -254,9 +253,16 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                 alignItems="center"
               >
                 <Tooltip title="Transaction History">
-                  <IconButton href={`${collectionLink}`} target="_blank">
-                    <Box component="img" src={chain?.icon || ''} sx={{ height: 34, width: 34 }} />
-                  </IconButton>
+                  <ButtonBase href={collectionLink} target="_blank">
+                    <Box
+                      component="img"
+                      src={chain?.icon || ''}
+                      sx={{
+                        height: 34,
+                        width: 34
+                      }}
+                    />
+                  </ButtonBase>
                 </Tooltip>
                 <Tooltip title="Opensea Viewer" sx={{ height: 50, width: 50 }}>
                   <ButtonBase
