@@ -16,7 +16,8 @@ import { getBoard, persistImage, persistLayer } from '../../redux/slices/imagesG
 import { useDispatch, useSelector } from '../../redux/store';
 import ImagesLayer from './components/ImagesLayer';
 import ImagesLayerAdd from './components/ImagesLayerAdd';
-
+import PreviewDialog from './components/PreviewDialog';
+import ToggleButton from './components/ToggleButton';
 export default function CPProjectUpload() {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ export default function CPProjectUpload() {
   const { signInWallet } = useWeb3();
   const [collectionInfo, setCollectionInfo] = useState<NftCollectionDto | undefined>(undefined);
   const [error, setError] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (accessToken && id) {
@@ -145,10 +147,16 @@ export default function CPProjectUpload() {
   return (
     <Page title="Upload Images" sx={{ height: 1 }}>
       <Container maxWidth="lg" sx={{ mt: { lg: -3 } }}>
+        {/* <Settings /> */}
+        <ToggleButton open={open} setOpen={setOpen} />
+        <PreviewDialog open={open} setOpen={setOpen} />
         <HeaderBreadcrumbs
           heading="Dashboard"
           links={[
-            { name: collectionInfo?.name || '', href: `/project-details/${id}` },
+            {
+              name: collectionInfo?.name || 'Back to collection details',
+              href: `/collection-details/${id}`
+            },
             {
               name: 'Upload Image'
             }
