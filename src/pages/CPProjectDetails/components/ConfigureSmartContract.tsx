@@ -34,7 +34,7 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
                 mb: 2,
                 width: 1,
                 position: 'relative',
-                border: (theme) => `solid 1px ${theme.palette.grey[500_32]}`
+                border: (theme: any) => `solid 1px ${theme.palette.grey[500_32]}`
               }}
             >
               <Typography variant="overline" sx={{ display: 'block', color: 'text.secondary' }}>
@@ -67,7 +67,7 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
                 render={({ field, fieldState: { error } }) => (
                   <TextField
                     {...field}
-                    onChange={(e) => {
+                    onChange={(e: any) => {
                       field.onChange(e.target.value.toUpperCase());
                     }}
                     value={field.value}
