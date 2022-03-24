@@ -418,6 +418,21 @@ export default function DeploySmartContract({
           </Grid>
         </Stack>
       </Paper>
+      {verifyingSuccess ? (
+        <Stack direction="row" width="100%" justifyContent="center">
+          <Button
+            variant="contained"
+            size="small"
+            color="info"
+            sx={{ backgroundColor: '#377dff' }}
+            href={`#/mint-nft/${selectedChain.name}/${contractAddress}`}
+          >
+            Mint your first NFT now!
+          </Button>
+        </Stack>
+      ) : (
+        <></>
+      )}
     </>
   );
 }
