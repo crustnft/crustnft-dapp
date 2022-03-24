@@ -12,11 +12,17 @@ export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOw
   const [loading, setLoading] = useState(true);
   const [openLightbox, setOpenLightbox] = useState(false);
   const [chain, setChain] = useState<Chain | undefined>(undefined);
+  const [openseaLinkPrefix, setOpenseaLinkPreFix] = useState<string>('');
 
   useEffect(() => {
     if (assetAndOwner.chain) {
       const chainObj = getChainByNetworkName(assetAndOwner.chain);
       setChain(chainObj);
+      if (!chainObj) return;
+      const openseaLinkPrefix = openseaUrlDictionary.get(chainObj?.name);
+      if (openseaLinkPrefix && openseaLinkPrefix !== '') {
+        setOpenseaLinkPreFix(openseaLinkPrefix);
+      }
     }
   }, [assetAndOwner]);
 
@@ -85,20 +91,22 @@ export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOw
                       <Box component="img" src={chain?.icon || ''} sx={{ height: 30, width: 30 }} />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="Opensea Viewer">
-                    <IconButton
-                      href={`${openseaUrlDictionary.get(chain?.name || '')}/${
-                        assetAndOwner.contractAddress
-                      }/${assetAndOwner.tokenId}`}
-                      target="_blank"
-                    >
-                      <Box
-                        component="img"
-                        src="./static/icons/shared/opensea.svg"
-                        sx={{ height: 30 }}
-                      />
-                    </IconButton>
-                  </Tooltip>
+                  {openseaLinkPrefix !== '' ? (
+                    <Tooltip title="Opensea Viewer">
+                      <IconButton
+                        href={`${openseaLinkPrefix}/${assetAndOwner.contractAddress}/${assetAndOwner.tokenId}`}
+                        target="_blank"
+                      >
+                        <Box
+                          component="img"
+                          src="./static/icons/shared/opensea.svg"
+                          sx={{ height: 30 }}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  ) : (
+                    <></>
+                  )}
                 </Stack>
               </Box>
             </>
