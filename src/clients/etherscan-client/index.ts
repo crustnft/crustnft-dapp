@@ -76,7 +76,7 @@ export async function verifyAndPublicContractSourceCode(
   bodyFormData.append('runs', '200');
   bodyFormData.append('licenseType', requestBody.licenseType);
   if (requestBody.constructorArguments) {
-    bodyFormData.append('constructorArguments', `0x${requestBody.constructorArguments}`);
+    bodyFormData.append('constructorArguments', requestBody.constructorArguments);
   }
 
   const instance = Axios.create();

@@ -1,3 +1,4 @@
+import { ethers } from 'ethers';
 export async function encodeArguments(abi: any, constructorArguments: any[]) {
   const { Interface } = await import('@ethersproject/abi');
   const contractInterface = new Interface(abi);
@@ -10,3 +11,7 @@ export async function encodeArguments(abi: any, constructorArguments: any[]) {
 
   return deployArgumentsEncoded;
 }
+
+export const getConstructorArgumentABI = (argumentTypes: any[], argumentValues: any[]): string => {
+  return ethers.utils.defaultAbiCoder.encode(argumentTypes, argumentValues).replace('0x', '');
+};
