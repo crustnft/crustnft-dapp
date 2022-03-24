@@ -44,6 +44,7 @@
     "@mui/icons-material": "^5.0.0",
     "@mui/lab": "^5.0.0-alpha.72",
     "@mui/material": "^5.5.0",
+    "@mui/styles": "^5.5.1",
     "@mui/x-data-grid": "^5.6.0",
     "@nimiq/identicons": "^1.6.0",
     "@polkadot/api": "4.2.2-4",

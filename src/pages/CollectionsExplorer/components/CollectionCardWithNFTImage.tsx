@@ -5,12 +5,14 @@ import {
   Card,
   CardMedia,
   CircularProgress,
+  createStyles,
   Grid,
   Link,
   Stack,
   Tooltip,
   Typography
 } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWeb3 from 'hooks/useWeb3';
 import { Chain } from 'interfaces/chain';
@@ -36,6 +38,19 @@ import EmptyNFT, { cornerPosition } from './EmptyNFT';
 import { CollectionData } from './SimpleCollectionCard';
 import SkeletonCollectionCardWithNFTImage from './SkeletonCollectionCardWithNFTImage';
 
+const useStyles = makeStyles(
+  createStyles({
+    tooltip: {
+      height: 50,
+      width: 50
+    },
+    internalIcon: {
+      height: 34,
+      width: 34
+    }
+  })
+);
+
 type CollectionCardProps = {
   collection: CollectionData;
 };
@@ -54,6 +69,7 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   const [totalSupply, setTotalSupply] = useState(-1);
   const [isLoaded, setIsLoaded] = useState(false);
   const [chain, setChain] = useState<Chain | undefined>(undefined);
+  const classes = useStyles();
 
   const contract = useMemo(() => {
     return connectContract(
@@ -140,7 +156,7 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
       <Stack>
         <Box
           sx={{
-            borderRadius: '15px',
+            borderRadius: 2,
             overflow: 'hidden'
           }}
         >
@@ -252,62 +268,54 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                 direction="row"
                 alignItems="center"
               >
-                <Tooltip title="Transaction History">
+                <Tooltip title="Transaction History" className={classes.tooltip}>
                   <ButtonBase href={collectionLink} target="_blank">
-                    <Box
-                      component="img"
-                      src={chain?.icon || ''}
-                      sx={{
-                        height: 34,
-                        width: 34
-                      }}
-                    />
+                    <Box component="img" src={chain?.icon || ''} className={classes.internalIcon} />
                   </ButtonBase>
                 </Tooltip>
-                <Tooltip title="Opensea Viewer" sx={{ height: 50, width: 50 }}>
-                  <ButtonBase
-                    href={openseaLink}
-                    target="_blank"
-                    disabled={openseaLink === OPENSEA_LINK_NOT_FOUND}
-                  >
-                    {chainId === 4 ? (
+                {chainId === 4 ? (
+                  <Tooltip title="Opensea Viewer" className={classes.tooltip}>
+                    <ButtonBase
+                      href={openseaLink}
+                      target="_blank"
+                      disabled={openseaLink === OPENSEA_LINK_NOT_FOUND}
+                    >
                       <Box
                         component="img"
                         src="./static/icons/shared/opensea.svg"
+                        className={classes.internalIcon}
                         sx={{
-                          height: 34,
-                          width: 34,
                           opacity:
                             openseaLink === '' || openseaLink === OPENSEA_LINK_NOT_FOUND
                               ? '30%'
                               : '100%'
                         }}
                       />
-                    ) : (
-                      <></>
-                    )}
-                    {chainId !== 4 || openseaLink !== '' ? (
-                      <></>
-                    ) : (
-                      <CircularProgress
-                        color="info"
-                        size={24}
-                        sx={{
-                          position: 'absolute',
-                          top: '50%',
-                          left: '50%',
-                          marginTop: '-12px',
-                          marginLeft: '-12px'
-                        }}
-                      />
-                    )}
-                  </ButtonBase>
-                </Tooltip>
+                      {openseaLink !== '' ? (
+                        <></>
+                      ) : (
+                        <CircularProgress
+                          color="info"
+                          size={24}
+                          sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            marginTop: -1.5,
+                            marginLeft: -1.5
+                          }}
+                        />
+                      )}
+                    </ButtonBase>
+                  </Tooltip>
+                ) : (
+                  <></>
+                )}
                 <Button
                   size="small"
                   variant="contained"
                   color="warning"
-                  sx={{ px: 3, py: 1, borderRadius: '26px' }}
+                  sx={{ ml: 1, px: 3, py: 1, borderRadius: 3 }}
                   href={`#/mint-nft/${network}/${contract.address}`}
                   disabled={
                     account && contractOwner
