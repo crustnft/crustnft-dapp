@@ -205,7 +205,14 @@ export default function CPProjectUpload() {
           Review and generate
         </Button>
         <ToggleButton open={open} setOpen={setOpen} />
-        <PreviewDialog open={open} setOpen={setOpen} name={collectionInfo?.name || ''} />
+        <PreviewDialog
+          open={open}
+          setOpen={setOpen}
+          name={collectionInfo?.name || ''}
+          status={collectionInfo?.status || ''}
+          collectionCid={collectionInfo?.collectionCID || ''}
+          metadataCid={collectionInfo?.metadataCID || ''}
+        />
       </Container>
     </Page>
   );

@@ -1,5 +1,15 @@
 import { LoadingButton } from '@mui/lab';
-import { Box, Button, Dialog, DialogContent, Grid, Paper, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  Divider,
+  Grid,
+  Paper,
+  Stack,
+  Typography
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPublicUrlFromId } from 'utils/googleApisUtils';
@@ -9,11 +19,17 @@ import { normalizeAndMergeImages } from '../service';
 export default function PreviewDialog({
   open,
   setOpen,
-  name
+  name,
+  status,
+  collectionCid,
+  metadataCid
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   name: string;
+  status: string;
+  collectionCid: string;
+  metadataCid: string;
 }) {
   const [image, setImage] = useState<any>();
   const [loading, setLoading] = useState(false);
@@ -117,11 +133,39 @@ export default function PreviewDialog({
                   </Typography>
                   <Typography variant="subtitle2">{maxNft}</Typography>
                 </Stack>
+                <Divider sx={{ my: 2 }} />
+                <Stack direction="row" justifyContent="space-between" spacing={2}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    Status
+                  </Typography>
+
+                  <Typography variant="subtitle2">{status}</Typography>
+                </Stack>
+                <Stack direction="row" justifyContent="space-between" spacing={2}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    Collection CID
+                  </Typography>
+
+                  <Typography variant="subtitle2" sx={{ wordBreak: 'break-word' }}>
+                    {collectionCid}
+                  </Typography>
+                </Stack>
+                <Stack direction="row" justifyContent="space-between" spacing={2}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    Metadata CID
+                  </Typography>
+
+                  <Typography variant="subtitle2" sx={{ wordBreak: 'break-word' }}>
+                    {metadataCid}
+                  </Typography>
+                </Stack>
               </Stack>
             </Paper>
-            <Button variant="contained" color="info" sx={{ mt: 3 }}>
-              Generate NFTs
-            </Button>
+            {status === 'pending' && (
+              <Button variant="contained" color="info" sx={{ mt: 3 }}>
+                Generate NFTs
+              </Button>
+            )}
           </Grid>
         </Grid>
       </DialogContent>
