@@ -7,7 +7,7 @@ import useWeb3 from 'hooks/useWeb3';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import Page from '../../components/Page';
-import DeployCollection from './components/DeployCollection';
+import DeployStep from './components/DeployStep';
 
 export default function CPProjectDetails() {
   const { id } = useParams();
@@ -107,7 +107,7 @@ export default function CPProjectDetails() {
               </Link>
             </Stack>
 
-            <DeployCollection />
+            <DeployStep />
 
             <Stack>
               <Typography variant="overline" sx={{ color: 'text.secondary' }}>

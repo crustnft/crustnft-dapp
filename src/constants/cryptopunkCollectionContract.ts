@@ -1,4 +1,4 @@
-let contractName = 'TenkeyCollection';
+let contractName = 'NFTSmartContract';
 
 export const setContractName = (newContractName: string) => {
   newContractName && (contractName = newContractName);
