@@ -4,7 +4,7 @@ import type { PropertyProps } from '../AssetViewer.types';
 export default function Property({ propType, name }: PropertyProps) {
   return (
     <Card
-      sx={{ p: 2, backgroundColor: 'background.neural', borderColor: 'header.menuText' }}
+      sx={{ p: 2, backgroundColor: 'background.neutral', borderColor: '#15B2E5' }}
       variant="outlined"
     >
       <Stack alignItems="center" spacing={1}>

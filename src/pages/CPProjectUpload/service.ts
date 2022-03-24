@@ -35,6 +35,7 @@ export async function normalizeAndMergeImages(layers: string[]) {
   layers.shift();
 
   const backgroundJimp = await Jimp.read(backgroundImage);
+
   const { height, width } = backgroundJimp.bitmap;
 
   for (let i = 0; i < layers.length; i++) {
@@ -42,6 +43,5 @@ export async function normalizeAndMergeImages(layers: string[]) {
     resizeImage(height, width, imageJimp);
     backgroundJimp.composite(imageJimp, 0, 0);
   }
-  // eslint-disable-next-line @typescript-eslint/return-await
-  return await backgroundJimp.getBase64Async(Jimp.MIME_PNG);
+  return backgroundJimp.getBase64Async(Jimp.MIME_PNG);
 }
