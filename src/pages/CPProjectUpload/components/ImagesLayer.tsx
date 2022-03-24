@@ -12,9 +12,10 @@ import ImagesLayerToolBar from './ImagesLayerToolBar';
 type Props = {
   layer: Layer;
   index: number;
+  collectionProcessed: boolean;
 };
 
-export default function ImagesLayer({ layer, index }: Props) {
+export default function ImagesLayer({ layer, index, collectionProcessed }: Props) {
   const dispatch = useDispatch();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -68,7 +69,12 @@ export default function ImagesLayer({ layer, index }: Props) {
             <ScrollBar>
               <Stack direction="row" spacing={2}>
                 {imageIds.length !== 0 && (
-                  <Droppable droppableId={id} type="task" direction="horizontal">
+                  <Droppable
+                    droppableId={id}
+                    type="task"
+                    direction="horizontal"
+                    isDropDisabled={collectionProcessed}
+                  >
                     {(provided) => (
                       <Stack
                         ref={provided.innerRef}
@@ -90,9 +96,11 @@ export default function ImagesLayer({ layer, index }: Props) {
                   </Droppable>
                 )}
 
-                <Stack>
-                  <ImagesAdd onAddImage={handleAddImage} onCloseAddImage={() => {}} />
-                </Stack>
+                {!collectionProcessed && (
+                  <Stack>
+                    <ImagesAdd onAddImage={handleAddImage} onCloseAddImage={() => {}} />
+                  </Stack>
+                )}
               </Stack>
             </ScrollBar>
           </Stack>

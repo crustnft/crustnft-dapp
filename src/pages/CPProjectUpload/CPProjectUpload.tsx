@@ -27,6 +27,8 @@ export default function CPProjectUpload() {
   const [collectionInfo, setCollectionInfo] = useState<NftCollectionDto | undefined>(undefined);
   const [error, setError] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
+  const [collectionStatus, setCollectionStatus] = useState<string>('pending');
+  const [collectionProcessed, setCollectionProcessed] = useState<boolean>(false);
 
   useEffect(() => {
     if (accessToken && id) {
@@ -37,6 +39,7 @@ export default function CPProjectUpload() {
   // FIXME: workaround for the first load
   useEffect(() => {
     if (!isEmpty(board.layers) && !isEmpty(board.layerOrder) && collectionInfo) {
+      console.log('collectionInfo', collectionInfo);
       const { id, name, description } = collectionInfo;
       const updateDto = {
         id,
@@ -55,8 +58,6 @@ export default function CPProjectUpload() {
     }
   }, [board]);
 
-  useEffect(() => {}, [board, collectionInfo]);
-
   useEffect(() => {
     if (!isAuthenticated) {
       signInWallet();
@@ -73,6 +74,8 @@ export default function CPProjectUpload() {
         return;
       }
 
+      setCollectionStatus(_collectionInfo.status);
+      setCollectionProcessed(_collectionInfo.status !== 'pending');
       setCollectionInfo(_collectionInfo);
     };
 
@@ -161,7 +164,12 @@ export default function CPProjectUpload() {
         />
 
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="all-columns" direction="vertical" type="column">
+          <Droppable
+            droppableId="all-columns"
+            direction="vertical"
+            type="column"
+            isDropDisabled={collectionProcessed}
+          >
             {(provided) => (
               <Stack
                 {...provided.droppableProps}
@@ -172,11 +180,16 @@ export default function CPProjectUpload() {
                 sx={{ height: 'calc(100% - 32px)', overflowY: 'hidden' }}
               >
                 {board.layerOrder.map((layerId, index) => (
-                  <ImagesLayer index={index} key={layerId} layer={board.layers[layerId]} />
+                  <ImagesLayer
+                    index={index}
+                    key={layerId}
+                    layer={board.layers[layerId]}
+                    collectionProcessed={collectionProcessed}
+                  />
                 ))}
 
                 {provided.placeholder}
-                <ImagesLayerAdd />
+                {!collectionProcessed && <ImagesLayerAdd />}
               </Stack>
             )}
           </Droppable>
