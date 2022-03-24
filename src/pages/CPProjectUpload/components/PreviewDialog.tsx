@@ -1,30 +1,46 @@
 import { LoadingButton } from '@mui/lab';
-import { Box, Dialog, DialogContent, Grid, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogContent, Grid, Paper, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { getPublicUrlFromId } from 'utils/googleApisUtils';
 import { useSelector } from '../../../redux/store';
 import { normalizeAndMergeImages } from '../service';
 
 export default function PreviewDialog({
   open,
-  setOpen
+  setOpen,
+  name
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  name: string;
 }) {
   const [image, setImage] = useState<any>();
   const [loading, setLoading] = useState(false);
+  const [nbPhoto, setNbPhoto] = useState(0);
+  const [nbLayer, setNbLayer] = useState(0);
+  const [maxNft, setMaxNft] = useState(0);
   const { board } = useSelector((state) => state.image);
+  const { id } = useParams();
 
   const getRandomImage = async () => {
     setLoading(true);
     const layerOrder = board.layerOrder;
     const layers = board.layers;
     const images: string[] = [];
+    let _nbPhoto = 0;
+    let _maxNft = 1;
+    setNbLayer(layerOrder.length);
+
     for (let i = 0; i < layerOrder.length; i++) {
       const imageIds = layers[layerOrder[i]].imageIds;
+      _nbPhoto += imageIds.length;
+      _maxNft *= imageIds.length;
       images.push(getPublicUrlFromId(imageIds[Math.floor(Math.random() * imageIds.length)]));
     }
+
+    setMaxNft(_maxNft);
+    setNbPhoto(_nbPhoto);
     if (images.length > 0) {
       const randomImage = await normalizeAndMergeImages(images);
       setImage(randomImage);
@@ -79,43 +95,33 @@ export default function PreviewDialog({
               <Stack spacing={0.5}>
                 <Stack direction="row" justifyContent="space-between" spacing={2}>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Name
+                    Collection
                   </Typography>
-                  <Typography variant="subtitle2"> Collection Name</Typography>
+                  <Typography variant="subtitle2"> {name}</Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between" spacing={2}>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Symbol
+                    Number of photos uploaded
                   </Typography>
-                  <Typography variant="subtitle2">Crustnft</Typography>
+                  <Typography variant="subtitle2">{nbPhoto}</Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between" spacing={2}>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Standard
+                    Number of layers
                   </Typography>
-                  <Typography variant="subtitle2">ERC721</Typography>
+                  <Typography variant="subtitle2">{nbLayer}</Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between" spacing={2}>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Network
+                    Max number of NFT
                   </Typography>
-                  <Typography variant="subtitle2">Name</Typography>
+                  <Typography variant="subtitle2">{maxNft}</Typography>
                 </Stack>
-                <Stack direction="row" justifyContent="space-between" spacing={2}>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Address
-                  </Typography>
-                  <Typography variant="subtitle2" sx={{ wordBreak: 'break-word' }}>
-                    Account
-                  </Typography>
-                </Stack>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  Features
-                </Typography>
-
-                <Stack direction="row" justifyContent="space-between"></Stack>
               </Stack>
             </Paper>
+            <Button variant="contained" color="info" sx={{ mt: 3 }}>
+              Generate NFTs
+            </Button>
           </Grid>
         </Grid>
       </DialogContent>

@@ -48,7 +48,7 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
         }}
       >
         <Typography variant="subtitle2">
-          You need to connect a wallet to create the NFTs collection
+          You need to connect a wallet and sign a message to create the NFTs collection
         </Typography>
       </Paper>
 

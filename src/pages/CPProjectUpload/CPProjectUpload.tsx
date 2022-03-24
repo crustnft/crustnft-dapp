@@ -1,4 +1,4 @@
-import { Container, Stack } from '@mui/material';
+import { Button, Container, Stack } from '@mui/material';
 import {
   getCollectionInfo,
   updateCPCollection
@@ -147,9 +147,6 @@ export default function CPProjectUpload() {
   return (
     <Page title="Upload Images" sx={{ height: 1 }}>
       <Container maxWidth="lg" sx={{ mt: { lg: -3 } }}>
-        {/* <Settings /> */}
-        <ToggleButton open={open} setOpen={setOpen} />
-        <PreviewDialog open={open} setOpen={setOpen} />
         <HeaderBreadcrumbs
           heading="Dashboard"
           links={[
@@ -184,6 +181,18 @@ export default function CPProjectUpload() {
             )}
           </Droppable>
         </DragDropContext>
+        <Button
+          variant="contained"
+          color="info"
+          sx={{ mt: 5 }}
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          Review and generate
+        </Button>
+        <ToggleButton open={open} setOpen={setOpen} />
+        <PreviewDialog open={open} setOpen={setOpen} name={collectionInfo?.name || ''} />
       </Container>
     </Page>
   );
