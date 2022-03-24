@@ -113,7 +113,7 @@ export default function DeployStep() {
       <Dialog
         fullWidth={true}
         maxWidth="lg"
-        open={true}
+        open={open}
         onClose={() => {
           setOpen(false);
         }}

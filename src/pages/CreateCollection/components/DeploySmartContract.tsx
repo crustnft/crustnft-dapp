@@ -1,6 +1,6 @@
+import { LoadingButton } from '@mui/lab';
 import {
   Box,
-  Button,
   Grid,
   IconButton,
   Link,
@@ -13,6 +13,7 @@ import {
   Tooltip,
   Typography
 } from '@mui/material';
+import { CompilerAbstract } from '@remix-project/remix-solidity';
 import { createContract } from 'clients/crustnft-explore-api/contracts';
 import Iconify from 'components/Iconify';
 import {
@@ -46,7 +47,7 @@ export default function DeploySmartContract({
   const {
     watch,
     handleSubmit,
-    formState: { isValid }
+    formState: { isValid, isSubmitting }
   } = useFormContext();
   const { active, account, library } = useWeb3();
   const { chain: selectedChain } = useWallet();
@@ -73,130 +74,130 @@ export default function DeploySmartContract({
   const [publishing, setPublishing] = useState(false);
   const [publishingSuccess, setPublishingSuccess] = useState(false);
   const [publishingError, setPublishingError] = useState(false);
-  const [publishingRetry, setPublishingRetry] = useState(false);
 
   const [verifying, setVerifying] = useState(false);
   const [verifyingSuccess, setVerifyingSuccess] = useState(false);
   const [verifyingError, setVerifyingError] = useState(false);
-  const [verifyingRetry, setVerifyingRetry] = useState(false);
 
   const [txHash, setTxHash] = useState('');
   const [contractAddress, setContractAddress] = useState('');
 
+  const [compileResult, setCompileResult] = useState<CompilerAbstract | undefined>(undefined);
+  const [txReceipt, setTxReceipt] = useState<any>();
+  const [etherscanPublishingHx, setEtherscanPublishingHx] = useState<string | undefined>(undefined);
+  const [theWholeProcessState, setTheWholeProcessState] = useState<
+    'notstarted' | 'success' | 'error'
+  >('notstarted');
+
   const createCollection = async () => {
-    setStartedCreation(true);
+    try {
+      setTheWholeProcessState('error');
+      setStartedCreation(true);
+      let newCompileResult = compileResult;
+      let newTxReceipt = txReceipt;
+      let newEtherscanPublishingHx = etherscanPublishingHx;
 
-    setActiveStep((prevActiveStep) => 0);
-    setCompiling(true);
-    const compileResult = await compileSmartContract(source, `${getContractName()}.sol`);
-    setCompiling(false);
+      if (!compilingSuccess) {
+        setActiveStep((prevActiveStep) => 0);
+        setCompiling(true);
+        newCompileResult = await compileSmartContract(source, `${getContractName()}.sol`);
+        setCompiling(false);
+        if (!newCompileResult) {
+          setCompilingError(true);
+          return;
+        }
+        setCompileResult(newCompileResult);
+        setCompilingSuccess(true);
+      }
 
-    if (compileResult) {
-      setCompilingSuccess(true);
-      // await onboard?.walletCheck();
-      const signer = library?.getSigner(account);
-
-      setActiveStep((prevActiveStep) => 1);
-      setDeploying(true);
-      if (signer) {
-        const deployTransaction = deploySmartContract(compileResult, getContractName(), signer);
+      if (!deployingSuccess && newCompileResult) {
+        setDeploying(true);
+        setActiveStep((prevActiveStep) => 1);
+        const signer = library?.getSigner(account);
+        if (!signer) return;
+        const deployTransaction = deploySmartContract(newCompileResult, getContractName(), signer);
         const txResponseGenerator = await deployTransaction.next();
         setTxHash(txResponseGenerator?.value?.hash || '');
         const txReceiptGenerator = await deployTransaction.next();
-        const txReceipt = txReceiptGenerator.value;
+
+        newTxReceipt = txReceiptGenerator.value;
+
         setDeploying(false);
-        if (txReceipt) {
-          setDeployingSuccess(true);
 
-          createContract({
-            txHash: txReceipt.transactionHash || '',
-            contractAddress: txReceipt.contractAddress,
-            chainId: selectedChain?.chainId || 1,
-            account: account || '',
-            contractContent: JSON.stringify({
-              sourceCode: source,
-              compilerversion: 'v' + SOLIDITY_COMPILER_VERSION,
-              licenseType: SPDX_LICENSE_IDENTIFIER.MIT
-            })
-          }).catch((err) => {
-            console.log('Error posting contract:', err.response);
-          });
-          setContractAddress(txReceipt.contractAddress);
-          setTxHash(txReceipt.transactionHash);
-          setActiveStep((prevActiveStep) => 2);
-          setPublishing(true);
-          const etherscanPublishingHx = await publishSmartContract(
-            selectedChain.chainId,
-            getContractName(),
-            txReceipt,
-            compileResult
-          );
-          setPublishing(false);
-
-          if (etherscanPublishingHx) {
-            setPublishingSuccess(true);
-            setActiveStep((prevActiveStep) => 3);
-            setVerifying(true);
-            const publishingStatus = await getPublishingStatus(
-              etherscanPublishingHx,
-              selectedChain.chainId
-            );
-            setVerifying(false);
-
-            if (publishingStatus) {
-              setVerifyingSuccess(true);
-            } else {
-              setVerifyingError(true);
-              setVerifyingRetry(true);
-            }
-          } else {
-            setPublishingError(true);
-            setPublishingRetry(true);
-          }
-        } else {
+        if (!newTxReceipt) {
           setDeployingError(true);
+          return;
         }
+
+        createContract({
+          txHash: newTxReceipt.transactionHash || '',
+          contractAddress: newTxReceipt.contractAddress,
+          chainId: selectedChain?.chainId || 1,
+          account: account || '',
+          contractContent: JSON.stringify({
+            sourceCode: source,
+            compilerversion: 'v' + SOLIDITY_COMPILER_VERSION,
+            licenseType: SPDX_LICENSE_IDENTIFIER.MIT
+          })
+        }).catch((err) => {
+          console.log('Error posting contract:', err.response);
+        });
+
+        setContractAddress(newTxReceipt.contractAddress);
+        setTxHash(newTxReceipt.transactionHash);
+        setDeployingSuccess(true);
+        setTxReceipt(newTxReceipt);
       }
-    } else {
-      setCompilingError(true);
+
+      if (!publishingSuccess) {
+        setActiveStep((prevActiveStep) => 2);
+        setPublishing(true);
+        newEtherscanPublishingHx = await publishSmartContract(
+          selectedChain.chainId,
+          getContractName(),
+          newTxReceipt,
+          newCompileResult
+        );
+        setPublishing(false);
+
+        if (!newEtherscanPublishingHx) {
+          setPublishingError(true);
+          return;
+        }
+        setEtherscanPublishingHx(newEtherscanPublishingHx);
+        setPublishingSuccess(true);
+      }
+
+      if (!verifyingSuccess && newEtherscanPublishingHx) {
+        setActiveStep((prevActiveStep) => 3);
+        setVerifying(true);
+        const publishingStatus = await getPublishingStatus(
+          newEtherscanPublishingHx,
+          selectedChain.chainId
+        );
+        setVerifying(false);
+
+        if (!publishingStatus) {
+          setVerifyingError(true);
+          return;
+        }
+        setVerifyingSuccess(true);
+        setTheWholeProcessState('success');
+      }
+    } catch (e) {
+      console.log('error create sm', e);
     }
   };
 
   return (
     <>
-      <Box sx={{ mt: 2 }}>
-        <Tooltip
-          title={!active ? 'Connect your wallet' : 'Please configure your smart contract'}
-          disableFocusListener={active && isValid}
-          disableHoverListener={active && isValid}
-          disableTouchListener={active && isValid}
-        >
-          <Box sx={{ width: 'max-content' }}>
-            <Button
-              variant="contained"
-              size="large"
-              disabled={!active || !isValid}
-              color="info"
-              sx={{
-                backgroundColor: '#377dff',
-                px: 5,
-                display: startedCreation ? 'none' : 'block'
-              }}
-              onClick={handleSubmit(createCollection)}
-            >
-              Deploy
-            </Button>
-          </Box>
-        </Tooltip>
-      </Box>
-
       <Paper
         sx={{
           p: 3,
           mb: 3,
           width: 1,
           position: 'relative',
-          border: (theme) => `solid 1px ${theme.palette.grey[500_32]}`,
+          border: (theme: any) => `solid 1px ${theme.palette.grey[500_32]}`,
           display: startedCreation ? 'block' : 'none'
         }}
       >
@@ -418,6 +419,32 @@ export default function DeploySmartContract({
           </Grid>
         </Stack>
       </Paper>
+      <Box sx={{ mt: 2 }}>
+        <Tooltip
+          title={!active ? 'Connect your wallet' : 'Please configure your smart contract'}
+          disableFocusListener={active && isValid}
+          disableHoverListener={active && isValid}
+          disableTouchListener={active && isValid}
+        >
+          <Box sx={{ width: 'max-content' }}>
+            <LoadingButton
+              variant="contained"
+              size="large"
+              disabled={!active || !isValid}
+              loading={isSubmitting}
+              color="info"
+              sx={{
+                backgroundColor: '#377dff',
+                px: 5,
+                display: 'block'
+              }}
+              onClick={handleSubmit(createCollection)}
+            >
+              {theWholeProcessState === 'error' ? 'Try Again' : 'Deploy'}
+            </LoadingButton>
+          </Box>
+        </Tooltip>
+      </Box>
     </>
   );
 }

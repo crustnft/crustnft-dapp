@@ -93,6 +93,7 @@ export default function DeploySmartContract({
   const createCollection = async () => {
     try {
       setTheWholeProcessState('error');
+      setStartedCreation(true);
       let newCompileResult = compileResult;
       let newTxReceipt = txReceipt;
       let newEtherscanPublishingHx = etherscanPublishingHx;
@@ -111,7 +112,6 @@ export default function DeploySmartContract({
         contructorArguments
       );
 
-      setStartedCreation(true);
       if (!compilingSuccess) {
         setActiveStep((prevActiveStep) => 0);
         setCompiling(true);
@@ -205,7 +205,9 @@ export default function DeploySmartContract({
         setVerifyingSuccess(true);
         setTheWholeProcessState('success');
       }
-    } catch (e) {}
+    } catch (e) {
+      console.log('error create sm', e);
+    }
   };
 
   return (
