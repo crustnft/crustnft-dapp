@@ -56,7 +56,7 @@ export default function DeployCollection() {
       <Dialog
         fullWidth={true}
         maxWidth="lg"
-        open={open}
+        open={true}
         onClose={() => {
           setOpen(false);
         }}

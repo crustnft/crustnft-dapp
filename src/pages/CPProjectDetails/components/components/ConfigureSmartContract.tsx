@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Checkbox,
-  Chip,
   Divider,
   FormControlLabel,
   Grid,
@@ -53,6 +52,7 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
                     label="Name"
                     variant="outlined"
                     autoComplete="off"
+                    size="small"
                     fullWidth
                     margin="normal"
                     error={Boolean(error)}
@@ -74,6 +74,61 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
                     label="Token Symbol"
                     autoComplete="off"
                     variant="outlined"
+                    size="small"
+                    fullWidth
+                    margin="normal"
+                    error={Boolean(error)}
+                    disabled={startedCreation}
+                    helperText={error?.message}
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name="cost"
+                render={({ field, fieldState: { error } }) => (
+                  <TextField
+                    {...field}
+                    label={`Whitelist Cost (${selectedChain.currencySymbol})`}
+                    variant="outlined"
+                    autoComplete="off"
+                    size="small"
+                    fullWidth
+                    margin="normal"
+                    error={Boolean(error)}
+                    disabled={startedCreation}
+                    helperText={error?.message}
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name="maxSupply"
+                render={({ field, fieldState: { error } }) => (
+                  <TextField
+                    {...field}
+                    label={'Max Supply'}
+                    variant="outlined"
+                    autoComplete="off"
+                    size="small"
+                    disabled
+                    fullWidth
+                    margin="normal"
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name="maxMintAmountPerTx"
+                render={({ field, fieldState: { error } }) => (
+                  <TextField
+                    {...field}
+                    label={'Max NFT per transaction'}
+                    variant="outlined"
+                    autoComplete="off"
+                    size="small"
                     fullWidth
                     margin="normal"
                     error={Boolean(error)}
@@ -96,6 +151,7 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
                     label="Author"
                     autoComplete="off"
                     variant="outlined"
+                    size="small"
                     fullWidth
                     margin="normal"
                     disabled={startedCreation}
@@ -153,24 +209,6 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
                     {account}
                   </Typography>
                 </Stack>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  Features
-                </Typography>
-                <Paper
-                  sx={{
-                    mb: 3,
-                    p: 0.5,
-                    border: (theme) => `solid 1px ${theme.palette.grey[500_32]}`,
-                    '& > :not(style)': {
-                      m: 0.5
-                    }
-                  }}
-                >
-                  <Chip size="small" label="Ownable"></Chip>
-                  <Chip size="small" label="Enumarable"></Chip>
-                  <Chip size="small" label="Expandable"></Chip>
-                </Paper>
-                <Stack direction="row" justifyContent="space-between"></Stack>
               </Stack>
             </Paper>
           </Grid>

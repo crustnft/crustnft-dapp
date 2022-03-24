@@ -30,7 +30,7 @@ import {
 } from 'services/createSmartContract/evmCompatible/';
 import LightTooltip from '../../../../components/LightTooltip';
 import { DoingIcon, ErrorIcon, SuccessIcon } from '../../../../components/StepperIcons';
-import { encodeArguments } from '../../service';
+import { getEncodedConstructorArgsABI } from '../../service';
 
 export default function DeploySmartContract({
   startedCreation,
@@ -49,7 +49,15 @@ export default function DeploySmartContract({
   const [activeStep, setActiveStep] = useState(0);
   const [source, setSource] = useState('');
 
-  const [name, symbol, authorInfo] = watch(['name', 'symbol', 'authorInfo']);
+  const [name, symbol, cost, maxSupply, maxMintAmountPerTx, hiddenMetadataUri, authorInfo] = watch([
+    'name',
+    'symbol',
+    'cost',
+    'maxSupply',
+    'maxMintAmountPerTx',
+    'hiddenMetadataUri',
+    'authorInfo'
+  ]);
 
   useEffect(() => {
     setSource(getContract());
@@ -82,22 +90,19 @@ export default function DeploySmartContract({
     setActiveStep((prevActiveStep) => 0);
     setCompiling(true);
     const compileResult = await compileSmartContract(source, `${getContractName()}.sol`);
-    console.log('compileResult', compileResult);
 
-    console.log(compileResult?.data?.contracts['TenkeyCollection.sol']?.TenkeyCollection?.abi);
-
-    const testContructorArguments = [
-      'TOKENNAME',
-      'TOKENSYMBOL',
-      utils.parseEther('0.05'),
-      10000,
-      1,
-      'ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/hidden.json'
+    const contructorArguments = [
+      name,
+      symbol,
+      utils.parseEther(cost),
+      maxSupply,
+      maxMintAmountPerTx,
+      hiddenMetadataUri
     ];
 
-    const testEncodedArg = await encodeArguments(
-      compileResult?.data?.contracts['TenkeyCollection.sol']?.TenkeyCollection?.abi,
-      testContructorArguments
+    const encodedArgs = getEncodedConstructorArgsABI(
+      ['string', 'string', 'uint256', 'uint256', 'uint256', 'string'],
+      contructorArguments
     );
 
     setCompiling(false);
@@ -113,7 +118,7 @@ export default function DeploySmartContract({
           compileResult,
           getContractName(),
           signer,
-          ...testContructorArguments
+          ...contructorArguments
         );
         const txResponseGenerator = await deployTransaction.next();
         setTxHash(txResponseGenerator?.value?.hash || '');
@@ -145,7 +150,7 @@ export default function DeploySmartContract({
             getContractName(),
             txReceipt,
             compileResult,
-            testEncodedArg
+            encodedArgs
           );
           setPublishing(false);
 

@@ -11,6 +11,10 @@ import DeploySmartContract from './components/DeploySmartContract';
 type FormSmartContractConfig = {
   name: string;
   symbol: string;
+  cost: number;
+  maxSupply: number;
+  maxMintAmountPerTx: number;
+  hiddenMetadataUri: string;
   authorInfo: string;
   agreement: boolean;
 };
@@ -18,6 +22,10 @@ type FormSmartContractConfig = {
 const InitFormSmartContractConfig: FormSmartContractConfig = {
   name: '',
   symbol: '',
+  cost: 0,
+  maxSupply: 0,
+  maxMintAmountPerTx: 1,
+  hiddenMetadataUri: 'ipfs://__CID__.json',
   authorInfo: '',
   agreement: true
 };
@@ -27,6 +35,10 @@ const FormSmartContractSchema = Yup.object().shape({
   symbol: Yup.string()
     .required('Symbol is required')
     .transform((value) => value.toUpperCase()),
+  cost: Yup.number().required('Cost is required'),
+  maxSupply: Yup.number().required('Max supply is required'),
+  maxMintAmountPerTx: Yup.number().required('Max mint amount per tx is required'),
+  hiddenMetadataUri: Yup.string().required('Hidden metadata uri is required'),
   authorInfo: Yup.string(),
   agreement: Yup.boolean().oneOf([true], 'You must agree to the terms and conditions')
 });
