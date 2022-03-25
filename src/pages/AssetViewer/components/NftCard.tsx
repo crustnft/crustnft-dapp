@@ -1,7 +1,6 @@
-import { Box, Link, Paper, Stack, Typography } from '@mui/material';
+import { Box, Link, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
-import { BallClipRotateMultiple } from 'react-pure-loaders';
 // To be moved to its place
 import type { NftCardCollectionViewerProps } from '../AssetViewer.types';
 
@@ -56,7 +55,11 @@ function NftCard({
                   height: '100%'
                 }}
               >
-                <BallClipRotateMultiple color={'#637381'} loading={loading} />
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  sx={{ height: 'inherit', p: 2, borderRadius: '18px' }}
+                ></Skeleton>
               </Stack>
 
               <Box
@@ -81,20 +84,27 @@ function NftCard({
 
       <Stack spacing={0.5} sx={{ p: 2, pt: 1, pb: 1 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Link
-            color="inherit"
-            underline="none"
-            href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
-            sx={{ maxWidth: '70%' }}
-          >
-            <Typography variant="body1" noWrap sx={{ fontSize: 13 }}>
-              {name}
+          {loading ? (
+            <Skeleton animation="wave" height={15} width="20%" />
+          ) : (
+            <Link
+              color="inherit"
+              underline="none"
+              href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
+              sx={{ maxWidth: '70%' }}
+            >
+              <Typography variant="body1" noWrap sx={{ fontSize: 13 }}>
+                {name}
+              </Typography>
+            </Link>
+          )}
+          {loading ? (
+            <Skeleton animation="wave" height={15} width="20%" />
+          ) : (
+            <Typography variant="body1" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
+              #{tokenId || ''}
             </Typography>
-          </Link>
-
-          <Typography variant="body1" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
-            #{tokenId || ''}
-          </Typography>
+          )}
         </Stack>
       </Stack>
     </Paper>
