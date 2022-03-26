@@ -39,7 +39,6 @@ export default function CPProjectUpload() {
   // FIXME: workaround for the first load
   useEffect(() => {
     if (!isEmpty(board.layers) && !isEmpty(board.layerOrder) && collectionInfo) {
-      console.log('collectionInfo', collectionInfo);
       const { id, name, description } = collectionInfo;
       const updateDto = {
         id,

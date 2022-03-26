@@ -43,6 +43,8 @@ export interface NftCollectionDto {
   status: TaskStatus;
   collectionCID?: string;
   metadataCID?: string;
+  txHash?: string;
+  whiteList?: string[];
 }
 
 export type CreateNftCollectionDto = Omit<

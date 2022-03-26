@@ -29,6 +29,7 @@ export const updateCPCollection = async (
   updateDto: UpdateNftCollectionDto,
   accessToken: string
 ) => {
+  console.log('updateDto', updateDto);
   const response = await axios
     .put(`${EXPLORE_API}/ntf-collections`, updateDto, {
       headers: { Authorization: `Bearer ${accessToken}` }
@@ -41,6 +42,15 @@ export const updateCPCollection = async (
   if (!response?.data?.data) return;
 
   return response.data.data;
+};
+
+export const updatePartialCPCollection = async (
+  accessToken: string,
+  id: string,
+  partialUpdateDto: Partial<UpdateNftCollectionDto>
+) => {
+  const collectionInfo = await getCollectionInfo(accessToken, id);
+  if (!collectionInfo) return;
 };
 
 export const getCollections = async (

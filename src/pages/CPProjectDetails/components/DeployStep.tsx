@@ -77,7 +77,7 @@ export default function DeployStep({ maxNft }: { maxNft: number }) {
           You have to generate the images and metadata from step 1 first, otherwise you need to
           upload yourself the images and metadata on IPFS
         </Typography>
-        <Grid container sx={{ mt: 2 }}>
+        <Grid container sx={{ mt: 2 }} spacing={2}>
           <Grid item xs={12} sm={6}>
             <Card
               sx={{
@@ -108,6 +108,41 @@ export default function DeployStep({ maxNft }: { maxNft: number }) {
 
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     Select your preferred network and deploy your smart contract
+                  </Typography>
+                </Box>
+              </Stack>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <Card
+              sx={{
+                p: 3,
+                '&:hover': {
+                  cursor: 'pointer',
+                  backgroundColor: 'background.neutral',
+                  border: '1px solid #15B2E5'
+                }
+              }}
+            >
+              <Stack
+                spacing={2}
+                alignItems="center"
+                direction={{ xs: 'column', md: 'row' }}
+                sx={{
+                  width: 1,
+                  textAlign: { xs: 'center', md: 'left' }
+                }}
+              >
+                <Icon icon="icon-park-outline:setting-config" height="40" color="#637381" />
+
+                <Box>
+                  <Typography gutterBottom variant="h5">
+                    Configure the collection
+                  </Typography>
+
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    Configure the collection you deployed previously
                   </Typography>
                 </Box>
               </Stack>
