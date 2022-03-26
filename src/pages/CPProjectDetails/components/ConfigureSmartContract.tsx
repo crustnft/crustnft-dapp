@@ -166,7 +166,7 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
                 p: 3,
                 width: 1,
                 position: 'relative',
-                border: (theme) => `solid 1px ${theme.palette.grey[500_32]}`
+                border: (theme: any) => `solid 1px ${theme.palette.grey[500_32]}`
               }}
             >
               <Typography

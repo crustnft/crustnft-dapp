@@ -69,7 +69,7 @@ export default function UploadStep({ id, status }: Props) {
             </Card>
           </Link>
         </Grid>
-        <Grid item xs={12} sm={6} sx={{ display: status === 'pending' ? 'none' : 'flex' }}>
+        <Grid item xs={12} sm={6} sx={{ display: status === 'pending' ? 'none' : 'block' }}>
           <Card
             sx={{
               p: 3,

@@ -44,7 +44,7 @@ const FormSmartContractSchema = Yup.object().shape({
   agreement: Yup.boolean().oneOf([true], 'You must agree to the terms and conditions')
 });
 
-export default function DeployStep() {
+export default function DeployStep({ maxNft }: { maxNft: number }) {
   const [open, setOpen] = useState(false);
   const { signInWallet } = useWeb3();
   const { isAuthenticated } = useAuth();
@@ -61,6 +61,11 @@ export default function DeployStep() {
       signInWallet();
     }
   }, [isAuthenticated, signInWallet]);
+
+  useEffect(() => {
+    const { setValue } = method;
+    setValue('maxSupply', maxNft);
+  }, [maxNft]);
 
   return (
     <>

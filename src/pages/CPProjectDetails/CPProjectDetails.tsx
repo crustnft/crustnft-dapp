@@ -10,12 +10,15 @@ import Page from '../../components/Page';
 import DeployStep from './components/DeployStep';
 import UploadStep from './components/UploadStep';
 
+export const MAX_ALLOWED_NFT = 50;
+
 export default function CPProjectDetails() {
   const { id } = useParams();
   const { accessToken, isAuthenticated } = useAuth();
   const { signInWallet } = useWeb3();
   const [error, setError] = useState<boolean>(false);
   const [collectionInfo, setCollectionInfo] = useState<any>();
+  const [maxNft, setMaxNft] = useState(0);
 
   useEffect(() => {
     const getCollection = async () => {
@@ -26,6 +29,17 @@ export default function CPProjectDetails() {
         setError(true);
         return;
       }
+
+      const layerOrder = _collectionInfo.layerOrder;
+      const layers = _collectionInfo.layers;
+      let _maxNft = 1;
+
+      for (let i = 0; i < layers.length; i++) {
+        const nbImages = layers[i].imageIds.length;
+        _maxNft *= nbImages;
+      }
+
+      setMaxNft(_maxNft < MAX_ALLOWED_NFT ? _maxNft : MAX_ALLOWED_NFT);
 
       setCollectionInfo(_collectionInfo);
     };
@@ -50,7 +64,7 @@ export default function CPProjectDetails() {
           <Stack spacing={4}>
             <UploadStep id={id || ''} status={collectionInfo?.status || ''} />
 
-            <DeployStep />
+            <DeployStep maxNft={maxNft} />
 
             <Stack>
               <Typography variant="overline" sx={{ color: 'text.secondary' }}>
