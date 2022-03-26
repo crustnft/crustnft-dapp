@@ -1,13 +1,14 @@
 import { Icon } from '@iconify/react';
-import { Box, Card, Container, Grid, Link, Stack, Typography } from '@mui/material';
+import { Box, Card, Container, Grid, Stack, Typography } from '@mui/material';
 import { getCollectionInfo } from 'clients/crustnft-explore-api/nft-collections';
 import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
 import useAuth from 'hooks/useAuth';
 import useWeb3 from 'hooks/useWeb3';
 import { useEffect, useState } from 'react';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Page from '../../components/Page';
 import DeployStep from './components/DeployStep';
+import UploadStep from './components/UploadStep';
 
 export default function CPProjectDetails() {
   const { id } = useParams();
@@ -47,65 +48,7 @@ export default function CPProjectDetails() {
         />
         <Card sx={{ p: 3 }}>
           <Stack spacing={4}>
-            <Stack>
-              <Typography variant="overline" sx={{ color: 'text.secondary' }}>
-                1. Upload image & Generate unique combinations
-              </Typography>
-              <Link
-                variant="body2"
-                component={RouterLink}
-                underline="none"
-                to={`/collection-upload/${id}`}
-                sx={{
-                  lineHeight: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  color: 'text.primary',
-                  '& > div': { display: 'inherit' }
-                }}
-              >
-                <Grid container sx={{ mt: 2 }}>
-                  <Grid item xs={12} sm={6}>
-                    <Card
-                      sx={{
-                        p: 3,
-                        '&:hover': {
-                          cursor: 'pointer',
-                          backgroundColor: 'background.neutral',
-                          border: '1px solid #15B2E5'
-                        }
-                      }}
-                    >
-                      <Stack
-                        spacing={2}
-                        alignItems="center"
-                        direction={{ xs: 'column', md: 'row' }}
-                        sx={{
-                          width: 1,
-                          textAlign: { xs: 'center', md: 'left' }
-                        }}
-                      >
-                        <Icon
-                          icon="emojione-monotone:index-pointing-up"
-                          height="40"
-                          color="#637381"
-                        />
-
-                        <Box>
-                          <Typography gutterBottom variant="h5">
-                            Upload images
-                          </Typography>
-
-                          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                            Upload images to generate unique combinations
-                          </Typography>
-                        </Box>
-                      </Stack>
-                    </Card>
-                  </Grid>
-                </Grid>
-              </Link>
-            </Stack>
+            <UploadStep id={id || ''} status={collectionInfo?.status || ''} />
 
             <DeployStep />
 

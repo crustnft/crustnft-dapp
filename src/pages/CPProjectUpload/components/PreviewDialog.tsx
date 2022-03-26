@@ -10,6 +10,8 @@ import {
   Stack,
   Typography
 } from '@mui/material';
+import { startGenerateNftCollection } from 'clients/crustnft-explore-api/nft-collections';
+import useAuth from 'hooks/useAuth';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPublicUrlFromId } from 'utils/googleApisUtils';
@@ -31,6 +33,7 @@ export default function PreviewDialog({
   collectionCid: string;
   metadataCid: string;
 }) {
+  const { accessToken } = useAuth();
   const [image, setImage] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [nbPhoto, setNbPhoto] = useState(0);
@@ -105,7 +108,7 @@ export default function PreviewDialog({
                 p: 3,
                 width: 1,
                 position: 'relative',
-                border: (theme) => `solid 1px ${theme.palette.grey[500_32]}`
+                border: (theme: any) => `solid 1px ${theme.palette.grey[500_32]}`
               }}
             >
               <Stack spacing={0.5}>
@@ -162,7 +165,18 @@ export default function PreviewDialog({
               </Stack>
             </Paper>
             {status === 'pending' && (
-              <Button variant="contained" color="info" sx={{ mt: 3 }}>
+              <Button
+                variant="contained"
+                color="info"
+                sx={{ mt: 3 }}
+                onClick={() => {
+                  startGenerateNftCollection(accessToken, {
+                    id: id || '',
+                    composingBatchSize: 2,
+                    collectionSize: maxNft < 50 ? maxNft : 50
+                  });
+                }}
+              >
                 Generate NFTs
               </Button>
             )}

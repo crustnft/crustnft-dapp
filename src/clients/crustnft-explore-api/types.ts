@@ -6,6 +6,12 @@ export type CreateContractDto = {
   published: boolean;
   collectionType: 'expandable' | 'cryptopunks';
 };
+
+export type GenerateNftCollectionDto = {
+  id: string;
+  composingBatchSize: number;
+  collectionSize: number;
+};
 export interface Image {
   id: string;
   name: string;

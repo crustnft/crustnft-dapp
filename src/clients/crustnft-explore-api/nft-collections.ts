@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { EXPLORE_API } from 'constants/crustNftExploreApis';
-import { CreateNftCollectionDto, NftCollectionDto, UpdateNftCollectionDto } from './types';
+import {
+  CreateNftCollectionDto,
+  GenerateNftCollectionDto,
+  NftCollectionDto,
+  UpdateNftCollectionDto
+} from './types';
 
 export const createCPCollection = async (
   createDto: CreateNftCollectionDto,
@@ -56,7 +61,23 @@ export const getCollections = async (
 };
 
 export const getCollectionsSummary = async () => {};
-export const startGenerateNftCollection = async () => {};
+
+export const startGenerateNftCollection = async (
+  accessToken: string,
+  generateNftCollectionDto: GenerateNftCollectionDto
+) => {
+  const response = await axios
+    .post(`${EXPLORE_API}/ntf-collections/generate-nft-collection`, generateNftCollectionDto, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    })
+    .catch((err) => {
+      console.log('start generate CP collection error', err.response);
+      return;
+    });
+
+  if (!response?.data?.data) return;
+  return response.data.data;
+};
 
 export const getCollectionInfo = async (
   accessToken: string,
