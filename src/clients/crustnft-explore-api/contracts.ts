@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { EXPLORE_API } from 'constants/crustNftExploreApis';
-import type { TCreateContract } from './types';
+import type { CreateContractDto } from './types';
 
 const retryWrapper = (axios: AxiosInstance, options: any) => {
   const maxTime = options.retry_time || 0;
@@ -25,10 +25,12 @@ const retryWrapper = (axios: AxiosInstance, options: any) => {
   );
 };
 
-export async function createContract(createContractObj: TCreateContract) {
+export async function createContract(accessToken: string, createContractObj: CreateContractDto) {
   const instance = axios.create();
   retryWrapper(instance, { retry_time: 15 });
-  return instance.post(EXPLORE_API + '/contracts', createContractObj);
+  return instance.post(EXPLORE_API + '/contracts', createContractObj, {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
 }
 
 export async function getContracts(pageSize: number) {
@@ -41,6 +43,6 @@ export async function getContractsByAccount(pageSize: number, account: string) {
   const instance = axios.create();
   retryWrapper(instance, { retry_time: 5 });
   return instance.get(
-    `${EXPLORE_API}/contracts?pageSize=${pageSize}&account=${account}&order=createdAt desc`
+    `${EXPLORE_API}/contracts?pageSize=${pageSize}&creator=${account}&order=createdAt desc`
   ); // or asc
 }

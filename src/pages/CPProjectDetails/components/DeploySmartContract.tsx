@@ -19,6 +19,7 @@ import Iconify from 'components/Iconify';
 import { getContract, getContractName } from 'constants/cryptopunkCollectionContract';
 import { SOLIDITY_COMPILER_VERSION, SPDX_LICENSE_IDENTIFIER } from 'constants/solcEnvironments';
 import { utils } from 'ethers';
+import useAuth from 'hooks/useAuth';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
 import { useEffect, useState } from 'react';
@@ -32,7 +33,6 @@ import {
 import LightTooltip from '../../../components/LightTooltip';
 import { DoingIcon, ErrorIcon, SuccessIcon } from '../../../components/StepperIcons';
 import { getEncodedConstructorArgsABI } from '../service';
-
 export default function DeploySmartContract({
   startedCreation,
   setStartedCreation
@@ -40,6 +40,7 @@ export default function DeploySmartContract({
   startedCreation: boolean;
   setStartedCreation: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const { accessToken } = useAuth();
   const {
     watch,
     handleSubmit,
@@ -149,16 +150,17 @@ export default function DeploySmartContract({
           return;
         }
 
-        createContract({
+        createContract(accessToken, {
           txHash: newTxReceipt.transactionHash || '',
           contractAddress: newTxReceipt.contractAddress,
           chainId: selectedChain?.chainId || 1,
-          account: account || '',
           contractContent: JSON.stringify({
             sourceCode: source,
             compilerversion: 'v' + SOLIDITY_COMPILER_VERSION,
             licenseType: SPDX_LICENSE_IDENTIFIER.MIT
-          })
+          }),
+          published: false,
+          collectionType: 'cryptopunks'
         }).catch((err) => {
           console.log('Error posting contract:', err.response);
         });

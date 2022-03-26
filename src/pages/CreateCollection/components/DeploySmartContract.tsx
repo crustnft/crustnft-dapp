@@ -25,6 +25,7 @@ import {
   setSymbol
 } from 'constants/expandingCollectionContract';
 import { SOLIDITY_COMPILER_VERSION, SPDX_LICENSE_IDENTIFIER } from 'constants/solcEnvironments';
+import useAuth from 'hooks/useAuth';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
 import { useEffect, useState } from 'react';
@@ -45,6 +46,8 @@ export default function DeploySmartContract({
   startedCreation: boolean;
   setStartedCreation: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const { accessToken } = useAuth();
+
   const {
     watch,
     handleSubmit,
@@ -130,16 +133,17 @@ export default function DeploySmartContract({
           return;
         }
 
-        createContract({
+        createContract(accessToken, {
           txHash: newTxReceipt.transactionHash || '',
           contractAddress: newTxReceipt.contractAddress,
           chainId: selectedChain?.chainId || 1,
-          account: account || '',
           contractContent: JSON.stringify({
             sourceCode: source,
             compilerversion: 'v' + SOLIDITY_COMPILER_VERSION,
             licenseType: SPDX_LICENSE_IDENTIFIER.MIT
-          })
+          }),
+          published: true,
+          collectionType: 'expandable'
         }).catch((err) => {
           console.log('Error posting contract:', err.response);
         });

@@ -1,11 +1,11 @@
-export type TCreateContract = {
+export type CreateContractDto = {
   txHash: string;
-  contractAddress: string;
-  account: string;
   chainId: number;
+  contractAddress: string;
   contractContent: string;
+  published: boolean;
+  collectionType: 'expandable' | 'cryptopunks';
 };
-
 export interface Image {
   id: string;
   name: string;
