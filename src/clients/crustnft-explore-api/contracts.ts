@@ -36,7 +36,7 @@ export async function createContract(accessToken: string, createContractObj: Cre
 export async function getContracts(pageSize: number) {
   const instance = axios.create();
   retryWrapper(instance, { retry_time: 5 });
-  return instance.get(`${EXPLORE_API}/contracts?pageSize=${pageSize}&order=createdAt desc`); // or asc
+  return instance.get(`${EXPLORE_API}/contracts/listing?pageSize=${pageSize}&order=createdAt desc`); // or asc
 }
 
 export async function getContractsByAccount(pageSize: number, account: string) {
