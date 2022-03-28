@@ -11,6 +11,7 @@ import {
   Typography
 } from '@mui/material';
 import { startGenerateNftCollection } from 'clients/crustnft-explore-api/nft-collections';
+import { MAX_ALLOWED_NFT } from 'constants/cryptopunkConfig';
 import useAuth from 'hooks/useAuth';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -173,7 +174,7 @@ export default function PreviewDialog({
                   startGenerateNftCollection(accessToken, {
                     id: id || '',
                     composingBatchSize: 2,
-                    collectionSize: maxNft < 50 ? maxNft : 50
+                    collectionSize: maxNft < MAX_ALLOWED_NFT ? maxNft : MAX_ALLOWED_NFT
                   });
                 }}
               >

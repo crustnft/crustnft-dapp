@@ -45,16 +45,17 @@ export interface NftCollectionDto {
   metadataCID?: string;
   txHash?: string;
   whiteList?: string[];
+  updatedAt?: string;
 }
 
 export type CreateNftCollectionDto = Omit<
   NftCollectionDto,
-  'id' | 'collectionCID' | 'metadataCID' | 'status' | 'createdAt' | 'creator'
+  'id' | 'collectionCID' | 'metadataCID' | 'status' | 'createdAt' | 'creator' | 'updatedAt'
 >;
 
 export type UpdateNftCollectionDto = Omit<
   NftCollectionDto,
-  'collectionCID' | 'metadataCID' | 'createdAt' | 'status' | 'creator'
+  'collectionCID' | 'metadataCID' | 'createdAt' | 'status' | 'creator' | 'updatedAt'
 >;
 
 export const EMPTY_CREATENFTCOLLECTIONDTO: CreateNftCollectionDto = {

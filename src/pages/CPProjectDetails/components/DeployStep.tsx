@@ -6,9 +6,9 @@ import useWeb3 from 'hooks/useWeb3';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
+import ConfigDeployedSmartContract from './ConfigDeployedSmartContract';
 import ConfigureSmartContract from './ConfigureSmartContract';
 import DeploySmartContract from './DeploySmartContract';
-
 type FormSmartContractConfig = {
   name: string;
   symbol: string;
@@ -45,7 +45,8 @@ const FormSmartContractSchema = Yup.object().shape({
 });
 
 export default function DeployStep({ maxNft }: { maxNft: number }) {
-  const [open, setOpen] = useState(false);
+  const [openDeploySm, setOpenDeploySm] = useState(false);
+  const [openConfigSm, setOpenConfigSm] = useState(false);
   const { signInWallet } = useWeb3();
   const { isAuthenticated } = useAuth();
 
@@ -88,7 +89,7 @@ export default function DeployStep({ maxNft }: { maxNft: number }) {
                   border: '1px solid #15B2E5'
                 }
               }}
-              onClick={() => setOpen(true)}
+              onClick={() => setOpenDeploySm(true)}
             >
               <Stack
                 spacing={2}
@@ -124,6 +125,7 @@ export default function DeployStep({ maxNft }: { maxNft: number }) {
                   border: '1px solid #15B2E5'
                 }
               }}
+              onClick={() => setOpenConfigSm(true)}
             >
               <Stack
                 spacing={2}
@@ -153,9 +155,9 @@ export default function DeployStep({ maxNft }: { maxNft: number }) {
       <Dialog
         fullWidth={true}
         maxWidth="lg"
-        open={open}
+        open={openDeploySm}
         onClose={() => {
-          setOpen(false);
+          setOpenDeploySm(false);
         }}
         scroll="paper"
       >
@@ -169,6 +171,20 @@ export default function DeployStep({ maxNft }: { maxNft: number }) {
               />
             </FormProvider>
           </Card>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        fullWidth={true}
+        maxWidth="lg"
+        open={true}
+        onClose={() => {
+          setOpenConfigSm(false);
+        }}
+        scroll="paper"
+      >
+        <DialogContent dividers={true}>
+          <ConfigDeployedSmartContract />
         </DialogContent>
       </Dialog>
     </>

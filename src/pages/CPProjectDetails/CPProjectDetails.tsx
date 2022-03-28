@@ -1,7 +1,11 @@
 import { Icon } from '@iconify/react';
-import { Box, Card, Container, Grid, Stack, Typography } from '@mui/material';
-import { getCollectionInfo } from 'clients/crustnft-explore-api/nft-collections';
+import { Box, Button, Card, Container, Grid, Stack, Typography } from '@mui/material';
+import {
+  getCollectionInfo,
+  updatePartialCPCollection
+} from 'clients/crustnft-explore-api/nft-collections';
 import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
+import { MAX_ALLOWED_NFT } from 'constants/cryptopunkConfig';
 import useAuth from 'hooks/useAuth';
 import useWeb3 from 'hooks/useWeb3';
 import { useEffect, useState } from 'react';
@@ -9,8 +13,6 @@ import { useParams } from 'react-router-dom';
 import Page from '../../components/Page';
 import DeployStep from './components/DeployStep';
 import UploadStep from './components/UploadStep';
-
-export const MAX_ALLOWED_NFT = 50;
 
 export default function CPProjectDetails() {
   const { id } = useParams();
@@ -60,6 +62,15 @@ export default function CPProjectDetails() {
           heading="Dashboard"
           links={[{ name: collectionInfo?.name, href: '#/tenK-collection' }]}
         />
+        <Button
+          onClick={() => {
+            updatePartialCPCollection(accessToken, '27c030c369b7d0f291eb87d57715fe208b7dd056', {
+              txHash: 'heleleoeleo'
+            });
+          }}
+        >
+          Partial
+        </Button>
         <Card sx={{ p: 3 }}>
           <Stack spacing={4}>
             <UploadStep id={id || ''} status={collectionInfo?.status || ''} />

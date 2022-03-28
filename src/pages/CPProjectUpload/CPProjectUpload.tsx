@@ -18,6 +18,7 @@ import ImagesLayer from './components/ImagesLayer';
 import ImagesLayerAdd from './components/ImagesLayerAdd';
 import PreviewDialog from './components/PreviewDialog';
 import ToggleButton from './components/ToggleButton';
+
 export default function CPProjectUpload() {
   const { id } = useParams();
   const dispatch = useDispatch();

@@ -51,6 +51,13 @@ export const updatePartialCPCollection = async (
 ) => {
   const collectionInfo = await getCollectionInfo(accessToken, id);
   if (!collectionInfo) return;
+  const { status, updatedAt, metadataCID, creator, collectionCID, createdAt, ...updateDto } =
+    collectionInfo;
+  const updatedCPCollection = await updateCPCollection(
+    { ...updateDto, ...partialUpdateDto },
+    accessToken
+  );
+  console.log('updatedCPCollection', updatedCPCollection);
 };
 
 export const getCollections = async (

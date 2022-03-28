@@ -40,6 +40,7 @@ export async function getListingContracts(pageSize: number, orderBy = 'createdAt
 }
 
 export async function getContractsByAccount(
+  accessToken: string,
   pageSize: number,
   account: string,
   orderBy = 'createdAt desc'
@@ -47,6 +48,9 @@ export async function getContractsByAccount(
   const instance = axios.create();
   retryWrapper(instance, { retry_time: 5 });
   return instance.get(
-    `${EXPLORE_API}/contracts?pageSize=${pageSize}&creator=${account}&order=${orderBy}`
+    `${EXPLORE_API}/contracts?pageSize=${pageSize}&creator=${account}&order=${orderBy}`,
+    {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    }
   );
 }
