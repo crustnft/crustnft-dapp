@@ -1,5 +1,5 @@
 export type CreateContractDto = {
-  txHash: string;
+  id: string;
   chainId: number;
   contractAddress: string;
   contractContent: string;

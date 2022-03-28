@@ -134,7 +134,7 @@ export default function DeploySmartContract({
         }
 
         createContract(accessToken, {
-          txHash: newTxReceipt.transactionHash || '',
+          id: newTxReceipt.transactionHash || '',
           contractAddress: newTxReceipt.contractAddress,
           chainId: selectedChain?.chainId || 1,
           contractContent: JSON.stringify({
