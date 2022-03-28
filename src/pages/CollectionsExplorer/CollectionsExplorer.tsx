@@ -1,5 +1,5 @@
 import { Container, Grid } from '@mui/material';
-import { getContracts } from 'clients/crustnft-explore-api/contracts';
+import { getListingContracts } from 'clients/crustnft-explore-api/contracts';
 import { useEffect, useState } from 'react';
 import Page from '../../components/Page';
 import CollectionCardWithNFTImage from './components/CollectionCardWithNFTImage';
@@ -8,7 +8,7 @@ export default function CollectionsExplorer() {
   const [collections, setCollections] = useState<any>([]);
   useEffect(() => {
     try {
-      getContracts(50).then((res) => {
+      getListingContracts(50).then((res) => {
         setCollections(res?.data.data);
       });
     } catch (error) {
