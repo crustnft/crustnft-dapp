@@ -12,19 +12,19 @@ export default function Rating(theme: Theme) {
     MuiRating: {
       defaultProps: {
         emptyIcon: <StarIcon />,
-        icon: <StarIcon />,
+        icon: <StarIcon />
       },
 
       styleOverrides: {
         root: {
           '&.Mui-disabled': {
-            opacity: 0.48,
-          },
+            opacity: 0.48
+          }
         },
         iconEmpty: { color: theme.palette.grey[500_48] },
         sizeSmall: { '& svg': { ...ICON_SMALL } },
-        sizeLarge: { '& svg': { ...ICON_LARGE } },
-      },
-    },
+        sizeLarge: { '& svg': { ...ICON_LARGE } }
+      }
+    }
   };
 }

@@ -22,7 +22,7 @@ export default function RejectionFiles({ fileRejections }: Props) {
         px: 2,
         mt: 3,
         borderColor: 'error.light',
-        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08),
+        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08)
       }}
     >
       {fileRejections.map(({ file, errors }) => {
