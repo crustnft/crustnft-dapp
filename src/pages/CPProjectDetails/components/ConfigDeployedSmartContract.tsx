@@ -1,7 +1,7 @@
 import { Button, Card, Divider, Paper, Stack, Switch, TextField, Typography } from '@mui/material';
 import { getContractByTxHash, publishCollection } from 'clients/crustnft-explore-api/contracts';
 import { cryptopunksABI } from 'constants/cryptopunksABI';
-import { BigNumber } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import useAuth from 'hooks/useAuth';
 import useWeb3 from 'hooks/useWeb3';
 import { capitalize } from 'lodash';
@@ -20,7 +20,7 @@ export default function ConfigDeployedSmartContract() {
 
   const [paused, setPaused] = useState(false);
   const [maxMintAmountPerTx, setMaxMintAmountPerTx] = useState(0);
-  const [tokenPrice, setTokenPrice] = useState(0);
+  const [tokenPrice, setTokenPrice] = useState<number>(0);
   const [isWhitelistMintEnabled, setIsWhitelistMintEnabled] = useState(false);
   const [revealed, setRevealed] = useState(false);
 
@@ -54,11 +54,12 @@ export default function ConfigDeployedSmartContract() {
       contract.paused().then((paused: boolean) => {
         setPaused(paused);
       });
-      contract.maxMintAmountPerTx().then((maxMintAmountPerTx: number) => {
-        setMaxMintAmountPerTx(maxMintAmountPerTx);
+      contract.maxMintAmountPerTx().then((maxMintAmountPerTx: BigNumber) => {
+        console.log('maxMintAmountPerTx', maxMintAmountPerTx.toNumber());
+        setMaxMintAmountPerTx(maxMintAmountPerTx.toNumber());
       });
       contract.cost().then((tokenPrice: BigNumber) => {
-        setTokenPrice(tokenPrice.toNumber());
+        setTokenPrice(parseFloat(utils.formatEther(tokenPrice)));
       });
       contract.whitelistMintEnabled().then((isWhitelistMintEnabled: boolean) => {
         setIsWhitelistMintEnabled(isWhitelistMintEnabled);
@@ -115,9 +116,11 @@ export default function ConfigDeployedSmartContract() {
               <TextField
                 size="small"
                 label={`Cost (${currencySymbol})`}
-                defaultValue={tokenPrice}
+                type="number"
+                value={tokenPrice}
               />
               <TextField
+                type="number"
                 size="small"
                 label="Max Mint Amount Per Transaction"
                 defaultValue={maxMintAmountPerTx}
