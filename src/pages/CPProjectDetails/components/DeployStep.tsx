@@ -162,7 +162,7 @@ export default function DeployStep({ maxNft }: { maxNft: number }) {
         scroll="paper"
       >
         <DialogContent dividers={true}>
-          <Card sx={{ p: 3 }}>
+          <Card sx={{ p: 3, m: -3 }}>
             <FormProvider {...method}>
               <ConfigureSmartContract startedCreation={startedCreation} />
               <DeploySmartContract
@@ -176,7 +176,7 @@ export default function DeployStep({ maxNft }: { maxNft: number }) {
 
       <Dialog
         fullWidth={true}
-        maxWidth="lg"
+        maxWidth="sm"
         open={true}
         onClose={() => {
           setOpenConfigSm(false);

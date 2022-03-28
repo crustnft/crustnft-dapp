@@ -12,7 +12,7 @@ export default function MyCollections() {
   const [nbOfContractCreated, setNbOfContractCreated] = useState(0);
 
   useEffect(() => {
-    if (account) {
+    if (account && accessToken) {
       getContractsByAccount(accessToken, 10, account.toLowerCase()).then((res) => {
         setCollections(res.data?.data);
         setNbOfContractCreated(res.data?.data?.length || 0);
@@ -30,7 +30,7 @@ export default function MyCollections() {
       </Stack>
       {collections.map((collection: any) => (
         <CollectionSlider
-          key={collection.txHash}
+          key={collection.id}
           contractAddr={collection.contractAddress}
           chainId={collection.chainId}
         />

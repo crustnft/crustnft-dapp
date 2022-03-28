@@ -64,8 +64,8 @@ export default function CPProjectDetails() {
         />
         <Button
           onClick={() => {
-            updatePartialCPCollection(accessToken, '27c030c369b7d0f291eb87d57715fe208b7dd056', {
-              txHash: 'heleleoeleo'
+            updatePartialCPCollection(accessToken, '2cf7b224d556f30eb3d72964e29f0a66b3ae3d9c', {
+              txHash: 'alo alo'
             });
           }}
         >

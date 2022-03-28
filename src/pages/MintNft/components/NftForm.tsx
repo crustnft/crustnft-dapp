@@ -280,14 +280,9 @@ export default function NftForm() {
           try {
             setActiveStep(2);
             setMintingNft(true);
-            console.log('wallet Check');
-            // await onboard?.walletCheck();
-            console.log('get signer');
             const signer = library?.getSigner(account);
-            console.log('compare signer');
             if (signer) {
               const contract = connectRWContract(contractAddr || '', SIMPLIFIED_ERC721_ABI, signer);
-              console.log('mint');
               const tx: TransactionResponse = await contract.mint(`ipfs://${newMetadataCid}`);
               setTxHash(tx.hash);
               const txReceipt: TransactionReceipt = await tx.wait(1);

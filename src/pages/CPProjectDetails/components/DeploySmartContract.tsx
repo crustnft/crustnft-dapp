@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import { CompilerAbstract } from '@remix-project/remix-solidity';
 import { createContract } from 'clients/crustnft-explore-api/contracts';
+import { updatePartialCPCollection } from 'clients/crustnft-explore-api/nft-collections';
 import Iconify from 'components/Iconify';
 import { getContract, getContractName } from 'constants/cryptopunkCollectionContract';
 import { SOLIDITY_COMPILER_VERSION, SPDX_LICENSE_IDENTIFIER } from 'constants/solcEnvironments';
@@ -24,6 +25,7 @@ import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import {
   compileSmartContract,
   deploySmartContract,
@@ -33,6 +35,7 @@ import {
 import LightTooltip from '../../../components/LightTooltip';
 import { DoingIcon, ErrorIcon, SuccessIcon } from '../../../components/StepperIcons';
 import { getEncodedConstructorArgsABI } from '../service';
+
 export default function DeploySmartContract({
   startedCreation,
   setStartedCreation
@@ -50,6 +53,7 @@ export default function DeploySmartContract({
   const { chain: selectedChain } = useWallet();
   const [activeStep, setActiveStep] = useState(0);
   const [source, setSource] = useState('');
+  const { id } = useParams();
 
   const [name, symbol, cost, maxSupply, maxMintAmountPerTx, hiddenMetadataUri, authorInfo] = watch([
     'name',
@@ -163,6 +167,10 @@ export default function DeploySmartContract({
           collectionType: 'cryptopunks'
         }).catch((err) => {
           console.log('Error posting contract:', err.response);
+        });
+
+        updatePartialCPCollection(accessToken, id || '', {
+          txHash: newTxReceipt.transactionHash || ''
         });
 
         setContractAddress(newTxReceipt.contractAddress);

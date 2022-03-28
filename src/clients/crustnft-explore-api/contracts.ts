@@ -54,3 +54,50 @@ export async function getContractsByAccount(
     }
   );
 }
+
+export async function getContractByTxHash(txHash: string) {
+  const instance = axios.create();
+  retryWrapper(instance, { retry_time: 5 });
+  const response = await instance.get(`${EXPLORE_API}/contracts/${txHash}`).catch((err) => {
+    console.log('get collections error', err.response);
+    return;
+  });
+  if (!response?.data?.data) return;
+  return response.data.data;
+}
+
+export async function publishCollection(accessToken: string, txHash: string, published: boolean) {
+  const instance = axios.create();
+  retryWrapper(instance, { retry_time: 5 });
+  const response = await instance
+    .put(
+      `${EXPLORE_API}/contracts`,
+      { id: txHash, published },
+      {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      }
+    )
+    .catch((err) => {
+      console.log('Publish collection error', err.response);
+      return;
+    });
+  if (!response?.data?.data) return;
+  return response.data.data;
+}
+
+export async function getCollectionPublishStatus(accessToken: string, txHash: string) {
+  const instance = axios.create();
+  retryWrapper(instance, { retry_time: 5 });
+  const response = await instance
+    .get(`${EXPLORE_API}/contracts/${txHash}`, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    })
+    .catch((err) => {
+      console.log('Get publish status error', err.response);
+      return;
+    });
+
+  if (response?.data?.data?.published) return true;
+
+  return false;
+}
