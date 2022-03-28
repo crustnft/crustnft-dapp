@@ -9,8 +9,8 @@ export default function Select(theme: Theme) {
   return {
     MuiSelect: {
       defaultProps: {
-        IconComponent: InputSelectIcon,
-      },
-    },
+        IconComponent: InputSelectIcon
+      }
+    }
   };
 }
