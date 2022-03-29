@@ -1,10 +1,9 @@
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
-import { Box, Button, Card, IconButton, Stack, Tooltip } from '@mui/material';
+import { Box, Button, Card, IconButton, Skeleton, Stack, Tooltip } from '@mui/material';
 import LightboxModal from 'components/LightboxModal';
 import openseaUrlDictionary from 'constants/openseaChainUrl';
 import { Chain } from 'interfaces/chain';
 import { useEffect, useState } from 'react';
-import { LineScalePulseOutRapid } from 'react-pure-loaders';
 import { getChainByNetworkName } from 'utils/blockchainHandlers';
 import { AssetAndOwnerType } from '../AssetViewer.types';
 
@@ -120,14 +119,9 @@ export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOw
             onCloseRequest={() => setOpenLightbox(false)}
           />
         </Stack>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-          sx={{ width: '100%', display: loading ? 'flex' : 'none', mt: 5 }}
-        >
-          <LineScalePulseOutRapid color={'#637381'} loading={loading} />
-        </Stack>
+        <Card sx={{ width: '100%', display: loading ? 'flex' : 'none', aspectRatio: '1 / 1' }}>
+          <Skeleton variant="rectangular" width="100%" height="100%" />
+        </Card>
       </Stack>
     </Card>
   );

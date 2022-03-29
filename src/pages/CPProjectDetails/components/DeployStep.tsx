@@ -87,7 +87,7 @@ export default function DeployStep({
           upload yourself the images and metadata on IPFS
         </Typography>
         <Grid container sx={{ mt: 2 }} spacing={2}>
-          <Grid item xs={12} sm={6} sx={{ display: txHash ? 'none' : 'flex' }}>
+          <Grid item xs={12} sm={6} sx={{ display: txHash ? 'none' : 'block' }}>
             <Card
               sx={{
                 p: 3,
@@ -123,7 +123,7 @@ export default function DeployStep({
             </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} sx={{ display: txHash ? 'flex' : 'none' }}>
+          <Grid item xs={12} sm={6} sx={{ display: txHash ? 'block' : 'none' }}>
             <Card
               sx={{
                 p: 3,
