@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Checkbox,
-  Divider,
   FormControlLabel,
   Grid,
   Paper,
@@ -134,27 +133,6 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
                     error={Boolean(error)}
                     disabled={startedCreation}
                     helperText={error?.message}
-                  />
-                )}
-              />
-
-              <Divider sx={{ my: 3 }} />
-              <Typography variant="overline" sx={{ display: 'block', color: 'text.secondary' }}>
-                Additional info (optional)
-              </Typography>
-              <Controller
-                control={control}
-                name="authorInfo"
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Author"
-                    autoComplete="off"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                    margin="normal"
-                    disabled={startedCreation}
                   />
                 )}
               />
