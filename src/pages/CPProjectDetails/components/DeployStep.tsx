@@ -87,7 +87,7 @@ export default function DeployStep({
           upload yourself the images and metadata on IPFS
         </Typography>
         <Grid container sx={{ mt: 2 }} spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} sx={{ display: txHash ? 'none' : 'flex' }}>
             <Card
               sx={{
                 p: 3,
@@ -123,7 +123,7 @@ export default function DeployStep({
             </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} sx={{ display: txHash ? 'flex' : 'none' }}>
             <Card
               sx={{
                 p: 3,
@@ -185,7 +185,7 @@ export default function DeployStep({
       <Dialog
         fullWidth={true}
         maxWidth="sm"
-        open={true}
+        open={openConfigSm}
         onClose={() => {
           setOpenConfigSm(false);
         }}

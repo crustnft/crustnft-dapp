@@ -141,6 +141,10 @@ export default function ConfigDeployedSmartContract({
 
     setOpenPublicSalePending(true);
 
+    if (await contract.whitelistMintEnabled()) {
+      await (await contract.setWhitelistMintEnabled(false)).wait();
+    }
+
     if (inputPublicSaleTokenPrice !== tokenPrice) {
       await (await contract.setCost(utils.parseEther(inputPublicSaleTokenPrice.toString()))).wait();
     }
