@@ -44,7 +44,15 @@ const FormSmartContractSchema = Yup.object().shape({
   agreement: Yup.boolean().oneOf([true], 'You must agree to the terms and conditions')
 });
 
-export default function DeployStep({ maxNft }: { maxNft: number }) {
+export default function DeployStep({
+  maxNft,
+  txHash,
+  metadataCID
+}: {
+  maxNft: number;
+  txHash: string;
+  metadataCID: string;
+}) {
   const [openDeploySm, setOpenDeploySm] = useState(false);
   const [openConfigSm, setOpenConfigSm] = useState(false);
   const { signInWallet } = useWeb3();
@@ -184,7 +192,7 @@ export default function DeployStep({ maxNft }: { maxNft: number }) {
         scroll="paper"
       >
         <DialogContent dividers={true}>
-          <ConfigDeployedSmartContract />
+          <ConfigDeployedSmartContract txHash={txHash} metadataCID={metadataCID} />
         </DialogContent>
       </Dialog>
     </>

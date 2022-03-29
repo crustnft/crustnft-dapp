@@ -1,9 +1,6 @@
 import { Icon } from '@iconify/react';
-import { Box, Button, Card, Container, Grid, Stack, Typography } from '@mui/material';
-import {
-  getCollectionInfo,
-  updatePartialCPCollection
-} from 'clients/crustnft-explore-api/nft-collections';
+import { Box, Card, Container, Grid, Stack, Typography } from '@mui/material';
+import { getCollectionInfo } from 'clients/crustnft-explore-api/nft-collections';
 import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
 import { MAX_ALLOWED_NFT } from 'constants/cryptopunkConfig';
 import useAuth from 'hooks/useAuth';
@@ -32,7 +29,6 @@ export default function CPProjectDetails() {
         return;
       }
 
-      const layerOrder = _collectionInfo.layerOrder;
       const layers = _collectionInfo.layers;
       let _maxNft = 1;
 
@@ -42,7 +38,6 @@ export default function CPProjectDetails() {
       }
 
       setMaxNft(_maxNft < MAX_ALLOWED_NFT ? _maxNft : MAX_ALLOWED_NFT);
-
       setCollectionInfo(_collectionInfo);
     };
 
@@ -62,20 +57,16 @@ export default function CPProjectDetails() {
           heading="Dashboard"
           links={[{ name: collectionInfo?.name, href: '#/tenK-collection' }]}
         />
-        <Button
-          onClick={() => {
-            updatePartialCPCollection(accessToken, '2cf7b224d556f30eb3d72964e29f0a66b3ae3d9c', {
-              txHash: 'alo alo'
-            });
-          }}
-        >
-          Partial
-        </Button>
+
         <Card sx={{ p: 3 }}>
           <Stack spacing={4}>
             <UploadStep id={id || ''} status={collectionInfo?.status || ''} />
 
-            <DeployStep maxNft={maxNft} />
+            <DeployStep
+              maxNft={maxNft}
+              txHash={collectionInfo?.txHash || ''}
+              metadataCID={collectionInfo?.metadataCID || ''}
+            />
 
             <Stack>
               <Typography variant="overline" sx={{ color: 'text.secondary' }}>

@@ -1,4 +1,5 @@
-import { Button, Card, Divider, Paper, Stack, Switch, TextField, Typography } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Card, Divider, Paper, Stack, Switch, TextField, Typography } from '@mui/material';
 import { getContractByTxHash, publishCollection } from 'clients/crustnft-explore-api/contracts';
 import { cryptopunksABI } from 'constants/cryptopunksABI';
 import { BigNumber, utils } from 'ethers';
@@ -9,7 +10,13 @@ import { useEffect, useMemo, useState } from 'react';
 import { connectRWContract } from 'services/smartContract/evmCompatible';
 import { getChainByChainId } from 'utils/blockchainHandlers';
 
-export default function ConfigDeployedSmartContract() {
+export default function ConfigDeployedSmartContract({
+  txHash,
+  metadataCID
+}: {
+  txHash: string;
+  metadataCID: string;
+}) {
   const { accessToken } = useAuth();
   const { account, library } = useWeb3();
 
@@ -24,15 +31,27 @@ export default function ConfigDeployedSmartContract() {
   const [isWhitelistMintEnabled, setIsWhitelistMintEnabled] = useState(false);
   const [revealed, setRevealed] = useState(false);
 
-  const txHash = '0x14d62c69fd11dd9742f3b76c28306b5764f5d1465354052ed90ea8cf083db362';
+  const [inputWhitelistMaxMintAmountPerTx, setInputWhitelistMaxMintAmountPerTx] = useState(0);
+  const [inputWhitelistTokenPrice, setInputWhitelistTokenPrice] = useState(0);
+  const [inputPublicSaleMaxMintAmountPerTx, setInputPublicSaleMaxMintAmountPerTx] = useState(0);
+  const [inputPublicSaleTokenPrice, setInputPublicSaleTokenPrice] = useState(0);
+
+  const [openWhitelistPending, setOpenWhitelistPending] = useState(false);
+  const [closeWhitelistPending, setCloseWhitelistPending] = useState(false);
+  const [openPublicSalePending, setOpenPublicSalePending] = useState(false);
+  const [closePublicSalePending, setClosePublicSalePending] = useState(false);
+  const [revealPending, setRevealPending] = useState(false);
+  const [hidePending, setHidePending] = useState(false);
 
   useEffect(() => {
-    getContractByTxHash(txHash).then((res) => {
-      setPublishChecked(res.published);
-      setContractAddress(res.contractAddress);
-      setChainId(res.chainId);
-    });
-  }, []);
+    if (txHash) {
+      getContractByTxHash(txHash).then((res) => {
+        setPublishChecked(res.published);
+        setContractAddress(res.contractAddress);
+        setChainId(res.chainId);
+      });
+    }
+  }, [txHash]);
 
   useEffect(() => {
     if (chainId) {
@@ -70,9 +89,99 @@ export default function ConfigDeployedSmartContract() {
     }
   }, [contract]);
 
+  useEffect(() => {
+    setInputWhitelistTokenPrice(tokenPrice);
+    setInputPublicSaleTokenPrice(tokenPrice);
+  }, [tokenPrice]);
+
+  useEffect(() => {
+    setInputWhitelistMaxMintAmountPerTx(maxMintAmountPerTx);
+    setInputPublicSaleMaxMintAmountPerTx(maxMintAmountPerTx);
+  }, [maxMintAmountPerTx]);
+
   const handlePublishChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPublishChecked(event.target.checked);
     publishCollection(accessToken, txHash, event.target.checked);
+  };
+
+  const handelOpenWhitelist = async () => {
+    if (!contract) return;
+
+    setOpenWhitelistPending(true);
+
+    if (!(await contract.whitelistMintEnabled())) {
+      await (await contract.setWhitelistMintEnabled(true)).wait();
+    }
+
+    if (inputWhitelistTokenPrice !== tokenPrice) {
+      await (await contract.setCost(utils.parseEther(inputWhitelistTokenPrice.toString()))).wait();
+    }
+
+    if (inputWhitelistMaxMintAmountPerTx !== maxMintAmountPerTx) {
+      await (await contract.setMaxMintAmountPerTx(inputWhitelistMaxMintAmountPerTx)).wait();
+    }
+
+    setOpenWhitelistPending(false);
+  };
+
+  const handleCloseWhitelist = async () => {
+    if (!contract) return;
+
+    setCloseWhitelistPending(true);
+
+    if (await contract.whitelistMintEnabled()) {
+      await (await contract.setWhitelistMintEnabled(false)).wait();
+    }
+
+    setCloseWhitelistPending(false);
+  };
+
+  const handleOpenPublicSale = async () => {
+    if (!contract) return;
+
+    setOpenPublicSalePending(true);
+
+    if (inputPublicSaleTokenPrice !== tokenPrice) {
+      await (await contract.setCost(utils.parseEther(inputPublicSaleTokenPrice.toString()))).wait();
+    }
+
+    if (inputPublicSaleMaxMintAmountPerTx !== maxMintAmountPerTx) {
+      await (await contract.setMaxMintAmountPerTx(inputPublicSaleMaxMintAmountPerTx)).wait();
+    }
+
+    if (await contract.paused()) {
+      await (await contract.setPaused(false)).wait();
+    }
+
+    setOpenPublicSalePending(false);
+  };
+
+  const handleClosePublicSale = async () => {
+    if (!contract) return;
+
+    setClosePublicSalePending(true);
+
+    if (!(await contract.paused())) {
+      await (await contract.setPaused(true)).wait();
+    }
+
+    setClosePublicSalePending(false);
+  };
+
+  const handleReveal = async () => {
+    if (!contract) return;
+
+    setRevealPending(true);
+
+    if ((await contract.uriPrefix()) !== `ipfs://${metadataCID}/`) {
+      await (await contract.setUriPrefix(`ipfs://${metadataCID}/`)).wait();
+    }
+
+    if (!(await contract.revealed())) {
+      await (await contract.setRevealed(true)).wait();
+    }
+
+    setRevealPending(false);
   };
 
   return (
@@ -104,7 +213,7 @@ export default function ConfigDeployedSmartContract() {
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 Cost
               </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
                 {tokenPrice} {currencySymbol}
               </Typography>
             </Stack>
@@ -117,22 +226,38 @@ export default function ConfigDeployedSmartContract() {
                 size="small"
                 label={`Cost (${currencySymbol})`}
                 type="number"
-                value={tokenPrice}
+                value={inputWhitelistTokenPrice}
+                onChange={(e: any) => setInputWhitelistTokenPrice(parseFloat(e.target.value))}
               />
               <TextField
                 type="number"
                 size="small"
                 label="Max Mint Amount Per Transaction"
-                defaultValue={maxMintAmountPerTx}
+                value={inputWhitelistMaxMintAmountPerTx}
+                onChange={(e: any) =>
+                  setInputWhitelistMaxMintAmountPerTx(parseFloat(e.target.value))
+                }
               />
 
               <Stack direction="row" spacing={1}>
-                <Button variant="contained" color="info" size="small">
+                <LoadingButton
+                  variant="contained"
+                  color="info"
+                  size="small"
+                  onClick={handelOpenWhitelist}
+                  loading={openWhitelistPending}
+                >
                   Open Whitelist
-                </Button>
-                <Button variant="contained" color="warning" size="small">
+                </LoadingButton>
+                <LoadingButton
+                  variant="contained"
+                  color="warning"
+                  size="small"
+                  loading={closeWhitelistPending}
+                  onClick={handleCloseWhitelist}
+                >
                   Close Whitelist
-                </Button>
+                </LoadingButton>
               </Stack>
             </Stack>
 
@@ -151,8 +276,8 @@ export default function ConfigDeployedSmartContract() {
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 Cost
               </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                0.05 {currencySymbol}
+              <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
+                {tokenPrice} {currencySymbol}
               </Typography>
             </Stack>
 
@@ -163,21 +288,39 @@ export default function ConfigDeployedSmartContract() {
               <TextField
                 size="small"
                 label={`Cost (${currencySymbol})`}
-                defaultValue={tokenPrice}
+                value={inputPublicSaleTokenPrice}
+                type="number"
+                onChange={(e: any) => setInputPublicSaleTokenPrice(parseFloat(e.target.value))}
               />
               <TextField
                 size="small"
                 label="Max Mint Amount Per Transaction"
-                defaultValue={maxMintAmountPerTx}
+                value={inputPublicSaleMaxMintAmountPerTx}
+                type="number"
+                onChange={(e: any) =>
+                  setInputPublicSaleMaxMintAmountPerTx(parseFloat(e.target.value))
+                }
               />
 
               <Stack direction="row" spacing={1}>
-                <Button variant="contained" color="info" size="small">
+                <LoadingButton
+                  variant="contained"
+                  color="info"
+                  size="small"
+                  onClick={handleOpenPublicSale}
+                  loading={openPublicSalePending}
+                >
                   Open Public Sale
-                </Button>
-                <Button variant="contained" color="warning" size="small">
+                </LoadingButton>
+                <LoadingButton
+                  variant="contained"
+                  color="warning"
+                  size="small"
+                  onClick={handleClosePublicSale}
+                  loading={closePublicSalePending}
+                >
                   Close Public Sale
-                </Button>
+                </LoadingButton>
               </Stack>
             </Stack>
 
@@ -194,12 +337,18 @@ export default function ConfigDeployedSmartContract() {
               <Typography variant="subtitle2">{revealed ? 'Revealed' : 'Hidden'}</Typography>
             </Stack>
             <Stack direction="row" sx={{ mt: 1 }} spacing={1}>
-              <Button variant="contained" color="info" size="small">
+              <LoadingButton
+                variant="contained"
+                color="info"
+                size="small"
+                onClick={handleReveal}
+                loading={revealPending}
+              >
                 Reveal
-              </Button>
-              <Button variant="contained" color="warning" size="small">
+              </LoadingButton>
+              <LoadingButton variant="contained" color="warning" size="small">
                 Hide
-              </Button>
+              </LoadingButton>
             </Stack>
 
             <Stack direction="row" justifyContent="space-between">
