@@ -84,7 +84,7 @@ export default function NftCard({
             </Stack>
           </Stack>
           <Box sx={{ py: 1, position: 'relative' }}>
-            <Link href={`#/assets/${chainName}/${contractAddr}/${tokenId}`}>
+            <Link href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}>
               <Box sx={{ border: 1, borderRadius: '5px', borderColor: '#DFE3E8' }}>
                 <Stack
                   sx={{
