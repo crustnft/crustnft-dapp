@@ -13,7 +13,7 @@ export const getNftList4CollectionCard = async (
   stopIndex: number
 ) => {
   const numLoadableNFT = stopIndex < totalSupply ? stopIndex : totalSupply;
-  if (numLoadableNFT <= 0) return;
+  if (numLoadableNFT <= 0 || numLoadableNFT <= startIndex) return;
   const emptyNftList = createEmptyNFTList(numLoadableNFT - startIndex);
 
   let nftList = [...emptyNftList.slice(0)];

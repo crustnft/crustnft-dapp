@@ -1,6 +1,6 @@
 import { LoadingButton } from '@mui/lab';
-import { Card, Divider, Paper, Stack, Switch, TextField, Typography } from '@mui/material';
-import { getContractByTxHash, publishCollection } from 'clients/crustnft-explore-api/contracts';
+import { Card, Divider, Paper, Stack, TextField, Typography } from '@mui/material';
+import { getContractByTxHash } from 'clients/crustnft-explore-api/contracts';
 import { cryptopunksABI } from 'constants/cryptopunksABI';
 import { BigNumber, utils } from 'ethers';
 import useAuth from 'hooks/useAuth';
@@ -20,7 +20,6 @@ export default function ConfigDeployedSmartContract({
   const { accessToken } = useAuth();
   const { account, library } = useWeb3();
 
-  const [publishChecked, setPublishChecked] = useState(true);
   const [contractAddress, setContractAddress] = useState('');
   const [chainId, setChainId] = useState(1);
   const [currencySymbol, setCurrencySymbol] = useState('ETH');
@@ -46,7 +45,6 @@ export default function ConfigDeployedSmartContract({
   useEffect(() => {
     if (txHash) {
       getContractByTxHash(txHash).then((res) => {
-        setPublishChecked(res.published);
         setContractAddress(res.contractAddress);
         setChainId(res.chainId);
       });
@@ -98,11 +96,6 @@ export default function ConfigDeployedSmartContract({
     setInputWhitelistMaxMintAmountPerTx(maxMintAmountPerTx);
     setInputPublicSaleMaxMintAmountPerTx(maxMintAmountPerTx);
   }, [maxMintAmountPerTx]);
-
-  const handlePublishChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPublishChecked(event.target.checked);
-    publishCollection(accessToken, txHash, event.target.checked);
-  };
 
   const handelOpenWhitelist = async () => {
     if (!contract) return;
@@ -194,7 +187,6 @@ export default function ConfigDeployedSmartContract({
         <Paper
           sx={{
             p: 3,
-            mb: 2,
             width: 1,
             position: 'relative',
             border: (theme: any) => `solid 1px ${theme.palette.grey[500_32]}`
@@ -331,7 +323,7 @@ export default function ConfigDeployedSmartContract({
             <Divider sx={{ my: 2 }} />
 
             <Typography variant="overline" sx={{ color: 'text.primary', mb: 1 }}>
-              Reveal the token
+              Reveal the NFT
             </Typography>
             <Stack direction="row" justifyContent="space-between">
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -353,14 +345,6 @@ export default function ConfigDeployedSmartContract({
               <LoadingButton variant="contained" color="warning" size="small">
                 Hide
               </LoadingButton>
-            </Stack>
-
-            <Stack direction="row" justifyContent="space-between">
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                Publish on crustnft
-              </Typography>
-
-              <Switch size="small" checked={publishChecked} onChange={handlePublishChange} />
             </Stack>
           </Stack>
         </Paper>

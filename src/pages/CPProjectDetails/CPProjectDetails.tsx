@@ -68,7 +68,7 @@ export default function CPProjectDetails() {
               metadataCID={collectionInfo?.metadataCID || ''}
             />
 
-            <DistributeStep />
+            <DistributeStep txHash={collectionInfo?.txHash || ''} />
           </Stack>
         </Card>
       </Container>

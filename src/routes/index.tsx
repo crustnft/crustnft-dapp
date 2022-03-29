@@ -44,6 +44,7 @@ export default function Router() {
         { path: 'wallet', element: <MyNFT /> },
         { path: 'create-expandable-collection', element: <CreateCollection /> },
         { path: 'mint-nft/:chain/:contractAddr', element: <MintNft /> },
+        { path: 'mint-cp-nft/:chain/:contractAddr', element: <MintCPNft /> },
         { path: 'collection-explore', element: <CollectionsExplorer /> },
         { path: 'collection/:chain/:contractAddr/:pageNb', element: <CollectionViewer /> },
         { path: 'tenK-collection', element: <CPProjectsDashboard /> },
@@ -106,7 +107,7 @@ const CPProjectUpload = LoadWithoutSpinner(lazy(() => import('../pages/CPProject
 const IntroCreateCollection = LoadWithoutSpinner(
   lazy(() => import('../pages/IntroCreateCollection'))
 );
-
+const MintCPNft = LoadWithoutSpinner(lazy(() => import('../pages/MintCPNft')));
 // const Universe = lazy(() => import('../pages/Universe'));
 // const NftMinting = lazy(() => import('../pages/NftMinting'));
 // const NftManager = lazy(() => import('../pages/NftManager'));
