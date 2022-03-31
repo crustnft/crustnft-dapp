@@ -4,7 +4,7 @@ import LoadingScreen from '../components/LoadingScreen';
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 import MainLayout from '../layouts/main';
-import CollectionsExplorer from '../pages/CollectionsExplorer';
+import SimplifiedLayout from '../layouts/simplified';
 
 const Loadable = (Component: any) => (props: any) => {
   return (
@@ -44,7 +44,6 @@ export default function Router() {
         { path: 'wallet', element: <MyNFT /> },
         { path: 'create-expandable-collection', element: <CreateCollection /> },
         { path: 'mint-nft/:chain/:contractAddr', element: <MintNft /> },
-        { path: 'mint-cp-nft/:chain/:contractAddr', element: <MintCPNft /> },
         { path: 'collection-explore', element: <CollectionsExplorer /> },
         { path: 'collection/:chain/:contractAddr/:pageNb', element: <CollectionViewer /> },
         { path: 'tenK-collection', element: <CPProjectsDashboard /> },
@@ -65,6 +64,12 @@ export default function Router() {
         },
         { path: 'assets/:chain/:contractAddr/:tokenId', element: <AssetViewer /> }
       ]
+    },
+
+    {
+      path: '/',
+      element: <SimplifiedLayout />,
+      children: [{ path: 'mint-cp-nft/:chain/:contractAddr', element: <MintCPNft /> }]
     },
 
     // Main Routes
@@ -108,6 +113,7 @@ const IntroCreateCollection = LoadWithoutSpinner(
   lazy(() => import('../pages/IntroCreateCollection'))
 );
 const MintCPNft = LoadWithoutSpinner(lazy(() => import('../pages/MintCPNft')));
+const CollectionsExplorer = LoadWithoutSpinner(lazy(() => import('../pages/CollectionsExplorer')));
 // const Universe = lazy(() => import('../pages/Universe'));
 // const NftMinting = lazy(() => import('../pages/NftMinting'));
 // const NftManager = lazy(() => import('../pages/NftManager'));

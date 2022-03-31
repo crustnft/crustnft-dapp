@@ -28,7 +28,7 @@ import NftCreationStatus from './NftCreationStatus';
 import NftTextField from './NftTextField';
 import StatNumber from './StatNumber';
 
-const ipfsGateway = 'https://gw-nft.crustapps.net';
+const ipfsGateway = 'https://gw.crustapps.net';
 
 const initialNftCreationStatus = {
   uploadingImage: false,

@@ -76,7 +76,7 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
                 render={({ field, fieldState: { error } }) => (
                   <TextField
                     {...field}
-                    label="Name"
+                    label="Token Name"
                     variant="outlined"
                     autoComplete="off"
                     fullWidth
@@ -149,13 +149,13 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
               <Stack spacing={0.5}>
                 <Stack direction="row" justifyContent="space-between" spacing={2}>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Name
+                    Token Name
                   </Typography>
                   <Typography variant="subtitle2">{name || 'Collection Name'}</Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between" spacing={2}>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Symbol
+                    Token Symbol
                   </Typography>
                   <Typography variant="subtitle2">{symbol || 'CRUSTNFT'}</Typography>
                 </Stack>

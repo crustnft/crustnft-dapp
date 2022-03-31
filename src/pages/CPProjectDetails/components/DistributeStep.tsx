@@ -15,7 +15,7 @@ import {
 import { getContractByTxHash, publishCollection } from 'clients/crustnft-explore-api/contracts';
 import useAuth from 'hooks/useAuth';
 import { useEffect, useState } from 'react';
-import { getCollectionUrlByChainId } from 'utils/blockchainHandlers';
+import { getChainNameByChainId, getCollectionUrlByChainId } from 'utils/blockchainHandlers';
 export default function DistributeStep({ txHash }: { txHash: string }) {
   const [publishChecked, setPublishChecked] = useState(true);
   const { accessToken } = useAuth();
@@ -129,9 +129,15 @@ export default function DistributeStep({ txHash }: { txHash: string }) {
                   <Switch size="small" checked={publishChecked} onChange={handlePublishChange} />
                 </Stack>
 
-                <Button variant="contained" color="info" size="small">
-                  Minting page
-                </Button>
+                <Link
+                  href={`#/mint-cp-nft/${getChainNameByChainId(
+                    chainId
+                  ).toLowerCase()}/${contractAddress}`}
+                >
+                  <Button variant="contained" color="info" size="small">
+                    Minting page
+                  </Button>
+                </Link>
 
                 <Button variant="contained" color="info" size="small">
                   Register on Opensea

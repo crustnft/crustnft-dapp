@@ -93,10 +93,8 @@ export default function ProjectCardEmpty() {
       >
         <DialogContent dividers={true}>
           <Stack sx={{ p: 1, pb: 2 }} spacing={1}>
-            <Typography variant="h5">Add Project</Typography>
-            <Typography variant="body2">
-              Create a new project and generate your own cryptopunk collection
-            </Typography>
+            <Typography variant="h5">Add Collection</Typography>
+            <Typography variant="body2">Create a new collection of your own arts</Typography>
           </Stack>
 
           <Stack sx={{ px: 1 }} spacing={1}>

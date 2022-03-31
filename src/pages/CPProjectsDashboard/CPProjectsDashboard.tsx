@@ -46,7 +46,7 @@ export default function CPProjectsDashboard() {
             <Typography
               sx={{ color: 'text.secondary', display: isAuthenticated ? 'none' : 'block' }}
             >
-              You have to connect to a wallet and sign a message to see your tenK collections.
+              You have to connect and sign the message to see your tenK collections.
             </Typography>
           </Stack>
 
