@@ -33,8 +33,7 @@ const MintingCard = styled('div')({
   backgroundImage:
     'url("https://img.freepik.com/free-vector/ocean-sea-beach-nature-tranquil-landscape_33099-2248.jpg?w=1300")',
   backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  minHeight: '90vh'
+  backgroundPosition: 'center'
 });
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
@@ -130,9 +129,15 @@ export default function MintCPNft() {
   }, [contract]);
 
   const onMintHandle = async (amount: number) => {
-    if (!contract) return;
+    let _amount = amount;
+    if (!contract || amount === 0) return;
+    if (amount > maxSupply - totalSupply) {
+      setNbOfNftToMint(maxSupply - totalSupply);
+      _amount = maxSupply - totalSupply;
+    }
+
     const tokenPrice: BigNumber = await contract.cost();
-    const tx = await contract.mint(amount, { value: tokenPrice.mul(amount) });
+    const tx = await contract.mint(_amount, { value: tokenPrice.mul(_amount) });
     console.log('tx', tx);
     const _tx = await tx.wait();
     console.log('_tx', _tx);
@@ -164,61 +169,92 @@ export default function MintCPNft() {
               </ToggleButton>
             </StyledToggleButtonGroup>
           </Stack>
+
           <Stack
             spacing={2}
             direction="column"
             justifyContent="flex-end"
             alignItems="center"
-            sx={{ height: '100%', pt: 10 }}
+            sx={{ height: '100%', py: 3, pt: '50vh' }}
           >
-            <Stack direction="column" spacing={2}>
-              <Stack direction="row" spacing={2}>
-                <IconButton
-                  aria-label="delete"
-                  size="large"
-                  color="error"
-                  onClick={() => {
-                    setNbOfNftToMint((prev) => {
-                      if (prev - 1 >= 0) return prev - 1;
-                      return prev;
-                    });
-                  }}
-                >
-                  <Icon icon="akar-icons:circle-minus-fill" color="#98E1FE" />
-                </IconButton>
-                <BootstrapInput>
-                  <Stack sx={{ py: 1, px: 4 }}>
-                    <Typography variant="h4">{nbOfNftToMint}</Typography>
-                  </Stack>
-                </BootstrapInput>
-                <IconButton
-                  aria-label="delete"
-                  size="large"
-                  onClick={() => {
-                    setNbOfNftToMint((prev) => {
-                      if (prev + 1 <= maxMintAmountPerTx) return prev + 1;
-                      return prev;
-                    });
-                  }}
-                >
-                  <Icon icon="akar-icons:circle-plus-fill" color="#98E1FE" />
-                </IconButton>
-              </Stack>
-
-              <Button
-                size="small"
-                color="warning"
-                variant="contained"
-                onClick={() => {
-                  onMintHandle(nbOfNftToMint);
-                }}
+            <GlassWrapper>
+              <Stack
+                direction="column"
+                spacing={2}
+                alignItems="center"
+                justifyContent="flex-end"
+                sx={{ height: '100%', p: 2 }}
               >
-                Mint
-              </Button>
-            </Stack>
+                <Typography variant="h2" color="white" sx={{ textAlign: 'center' }}>
+                  {totalSupply}/{maxSupply}
+                  <Typography color="white" sx={{ mt: -2, display: 'block', textAlign: 'center' }}>
+                    Minted
+                  </Typography>
+                </Typography>
+
+                <Stack direction="row" spacing={2}>
+                  <IconButton
+                    aria-label="delete"
+                    size="large"
+                    color="error"
+                    onClick={() => {
+                      setNbOfNftToMint((prev) => {
+                        if (prev - 1 >= 0) return prev - 1;
+                        return prev;
+                      });
+                    }}
+                  >
+                    <Icon icon="akar-icons:circle-minus-fill" color="#98E1FE" />
+                  </IconButton>
+                  <BootstrapInput>
+                    <Stack sx={{ py: 1, px: 4 }}>
+                      <Typography variant="h4">{nbOfNftToMint}</Typography>
+                    </Stack>
+                  </BootstrapInput>
+                  <IconButton
+                    aria-label="delete"
+                    size="large"
+                    onClick={() => {
+                      setNbOfNftToMint((prev) => {
+                        if (prev + 1 <= maxMintAmountPerTx) return prev + 1;
+                        return prev;
+                      });
+                    }}
+                  >
+                    <Icon icon="akar-icons:circle-plus-fill" color="#98E1FE" />
+                  </IconButton>
+                </Stack>
+
+                <Button
+                  size="small"
+                  color="warning"
+                  variant="contained"
+                  onClick={() => {
+                    onMintHandle(nbOfNftToMint);
+                  }}
+                  sx={{ px: 8 }}
+                >
+                  Mint
+                </Button>
+              </Stack>
+            </GlassWrapper>
           </Stack>
         </MintingCard>
       </Container>
     </Page>
   );
+}
+
+const GlassWrapper = styled(Box)({
+  /* From https://css.glass */
+  background: 'rgba(255, 255, 255, 0.2)',
+  borderRadius: '16px',
+  boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+  backdropFilter: 'blur(5px)',
+  WebkitBackdropFilter: 'blur(5px)',
+  border: '1px solid rgba(255, 255, 255, 0.3)',
+  width: '50%'
+});
+function GlassCard() {
+  return <GlassWrapper></GlassWrapper>;
 }
