@@ -28,7 +28,7 @@ import NftCreationStatus from './NftCreationStatus';
 import NftTextField from './NftTextField';
 import StatNumber from './StatNumber';
 
-const ipfsGateway = 'https://gw.crustapps.net';
+const ipfsGateway = 'https://gw-nft.crustapps.net';
 
 const initialNftCreationStatus = {
   uploadingImage: false,
@@ -169,13 +169,19 @@ export default function NftForm() {
       reader.onabort = () => reject('file reading was aborted');
       reader.onerror = () => reject('file reading has failed');
       reader.onload = async () => {
-        const added = await ipfs.add(reader.result as ArrayBuffer);
-        console.log(added.cid.toV0().toString());
-        resolve({
-          cid: added.cid.toV0().toString(),
-          name: file.name || '',
-          size: added.size
+        const added = await ipfs.add(reader.result as ArrayBuffer).catch((error) => {
+          console.log(error);
         });
+        if (!added) {
+          reject('unable to upload file');
+        } else {
+          console.log(added.cid.toV0().toString());
+          resolve({
+            cid: added.cid.toV0().toString(),
+            name: file.name || '',
+            size: added.size
+          });
+        }
       };
 
       reader.readAsArrayBuffer(file);
@@ -212,6 +218,7 @@ export default function NftForm() {
           );
           setUploadingImage(false);
           if (!addedFile) {
+            setUploadImageError(true);
             return;
           }
 

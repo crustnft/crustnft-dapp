@@ -13,7 +13,7 @@ export default function BaseOptionChart(): ApexOptions {
     color: theme.palette.text.secondary,
     fontSize: theme.typography.subtitle2.fontSize as string,
     fontWeight: theme.typography.subtitle2.fontWeight,
-    lineHeight: theme.typography.subtitle2.lineHeight,
+    lineHeight: theme.typography.subtitle2.lineHeight
   };
 
   const LABEL_VALUE = {
@@ -21,7 +21,7 @@ export default function BaseOptionChart(): ApexOptions {
     color: theme.palette.text.primary,
     fontSize: theme.typography.h3.fontSize as string,
     fontWeight: theme.typography.h3.fontWeight,
-    lineHeight: theme.typography.h3.lineHeight,
+    lineHeight: theme.typography.h3.lineHeight
   };
 
   return {
@@ -32,7 +32,7 @@ export default function BaseOptionChart(): ApexOptions {
       theme.palette.chart.blue[0],
       theme.palette.chart.violet[0],
       theme.palette.chart.green[0],
-      theme.palette.chart.red[0],
+      theme.palette.chart.red[0]
     ],
 
     // Chart
@@ -41,7 +41,7 @@ export default function BaseOptionChart(): ApexOptions {
       zoom: { enabled: false },
       // animations: { enabled: false },
       foreColor: theme.palette.text.disabled,
-      fontFamily: theme.typography.fontFamily,
+      fontFamily: theme.typography.fontFamily
     },
 
     // States
@@ -49,15 +49,15 @@ export default function BaseOptionChart(): ApexOptions {
       hover: {
         filter: {
           type: 'lighten',
-          value: 0.04,
-        },
+          value: 0.04
+        }
       },
       active: {
         filter: {
           type: 'darken',
-          value: 0.88,
-        },
-      },
+          value: 0.88
+        }
+      }
     },
 
     // Fill
@@ -68,8 +68,8 @@ export default function BaseOptionChart(): ApexOptions {
         shadeIntensity: 0,
         opacityFrom: 0.4,
         opacityTo: 0,
-        stops: [0, 100],
-      },
+        stops: [0, 100]
+      }
     },
 
     // Datalabels
@@ -79,32 +79,32 @@ export default function BaseOptionChart(): ApexOptions {
     stroke: {
       width: 3,
       curve: 'smooth',
-      lineCap: 'round',
+      lineCap: 'round'
     },
 
     // Grid
     grid: {
       strokeDashArray: 3,
-      borderColor: theme.palette.divider,
+      borderColor: theme.palette.divider
     },
 
     // Xaxis
     xaxis: {
       axisBorder: { show: false },
-      axisTicks: { show: false },
+      axisTicks: { show: false }
     },
 
     // Markers
     markers: {
       size: 0,
-      strokeColors: theme.palette.background.paper,
+      strokeColors: theme.palette.background.paper
     },
 
     // Tooltip
     tooltip: {
       x: {
-        show: false,
-      },
+        show: false
+      }
     },
 
     // Legend
@@ -114,13 +114,13 @@ export default function BaseOptionChart(): ApexOptions {
       position: 'top',
       horizontalAlign: 'right',
       markers: {
-        radius: 12,
+        radius: 12
       },
       fontWeight: 500,
       itemMargin: { horizontal: 12 },
       labels: {
-        colors: theme.palette.text.primary,
-      },
+        colors: theme.palette.text.primary
+      }
     },
 
     // plotOptions
@@ -128,7 +128,7 @@ export default function BaseOptionChart(): ApexOptions {
       // Bar
       bar: {
         columnWidth: '28%',
-        borderRadius: 4,
+        borderRadius: 4
       },
       // Pie + Donut
       pie: {
@@ -136,38 +136,38 @@ export default function BaseOptionChart(): ApexOptions {
           labels: {
             show: true,
             value: LABEL_VALUE,
-            total: LABEL_TOTAL,
-          },
-        },
+            total: LABEL_TOTAL
+          }
+        }
       },
       // Radialbar
       radialBar: {
         track: {
           strokeWidth: '100%',
-          background: theme.palette.grey[500_16],
+          background: theme.palette.grey[500_16]
         },
         dataLabels: {
           value: LABEL_VALUE,
-          total: LABEL_TOTAL,
-        },
+          total: LABEL_TOTAL
+        }
       },
       // Radar
       radar: {
         polygons: {
           fill: { colors: ['transparent'] },
           strokeColors: theme.palette.divider,
-          connectorColors: theme.palette.divider,
-        },
+          connectorColors: theme.palette.divider
+        }
       },
       // polarArea
       polarArea: {
         rings: {
-          strokeColor: theme.palette.divider,
+          strokeColor: theme.palette.divider
         },
         spokes: {
-          connectorColors: theme.palette.divider,
-        },
-      },
+          connectorColors: theme.palette.divider
+        }
+      }
     },
 
     // Responsive
@@ -176,16 +176,16 @@ export default function BaseOptionChart(): ApexOptions {
         // sm
         breakpoint: theme.breakpoints.values.sm,
         options: {
-          plotOptions: { bar: { columnWidth: '40%' } },
-        },
+          plotOptions: { bar: { columnWidth: '40%' } }
+        }
       },
       {
         // md
         breakpoint: theme.breakpoints.values.md,
         options: {
-          plotOptions: { bar: { columnWidth: '32%' } },
-        },
-      },
-    ],
+          plotOptions: { bar: { columnWidth: '32%' } }
+        }
+      }
+    ]
   };
 }
