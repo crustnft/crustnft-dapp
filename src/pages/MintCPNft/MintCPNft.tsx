@@ -1,8 +1,13 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Icon } from '@iconify/react';
+import { LoadingButton } from '@mui/lab';
 import {
   Box,
   Button,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
   IconButton,
   Stack,
   ToggleButton,
@@ -14,16 +19,18 @@ import { cryptopunksABI } from 'constants/cryptopunksABI';
 import { BigNumber, utils } from 'ethers';
 import useAuth from 'hooks/useAuth';
 import useWeb3 from 'hooks/useWeb3';
-import { useEffect, useMemo, useState } from 'react';
+import { create } from 'ipfs-http-client';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { connectRWContract } from 'services/smartContract/evmCompatible';
+import * as Yup from 'yup';
+import { FormProvider, RHFUploadNftCard } from '../../components/hook-form';
 import Page from '../../components/Page';
-type LegendProps = {
-  label: string;
-  number: number;
-};
+import { fData } from '../../utils/formatNumber';
 
 const MintingCard = styled('div')({
+  position: 'relative',
   /* From https://css.glass */
   borderRadius: '16px',
   boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
@@ -146,6 +153,83 @@ export default function MintCPNft() {
   };
 
   const [nbOfNftToMint, setNbOfNftToMint] = useState(1);
+  const [openUploadCover, setOpenUploadCover] = useState(false);
+
+  function uploadFileToW3AuthGateway(
+    ipfsGateway: string,
+    authHeader: string,
+    file: File
+  ): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const ipfs = create({
+        url: ipfsGateway + '/api/v0',
+        headers: {
+          authorization: 'Basic ' + authHeader
+        }
+      });
+      console.log('start pin w3');
+      const reader = new FileReader();
+      reader.onabort = () => reject('file reading was aborted');
+      reader.onerror = () => reject('file reading has failed');
+      reader.onload = async () => {
+        const added = await ipfs.add(reader.result as ArrayBuffer).catch((error) => {
+          console.log(error);
+        });
+        if (!added) {
+          reject('unable to upload file');
+        } else {
+          console.log(added.cid.toV0().toString());
+          resolve({
+            cid: added.cid.toV0().toString(),
+            name: file.name || '',
+            size: added.size
+          });
+        }
+      };
+
+      reader.readAsArrayBuffer(file);
+    });
+  }
+
+  const CoverSchema = Yup.object().shape({
+    cover: Yup.mixed().test('required', 'Image is required', (value) => value !== null)
+  });
+
+  const defaultValues = {
+    cover: null
+  };
+
+  const methods = useForm<{ cover: File | null }>({
+    mode: 'onTouched',
+    resolver: yupResolver(CoverSchema),
+    defaultValues
+  });
+
+  const {
+    watch,
+    setValue,
+    handleSubmit,
+    formState: { isSubmitting }
+  } = methods;
+
+  const onSubmit = () => {
+    console.log('httlo');
+  };
+
+  const handleDrop = useCallback(
+    (acceptedFiles: any) => {
+      const file = acceptedFiles[0];
+      if (file) {
+        setValue(
+          'cover',
+          Object.assign(file, {
+            preview: URL.createObjectURL(file)
+          })
+        );
+      }
+    },
+    [setValue]
+  );
 
   return (
     <Page title="Mint your NFT">
@@ -239,7 +323,73 @@ export default function MintCPNft() {
               </Stack>
             </GlassWrapper>
           </Stack>
+          <Button
+            variant="outlined"
+            startIcon={<Icon icon="ant-design:upload-outlined" />}
+            sx={{ position: 'absolute', right: 5, bottom: 5 }}
+            onClick={() => {
+              setOpenUploadCover(true);
+            }}
+          >
+            Upload Cover
+          </Button>
         </MintingCard>
+
+        <Dialog
+          open={openUploadCover}
+          onClose={() => {
+            setOpenUploadCover(false);
+          }}
+          fullWidth
+          maxWidth="sm"
+        >
+          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+            <DialogContent>
+              <RHFUploadNftCard
+                name="cover"
+                accept="image/*"
+                maxSize={11457280}
+                onDrop={handleDrop}
+                helperText={
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      mt: 2,
+                      mx: 'auto',
+                      display: 'block',
+                      textAlign: 'center',
+                      color: 'text.secondary'
+                    }}
+                  >
+                    Allowed *.jpeg, *.jpg, *.png, *.gif
+                    <br /> max size of {fData(11457280)}
+                  </Typography>
+                }
+              />
+            </DialogContent>
+            <DialogActions>
+              <LoadingButton
+                type="submit"
+                variant="contained"
+                color="info"
+                loading={isSubmitting}
+                sx={{
+                  backgroundColor: '#1A90FF'
+                }}
+              >
+                Upload
+              </LoadingButton>
+              <Button
+                onClick={() => {
+                  setOpenUploadCover(false);
+                }}
+                autoFocus
+              >
+                Close
+              </Button>
+            </DialogActions>
+          </FormProvider>
+        </Dialog>
       </Container>
     </Page>
   );
@@ -255,6 +405,3 @@ const GlassWrapper = styled(Box)({
   border: '1px solid rgba(255, 255, 255, 0.3)',
   width: '50%'
 });
-function GlassCard() {
-  return <GlassWrapper></GlassWrapper>;
-}
