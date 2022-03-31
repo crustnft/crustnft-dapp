@@ -26,6 +26,7 @@ export type CollectionData = {
   coverUrl?: string;
   description?: string;
   chainId: number;
+  collectionType: 'expandable' | 'cryptopunks';
 };
 
 type CollectionCardProps = {

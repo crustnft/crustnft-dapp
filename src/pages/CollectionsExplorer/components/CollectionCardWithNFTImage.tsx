@@ -311,22 +311,21 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                 ) : (
                   <></>
                 )}
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="warning"
-                  sx={{ ml: 1, px: 3, py: 1, borderRadius: 3 }}
-                  href={`#/mint-nft/${network}/${contract.address}`}
-                  disabled={
-                    account && contractOwner
-                      ? account?.toLowerCase() !== contractOwner?.toLowerCase()
-                      : true
-                  }
-                >
-                  <Typography variant="caption" noWrap>
+                {!(collection.collectionType === 'expandable' && contractOwner !== account) && (
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="warning"
+                    sx={{ ml: 1, px: 3, py: 1, borderRadius: 3 }}
+                    href={
+                      collection.collectionType === 'cryptopunks'
+                        ? `#/mint-cp-nft/${network.toLowerCase()}/${contract.address}`
+                        : `#/mint-nft/${network.toLowerCase()}/${contract.address}`
+                    }
+                  >
                     Mint NFT
-                  </Typography>
-                </Button>
+                  </Button>
+                )}
               </Stack>
             </Stack>
           </Box>
