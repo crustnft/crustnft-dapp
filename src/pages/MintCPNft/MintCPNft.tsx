@@ -23,7 +23,8 @@ import { create } from 'ipfs-http-client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { connectRWContract } from 'services/smartContract/evmCompatible';
+import { connectContract, connectRWContract } from 'services/smartContract/evmCompatible';
+import { getRpcUrlByNetworkName } from 'utils/blockchainHandlers';
 import * as Yup from 'yup';
 import { FormProvider, RHFUploadNftCard } from '../../components/hook-form';
 import Page from '../../components/Page';
@@ -93,6 +94,13 @@ export default function MintCPNft() {
   const [isWhitelistMintEnabled, setIsWhitelistMintEnabled] = useState(false);
   const [revealed, setRevealed] = useState(false);
 
+  useEffect(() => {}, [chain]);
+
+  const readOnlyContract = useMemo(() => {
+    if (!(contractAddr && chain)) return;
+    return connectContract(contractAddr, cryptopunksABI, getRpcUrlByNetworkName(chain));
+  }, [chain, contractAddr]);
+
   const contract = useMemo(() => {
     if (contractAddr && library && account) {
       const signer = library?.getSigner(account);
@@ -102,38 +110,38 @@ export default function MintCPNft() {
   }, [contractAddr, library, account]);
 
   useEffect(() => {
-    if (contract) {
-      contract.paused().then((paused: boolean) => {
+    if (readOnlyContract) {
+      readOnlyContract.paused().then((paused: boolean) => {
         setPaused(paused);
       });
 
-      contract.name().then((name: string) => {
+      readOnlyContract.name().then((name: string) => {
         setName(name);
       });
 
-      contract.totalSupply().then((totalSupply: BigNumber) => {
+      readOnlyContract.totalSupply().then((totalSupply: BigNumber) => {
         setTotalSupply(totalSupply.toNumber());
       });
 
-      contract.maxSupply().then((maxSupply: BigNumber) => {
+      readOnlyContract.maxSupply().then((maxSupply: BigNumber) => {
         setMaxSupply(maxSupply.toNumber());
       });
 
-      contract.maxMintAmountPerTx().then((maxMintAmountPerTx: BigNumber) => {
+      readOnlyContract.maxMintAmountPerTx().then((maxMintAmountPerTx: BigNumber) => {
         console.log('maxMintAmountPerTx', maxMintAmountPerTx.toNumber());
         setMaxMintAmountPerTx(maxMintAmountPerTx.toNumber());
       });
-      contract.cost().then((tokenPrice: BigNumber) => {
+      readOnlyContract.cost().then((tokenPrice: BigNumber) => {
         setTokenPrice(parseFloat(utils.formatEther(tokenPrice)));
       });
-      contract.whitelistMintEnabled().then((isWhitelistMintEnabled: boolean) => {
+      readOnlyContract.whitelistMintEnabled().then((isWhitelistMintEnabled: boolean) => {
         setIsWhitelistMintEnabled(isWhitelistMintEnabled);
       });
-      contract.revealed().then((revealed: boolean) => {
+      readOnlyContract.revealed().then((revealed: boolean) => {
         setRevealed(revealed);
       });
     }
-  }, [contract]);
+  }, [readOnlyContract]);
 
   const onMintHandle = async (amount: number) => {
     let _amount = amount;
