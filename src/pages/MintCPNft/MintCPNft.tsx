@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { cryptopunksABI } from 'constants/cryptopunksABI';
+import { ipfsGatewayForUpload } from 'constants/ipfsGateways';
 import { BigNumber, utils } from 'ethers';
 import useAuth from 'hooks/useAuth';
 import useWeb3 from 'hooks/useWeb3';
@@ -24,6 +25,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { connectContract, connectRWContract } from 'services/smartContract/evmCompatible';
+import { AUTH_HEADER } from 'services/w3AuthIpfs';
 import { getRpcUrlByNetworkName } from 'utils/blockchainHandlers';
 import * as Yup from 'yup';
 import { FormProvider, RHFUploadNftCard } from '../../components/hook-form';
@@ -131,12 +133,15 @@ export default function MintCPNft() {
         console.log('maxMintAmountPerTx', maxMintAmountPerTx.toNumber());
         setMaxMintAmountPerTx(maxMintAmountPerTx.toNumber());
       });
+
       readOnlyContract.cost().then((tokenPrice: BigNumber) => {
         setTokenPrice(parseFloat(utils.formatEther(tokenPrice)));
       });
+
       readOnlyContract.whitelistMintEnabled().then((isWhitelistMintEnabled: boolean) => {
         setIsWhitelistMintEnabled(isWhitelistMintEnabled);
       });
+
       readOnlyContract.revealed().then((revealed: boolean) => {
         setRevealed(revealed);
       });
@@ -184,6 +189,7 @@ export default function MintCPNft() {
           console.log(error);
         });
         if (!added) {
+          console.log('!added');
           reject('unable to upload file');
         } else {
           console.log(added.cid.toV0().toString());
@@ -220,8 +226,13 @@ export default function MintCPNft() {
     formState: { isSubmitting }
   } = methods;
 
-  const onSubmit = () => {
-    console.log('httlo');
+  const { cover } = watch();
+
+  const onSubmit = async () => {
+    if (!cover) return;
+
+    const cid = await uploadFileToW3AuthGateway(ipfsGatewayForUpload, AUTH_HEADER, cover);
+    console.log('finish', cid);
   };
 
   const handleDrop = useCallback(

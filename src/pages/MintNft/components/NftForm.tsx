@@ -2,6 +2,7 @@ import { TransactionReceipt, TransactionResponse } from '@ethersproject/provider
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
 import { Alert, Box, Button, Card, Grid, Stack, Typography } from '@mui/material';
+import { ipfsGatewayForUpload } from 'constants/ipfsGateways';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
@@ -27,8 +28,6 @@ import NewStatsDialog from './NewStatsDialog';
 import NftCreationStatus from './NftCreationStatus';
 import NftTextField from './NftTextField';
 import StatNumber from './StatNumber';
-
-const ipfsGateway = 'https://gw.crustapps.net';
 
 const initialNftCreationStatus = {
   uploadingImage: false,
@@ -190,7 +189,7 @@ export default function NftForm() {
 
   async function uploadMetadataW3AuthGateway(authHeader: string, metadata: any): Promise<any> {
     const ipfs = create({
-      url: ipfsGateway + '/api/v0',
+      url: ipfsGatewayForUpload + '/api/v0',
       headers: {
         authorization: 'Basic ' + authHeader
       }
@@ -211,11 +210,13 @@ export default function NftForm() {
         if (!uploadImageSuccess) {
           setActiveStep(0);
           setUploadingImage(true);
-          const addedFile = await uploadFileToW3AuthGateway(ipfsGateway, AUTH_HEADER, avatar).catch(
-            () => {
-              setUploadImageError(true);
-            }
-          );
+          const addedFile = await uploadFileToW3AuthGateway(
+            ipfsGatewayForUpload,
+            AUTH_HEADER,
+            avatar
+          ).catch(() => {
+            setUploadImageError(true);
+          });
           setUploadingImage(false);
           if (!addedFile) {
             setUploadImageError(true);

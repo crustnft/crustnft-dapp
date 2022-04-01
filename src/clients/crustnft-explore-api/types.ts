@@ -65,3 +65,10 @@ export const EMPTY_CREATENFTCOLLECTIONDTO: CreateNftCollectionDto = {
   name: '',
   description: ''
 };
+
+export type CreateCollectionDto = {
+  description: string;
+  account: string;
+  id: string;
+  socialUrls: string[];
+};
