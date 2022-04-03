@@ -1,13 +1,8 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import { Icon } from '@iconify/react';
-import { LoadingButton } from '@mui/lab';
 import {
   Box,
   Button,
   Container,
-  Dialog,
-  DialogActions,
-  DialogContent,
   IconButton,
   Stack,
   ToggleButton,
@@ -15,24 +10,29 @@ import {
   Typography
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
+import {
+  createCollection,
+  getCollection,
+  updateCollection
+} from 'clients/crustnft-explore-api/collections';
 import { cryptopunksABI } from 'constants/cryptopunksABI';
-import { ipfsGatewayForUpload } from 'constants/ipfsGateways';
+import { AUTH_HEADER, IPFS_GATEWAY } from 'constants/ipfsGateways';
 import { BigNumber, utils } from 'ethers';
 import useAuth from 'hooks/useAuth';
+import useSnackbarAction from 'hooks/useSnackbarAction';
 import useWeb3 from 'hooks/useWeb3';
 import { create } from 'ipfs-http-client';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useEffect, useMemo, useState } from 'react';
+import { useDropzone } from 'react-dropzone';
 import { useParams } from 'react-router-dom';
 import { connectContract, connectRWContract } from 'services/smartContract/evmCompatible';
-import { AUTH_HEADER } from 'services/w3AuthIpfs';
-import { getRpcUrlByNetworkName } from 'utils/blockchainHandlers';
-import * as Yup from 'yup';
-import { FormProvider, RHFUploadNftCard } from '../../components/hook-form';
+import { pinW3Crust } from 'services/w3AuthIpfs';
+import { getChainIdByNetworkName, getRpcUrlByNetworkName } from 'utils/blockchainHandlers';
+import { getUrlFromCid } from 'utils/ipfsHandlers';
 import Page from '../../components/Page';
-import { fData } from '../../utils/formatNumber';
-
-const MintingCard = styled('div')({
+const MintingCard = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'backgroundImage'
+})<{ backgroundImage: string }>(({ backgroundImage }) => ({
   position: 'relative',
   /* From https://css.glass */
   borderRadius: '16px',
@@ -40,11 +40,12 @@ const MintingCard = styled('div')({
   // backdropFilter: 'blur(5px)',
   // WebkitBackdropFilter: 'blur(5px)',
   border: '12px solid rgba(255, 255, 255)',
-  backgroundImage:
-    'url("https://img.freepik.com/free-vector/ocean-sea-beach-nature-tranquil-landscape_33099-2248.jpg?w=1300")',
+  backgroundImage: backgroundImage
+    ? `url(${backgroundImage})`
+    : 'url("https://img.freepik.com/free-vector/ocean-sea-beach-nature-tranquil-landscape_33099-2248.jpg?w=1300")',
   backgroundSize: 'cover',
   backgroundPosition: 'center'
-});
+}));
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '& .MuiToggleButtonGroup-grouped': {
@@ -76,18 +77,24 @@ const BootstrapInput = styled(Box)(({ theme }) => ({
   }
 }));
 
+export interface CustomFile extends File {
+  preview?: string;
+}
+
 export default function MintCPNft() {
   const { chain, contractAddr } = useParams();
 
   const theme = useTheme();
 
-  const { accessToken } = useAuth();
-  const { account, library } = useWeb3();
+  const { accessToken, isAuthenticated } = useAuth();
+  const { account, library, signInWallet } = useWeb3();
 
   const [chainId, setChainId] = useState(1);
   const [currencySymbol, setCurrencySymbol] = useState('ETH');
 
   const [name, setName] = useState('');
+  const [owner, setOwner] = useState('');
+
   const [totalSupply, setTotalSupply] = useState(0);
   const [maxSupply, setMaxSupply] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -95,8 +102,24 @@ export default function MintCPNft() {
   const [tokenPrice, setTokenPrice] = useState<number>(0);
   const [isWhitelistMintEnabled, setIsWhitelistMintEnabled] = useState(false);
   const [revealed, setRevealed] = useState(false);
+  const [collectionInfo, setCollectionInfo] = useState<any>(undefined);
+  const onSnackbarAction = useSnackbarAction();
 
-  useEffect(() => {}, [chain]);
+  useEffect(() => {
+    const initialize = async () => {
+      if (!(chain && contractAddr)) return;
+      const chainId = getChainIdByNetworkName(chain);
+      if (!chainId) return;
+      setChainId(chainId);
+      const _collectionInfo = await getCollection(chainId.toString() + '-' + contractAddr);
+      if (_collectionInfo) {
+        setCollectionInfo(_collectionInfo);
+      }
+      console.log(_collectionInfo);
+    };
+
+    initialize();
+  }, [chain, contractAddr]);
 
   const readOnlyContract = useMemo(() => {
     if (!(contractAddr && chain)) return;
@@ -145,6 +168,10 @@ export default function MintCPNft() {
       readOnlyContract.revealed().then((revealed: boolean) => {
         setRevealed(revealed);
       });
+
+      readOnlyContract.owner().then((owner: string) => {
+        setOwner(owner);
+      });
     }
   }, [readOnlyContract]);
 
@@ -166,12 +193,11 @@ export default function MintCPNft() {
   };
 
   const [nbOfNftToMint, setNbOfNftToMint] = useState(1);
-  const [openUploadCover, setOpenUploadCover] = useState(false);
 
   function uploadFileToW3AuthGateway(
     ipfsGateway: string,
     authHeader: string,
-    file: File
+    file: CustomFile
   ): Promise<any> {
     return new Promise((resolve, reject) => {
       const ipfs = create({
@@ -205,55 +231,76 @@ export default function MintCPNft() {
     });
   }
 
-  const CoverSchema = Yup.object().shape({
-    cover: Yup.mixed().test('required', 'Image is required', (value) => value !== null)
-  });
+  const [fileX, setFileX] = useState<CustomFile | null>(null);
 
-  const defaultValues = {
-    cover: null
+  const handleDropFileX = (acceptedFiles: any) => {
+    const file = acceptedFiles[0];
+    if (file) {
+      setFileX(
+        Object.assign(file, {
+          preview: URL.createObjectURL(file)
+        })
+      );
+    }
   };
 
-  const methods = useForm<{ cover: File | null }>({
-    mode: 'onTouched',
-    resolver: yupResolver(CoverSchema),
-    defaultValues
-  });
-
-  const {
-    watch,
-    setValue,
-    handleSubmit,
-    formState: { isSubmitting }
-  } = methods;
-
-  const { cover } = watch();
-
-  const onSubmit = async () => {
-    if (!cover) return;
-
-    const cid = await uploadFileToW3AuthGateway(ipfsGatewayForUpload, AUTH_HEADER, cover);
-    console.log('finish', cid);
-  };
-
-  const handleDrop = useCallback(
-    (acceptedFiles: any) => {
-      const file = acceptedFiles[0];
-      if (file) {
-        setValue(
-          'cover',
-          Object.assign(file, {
-            preview: URL.createObjectURL(file)
-          })
-        );
+  const handleUploadCover = async () => {
+    if (account?.toLowerCase() === owner.toLowerCase()) {
+      if (!isAuthenticated) {
+        await signInWallet();
       }
-    },
-    [setValue]
-  );
+
+      if (!fileX || !readOnlyContract || !chainId || !contractAddr) {
+        onSnackbarAction('warning', 'Please select the cover!', null);
+        return;
+      }
+      const addedFile = await uploadFileToW3AuthGateway(IPFS_GATEWAY, AUTH_HEADER, fileX);
+      if (!addedFile) return;
+
+      pinW3Crust(AUTH_HEADER, addedFile.cid, addedFile.name);
+
+      const _collectionInfo = await getCollection(chainId.toString() + '-' + contractAddr);
+
+      if (!_collectionInfo) {
+        await createCollection(accessToken, {
+          id: chainId.toString() + '-' + contractAddr,
+          account: owner
+        });
+      }
+
+      const updatedCollection = await updateCollection(accessToken, {
+        id: chainId.toString() + '-' + contractAddr,
+        account: owner,
+        coverCID: addedFile.cid
+      });
+
+      if (updatedCollection) {
+        onSnackbarAction('success', 'Change cover successfully', null);
+      } else {
+        onSnackbarAction('warning', 'Try again', null);
+      }
+    }
+  };
+
+  const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
+    multiple: false,
+    accept: 'image/*',
+    maxSize: 11457280,
+    onDrop: handleDropFileX
+  });
 
   return (
     <Page title="Mint your NFT">
       <Container maxWidth={'lg'}>
-        <MintingCard>
+        <MintingCard
+          backgroundImage={
+            fileX?.preview
+              ? fileX.preview
+              : collectionInfo?.coverCID
+              ? getUrlFromCid(collectionInfo.coverCID)
+              : ''
+          }
+        >
           <Stack alignItems="center" sx={{ mt: 1 }}>
             <StyledToggleButtonGroup size="small" value="center" exclusive>
               <ToggleButton
@@ -342,73 +389,22 @@ export default function MintCPNft() {
               </Stack>
             </GlassWrapper>
           </Stack>
-          <Button
-            variant="outlined"
-            startIcon={<Icon icon="ant-design:upload-outlined" />}
-            sx={{ position: 'absolute', right: 5, bottom: 5 }}
-            onClick={() => {
-              setOpenUploadCover(true);
-            }}
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ mb: 1, ml: 1, display: account !== owner ? 'none' : 'flex' }}
           >
-            Upload Cover
-          </Button>
-        </MintingCard>
-
-        <Dialog
-          open={openUploadCover}
-          onClose={() => {
-            setOpenUploadCover(false);
-          }}
-          fullWidth
-          maxWidth="sm"
-        >
-          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <DialogContent>
-              <RHFUploadNftCard
-                name="cover"
-                accept="image/*"
-                maxSize={11457280}
-                onDrop={handleDrop}
-                helperText={
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      mt: 2,
-                      mx: 'auto',
-                      display: 'block',
-                      textAlign: 'center',
-                      color: 'text.secondary'
-                    }}
-                  >
-                    Allowed *.jpeg, *.jpg, *.png, *.gif
-                    <br /> max size of {fData(11457280)}
-                  </Typography>
-                }
-              />
-            </DialogContent>
-            <DialogActions>
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                color="info"
-                loading={isSubmitting}
-                sx={{
-                  backgroundColor: '#1A90FF'
-                }}
-              >
-                Upload
-              </LoadingButton>
-              <Button
-                onClick={() => {
-                  setOpenUploadCover(false);
-                }}
-                autoFocus
-              >
-                Close
+            <div {...getRootProps({ className: 'dropzone' })}>
+              <input {...getInputProps()} />
+              <Button color="info" variant="contained" size="small">
+                Change Cover
               </Button>
-            </DialogActions>
-          </FormProvider>
-        </Dialog>
+            </div>
+            <Button color="info" variant="contained" size="small" onClick={handleUploadCover}>
+              Save
+            </Button>
+          </Stack>
+        </MintingCard>
       </Container>
     </Page>
   );

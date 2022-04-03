@@ -467,7 +467,7 @@ export default function DeploySmartContract({
               sx={{
                 backgroundColor: '#377dff',
                 px: 5,
-                display: 'block'
+                display: verifyingSuccess ? 'none' : 'flex'
               }}
               onClick={handleSubmit(createCollection)}
             >

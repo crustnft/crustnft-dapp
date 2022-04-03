@@ -67,9 +67,11 @@ export const EMPTY_CREATENFTCOLLECTIONDTO: CreateNftCollectionDto = {
   description: ''
 };
 
-export type CreateCollectionDto = {
-  description: string;
+export interface CreateCollectionDto {
   account: string;
   id: string;
-  socialUrls: string[];
-};
+  socialUrls?: string[];
+  avatarCID?: string;
+  coverCID?: string;
+  description?: string;
+}
