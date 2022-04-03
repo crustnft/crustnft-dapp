@@ -1,1 +1,1 @@
-export const MAX_ALLOWED_NFT = 50;
+export const MAX_ALLOWED_NFT = 30;

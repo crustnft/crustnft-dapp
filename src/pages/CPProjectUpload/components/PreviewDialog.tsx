@@ -13,6 +13,7 @@ import {
 import { startGenerateNftCollection } from 'clients/crustnft-explore-api/nft-collections';
 import { MAX_ALLOWED_NFT } from 'constants/cryptopunkConfig';
 import useAuth from 'hooks/useAuth';
+import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPublicUrlFromId } from 'utils/googleApisUtils';
@@ -143,7 +144,7 @@ export default function PreviewDialog({
                     Status
                   </Typography>
 
-                  <Typography variant="subtitle2">{status}</Typography>
+                  <Typography variant="subtitle2">{capitalize(status)}</Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between" spacing={2}>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -165,7 +166,7 @@ export default function PreviewDialog({
                 </Stack>
               </Stack>
             </Paper>
-            {status === 'pending' && (
+            {(status === 'pending' || status === 'failed') && (
               <Button
                 variant="contained"
                 color="info"

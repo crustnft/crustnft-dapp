@@ -90,6 +90,8 @@ export default function ProjectCardEmpty() {
           setOpenDialogLevels(false);
         }}
         scroll="paper"
+        fullWidth
+        maxWidth="sm"
       >
         <DialogContent dividers={true}>
           <Stack sx={{ p: 1, pb: 2 }} spacing={1}>

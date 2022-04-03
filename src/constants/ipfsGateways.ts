@@ -1,1 +1,1 @@
-export const ipfsGatewayForUpload = 'https://gw.crustapps.net';
+export const ipfsGatewayForUpload = 'https://gw-nft.crustapps.net';

@@ -306,7 +306,7 @@ export default function ConfigDeployedSmartContract({
                   onClick={handleOpenPublicSale}
                   loading={openPublicSalePending}
                 >
-                  Open Public Sale
+                  Update & Open Public Sale
                 </LoadingButton>
                 <LoadingButton
                   variant="contained"

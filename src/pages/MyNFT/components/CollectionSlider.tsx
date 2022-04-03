@@ -171,7 +171,8 @@ export default function CollectionSlider({
         ) : (
           <Card
             sx={{
-              p: { xs: 1, sm: 2, md: 3 }
+              px: { xs: 1, sm: 2, md: 3 },
+              py: 1
             }}
           >
             <CardHeader

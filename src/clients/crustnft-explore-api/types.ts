@@ -29,7 +29,8 @@ export enum TaskStatus {
   Assigned = 'assigned',
   Processing = 'processing',
   Completed = 'completed',
-  Canceled = 'canceled'
+  Canceled = 'canceled',
+  Failed = 'failed'
 }
 export interface NftCollectionDto {
   id: string;
