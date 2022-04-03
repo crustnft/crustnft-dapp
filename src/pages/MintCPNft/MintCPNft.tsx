@@ -418,5 +418,6 @@ const GlassWrapper = styled(Box)({
   backdropFilter: 'blur(5px)',
   WebkitBackdropFilter: 'blur(5px)',
   border: '1px solid rgba(255, 255, 255, 0.3)',
-  width: '50%'
+  width: '50%',
+  minWidth: '240px'
 });
