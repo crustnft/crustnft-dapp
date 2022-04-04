@@ -17,7 +17,7 @@ import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWeb3 from 'hooks/useWeb3';
 import { Chain } from 'interfaces/chain';
 import { useEffect, useMemo, useState } from 'react';
-import { createEmptyNFTList, nftItem } from 'services/fetchCollection/createEmptyNFTList';
+import { createEmptyNFTList, NftItem } from 'services/fetchCollection/createEmptyNFTList';
 import {
   getCollectionUrlOpensea,
   OPENSEA_LINK_NOT_FOUND
@@ -59,7 +59,7 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   const { account } = useWeb3();
   const NB_NFT_TO_SHOW = 4;
   const emptyNftList = createEmptyNFTList(NB_NFT_TO_SHOW);
-  const [nftList, setNftList] = useState<nftItem[]>(emptyNftList);
+  const [nftList, setNftList] = useState<NftItem[]>(emptyNftList);
   const { contractAddress, chainId } = collection;
   const [network, setNetwork] = useState('');
   const [name, setName] = useState('');

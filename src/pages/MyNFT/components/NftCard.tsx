@@ -103,7 +103,7 @@ export default function NftCard({
                       top: 0,
                       width: '100%',
                       height: '100%',
-                      objectFit: 'contain',
+                      objectFit: 'cover',
                       display: loading ? 'none' : 'block',
                       position: 'absolute',
                       borderRadius: '5px'

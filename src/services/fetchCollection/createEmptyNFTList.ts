@@ -1,4 +1,4 @@
-export type nftItem = {
+export type NftItem = {
   key: string;
   failToLoad: boolean;
   tokenId: string;
