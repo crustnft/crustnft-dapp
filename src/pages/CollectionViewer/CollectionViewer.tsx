@@ -1,4 +1,4 @@
-import { Container, Grid, Pagination, Stack } from '@mui/material';
+import { Container, Grid, Pagination, Paper, Stack, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createEmptyNFTList, NftItem } from 'services/fetchCollection/createEmptyNFTList';
@@ -136,7 +136,6 @@ export default function CollectionViewer() {
           <ProfileCover {...profileCover} />
         </Box> */}
 
-        {/* <Box sx={{ height: 64 }} />
         <Stack alignItems="center">
           <Typography variant="h3" sx={{ mb: 3 }}>
             {name}
@@ -154,7 +153,7 @@ export default function CollectionViewer() {
             >
               <Typography
                 variant="overline"
-                sx={{ mb: 3, display: 'block', color: 'text.secondary' }}
+                sx={{ mb: 1, display: 'block', color: 'text.secondary' }}
               >
                 Description
               </Typography>
@@ -178,7 +177,7 @@ export default function CollectionViewer() {
             >
               <Typography
                 variant="overline"
-                sx={{ mb: 3, display: 'block', color: 'text.secondary' }}
+                sx={{ mb: 1, display: 'block', color: 'text.secondary' }}
               >
                 Preview Collection
               </Typography>
@@ -192,28 +191,20 @@ export default function CollectionViewer() {
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Name
+                    Token Name
                   </Typography>
                   <Typography variant="subtitle2">{name}</Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Symbol
+                    Token Symbol
                   </Typography>
                   <Typography variant="subtitle2">{symbol}</Typography>
                 </Stack>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  Features
-                </Typography>
-                <Paper>
-                  <Chip size="small" label="Burnable"></Chip>
-                  <Chip size="small" label="Enumarable"></Chip>
-                </Paper>
-                <Stack direction="row" justifyContent="space-between"></Stack>
               </Stack>
             </Paper>
           </Grid>
-        </Grid> */}
+        </Grid>
         <Grid container spacing={4}>
           {totalSupply !== -1 ? (
             nftList

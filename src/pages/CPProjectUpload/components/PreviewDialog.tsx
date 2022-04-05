@@ -174,7 +174,7 @@ export default function PreviewDialog({
                 onClick={() => {
                   startGenerateNftCollection(accessToken, {
                     id: id || '',
-                    composingBatchSize: 2,
+                    composingBatchSize: 5,
                     collectionSize: maxNft < MAX_ALLOWED_NFT ? maxNft : MAX_ALLOWED_NFT
                   });
                 }}
