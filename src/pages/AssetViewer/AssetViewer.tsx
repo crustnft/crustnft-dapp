@@ -1,5 +1,4 @@
-import { Box, Container } from '@mui/material';
-import Identicons from '@nimiq/identicons';
+import { Container, Grid, Stack } from '@mui/material';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -9,10 +8,10 @@ import { getRpcUrlByNetworkName } from 'utils/blockchainHandlers';
 import { parseNftUri } from 'utils/tokenUriHandlers';
 import Page from '../../components/Page';
 import type { AssetAndOwnerType } from './AssetViewer.types';
-import { Asset } from './components';
-
-Identicons.svgPath = './static/identicons.min.svg';
-
+import AssetAttributes from './components/AssetAttributes';
+import AssetCard from './components/AssetCard';
+import AssetDetails from './components/AssetDetails';
+import MoreFromThisCollection from './components/MoreFromThisCollection';
 const initAssetAndOwner: AssetAndOwnerType = {
   tokenId: '',
   name: '',
@@ -74,9 +73,24 @@ export default function AssetViewer() {
   return (
     <Page title={`Asset Viewer - ${assetAndOwner.name}`}>
       <Container maxWidth="lg">
-        <Box>
-          <Asset assetAndOwner={assetAndOwner} />
-        </Box>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={5}>
+            <Stack spacing={5}>
+              <AssetCard assetAndOwner={assetAndOwner} />
+              <AssetDetails assetAndOwner={assetAndOwner} />
+            </Stack>
+          </Grid>
+
+          <Grid item xs={12} md={7}>
+            <Stack spacing={3}>
+              <AssetAttributes assetAndOwner={assetAndOwner} />
+            </Stack>
+          </Grid>
+
+          <Grid item xs={12}>
+            <MoreFromThisCollection assetAndOwner={assetAndOwner} />
+          </Grid>
+        </Grid>
       </Container>
     </Page>
   );

@@ -1,4 +1,5 @@
-import { Box, Button, Grid, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Icon } from '@iconify/react';
+import { Box, Button, Grid, Link, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { Contract } from 'ethers';
 import { useEffect, useState } from 'react';
@@ -148,8 +149,12 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
     <Stack direction="column">
       {totalSupply > 1 ? (
         <>
-          <Stack>
-            <Typography variant="h3">More from this collection</Typography>
+          <Stack direction="row" alignItems="flex-end" spacing={1}>
+            <Typography variant="h4">More from this collection</Typography>
+
+            <Link href={`#/collection/${assetAndOwner.chain}/${assetAndOwner.contractAddress}/1`}>
+              <Icon icon="akar-icons:link-out" width="20px" />
+            </Link>
           </Stack>
 
           <Grid container>
