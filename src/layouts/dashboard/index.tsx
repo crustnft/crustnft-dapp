@@ -1,12 +1,11 @@
 import { styled, useTheme } from '@mui/material/styles';
 import { useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
 import Footer from './Footer';
 
-const APP_BAR_MOBILE = 64;
-const APP_BAR_DESKTOP = 92;
+const APP_BAR = 64;
 
 const RootStyle = styled('div')({
   display: 'flex',
@@ -18,18 +17,12 @@ const MainStyle = styled('div')(({ theme }) => ({
   flexGrow: 1,
   overflow: 'auto',
   minHeight: '100%',
-  paddingTop: APP_BAR_MOBILE + 24,
-  paddingBottom: theme.spacing(4),
-  [theme.breakpoints.up('lg')]: {
-    paddingTop: APP_BAR_DESKTOP + 24
-    // paddingLeft: theme.spacing(2),
-    // paddingRight: theme.spacing(2)
-  }
+  paddingTop: APP_BAR + 24,
+  paddingBottom: theme.spacing(4)
 }));
 
 export default function DashboardLayout() {
   const theme = useTheme();
-  const { pathname } = useLocation();
 
   const [open, setOpen] = useState(false);
 
