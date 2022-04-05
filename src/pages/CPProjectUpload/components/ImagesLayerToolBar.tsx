@@ -94,12 +94,12 @@ export default function ImagesLayerToolBar({ layerName, onDelete, onUpdate }: Pr
             icon={'eva:trash-2-outline'}
             sx={{ width: 20, height: 20, flexShrink: 0, mr: 1 }}
           />
-          Delete section
+          Delete Layer
         </MenuItem>
 
         <MenuItem onClick={handleClickRename}>
           <Iconify icon={'eva:edit-fill'} sx={{ width: 20, height: 20, flexShrink: 0, mr: 1 }} />
-          Rename section
+          Rename Layer
         </MenuItem>
       </MenuPopover>
     </>

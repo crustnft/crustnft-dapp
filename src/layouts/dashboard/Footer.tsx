@@ -107,8 +107,7 @@ export default function MainFooter() {
                   aria-expanded={open ? 'true' : undefined}
                   aria-haspopup="true"
                   onClick={handleToggle}
-                  color={network === 'Mainnet' ? 'success' : 'info'}
-                  endIcon={<Icon icon="akar-icons:chevron-up" />}
+                  endIcon={<Icon icon="akar-icons:chevron-up" height="14px" />}
                 >
                   {network}
                 </Button>

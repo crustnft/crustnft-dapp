@@ -8,12 +8,14 @@ interface Props extends BreadcrumbsProps {
   action?: ReactNode;
   heading: string;
   moreLink?: string | string[];
+  headingLink?: string;
 }
 
 export default function HeaderBreadcrumbs({
   links,
   action,
   heading,
+  headingLink,
   moreLink = '' || [],
   sx,
   ...other
@@ -22,9 +24,12 @@ export default function HeaderBreadcrumbs({
     <Box sx={{ ...sx }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="h4" gutterBottom>
-            {heading}
-          </Typography>
+          <Link href={headingLink} underline="none">
+            <Typography variant="h4" gutterBottom>
+              {heading}
+            </Typography>
+          </Link>
+
           <Breadcrumbs links={links} {...other} />
         </Box>
 
@@ -33,7 +38,7 @@ export default function HeaderBreadcrumbs({
 
       <Box sx={{ mt: 2 }}>
         {isString(moreLink) ? (
-          <Link href={moreLink} target="_blank" rel="noopener" variant="body2">
+          <Link href={moreLink} target="_blank" rel="noopener" variant="body2" underline="none">
             {moreLink}
           </Link>
         ) : (
@@ -46,6 +51,7 @@ export default function HeaderBreadcrumbs({
               target="_blank"
               rel="noopener"
               sx={{ display: 'table' }}
+              underline="none"
             >
               {href}
             </Link>

@@ -107,45 +107,19 @@ export default function ImageDetails({ image, isOpen, onClose, onDeleteImage }: 
               <LabelStyle>Trait Name</LabelStyle>
               <Stack direction="row" flexWrap="wrap" alignItems="center">
                 <Typography variant="body2" color="text.secondary">
-                  Black
+                  {name}
                 </Typography>
               </Stack>
             </Stack>
 
-            <Stack direction="row" alignItems="center">
+            {/* <Stack direction="row" alignItems="center">
               <LabelStyle>Rarity</LabelStyle>
               <Stack direction="row" flexWrap="wrap" alignItems="center">
                 <Typography variant="body2" color="text.secondary">
                   10%
                 </Typography>
               </Stack>
-            </Stack>
-
-            <Stack direction="row" alignItems="center">
-              <LabelStyle>File name</LabelStyle>
-              <Stack direction="row" flexWrap="wrap" alignItems="center">
-                <Typography variant="body2" color="text.secondary">
-                  hihihi.jpg
-                </Typography>
-              </Stack>
-            </Stack>
-            <Stack direction="row" alignItems="center">
-              <LabelStyle>Image dimension</LabelStyle>
-              <Stack direction="row" flexWrap="wrap" alignItems="center">
-                <Typography variant="body2" color="text.secondary">
-                  200px x 200px
-                </Typography>
-              </Stack>
-            </Stack>
-
-            <Stack direction="row" alignItems="center">
-              <LabelStyle>File size</LabelStyle>
-              <Stack direction="row" flexWrap="wrap" alignItems="center">
-                <Typography variant="body2" color="text.secondary">
-                  1MB
-                </Typography>
-              </Stack>
-            </Stack>
+            </Stack> */}
 
             <Stack direction="row">
               <LabelStyle sx={{ mt: 2 }}>Image Preview</LabelStyle>

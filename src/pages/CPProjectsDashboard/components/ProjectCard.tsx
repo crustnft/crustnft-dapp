@@ -1,16 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  Divider,
-  IconButton,
-  Link,
-  MenuItem,
-  Stack,
-  Typography
-} from '@mui/material';
-import Iconify from 'components/Iconify';
-import MenuPopover from 'components/MenuPopover';
+import { Box, Button, Card, Divider, Link, Stack, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { TProject } from '../CPProjectsDashboard.type';
 
@@ -38,17 +26,17 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             </Typography>
             <Typography variant="subtitle2">{project.name}</Typography>
           </Stack>
-          <IconButton
+          {/* <IconButton
             size="small"
             ref={popoverRef}
             onClick={handleOpen}
             color={open ? 'inherit' : 'default'}
           >
             <Iconify icon={'eva:more-horizontal-fill'} width={20} height={20} />
-          </IconButton>
+          </IconButton> */}
         </Stack>
 
-        <MenuPopover
+        {/* <MenuPopover
           open={open}
           onClose={handleClose}
           anchorEl={popoverRef.current}
@@ -66,7 +54,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             <Iconify icon={'eva:edit-fill'} sx={{ width: 20, height: 20, flexShrink: 0, mr: 1 }} />
             Something else
           </MenuItem>
-        </MenuPopover>
+        </MenuPopover> */}
       </Box>
 
       <Divider />
