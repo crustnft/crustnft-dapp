@@ -19,6 +19,7 @@ import { Chain } from 'interfaces/chain';
 import { useEffect, useMemo, useState } from 'react';
 import { createEmptyNFTList, NftItem } from 'services/fetchCollection/createEmptyNFTList';
 import {
+  ALLOWED_CHAIN_NAME_FOR_OPENSEA,
   getCollectionUrlOpensea,
   OPENSEA_LINK_NOT_FOUND
 } from 'services/fetchCollection/getCollectionUrlOpensea';
@@ -105,21 +106,19 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
 
   useEffect(() => {
     let isSubscribed = true;
-    if (chainId === 4) {
-      const fetchOpenseaLink = async () => {
-        const _openseaLink = await getCollectionUrlOpensea(contractOwner, contract.address);
-        if (!_openseaLink) return;
-        if (isSubscribed) {
-          setOpenseaLink(_openseaLink);
-        }
-      };
-      fetchOpenseaLink();
-    }
+    const fetchOpenseaLink = async () => {
+      const _openseaLink = await getCollectionUrlOpensea(network, contractOwner, contract.address);
+      if (!_openseaLink) return;
+      if (isSubscribed) {
+        setOpenseaLink(_openseaLink);
+      }
+    };
+    fetchOpenseaLink();
     return () => {
       isSubscribed = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [contract.address, contractOwner, totalSupply]);
+  }, [network, contract.address, contractOwner, totalSupply]);
 
   useEffect(() => {
     let isSubscribed = true;
@@ -273,7 +272,7 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                     <Box component="img" src={chain?.icon || ''} className={classes.internalIcon} />
                   </ButtonBase>
                 </Tooltip>
-                {chainId === 4 ? (
+                {ALLOWED_CHAIN_NAME_FOR_OPENSEA.indexOf(network) !== -1 ? (
                   <Tooltip title="Opensea Viewer" className={classes.tooltip}>
                     <ButtonBase
                       href={openseaLink}

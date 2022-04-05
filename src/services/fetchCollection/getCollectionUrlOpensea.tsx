@@ -1,12 +1,19 @@
 import axios, { Method } from 'axios';
 import axiosRetry from 'axios-retry';
+import { OPENSEA_GET_COLLECTION_API } from 'constants/openseaAPI';
 
 const WAIT_TIME_BASE_BEFORE_RETRY = 1000;
 const WAIT_TIME_VARIABLE = 1000;
 const NB_RETRY_GET_DATA_FROM_TOKEN_URI = 100;
+export const ALLOWED_CHAIN_NAME_FOR_OPENSEA = ['Polygon', 'Rinkeby'];
 export const OPENSEA_LINK_NOT_FOUND = 'NotFound';
 
-export const getCollectionUrlOpensea = async (assetOwner: string, collectionAddress: string) => {
+export const getCollectionUrlOpensea = async (
+  network: string,
+  assetOwner: string,
+  collectionAddress: string
+) => {
+  if (ALLOWED_CHAIN_NAME_FOR_OPENSEA.indexOf(network) === -1) return;
   if (assetOwner === '') return;
   const NUM_TRIES = 300;
   const instance = axios.create();
@@ -19,12 +26,15 @@ export const getCollectionUrlOpensea = async (assetOwner: string, collectionAddr
       return Math.floor(WAIT_TIME_BASE_BEFORE_RETRY + Math.random() * WAIT_TIME_VARIABLE);
     }
   });
+  const apiInfo = OPENSEA_GET_COLLECTION_API.get(network);
+  if (!apiInfo) return;
+  const { apiUrl, apiKey } = apiInfo;
 
   const options = {
     method: 'GET' as Method,
-    url: 'https://testnets-api.opensea.io/api/v1/collections',
+    url: apiUrl,
     params: { asset_owner: assetOwner, offset: '0', limit: NUM_TRIES },
-    headers: { 'X-API-KEY': ' ' }
+    headers: { 'X-API-KEY': apiKey }
   };
   const response = await instance.request(options);
 
