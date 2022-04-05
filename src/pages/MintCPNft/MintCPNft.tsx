@@ -325,7 +325,7 @@ export default function MintCPNft() {
             direction="column"
             justifyContent="flex-end"
             alignItems="center"
-            sx={{ height: '100%', py: 3, pt: '50vh' }}
+            sx={{ height: '100%', py: 2, pt: '40vh' }}
           >
             <GlassWrapper>
               <Stack
@@ -333,9 +333,9 @@ export default function MintCPNft() {
                 spacing={2}
                 alignItems="center"
                 justifyContent="flex-end"
-                sx={{ height: '100%', p: 2 }}
+                sx={{ height: '100%', p: 1 }}
               >
-                <Typography variant="h2" color="white" sx={{ textAlign: 'center' }}>
+                <Typography variant="h3" color="white" sx={{ textAlign: 'center' }}>
                   {totalSupply}/{maxSupply}
                   <Typography color="white" sx={{ mt: -2, display: 'block', textAlign: 'center' }}>
                     Minted
@@ -418,6 +418,6 @@ const GlassWrapper = styled(Box)({
   backdropFilter: 'blur(5px)',
   WebkitBackdropFilter: 'blur(5px)',
   border: '1px solid rgba(255, 255, 255, 0.3)',
-  width: '50%',
+  width: '35%',
   minWidth: '240px'
 });
