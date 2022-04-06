@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Image as ImageType } from '../../../@types/imagesGCS';
 import Image from '../../../components/Image';
+import useWeb3 from '../../../hooks/useWeb3';
 import ImageDetails from './ImageDetails';
 
 type Props = {
@@ -13,9 +14,10 @@ type Props = {
 };
 
 export default function ImageCard({ image, onDeleteImage, index }: Props) {
+  const { account } = useWeb3();
   const { name, id } = image;
 
-  const imageUrl = UPLOAD_IMAGE_PUBLIC_BUCKET + '/' + id;
+  const imageUrl = UPLOAD_IMAGE_PUBLIC_BUCKET + '/' + account?.toLowerCase() + '/' + id;
   const [openDetails, setOpenDetails] = useState(false);
 
   const handleOpenDetails = () => {

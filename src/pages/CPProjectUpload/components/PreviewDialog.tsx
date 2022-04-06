@@ -17,6 +17,7 @@ import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPublicUrlFromId } from 'utils/googleApisUtils';
+import useWeb3 from '../../../hooks/useWeb3';
 import { useSelector } from '../../../redux/store';
 import { normalizeAndMergeImages } from '../service';
 
@@ -36,6 +37,7 @@ export default function PreviewDialog({
   metadataCid: string;
 }) {
   const { accessToken } = useAuth();
+  const { account } = useWeb3();
   const [image, setImage] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [nbPhoto, setNbPhoto] = useState(0);
@@ -57,7 +59,8 @@ export default function PreviewDialog({
       const imageIds = layers[layerOrder[i]].imageIds;
       _nbPhoto += imageIds.length;
       _maxNft *= imageIds.length;
-      images.push(getPublicUrlFromId(imageIds[Math.floor(Math.random() * imageIds.length)]));
+      const imageId = imageIds[Math.floor(Math.random() * imageIds.length)];
+      images.push(getPublicUrlFromId(`${account?.toLocaleLowerCase()}/${imageId}`));
     }
 
     setMaxNft(_maxNft);
@@ -110,7 +113,7 @@ export default function PreviewDialog({
                 p: 3,
                 width: 1,
                 position: 'relative',
-                border: (theme: any) => `solid 1px ${theme.palette.grey[500_32]}`
+                border: (theme: any) => `solid 1px ${theme.palette.grey[500_32]} `
               }}
             >
               <Stack spacing={0.5}>

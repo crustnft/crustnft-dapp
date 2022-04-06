@@ -7,6 +7,7 @@ import { IconButtonAnimate } from '../../../components/animate';
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
 import useResponsive from '../../../hooks/useResponsive';
+import useWeb3 from '../../../hooks/useWeb3';
 import { updatePartialImage } from '../../../redux/slices/imagesGCS';
 import { useDispatch } from '../../../redux/store';
 import ImageAttachment from './ImageAttachment';
@@ -28,12 +29,13 @@ type Props = {
 
 export default function ImageDetails({ image, isOpen, onClose, onDeleteImage }: Props) {
   const dispatch = useDispatch();
+  const { account } = useWeb3();
   const isDesktop = useResponsive('up', 'sm');
 
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   const { name, id } = image;
-  const imageUrl = getPublicUrlFromId(id);
+  const imageUrl = getPublicUrlFromId(`${account?.toLocaleLowerCase()}/${id}`);
 
   const [localName, setLocalName] = useState(name);
 
