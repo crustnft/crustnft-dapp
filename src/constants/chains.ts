@@ -49,9 +49,9 @@ const TEST_CHAINS = [
   }
 ];
 
-const staging = process.env.REACT_APP_STAGING;
+const supportedTestnet = process.env.REACT_APP_SUPPORT_TESTNET === 'true';
 
-export const SUPPORTED_CHAINS = staging ? [...TEST_CHAINS, ...PROD_CHAINS] : PROD_CHAINS;
+export const SUPPORTED_CHAINS = supportedTestnet ? [...TEST_CHAINS, ...PROD_CHAINS] : PROD_CHAINS;
 
 export const EMPTY_CHAIN = {
   name: 'Unknown',
