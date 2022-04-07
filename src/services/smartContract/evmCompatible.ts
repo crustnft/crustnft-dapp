@@ -20,12 +20,9 @@ export function connectRWContract(
   return contract;
 }
 
-// FIXME: Potentially, An issue when a same contract address on 2 different chains.
+// Total supply is changed frequently so no need to cache
 export async function getTotalSupply(contract: Contract): Promise<number> {
-  const NftBalance = await asyncWithCache(
-    contract.totalSupply,
-    contract.address + '-getTotalSupply'
-  );
+  const NftBalance = await contract.totalSupply();
   return NftBalance.toNumber();
 }
 

@@ -49,7 +49,7 @@ export default function MyNFT() {
             }}
           >
             <Typography variant="subtitle2">
-              You need to connect a wallet and sign a message view your collection
+              You need to connect and sign with your wallet to view your collection
             </Typography>
           </Paper>
         </Card>

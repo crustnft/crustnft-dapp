@@ -55,7 +55,7 @@ export default function CPProjectDetails() {
       <Container maxWidth="lg" sx={{ mt: { lg: -3 } }}>
         <HeaderBreadcrumbs
           heading="Dashboard"
-          headingLink="/tenK-collection"
+          headingLink="#/tenK-collection"
           links={[{ name: collectionInfo?.name, href: '#/tenK-collection' }]}
         />
 
