@@ -35,7 +35,7 @@ export default function ImagesAdd({ onAddImage, onCloseAddImage }: UploadFilePro
       if (!account) return;
 
       const imageId = uuidv4();
-      await uploadImage(accessToken, account.toLowerCase() + '/' + imageId, file);
+      await uploadImage(accessToken, imageId, file);
       onAddImage({
         name: file.name.split('.').slice(0, -1).join('.'),
         id: imageId
