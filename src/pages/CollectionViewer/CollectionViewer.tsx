@@ -141,8 +141,8 @@ export default function CollectionViewer() {
             {name}
           </Typography>
         </Stack>
-        <Grid container spacing={2} sx={{ mb: 3 }}>
-          <Grid item xs={12} md={6}>
+        <Grid container spacing={2} sx={{ mb: 3 }} justifyContent="center">
+          {/* <Grid item xs={12} md={6}>
             <Paper
               sx={{
                 p: 3,
@@ -165,7 +165,7 @@ export default function CollectionViewer() {
                 childhood cancer. Don't be indifferent. Community links in the profile description .
               </Typography>
             </Paper>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} md={6}>
             <Paper
               sx={{
