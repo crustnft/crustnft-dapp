@@ -49,7 +49,8 @@ export default function MyNFT() {
             }}
           >
             <Typography variant="subtitle2">
-              You need to connect and sign with your wallet to view your collection
+              This version is reserved for wallet with beta access. You can to connect and sign with
+              the registered wallet to view your collection
             </Typography>
           </Paper>
         </Card>

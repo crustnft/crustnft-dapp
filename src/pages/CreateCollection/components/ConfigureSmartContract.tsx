@@ -48,7 +48,8 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
         }}
       >
         <Typography variant="subtitle2">
-          You need to connect and sign with your wallet to create the NFTs collection
+          This version is reserved for wallet with beta access. You can to connect and sign with the
+          registered wallet to create the NFTs collection
         </Typography>
       </Paper>
 

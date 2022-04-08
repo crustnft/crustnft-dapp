@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { EXPLORE_API } from 'constants/crustNftExploreApis';
-import { createEmptyUser, isExistingUser } from './users';
+import { isExistingUser } from './users';
 
 export const challengeLogin = async (account: string): Promise<string | undefined> => {
   const _account = account.toLowerCase();
   const checkUser = await isExistingUser(_account);
   if (!checkUser) {
-    await createEmptyUser(_account);
+    return;
+    // await createEmptyUser(_account);
   }
   const response = await axios
     .post(`${EXPLORE_API}/authentication/challenge-login`, { account: _account })
