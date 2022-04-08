@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getCollectionInfo } from 'clients/crustnft-explore-api/nft-collections';
 import omit from 'lodash/omit';
 import uuidv4 from 'utils/uuidv4';
-import { ImageCard, ImagesColumn } from '../../@types/imagesGCS';
+import { Image, ImagesLayer } from '../../@types/imagesGCS';
 import { dispatch } from '../store';
 
 function objFromArray<Type extends Record<string, any>>(array: Type[], key: string = 'id') {
@@ -13,21 +14,23 @@ function objFromArray<Type extends Record<string, any>>(array: Type[], key: stri
 
 type InitialState = {
   isLoading: boolean;
+  isFirstLoaded: boolean;
   error: Error | string | null;
   board: {
-    cards: Record<string, ImageCard>;
-    columns: Record<string, ImagesColumn>;
-    columnOrder: string[];
+    images: Record<string, Image>;
+    layers: Record<string, ImagesLayer>;
+    layerOrder: string[];
   };
 };
 
 const initialState: InitialState = {
   isLoading: false,
+  isFirstLoaded: false,
   error: null,
   board: {
-    cards: {},
-    columns: {},
-    columnOrder: []
+    images: {},
+    layers: {},
+    layerOrder: []
   }
 };
 
@@ -50,78 +53,79 @@ const slice = createSlice({
     getBoardSuccess(state, action) {
       state.isLoading = false;
       const board = action.payload;
-      const cards = objFromArray<ImageCard>(board.cards);
-      const columns = objFromArray<ImagesColumn>(board.columns);
-      const { columnOrder } = board;
+      const images = objFromArray<Image>(board.images);
+      const layers = objFromArray<ImagesLayer>(board.layers);
+      const { layerOrder } = board;
       state.board = {
-        cards,
-        columns,
-        columnOrder
+        images,
+        layers,
+        layerOrder
       };
+      state.isFirstLoaded = true;
     },
 
-    // CREATE NEW COLUMN
-    createColumnSuccess(state, action) {
-      const newColumn = action.payload;
+    // CREATE NEW LAYER
+    createLayerSuccess(state, action) {
+      const newLayer = action.payload;
       state.isLoading = false;
-      state.board.columns = {
-        ...state.board.columns,
-        [newColumn.id]: newColumn
+      state.board.layers = {
+        ...state.board.layers,
+        [newLayer.id]: newLayer
       };
-      state.board.columnOrder.push(newColumn.id);
+      state.board.layerOrder.push(newLayer.id);
     },
 
-    persistCard(state, action) {
-      const columns = action.payload;
-      state.board.columns = columns;
+    persistImage(state, action) {
+      const layers = action.payload;
+      state.board.layers = layers;
     },
 
-    persistColumn(state, action) {
-      state.board.columnOrder = action.payload;
+    persistLayer(state, action) {
+      state.board.layerOrder = action.payload;
     },
 
     addImage(state, action) {
-      const { card, columnId } = action.payload;
+      const { image, layerId } = action.payload;
 
-      state.board.cards[card.id] = card;
-      state.board.columns[columnId].cardIds.push(card.id);
+      state.board.images[image.id] = image;
+      state.board.layers[layerId].imageIds.push(image.id);
     },
 
     updatePartialImage(state, action) {
-      const { card } = action.payload;
+      const { image } = action.payload;
 
-      if (state.board.cards.hasOwnProperty(card.id)) {
-        state.board.cards[card.id] = { ...state.board.cards[card.id], ...card };
+      if (state.board.images.hasOwnProperty(image.id)) {
+        state.board.images[image.id] = { ...state.board.images[image.id], ...image };
       }
     },
 
-    deleteTask(state, action) {
-      const { cardId, columnId } = action.payload;
+    deleteImage(state, action) {
+      const { imageId, layerId } = action.payload;
 
-      state.board.columns[columnId].cardIds = state.board.columns[columnId].cardIds.filter(
-        (id) => id !== cardId
+      state.board.layers[layerId].imageIds = state.board.layers[layerId].imageIds.filter(
+        (id) => id !== imageId
       );
 
-      state.board.cards = omit(state.board.cards, [cardId]);
+      state.board.images = omit(state.board.images, [imageId]);
     },
 
-    // UPDATE COLUMN
-    updateColumnSuccess(state, action) {
-      const column = action.payload;
+    // UPDATE LAYER
+    updateLayerSuccess(state, action) {
+      const layer = action.payload;
 
       state.isLoading = false;
-      state.board.columns[column.id] = column;
+      state.board.layers[layer.id] = layer;
     },
 
-    // DELETE COLUMN
-    deleteColumnSuccess(state, action) {
-      const { columnId } = action.payload;
-      const deletedColumn = state.board.columns[columnId];
+    // DELETE LAYER
+    deleteLayerSuccess(state, action) {
+      const { layerId } = action.payload;
+      const deletedLayer = state.board.layers[layerId];
 
       state.isLoading = false;
-      state.board.columns = omit(state.board.columns, [columnId]);
-      state.board.cards = omit(state.board.cards, [...deletedColumn.cardIds]);
-      state.board.columnOrder = state.board.columnOrder.filter((c) => c !== columnId);
+      state.board.layers = omit(state.board.layers, [layerId]);
+      state.board.images = omit(state.board.images, [...deletedLayer.imageIds]);
+      state.board.layerOrder = state.board.layerOrder.filter((c) => c !== layerId);
     }
   }
 });
@@ -131,10 +135,101 @@ export default slice.reducer;
 
 export const { actions } = slice;
 
-// ----------------------------------------------------------------------
+export function getBoard(accessToken: string, collectionId: string) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const collectionInfo = await getCollectionInfo(accessToken, collectionId);
+
+      dispatch(slice.actions.getBoardSuccess(collectionInfo));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function createLayer(newLayer: { name: string }) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      // const response = await axios.post(
+      //   'https://minimal-assets-api.vercel.app/api/kanban/columns/new',
+      //   newColumn
+      // );
+
+      dispatch(
+        slice.actions.createLayerSuccess({ imageIds: [], id: uuidv4(), name: newLayer.name })
+      );
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function updateLayer(layerId: string, updateLayer: ImagesLayer) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      // const response = await axios.post(
+      //   'https://minimal-assets-api.vercel.app/api/kanban/columns/update',
+      //   {
+      //     layerId,
+      //     updateLayer
+      //   }
+      // );
+      dispatch(slice.actions.updateLayerSuccess(updateLayer));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function deleteLayer(layerId: string) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      // await axios.post('https://minimal-assets-api.vercel.app/api/kanban/columns/delete', {
+      //   layerId
+      // });
+      dispatch(slice.actions.deleteLayerSuccess({ layerId }));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function persistLayer(newLayerOrder: string[]) {
+  return () => {
+    dispatch(slice.actions.persistLayer(newLayerOrder));
+  };
+}
+
+export function persistImage(layers: Record<string, ImagesLayer>) {
+  return () => {
+    dispatch(slice.actions.persistImage(layers));
+  };
+}
+
+export function addImage({ image, layerId }: { image: Partial<Image>; layerId: string }) {
+  return () => {
+    dispatch(slice.actions.addImage({ image, layerId }));
+  };
+}
+
+export function updatePartialImage({ image }: { image: Partial<Image> }) {
+  return () => {
+    dispatch(slice.actions.updatePartialImage({ image }));
+  };
+}
+
+export function deleteImage({ imageId, layerId }: { imageId: string; layerId: string }) {
+  return () => {
+    dispatch(slice.actions.deleteImage({ imageId, layerId }));
+  };
+}
 
 const mock_board_2 = {
-  cards: [
+  images: [
     {
       id: '98bf6e8b-becc-485b-9c3f-a7d09392c48d',
       name: 'Yellow',
@@ -161,11 +256,11 @@ const mock_board_2 = {
       imageUrl: 'https://minimal-assets-api.vercel.app/assets/images/feeds/feed_5.jpg'
     }
   ],
-  columns: [
+  layers: [
     {
       id: '8cd887ec-b3bc-11eb-8529-0242ac130003',
       name: 'Background',
-      cardIds: [
+      imageIds: [
         '98bf6e8b-becc-485b-9c3f-a7d09392c48d',
         'ab9cebca-6cb4-4847-aa17-3b261b3d1236',
         'ab9cebca-6cb4-4847-aa17-3b261b3d1234',
@@ -175,338 +270,8 @@ const mock_board_2 = {
     {
       id: '23008a1f-ad94-4771-b85c-3566755afab7',
       name: 'Upper layer',
-      cardIds: ['ab9cebca-6cb4-4847-aa17-3b261b3dd0fb']
+      imageIds: ['ab9cebca-6cb4-4847-aa17-3b261b3dd0fb']
     }
   ],
-  columnOrder: ['8cd887ec-b3bc-11eb-8529-0242ac130003', '23008a1f-ad94-4771-b85c-3566755afab7']
-};
-
-export function getBoard() {
-  return async () => {
-    dispatch(slice.actions.startLoading());
-    try {
-      // const response = await axios.get('https://minimal-assets-api.vercel.app/api/kanban/board');
-      console.log(mock_board);
-      dispatch(slice.actions.getBoardSuccess(mock_board_2));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-// ----------------------------------------------------------------------
-
-export function createColumn(newColumn: { name: string }) {
-  return async () => {
-    dispatch(slice.actions.startLoading());
-    try {
-      // const response = await axios.post(
-      //   'https://minimal-assets-api.vercel.app/api/kanban/columns/new',
-      //   newColumn
-      // );
-
-      dispatch(
-        slice.actions.createColumnSuccess({ cardIds: [], id: uuidv4(), name: newColumn.name })
-      );
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-// ----------------------------------------------------------------------
-
-export function updateColumn(columnId: string, updateColumn: ImagesColumn) {
-  return async () => {
-    dispatch(slice.actions.startLoading());
-    try {
-      // const response = await axios.post(
-      //   'https://minimal-assets-api.vercel.app/api/kanban/columns/update',
-      //   {
-      //     columnId,
-      //     updateColumn
-      //   }
-      // );
-      dispatch(slice.actions.updateColumnSuccess(updateColumn));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-// ----------------------------------------------------------------------
-
-export function deleteColumn(columnId: string) {
-  return async () => {
-    dispatch(slice.actions.startLoading());
-    try {
-      // await axios.post('https://minimal-assets-api.vercel.app/api/kanban/columns/delete', {
-      //   columnId
-      // });
-      dispatch(slice.actions.deleteColumnSuccess({ columnId }));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-// ----------------------------------------------------------------------
-
-export function persistColumn(newColumnOrder: string[]) {
-  return () => {
-    dispatch(slice.actions.persistColumn(newColumnOrder));
-  };
-}
-
-// ----------------------------------------------------------------------
-
-export function persistCard(columns: Record<string, ImagesColumn>) {
-  return () => {
-    dispatch(slice.actions.persistCard(columns));
-  };
-}
-
-// ----------------------------------------------------------------------
-
-export function addImage({ card, columnId }: { card: Partial<ImageCard>; columnId: string }) {
-  return () => {
-    dispatch(slice.actions.addImage({ card, columnId }));
-  };
-}
-
-// ----------------------------------------------------------------------
-
-export function updatePartialImage({ card }: { card: Partial<ImageCard> }) {
-  return () => {
-    dispatch(slice.actions.updatePartialImage({ card }));
-  };
-}
-
-// ----------------------------------------------------------------------
-
-export function deleteTask({ cardId, columnId }: { cardId: string; columnId: string }) {
-  return () => {
-    dispatch(slice.actions.deleteTask({ cardId, columnId }));
-  };
-}
-
-const mock_board = {
-  cards: [
-    {
-      id: 'deb02f04-9cf8-4f1e-97e0-2fbda84cc6b3',
-      name: 'Call with sales of HubSpot',
-      description:
-        'Duis condimentum lacus finibus felis pellentesque, ac auctor nibh fermentum. Duis sed dui ante. Phasellus id eros tincidunt, dictum lorem vitae, pellentesque sem. Aenean eu enim sit amet mauris rhoncus mollis. Sed enim turpis, porta a felis et, luctus faucibus nisi. Phasellus et metus fermentum, ultrices arcu aliquam, facilisis justo. Cras nunc nunc, elementum sed euismod ut, maximus eget nibh. Phasellus condimentum lorem neque. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce sagittis pharetra eleifend. Suspendisse potenti.',
-      assignee: [
-        {
-          id: '473d2720-341c-49bf-94ed-556999cf6ef7',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_2.jpg',
-          name: 'Lucian Obrien'
-        }
-      ],
-      due: [1646661671287, 1646748071287],
-      imageUrl: [],
-      comments: [
-        {
-          id: '1874ef88-0467-4831-a144-fe0ee034d080',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_1.jpg',
-          name: 'Jayvion Simon',
-          createdAt: '2022-03-01T14:01:11.288Z',
-          messageType: 'text',
-          message: 'Assumenda nam repudiandae rerum fugiat vel maxime.'
-        },
-        {
-          id: 'ae127000-fba3-4889-a263-cf5b2cbb104c',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_2.jpg',
-          name: 'Lucian Obrien',
-          createdAt: '2022-02-28T13:01:11.288Z',
-          messageType: 'text',
-          message: 'Quis veniam aut saepe aliquid nulla.'
-        },
-        {
-          id: '31b3e0e1-1df5-4bbd-8221-445037cb6320',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_3.jpg',
-          name: 'Deja Brady',
-          createdAt: '2022-02-27T12:01:11.288Z',
-          messageType: 'text',
-          message: 'Reprehenderit ut voluptas sapiente ratione nostrum est.'
-        },
-        {
-          id: '2a4d9ec5-f74d-464f-a4a0-c2811ac808da',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_4.jpg',
-          name: 'Harrison Stein',
-          createdAt: '2022-02-26T11:01:11.288Z',
-          messageType: 'image',
-          message: 'https://minimal-assets-api.vercel.app/assets/images/feeds/feed_7.jpg'
-        },
-        {
-          id: '4c29dbbf-aab6-4505-8bba-a7d1f4dcda1b',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_5.jpg',
-          name: 'Reece Chung',
-          createdAt: '2022-02-25T10:01:11.288Z',
-          messageType: 'text',
-          message: 'Quo quia sit nihil nemo doloremque et.'
-        },
-        {
-          id: 'babc6b7e-f867-4f53-b5b6-7d70d1f9c159',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_6.jpg',
-          name: 'Lainey Davidson',
-          createdAt: '2022-02-24T09:01:11.288Z',
-          messageType: 'image',
-          message: 'https://minimal-assets-api.vercel.app/assets/images/feeds/feed_9.jpg'
-        },
-        {
-          id: '5ffb6316-d8f4-44c9-b889-a3a3964c7cd0',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_7.jpg',
-          name: 'Cristopher Cardenas',
-          createdAt: '2022-02-23T08:01:11.288Z',
-          messageType: 'text',
-          message: 'Tempora officiis consequuntur architecto nostrum autem nam adipisci.'
-        },
-        {
-          id: '422cdc7c-d8f7-480d-bd41-72f18bea9448',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_8.jpg',
-          name: 'Melanie Noble',
-          createdAt: '2022-02-22T07:01:11.288Z',
-          messageType: 'text',
-          message: 'Voluptas sunt magni adipisci praesentium saepe.'
-        }
-      ],
-      completed: true
-    },
-    {
-      id: '98bf6e8b-becc-485b-9c3f-a7d09392c48d',
-      name: 'Interview for the Asis. Sales Manager',
-      description: 'We are looking for vue experience and of course node js strong knowledge',
-      assignee: [
-        {
-          id: '473d2720-341c-49bf-94ed-556999cf6ef7',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_2.jpg',
-          name: 'Deja Brady'
-        },
-        {
-          id: 'b8395203-887c-46f5-a85f-339b2d75c98b',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_3.jpg',
-          name: 'Harrison Stein'
-        },
-        {
-          id: '18e23ac9-c874-43e4-8163-2d37f15f3367',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_4.jpg',
-          name: 'Reece Chung'
-        },
-        {
-          id: 'a3be5485-03bf-47a6-b553-a9cf9f070ed8',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_5.jpg',
-          name: 'Lainey Davidson'
-        },
-        {
-          id: '048f6343-7a65-4873-a570-eb6ff4eb1ba3',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_6.jpg',
-          name: 'Cristopher Cardenas'
-        }
-      ],
-      due: [1646661671287, 1646748071287],
-      imageUrl: ['https://minimal-assets-api.vercel.app/assets/images/feeds/feed_2.jpg'],
-      comments: [],
-      completed: false
-    },
-    {
-      id: '99fbc02c-de89-4be3-9515-f8bd12227d38',
-      name: 'Change the height of the top bar because it looks too chunky',
-      description:
-        'We nede to make it aggressive with pricing because it’s in their interest to acquire us',
-      assignee: [],
-      due: [null, null],
-      imageUrl: [],
-      comments: [],
-      completed: true
-    },
-    {
-      id: 'ab9cebca-6cb4-4847-aa17-3b261b3dd0fb',
-      name: 'Integrate Stripe API',
-      description:
-        'We nede to make it aggresive with pricing because it’s in their interest to acquire us',
-      assignee: [
-        {
-          id: 'b8395203-887c-46f5-a85f-339b2d75c98b',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_3.jpg',
-          name: 'Melanie Noble'
-        },
-        {
-          id: 'a3be5485-03bf-47a6-b553-a9cf9f070ed8',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_6.jpg',
-          name: 'Chase Day'
-        }
-      ],
-      due: [null, null],
-      imageUrl: ['https://minimal-assets-api.vercel.app/assets/images/feeds/feed_4.jpg'],
-      comments: [],
-      completed: false
-    },
-    {
-      id: 'ebf0d26a-78e5-414f-986f-003d8fcd3154',
-      name: 'Update the customer API for payments',
-      description:
-        'We need to make it aggresive with pricing because it’s in their interest to acquire us',
-      assignee: [
-        {
-          id: '473d2720-341c-49bf-94ed-556999cf6ef7',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_2.jpg',
-          name: 'Shawn Manning'
-        }
-      ],
-      due: [null, null],
-      imageUrl: [],
-      comments: [],
-      completed: true
-    },
-    {
-      id: '9d98ce30-3c51-4de3-8537-7a4b663ee3af',
-      name: 'Release minimals DS',
-      description: 'Production',
-      assignee: [
-        {
-          id: '473d2720-341c-49bf-94ed-556999cf6ef7',
-          avatar: 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_2.jpg',
-          name: 'Soren Durham'
-        }
-      ],
-      due: [null, null],
-      imageUrl: [],
-      comments: [],
-      completed: true
-    }
-  ],
-  columns: [
-    {
-      id: '8cd887ec-b3bc-11eb-8529-0242ac130003',
-      name: 'Backlog',
-      cardIds: [
-        'deb02f04-9cf8-4f1e-97e0-2fbda84cc6b3',
-        '98bf6e8b-becc-485b-9c3f-a7d09392c48d',
-        '99fbc02c-de89-4be3-9515-f8bd12227d38'
-      ]
-    },
-    {
-      id: '23008a1f-ad94-4771-b85c-3566755afab7',
-      name: 'Progress',
-      cardIds: ['ab9cebca-6cb4-4847-aa17-3b261b3dd0fb', 'ebf0d26a-78e5-414f-986f-003d8fcd3154']
-    },
-    {
-      id: '37a9a747-f732-4587-a866-88d51c037641',
-      name: 'Q&A',
-      cardIds: []
-    },
-    {
-      id: '4ac3cd37-b3e1-466a-8e3b-d7d88f6f5d4f',
-      name: 'Production',
-      cardIds: ['9d98ce30-3c51-4de3-8537-7a4b663ee3af']
-    }
-  ],
-  columnOrder: [
-    '8cd887ec-b3bc-11eb-8529-0242ac130003',
-    '23008a1f-ad94-4771-b85c-3566755afab7',
-    '37a9a747-f732-4587-a866-88d51c037641',
-    '4ac3cd37-b3e1-466a-8e3b-d7d88f6f5d4f'
-  ]
+  layerOrder: ['8cd887ec-b3bc-11eb-8529-0242ac130003', '23008a1f-ad94-4771-b85c-3566755afab7']
 };

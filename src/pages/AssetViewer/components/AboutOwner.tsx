@@ -65,7 +65,7 @@ export default function UserCard({ assetAndOwner }: { assetAndOwner: AssetAndOwn
           }}
         />
         <Avatar
-          alt="Hello"
+          alt="Avatar"
           src={assetAndOwner.ownerIcon}
           sx={{
             width: 64,

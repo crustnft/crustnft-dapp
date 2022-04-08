@@ -1,16 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  Divider,
-  IconButton,
-  Link,
-  MenuItem,
-  Stack,
-  Typography
-} from '@mui/material';
-import Iconify from 'components/Iconify';
-import MenuPopover from 'components/MenuPopover';
+import { Box, Button, Card, Divider, Link, Stack, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { TProject } from '../CPProjectsDashboard.type';
 
@@ -30,7 +18,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
   return (
     <Card>
-      <Box sx={{ backgroundColor: '#F4F6F8', px: 2, py: 1 }}>
+      <Box sx={{ backgroundColor: 'customBackground.cpCardHeader', px: 2, py: 1 }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
           <Stack direction="column">
             <Typography variant="caption">
@@ -38,17 +26,17 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             </Typography>
             <Typography variant="subtitle2">{project.name}</Typography>
           </Stack>
-          <IconButton
+          {/* <IconButton
             size="small"
             ref={popoverRef}
             onClick={handleOpen}
             color={open ? 'inherit' : 'default'}
           >
             <Iconify icon={'eva:more-horizontal-fill'} width={20} height={20} />
-          </IconButton>
+          </IconButton> */}
         </Stack>
 
-        <MenuPopover
+        {/* <MenuPopover
           open={open}
           onClose={handleClose}
           anchorEl={popoverRef.current}
@@ -66,7 +54,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             <Iconify icon={'eva:edit-fill'} sx={{ width: 20, height: 20, flexShrink: 0, mr: 1 }} />
             Something else
           </MenuItem>
-        </MenuPopover>
+        </MenuPopover> */}
       </Box>
 
       <Divider />
@@ -76,7 +64,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             Uploaded Photos
           </Typography>
           <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
-            20
+            {project?.images?.length || 0}
           </Typography>
         </Stack>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
@@ -88,7 +76,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           </Typography>
         </Stack>
         <Stack>
-          <Link href={`#/project-details/${project.id}`} sx={{ width: '100%' }}>
+          <Link href={`#/collection-details/${project.id}`} sx={{ width: '100%' }}>
             <Button fullWidth variant="outlined" size="small">
               Open
             </Button>

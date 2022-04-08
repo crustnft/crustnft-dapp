@@ -14,12 +14,12 @@ export default function Alert(theme: Theme) {
     color: theme.palette[color][isLight ? 'darker' : 'lighter'],
     backgroundColor: theme.palette[color][isLight ? 'lighter' : 'darker'],
     '& .MuiAlert-icon': {
-      color: theme.palette[color][isLight ? 'main' : 'light'],
-    },
+      color: theme.palette[color][isLight ? 'main' : 'light']
+    }
   });
 
   const filledStyle = (color: ColorSchema) => ({
-    color: theme.palette[color].contrastText,
+    color: theme.palette[color].contrastText
   });
 
   const outlinedStyle = (color: ColorSchema) => ({
@@ -27,8 +27,8 @@ export default function Alert(theme: Theme) {
     border: `solid 1px ${theme.palette[color][isLight ? 'light' : 'dark']}`,
     backgroundColor: theme.palette[color][isLight ? 'lighter' : 'darker'],
     '& .MuiAlert-icon': {
-      color: theme.palette[color][isLight ? 'main' : 'light'],
-    },
+      color: theme.palette[color][isLight ? 'main' : 'light']
+    }
   });
 
   return {
@@ -38,20 +38,20 @@ export default function Alert(theme: Theme) {
           info: <InfoIcon />,
           success: <SuccessIcon />,
           warning: <WarningIcon />,
-          error: <ErrorIcon />,
-        },
+          error: <ErrorIcon />
+        }
       },
 
       styleOverrides: {
         message: {
           '& .MuiAlertTitle-root': {
-            marginBottom: theme.spacing(0.5),
-          },
+            marginBottom: theme.spacing(0.5)
+          }
         },
         action: {
           '& button:not(:first-of-type)': {
-            marginLeft: theme.spacing(1),
-          },
+            marginLeft: theme.spacing(1)
+          }
         },
 
         standardInfo: standardStyle('info'),
@@ -67,8 +67,8 @@ export default function Alert(theme: Theme) {
         outlinedInfo: outlinedStyle('info'),
         outlinedSuccess: outlinedStyle('success'),
         outlinedWarning: outlinedStyle('warning'),
-        outlinedError: outlinedStyle('error'),
-      },
-    },
+        outlinedError: outlinedStyle('error')
+      }
+    }
   };
 }

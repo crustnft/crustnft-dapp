@@ -48,7 +48,8 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
         }}
       >
         <Typography variant="subtitle2">
-          You need to connect a wallet to create the NFTs collection
+          This version is reserved for wallet with beta access. You can to connect and sign with the
+          registered wallet to create the NFTs collection
         </Typography>
       </Paper>
 
@@ -76,7 +77,7 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
                 render={({ field, fieldState: { error } }) => (
                   <TextField
                     {...field}
-                    label="Name"
+                    label="Token Name"
                     variant="outlined"
                     autoComplete="off"
                     fullWidth
@@ -149,13 +150,13 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
               <Stack spacing={0.5}>
                 <Stack direction="row" justifyContent="space-between" spacing={2}>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Name
+                    Token Name
                   </Typography>
                   <Typography variant="subtitle2">{name || 'Collection Name'}</Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between" spacing={2}>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Symbol
+                    Token Symbol
                   </Typography>
                   <Typography variant="subtitle2">{symbol || 'CRUSTNFT'}</Typography>
                 </Stack>
@@ -217,7 +218,7 @@ export default function ConfigureSmartContract({ startedCreation }: { startedCre
                 disabled={startedCreation}
                 control={<Checkbox {...field} defaultChecked />}
                 label="I agree with the smart contract provided by Crustnft"
-                sx={{ color: error ? '#FF4842' : '#212B36' }}
+                sx={{ color: error ? '#FF4842' : 'text.primary' }}
               />
             )}
           />

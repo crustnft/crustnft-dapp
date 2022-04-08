@@ -101,7 +101,7 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
 
       <Stack spacing={2}>
         <Stack>
-          <Card sx={{ p: 3 }}>
+          <Card sx={{ p: 2 }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Stack>
                 <Stack direction="row" alignItems="center" spacing={1}>
@@ -127,7 +127,7 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
         </Stack>
 
         <Stack>
-          <Card sx={{ p: 3 }}>
+          <Card sx={{ p: 2 }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Stack>
                 <Stack direction="row" alignItems="center" spacing={1}>
@@ -149,7 +149,7 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
         </Stack>
 
         <Stack>
-          <Card sx={{ p: 3 }}>
+          <Card sx={{ p: 2 }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Stack>
                 <Stack direction="row" alignItems="center" spacing={1}>
@@ -175,7 +175,7 @@ export default function AssetAttributes({ assetAndOwner }: AssetAttributesProps)
         </Stack>
 
         <Stack>
-          <Card sx={{ p: 3 }}>
+          <Card sx={{ p: 2 }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Stack>
                 <Stack direction="row" alignItems="center" spacing={1}>

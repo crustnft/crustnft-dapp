@@ -27,17 +27,7 @@ const sidebarConfig = [
       {
         title: 'Create Collection',
         icon: ICONS.faucets,
-        path: PATH_DASHBOARD.createCollection.expandableCollection,
-        children: [
-          {
-            title: 'Expandable Collection',
-            path: PATH_DASHBOARD.createCollection.expandableCollection
-          },
-          {
-            title: 'Sharing Collection',
-            path: PATH_DASHBOARD.createCollection.expandableCollection
-          }
-        ]
+        path: PATH_DASHBOARD.app.createCollection
       }
     ]
   },

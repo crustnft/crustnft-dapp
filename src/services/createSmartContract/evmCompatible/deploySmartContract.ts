@@ -5,7 +5,8 @@ import { ContractFactory } from 'ethers';
 export async function* deploySmartContract(
   compileResult: CompilerAbstract,
   contractName: string,
-  signer: JsonRpcSigner
+  signer: JsonRpcSigner,
+  ...args: any[]
 ): AsyncGenerator<any, any, any> {
   try {
     const compiledContract = compileResult?.getContract(contractName);
@@ -16,7 +17,7 @@ export async function* deploySmartContract(
       contractBinary,
       signer
     );
-    const deployingContract = await contractFactory.deploy();
+    const deployingContract = await contractFactory.deploy(...args);
     yield deployingContract.deployTransaction;
     const txReceipt = await deployingContract.deployTransaction.wait(1);
     console.log('TransactionReceipt: ', txReceipt);

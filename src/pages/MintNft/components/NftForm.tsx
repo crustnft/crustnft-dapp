@@ -2,6 +2,7 @@ import { TransactionReceipt, TransactionResponse } from '@ethersproject/provider
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
 import { Alert, Box, Button, Card, Grid, Stack, Typography } from '@mui/material';
+import { AUTH_HEADER, IPFS_GATEWAY } from 'constants/ipfsGateways';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
@@ -11,7 +12,7 @@ import { createContext, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { connectRWContract } from 'services/smartContract/evmCompatible';
-import { AUTH_HEADER, pinW3Crust } from 'services/w3AuthIpfs';
+import { pinW3Crust } from 'services/w3AuthIpfs';
 import * as Yup from 'yup';
 import { FormProvider, RHFUploadNftCard } from '../../../components/hook-form';
 import Iconify from '../../../components/Iconify';
@@ -27,8 +28,6 @@ import NewStatsDialog from './NewStatsDialog';
 import NftCreationStatus from './NftCreationStatus';
 import NftTextField from './NftTextField';
 import StatNumber from './StatNumber';
-
-const ipfsGateway = 'https://gw.crustapps.net';
 
 const initialNftCreationStatus = {
   uploadingImage: false,
@@ -169,20 +168,30 @@ export default function NftForm() {
       reader.onabort = () => reject('file reading was aborted');
       reader.onerror = () => reject('file reading has failed');
       reader.onload = async () => {
-        const added = await ipfs.add(reader.result as ArrayBuffer);
-        console.log(added.cid.toV0().toString());
-        resolve({
-          cid: added.cid.toV0().toString(),
-          name: file.name || '',
-          size: added.size
+        const added = await ipfs.add(reader.result as ArrayBuffer).catch((error) => {
+          console.log(error);
         });
+        if (!added) {
+          reject('unable to upload file');
+        } else {
+          console.log(added.cid.toV0().toString());
+          resolve({
+            cid: added.cid.toV0().toString(),
+            name: file.name || '',
+            size: added.size
+          });
+        }
       };
 
       reader.readAsArrayBuffer(file);
     });
   }
 
-  async function uploadMetadataW3AuthGateway(authHeader: string, metadata: any): Promise<any> {
+  async function uploadMetadataW3AuthGateway(
+    authHeader: string,
+    ipfsGateway: string,
+    metadata: any
+  ): Promise<any> {
     const ipfs = create({
       url: ipfsGateway + '/api/v0',
       headers: {
@@ -205,13 +214,16 @@ export default function NftForm() {
         if (!uploadImageSuccess) {
           setActiveStep(0);
           setUploadingImage(true);
-          const addedFile = await uploadFileToW3AuthGateway(ipfsGateway, AUTH_HEADER, avatar).catch(
-            () => {
-              setUploadImageError(true);
-            }
-          );
+          const addedFile = await uploadFileToW3AuthGateway(
+            IPFS_GATEWAY,
+            AUTH_HEADER,
+            avatar
+          ).catch(() => {
+            setUploadImageError(true);
+          });
           setUploadingImage(false);
           if (!addedFile) {
+            setUploadImageError(true);
             return;
           }
 
@@ -253,11 +265,13 @@ export default function NftForm() {
             ]
           };
 
-          const addedMetadata = await uploadMetadataW3AuthGateway(AUTH_HEADER, metadata).catch(
-            () => {
-              setUploadMetadataError(true);
-            }
-          );
+          const addedMetadata = await uploadMetadataW3AuthGateway(
+            AUTH_HEADER,
+            IPFS_GATEWAY,
+            metadata
+          ).catch(() => {
+            setUploadMetadataError(true);
+          });
           setUploadingMetadata(false);
           if (!addedMetadata) {
             return;
@@ -280,14 +294,9 @@ export default function NftForm() {
           try {
             setActiveStep(2);
             setMintingNft(true);
-            console.log('wallet Check');
-            // await onboard?.walletCheck();
-            console.log('get signer');
             const signer = library?.getSigner(account);
-            console.log('compare signer');
             if (signer) {
               const contract = connectRWContract(contractAddr || '', SIMPLIFIED_ERC721_ABI, signer);
-              console.log('mint');
               const tx: TransactionResponse = await contract.mint(`ipfs://${newMetadataCid}`);
               setTxHash(tx.hash);
               const txReceipt: TransactionReceipt = await tx.wait(1);

@@ -1,18 +1,23 @@
 import { Box, Paper, Typography } from '@mui/material';
+import { UPLOAD_IMAGE_PUBLIC_BUCKET } from 'constants/gcpApis';
 import { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { ImageCard as ImageCardType } from '../../../@types/imagesGCS';
+import { Image as ImageType } from '../../../@types/imagesGCS';
 import Image from '../../../components/Image';
+import useWeb3 from '../../../hooks/useWeb3';
 import ImageDetails from './ImageDetails';
 
 type Props = {
-  card: ImageCardType;
-  onDeleteTask: (id: string) => void;
+  image: ImageType;
+  onDeleteImage: (id: string) => void;
   index: number;
 };
 
-export default function ImageCard({ card, onDeleteTask, index }: Props) {
-  const { name, imageUrl } = card;
+export default function ImageCard({ image, onDeleteImage, index }: Props) {
+  const { account } = useWeb3();
+  const { name, id } = image;
+
+  const imageUrl = UPLOAD_IMAGE_PUBLIC_BUCKET + '/' + account?.toLowerCase() + '/' + id;
   const [openDetails, setOpenDetails] = useState(false);
 
   const handleOpenDetails = () => {
@@ -24,7 +29,7 @@ export default function ImageCard({ card, onDeleteTask, index }: Props) {
   };
 
   return (
-    <Draggable draggableId={card.id} index={index}>
+    <Draggable draggableId={image.id} index={index}>
       {(provided) => (
         <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
           <Paper
@@ -69,10 +74,10 @@ export default function ImageCard({ card, onDeleteTask, index }: Props) {
           </Paper>
 
           <ImageDetails
-            card={card}
+            image={image}
             isOpen={openDetails}
             onClose={handleCloseDetails}
-            onDeleteTask={() => onDeleteTask(card.id)}
+            onDeleteImage={() => onDeleteImage(image.id)}
           />
         </div>
       )}

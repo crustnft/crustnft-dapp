@@ -1,9 +1,9 @@
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
-import { Box, Button, Card, IconButton, Stack, Tooltip } from '@mui/material';
+import { Box, Button, Card, IconButton, Skeleton, Stack, Tooltip } from '@mui/material';
 import LightboxModal from 'components/LightboxModal';
+import { openseaUrlDictionary } from 'constants/openseaChainUrl';
 import { Chain } from 'interfaces/chain';
 import { useEffect, useState } from 'react';
-import { LineScalePulseOutRapid } from 'react-pure-loaders';
 import { getChainByNetworkName } from 'utils/blockchainHandlers';
 import { AssetAndOwnerType } from '../AssetViewer.types';
 
@@ -11,11 +11,17 @@ export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOw
   const [loading, setLoading] = useState(true);
   const [openLightbox, setOpenLightbox] = useState(false);
   const [chain, setChain] = useState<Chain | undefined>(undefined);
+  const [openseaLinkPrefix, setOpenseaLinkPreFix] = useState<string>('');
 
   useEffect(() => {
     if (assetAndOwner.chain) {
       const chainObj = getChainByNetworkName(assetAndOwner.chain);
       setChain(chainObj);
+      if (!chainObj) return;
+      const openseaLinkPrefix = openseaUrlDictionary.get(chainObj?.name.toLowerCase());
+      if (openseaLinkPrefix && openseaLinkPrefix !== '') {
+        setOpenseaLinkPreFix(openseaLinkPrefix);
+      }
     }
   }, [assetAndOwner]);
 
@@ -84,18 +90,22 @@ export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOw
                       <Box component="img" src={chain?.icon || ''} sx={{ height: 30, width: 30 }} />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="Opensea Viewer">
-                    <IconButton
-                      href={`https://testnets.opensea.io/assets/${assetAndOwner.contractAddress}/${assetAndOwner.tokenId}`}
-                      target="_blank"
-                    >
-                      <Box
-                        component="img"
-                        src="./static/icons/shared/opensea.svg"
-                        sx={{ height: 30 }}
-                      />
-                    </IconButton>
-                  </Tooltip>
+                  {openseaLinkPrefix !== '' ? (
+                    <Tooltip title="Opensea Viewer">
+                      <IconButton
+                        href={`${openseaLinkPrefix}/${assetAndOwner.contractAddress}/${assetAndOwner.tokenId}`}
+                        target="_blank"
+                      >
+                        <Box
+                          component="img"
+                          src="./static/icons/shared/opensea.svg"
+                          sx={{ height: 30 }}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  ) : (
+                    <></>
+                  )}
                 </Stack>
               </Box>
             </>
@@ -109,14 +119,9 @@ export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOw
             onCloseRequest={() => setOpenLightbox(false)}
           />
         </Stack>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-          sx={{ width: '100%', display: loading ? 'flex' : 'none', mt: 5 }}
-        >
-          <LineScalePulseOutRapid color={'#637381'} loading={loading} />
-        </Stack>
+        <Card sx={{ width: '100%', display: loading ? 'flex' : 'none', aspectRatio: '1 / 1' }}>
+          <Skeleton variant="rectangular" width="100%" height="100%" />
+        </Card>
       </Stack>
     </Card>
   );

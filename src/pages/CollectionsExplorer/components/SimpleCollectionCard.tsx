@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWeb3 from 'hooks/useWeb3';
-import { ColorButton } from 'pages/CollectionViewer/components/NftCard';
+import { ColorButton } from 'pages/MyNFT/components/NftCard';
 import { useEffect, useMemo, useState } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import {
@@ -26,6 +26,7 @@ export type CollectionData = {
   coverUrl?: string;
   description?: string;
   chainId: number;
+  collectionType: 'expandable' | 'cryptopunks';
 };
 
 type CollectionCardProps = {

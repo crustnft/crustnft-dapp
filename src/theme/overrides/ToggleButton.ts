@@ -10,12 +10,12 @@ export default function ToggleButton(theme: Theme) {
     style: {
       '&:hover': {
         borderColor: alpha(theme.palette[color].main, 0.48),
-        backgroundColor: alpha(theme.palette[color].main, theme.palette.action.hoverOpacity),
+        backgroundColor: alpha(theme.palette[color].main, theme.palette.action.hoverOpacity)
       },
       '&.Mui-selected': {
-        borderColor: alpha(theme.palette[color].main, 0.48),
-      },
-    },
+        borderColor: alpha(theme.palette[color].main, 0.48)
+      }
+    }
   });
 
   return {
@@ -25,17 +25,17 @@ export default function ToggleButton(theme: Theme) {
           props: { color: 'standard' },
           style: {
             '&.Mui-selected': {
-              backgroundColor: theme.palette.action.selected,
-            },
-          },
+              backgroundColor: theme.palette.action.selected
+            }
+          }
         },
         style('primary'),
         style('secondary'),
         style('info'),
         style('success'),
         style('warning'),
-        style('error'),
-      ],
+        style('error')
+      ]
     },
     MuiToggleButtonGroup: {
       styleOverrides: {
@@ -46,10 +46,10 @@ export default function ToggleButton(theme: Theme) {
           '& .MuiToggleButton-root': {
             margin: 4,
             borderColor: 'transparent !important',
-            borderRadius: `${theme.shape.borderRadius}px !important`,
-          },
-        },
-      },
-    },
+            borderRadius: `${theme.shape.borderRadius}px !important`
+          }
+        }
+      }
+    }
   };
 }

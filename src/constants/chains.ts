@@ -33,7 +33,7 @@ const TEST_CHAINS = [
     name: 'Rinkeby',
     currencySymbol: 'RIN',
     icon: './static/icons/networks/rinkeby.svg',
-    iconDark: './static/icons/networks/rinkeby-dark.png',
+    iconDark: './static/icons/networks/rinkeby-dark.svg',
     chainId: 4,
     rpcUrl: 'https://rinkeby.infura.io/v3/741c5f1257a24106934fe4105c784478',
     blockExplorerUrl: 'https://rinkeby.etherscan.io'
@@ -45,13 +45,13 @@ const TEST_CHAINS = [
     iconDark: './static/icons/networks/binance-dark.png',
     chainId: 97,
     rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
-    blockExplorerUrl: 'https://testnet.bscscan.com/'
+    blockExplorerUrl: 'https://testnet.bscscan.com'
   }
 ];
 
-const staging = process.env.REACT_APP_STAGING;
+const supportedTestnet = process.env.REACT_APP_SUPPORT_TESTNET === 'true';
 
-export const SUPPORTED_CHAINS = staging ? [...TEST_CHAINS, ...PROD_CHAINS] : PROD_CHAINS;
+export const SUPPORTED_CHAINS = supportedTestnet ? [...TEST_CHAINS, ...PROD_CHAINS] : PROD_CHAINS;
 
 export const EMPTY_CHAIN = {
   name: 'Unknown',

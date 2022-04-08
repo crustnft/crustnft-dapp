@@ -1,11 +1,13 @@
 import { Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { uploadImage } from 'clients/crustnft-explore-api/medias';
+import useAuth from 'hooks/useAuth';
+import useWeb3 from 'hooks/useWeb3';
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { ImageCard as ImageCardProps } from '../../../@types/imagesGCS';
+import { Image as ImageType } from '../../../@types/imagesGCS';
 import Iconify from '../../../components/Iconify';
 import uuidv4 from '../../../utils/uuidv4';
-
 const DropZoneStyle = styled('div')(({ theme }) => ({
   width: '200px',
   height: '200px',
@@ -21,26 +23,44 @@ const DropZoneStyle = styled('div')(({ theme }) => ({
 }));
 
 type UploadFileProps = {
-  onAddImage: (task: ImageCardProps) => void;
+  onAddImage: (task: ImageType) => void;
   onCloseAddImage: VoidFunction;
 };
 
 export default function ImagesAdd({ onAddImage, onCloseAddImage }: UploadFileProps) {
+  const { accessToken } = useAuth();
+  const { account } = useWeb3();
+  const handleAddImage = async (file: File) => {
+    try {
+      if (!account) return;
+
+      const imageId = uuidv4();
+      await uploadImage(accessToken, imageId, file);
+      onAddImage({
+        name: file.name.split('.').slice(0, -1).join('.'),
+        id: imageId
+      });
+    } catch (e) {
+      console.log('Error uploading image to GCS', e);
+    }
+  };
+
   const handleDrop = useCallback(
     (acceptedFiles) => {
       acceptedFiles.forEach((file: File) => {
-        onAddImage({
-          imageUrl: URL.createObjectURL(file),
-          name: file.name.split('.').slice(0, -1).join('.'),
-          id: uuidv4()
-        });
+        handleAddImage(file);
+        // onAddImage({
+        //   name: file.name.split('.').slice(0, -1).join('.'),
+        //   id: uuidv4()
+        // });
       });
     },
     [onAddImage]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: handleDrop
+    onDrop: handleDrop,
+    accept: 'image/*'
   });
 
   return (

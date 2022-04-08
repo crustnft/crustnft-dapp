@@ -6,6 +6,7 @@ import {
   Button,
   Divider,
   IconButton,
+  Link,
   Stack,
   Toolbar,
   ToolbarProps
@@ -81,20 +82,22 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
         <Box sx={{ flexGrow: 1 }} />
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
           {notSmall ? (
-            <Button
-              variant="contained"
-              startIcon={<Iconify icon="bx:plus" />}
-              sx={[
-                {
-                  backgroundColor: '#3772FF',
-                  color: '#ffffff',
-                  borderRadius: '32px'
-                },
-                { '& .MuiButton-startIcon': { mr: 0.5 } }
-              ]}
-            >
-              Create
-            </Button>
+            <Link href="#/create-collection">
+              <Button
+                variant="contained"
+                startIcon={<Iconify icon="bx:plus" />}
+                sx={[
+                  {
+                    backgroundColor: '#3772FF',
+                    color: '#ffffff',
+                    borderRadius: '32px'
+                  },
+                  { '& .MuiButton-startIcon': { mr: 0.5 } }
+                ]}
+              >
+                Create
+              </Button>
+            </Link>
           ) : (
             <IconButton>
               <Iconify icon="fluent:channel-add-28-regular" />

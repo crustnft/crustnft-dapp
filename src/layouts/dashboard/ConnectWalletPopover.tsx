@@ -6,6 +6,7 @@ import {
   ButtonBase,
   Divider,
   IconButton,
+  Link,
   List,
   ListItem,
   ListItemButton,
@@ -17,17 +18,15 @@ import {
   useMediaQuery
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import Identicons from '@nimiq/identicons';
 import Iconify from 'components/Iconify';
+import useSettings from 'hooks/useSettings';
 import useWeb3 from 'hooks/useWeb3';
 import React, { useRef, useState } from 'react';
 import MenuPopover from '../../components/MenuPopover';
-Identicons.svgPath = './static/identicons.min.svg';
-
 const ConnectWalletPopover = () => {
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up('sm'));
-
+  const { themeMode, onToggleMode } = useSettings();
   const {
     active: walletIsConnected,
     activate,
@@ -58,6 +57,9 @@ const ConnectWalletPopover = () => {
     setOpenWalletInfo(false);
   };
 
+  const handleDarkMode = () => {
+    onToggleMode();
+  };
   return (
     <>
       {smUp && !walletIsConnected && (
@@ -173,14 +175,16 @@ const ConnectWalletPopover = () => {
 
         <Stack>
           <List sx={{ color: 'text.secondary' }}>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <Iconify icon="fa6-regular:image" />
-                </ListItemIcon>
-                <ListItemText primary="My Collections" />
-              </ListItemButton>
-            </ListItem>
+            <Link href="#/tenK-collection" color="text.secondary">
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <Iconify icon="fa6-regular:image" />
+                  </ListItemIcon>
+                  <ListItemText primary="TenK Collections" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
             <Divider />
             <ListItem disablePadding>
               <ListItemButton>
@@ -191,12 +195,13 @@ const ConnectWalletPopover = () => {
               </ListItemButton>
             </ListItem>
             <Divider />
-            <ListItem disablePadding>
+
+            <ListItem disablePadding onClick={handleDarkMode}>
               <ListItemButton>
                 <ListItemIcon>
                   <Iconify icon="bx:moon" />
                 </ListItemIcon>
-                <ListItemText primary="Dark Mode" />
+                <ListItemText primary={`${themeMode === 'dark' ? 'Light' : 'Dark'} Mode`} />
               </ListItemButton>
             </ListItem>
             <Divider />

@@ -1,26 +1,24 @@
 import { Stack, Typography } from '@mui/material';
-import { getContractsByAccount } from 'clients/crustnft-explore-api';
+import { getContractsByAccount } from 'clients/crustnft-explore-api/contracts';
+import useAuth from 'hooks/useAuth';
 import useWeb3 from 'hooks/useWeb3';
 import { useEffect, useState } from 'react';
 import CollectionSlider from './CollectionSlider';
 
 export default function MyCollections() {
+  const { accessToken } = useAuth();
   const { account } = useWeb3();
   const [collections, setCollections] = useState([]);
   const [nbOfContractCreated, setNbOfContractCreated] = useState(0);
 
   useEffect(() => {
-    if (account) {
-      getContractsByAccount(10, account.toLowerCase()).then((res) => {
+    if (account && accessToken) {
+      getContractsByAccount(accessToken, 10, account.toLowerCase()).then((res) => {
         setCollections(res.data?.data);
         setNbOfContractCreated(res.data?.data?.length || 0);
       });
     }
-  }, [account]);
-
-  useEffect(() => {
-    console.log('collections', collections);
-  }, [collections]);
+  }, [account, accessToken]);
 
   return (
     <Stack spacing={3} sx={{ mt: 4 }}>
@@ -32,7 +30,7 @@ export default function MyCollections() {
       </Stack>
       {collections.map((collection: any) => (
         <CollectionSlider
-          key={collection.txHash}
+          key={collection.id}
           contractAddr={collection.contractAddress}
           chainId={collection.chainId}
         />

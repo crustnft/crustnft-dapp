@@ -257,7 +257,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
       const signature = await signer.signMessage(signingMessage);
       loginAuth(account, signature);
     }
-  }, [library, account, loginAuth, challengeLogin]);
+  }, [account, library, challengeLogin, loginAuth]);
 
   return (
     <Web3Context.Provider

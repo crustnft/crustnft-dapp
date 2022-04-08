@@ -67,7 +67,7 @@ const createShadow = (color: string): Shadows => {
     `0px 10px 13px -6px ${transparent1},0px 21px 33px 3px ${transparent2},0px 8px 40px 7px ${transparent3}`,
     `0px 10px 14px -6px ${transparent1},0px 22px 35px 3px ${transparent2},0px 8px 42px 7px ${transparent3}`,
     `0px 11px 14px -7px ${transparent1},0px 23px 36px 3px ${transparent2},0px 9px 44px 8px ${transparent3}`,
-    `0px 11px 15px -7px ${transparent1},0px 24px 38px 3px ${transparent2},0px 9px 46px 8px ${transparent3}`,
+    `0px 11px 15px -7px ${transparent1},0px 24px 38px 3px ${transparent2},0px 9px 46px 8px ${transparent3}`
   ];
 };
 
@@ -90,13 +90,13 @@ const createCustomShadow = (color: string) => {
     //
     card: `0 0 2px 0 ${alpha(color, 0.2)}, 0 12px 24px -4px ${alpha(color, 0.12)}`,
     dialog: `-40px 40px 80px -8px ${alpha(palette.light.common.black, 0.24)}`,
-    dropdown: `0 0 2px 0 ${alpha(color, 0.24)}, -20px 20px 40px -4px ${alpha(color, 0.24)}`,
+    dropdown: `0 0 2px 0 ${alpha(color, 0.24)}, -20px 20px 40px -4px ${alpha(color, 0.24)}`
   };
 };
 
 export const customShadows = {
   light: createCustomShadow(LIGHT_MODE),
-  dark: createCustomShadow(DARK_MODE),
+  dark: createCustomShadow(DARK_MODE)
 };
 
 const shadows: {
@@ -104,7 +104,7 @@ const shadows: {
   dark: Shadows;
 } = {
   light: createShadow(LIGHT_MODE),
-  dark: createShadow(DARK_MODE),
+  dark: createShadow(DARK_MODE)
 };
 
 export default shadows;

@@ -8,9 +8,9 @@ export default function Popover(theme: Theme) {
       styleOverrides: {
         paper: {
           boxShadow: theme.customShadows.dropdown,
-          borderRadius: Number(theme.shape.borderRadius) * 1.5,
-        },
-      },
-    },
+          borderRadius: Number(theme.shape.borderRadius) * 1.5
+        }
+      }
+    }
   };
 }

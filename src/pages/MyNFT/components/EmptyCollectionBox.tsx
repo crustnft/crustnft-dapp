@@ -49,7 +49,7 @@ export default function EmptyCollectionBox({
   };
 
   return (
-    <Card sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
+    <Card sx={{ px: { xs: 1, sm: 2, md: 3 }, py: 1 }}>
       <CardHeader
         title={
           <TypographyWithSubtitle
@@ -79,8 +79,7 @@ export default function EmptyCollectionBox({
           </Stack>
         }
         sx={{
-          p: 0,
-          mb: 1,
+          p: 1,
           '& .MuiCardHeader-action': { alignSelf: 'center' }
         }}
       />
@@ -88,7 +87,7 @@ export default function EmptyCollectionBox({
       <Stack sx={{ mx: -1 }}>
         <Slider {...settings}>
           <Link href={`#/mint-nft/${chainName}/${contractAddr}`}>
-            <Box sx={{ px: 1, py: 0, position: 'relative' }}>
+            <Box sx={{ px: 2, py: 0, position: 'relative' }}>
               <Paper
                 sx={{
                   boxShadow: 'none',
@@ -98,7 +97,7 @@ export default function EmptyCollectionBox({
                   borderRadius: '18px',
                   opacity: 0.4,
                   width: '100%',
-                  aspectRatio: '1 / 1.25'
+                  aspectRatio: '1 / 1.15'
                 }}
               >
                 <Stack

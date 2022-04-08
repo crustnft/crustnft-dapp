@@ -5,30 +5,52 @@ import {
   Card,
   CardMedia,
   CircularProgress,
+  createStyles,
   Grid,
   Link,
   Stack,
   Tooltip,
   Typography
 } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWeb3 from 'hooks/useWeb3';
-import React, { useEffect, useMemo, useState } from 'react';
+import { Chain } from 'interfaces/chain';
+import { useEffect, useMemo, useState } from 'react';
+import { createEmptyNFTList, NftItem } from 'services/fetchCollection/createEmptyNFTList';
 import {
+  ALLOWED_CHAIN_NAME_FOR_OPENSEA,
   getCollectionUrlOpensea,
   OPENSEA_LINK_NOT_FOUND
 } from 'services/fetchCollection/getCollectionUrlOpensea';
-import { getNftList4CollectionCard, NftItem } from 'services/fetchCollection/getNFTList';
+import { getNftList4CollectionCard } from 'services/fetchCollection/getNFTList';
 import {
   connectContract,
   getContractOwner,
   getName,
   getTotalSupply
 } from 'services/smartContract/evmCompatible';
-import { getChainByChainId, getRpcUrlByChainId } from 'utils/blockchainHandlers';
+import {
+  getChainByChainId,
+  getCollectionUrlByChainId,
+  getRpcUrlByChainId
+} from 'utils/blockchainHandlers';
 import EmptyNFT, { cornerPosition } from './EmptyNFT';
 import { CollectionData } from './SimpleCollectionCard';
 import SkeletonCollectionCardWithNFTImage from './SkeletonCollectionCardWithNFTImage';
+
+const useStyles = makeStyles(
+  createStyles({
+    tooltip: {
+      height: 50,
+      width: 50
+    },
+    internalIcon: {
+      height: 34,
+      width: 34
+    }
+  })
+);
 
 type CollectionCardProps = {
   collection: CollectionData;
@@ -37,28 +59,20 @@ type CollectionCardProps = {
 const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   const { account } = useWeb3();
   const NB_NFT_TO_SHOW = 4;
-  const emptyNftList = new Array(NB_NFT_TO_SHOW).fill(null).map((_, index) => ({
-    key: index.toString(),
-    failToLoad: false,
-    tokenId: '',
-    tokenURI: '',
-    imageUrl: '',
-    name: '',
-    owner: '',
-    chainName: '',
-    contractAddr: ''
-  }));
+  const emptyNftList = createEmptyNFTList(NB_NFT_TO_SHOW);
   const [nftList, setNftList] = useState<NftItem[]>(emptyNftList);
   const { contractAddress, chainId } = collection;
   const [network, setNetwork] = useState('');
   const [name, setName] = useState('');
   const [contractOwner, setContractOwner] = useState('');
   const [openseaLink, setOpenseaLink] = useState('');
+  const [collectionLink, setCollectionLink] = useState('');
   const [totalSupply, setTotalSupply] = useState(-1);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [chain, setChain] = useState<Chain | undefined>(undefined);
+  const classes = useStyles();
 
   const contract = useMemo(() => {
-    console.log('RPC', getRpcUrlByChainId(chainId));
     return connectContract(
       contractAddress || '',
       SIMPLIFIED_ERC721_ABI,
@@ -67,47 +81,66 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   }, [contractAddress, chainId]);
 
   useEffect(() => {
-    getName(contract)
-      .then((name) => setName(name))
-      .catch((e) => {
-        console.log(e);
-      });
-    getTotalSupply(contract)
-      .then((totalSupply) => setTotalSupply(totalSupply))
-      .catch((e) => {
-        console.log('ee', e, contract.address);
-      });
-    getContractOwner(contract)
-      .then((contractOwner) => setContractOwner(contractOwner))
-      .catch((e) => {
-        console.log(e);
-      });
-    const chain = getChainByChainId(chainId);
-    setNetwork(chain?.name || '');
+    let isSubscribed = true;
+    const fetchData = async () => {
+      const name = await getName(contract);
+      const totalSupply = await getTotalSupply(contract);
+      const contractOwner = await getContractOwner(contract);
+      const chain = getChainByChainId(chainId);
+      const _collectionLink = getCollectionUrlByChainId(chainId, contractAddress);
+      if (isSubscribed) {
+        setName(name || 'Unknown');
+        setTotalSupply(totalSupply);
+        setContractOwner(contractOwner);
+        setNetwork(chain?.name || '');
+        setChain(chain);
+        setCollectionLink(_collectionLink);
+      }
+    };
+    fetchData();
+    return () => {
+      isSubscribed = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
+    let isSubscribed = true;
     const fetchOpenseaLink = async () => {
-      const _openseaLink = await getCollectionUrlOpensea(contractOwner, contract.address);
-
+      const _openseaLink = await getCollectionUrlOpensea(network, contractOwner, contract.address);
       if (!_openseaLink) return;
-      setOpenseaLink(_openseaLink);
+      if (isSubscribed) {
+        setOpenseaLink(_openseaLink);
+      }
     };
     fetchOpenseaLink();
-  }, [contract.address, contractOwner, totalSupply]);
+    return () => {
+      isSubscribed = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [network, contract.address, contractOwner, totalSupply]);
 
   useEffect(() => {
+    let isSubscribed = true;
     const fetchData = async () => {
       const _nftList = await getNftList4CollectionCard(
         contract,
         chainId,
         totalSupply,
+        0,
         NB_NFT_TO_SHOW
       );
       if (!_nftList) return;
-      setNftList(_nftList);
+      const emptyNft2FillIn = createEmptyNFTList(NB_NFT_TO_SHOW - _nftList.length);
+      if (isSubscribed) {
+        setNftList([..._nftList, ...emptyNft2FillIn]);
+      }
     };
     fetchData();
+    return () => {
+      isSubscribed = false;
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalSupply]);
 
@@ -122,7 +155,7 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
       <Stack>
         <Box
           sx={{
-            borderRadius: '15px',
+            borderRadius: 2,
             overflow: 'hidden'
           }}
         >
@@ -207,10 +240,8 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                 sx={{ alignItems: 'baseline', justifyContent: 'space-between', py: 1, pb: 2 }}
               >
                 <Link
-                  underline="hover"
+                  underline="none"
                   href={`#/collection/${network.toLowerCase()}/${contractAddress}/1`}
-                  target="_blank"
-                  rel="noopener"
                   sx={{ maxWidth: '70%' }}
                 >
                   <Typography variant="h5" noWrap>
@@ -225,7 +256,7 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                 <FourNFT />
               ) : (
                 <Stack>
-                  <ButtonBase>
+                  <ButtonBase sx={{ borderRadius: 3.5, overflow: 'hidden' }}>
                     <EmptyNFT text="This collection is empty!" corner={cornerPosition[0]} />
                   </ButtonBase>
                 </Stack>
@@ -236,57 +267,64 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                 direction="row"
                 alignItems="center"
               >
-                <Tooltip title="Opensea Viewer" sx={{ height: 50, width: 50 }}>
-                  <ButtonBase
-                    href={openseaLink}
-                    target="_blank"
-                    disabled={openseaLink === OPENSEA_LINK_NOT_FOUND}
-                  >
-                    <Box
-                      component="img"
-                      src="./static/icons/shared/opensea.svg"
-                      sx={{
-                        height: 34,
-                        width: 34,
-                        opacity:
-                          openseaLink === '' || openseaLink === OPENSEA_LINK_NOT_FOUND
-                            ? '30%'
-                            : '100%'
-                      }}
-                    />
-                    {openseaLink !== '' ? (
-                      <></>
-                    ) : (
-                      <CircularProgress
-                        color="info"
-                        size={24}
-                        sx={{
-                          position: 'absolute',
-                          top: '50%',
-                          left: '50%',
-                          marginTop: '-12px',
-                          marginLeft: '-12px'
-                        }}
-                      />
-                    )}
+                <Tooltip title="Transaction History" className={classes.tooltip}>
+                  <ButtonBase href={collectionLink} target="_blank">
+                    <Box component="img" src={chain?.icon || ''} className={classes.internalIcon} />
                   </ButtonBase>
                 </Tooltip>
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="warning"
-                  sx={{ px: 3, py: 1, borderRadius: '26px' }}
-                  href={`#/mint-nft/${network}/${contract.address}`}
-                  disabled={
-                    account && contractOwner
-                      ? account?.toLowerCase() !== contractOwner?.toLowerCase()
-                      : true
-                  }
-                >
-                  <Typography variant="caption" noWrap>
+                {ALLOWED_CHAIN_NAME_FOR_OPENSEA.indexOf(network) !== -1 ? (
+                  <Tooltip title="Opensea Viewer" className={classes.tooltip}>
+                    <ButtonBase
+                      href={openseaLink}
+                      target="_blank"
+                      disabled={openseaLink === OPENSEA_LINK_NOT_FOUND}
+                    >
+                      <Box
+                        component="img"
+                        src="./static/icons/shared/opensea.svg"
+                        className={classes.internalIcon}
+                        sx={{
+                          opacity:
+                            openseaLink === '' || openseaLink === OPENSEA_LINK_NOT_FOUND
+                              ? '30%'
+                              : '100%'
+                        }}
+                      />
+                      {openseaLink !== '' ? (
+                        <></>
+                      ) : (
+                        <CircularProgress
+                          color="info"
+                          size={24}
+                          sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            marginTop: -1.5,
+                            marginLeft: -1.5
+                          }}
+                        />
+                      )}
+                    </ButtonBase>
+                  </Tooltip>
+                ) : (
+                  <></>
+                )}
+                {!(collection.collectionType === 'expandable' && contractOwner !== account) && (
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="warning"
+                    sx={{ ml: 1, px: 3, py: 1, borderRadius: 3 }}
+                    href={
+                      collection.collectionType === 'cryptopunks'
+                        ? `#/mint-cp-nft/${network.toLowerCase()}/${contract.address}`
+                        : `#/mint-nft/${network.toLowerCase()}/${contract.address}`
+                    }
+                  >
                     Mint NFT
-                  </Typography>
-                </Button>
+                  </Button>
+                )}
               </Stack>
             </Stack>
           </Box>

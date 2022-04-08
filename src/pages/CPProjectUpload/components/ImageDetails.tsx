@@ -1,11 +1,13 @@
 import { Divider, Drawer, OutlinedInput, Stack, Tooltip, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
-import { ImageCard } from '../../../@types/imagesGCS';
+import { getPublicUrlFromId } from 'utils/googleApisUtils';
+import { Image } from '../../../@types/imagesGCS';
 import { IconButtonAnimate } from '../../../components/animate';
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
 import useResponsive from '../../../hooks/useResponsive';
+import useWeb3 from '../../../hooks/useWeb3';
 import { updatePartialImage } from '../../../redux/slices/imagesGCS';
 import { useDispatch } from '../../../redux/store';
 import ImageAttachment from './ImageAttachment';
@@ -18,22 +20,23 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary
 }));
 
-// ----------------------------------------------------------------------
-
 type Props = {
-  card: ImageCard;
+  image: Image;
   isOpen: boolean;
   onClose: VoidFunction;
-  onDeleteTask: VoidFunction;
+  onDeleteImage: VoidFunction;
 };
 
-export default function ImageDetails({ card, isOpen, onClose, onDeleteTask }: Props) {
+export default function ImageDetails({ image, isOpen, onClose, onDeleteImage }: Props) {
   const dispatch = useDispatch();
+  const { account } = useWeb3();
   const isDesktop = useResponsive('up', 'sm');
 
   const nameInputRef = useRef<HTMLInputElement>(null);
 
-  const { name, imageUrl, id } = card;
+  const { name, id } = image;
+  const imageUrl = getPublicUrlFromId(`${account?.toLocaleLowerCase()}/${id}`);
+
   const [localName, setLocalName] = useState(name);
 
   const handleChangeName = (event: ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +50,7 @@ export default function ImageDetails({ card, isOpen, onClose, onDeleteTask }: Pr
   };
 
   const handleUpdateName = () => {
-    dispatch(updatePartialImage({ card: { id, name: localName } }));
+    dispatch(updatePartialImage({ image: { id, name: localName } }));
   };
 
   return (
@@ -71,7 +74,7 @@ export default function ImageDetails({ card, isOpen, onClose, onDeleteTask }: Pr
 
           <Stack direction="row" spacing={1} justifyContent="flex-end" flexGrow={1}>
             <Tooltip title="Delete task">
-              <IconButtonAnimate onClick={onDeleteTask} size="small">
+              <IconButtonAnimate onClick={onDeleteImage} size="small">
                 <Iconify icon={'eva:trash-2-outline'} width={20} height={20} />
               </IconButtonAnimate>
             </Tooltip>
@@ -106,45 +109,19 @@ export default function ImageDetails({ card, isOpen, onClose, onDeleteTask }: Pr
               <LabelStyle>Trait Name</LabelStyle>
               <Stack direction="row" flexWrap="wrap" alignItems="center">
                 <Typography variant="body2" color="text.secondary">
-                  Black
+                  {name}
                 </Typography>
               </Stack>
             </Stack>
 
-            <Stack direction="row" alignItems="center">
+            {/* <Stack direction="row" alignItems="center">
               <LabelStyle>Rarity</LabelStyle>
               <Stack direction="row" flexWrap="wrap" alignItems="center">
                 <Typography variant="body2" color="text.secondary">
                   10%
                 </Typography>
               </Stack>
-            </Stack>
-
-            <Stack direction="row" alignItems="center">
-              <LabelStyle>File name</LabelStyle>
-              <Stack direction="row" flexWrap="wrap" alignItems="center">
-                <Typography variant="body2" color="text.secondary">
-                  hihihi.jpg
-                </Typography>
-              </Stack>
-            </Stack>
-            <Stack direction="row" alignItems="center">
-              <LabelStyle>Image dimension</LabelStyle>
-              <Stack direction="row" flexWrap="wrap" alignItems="center">
-                <Typography variant="body2" color="text.secondary">
-                  200px x 200px
-                </Typography>
-              </Stack>
-            </Stack>
-
-            <Stack direction="row" alignItems="center">
-              <LabelStyle>File size</LabelStyle>
-              <Stack direction="row" flexWrap="wrap" alignItems="center">
-                <Typography variant="body2" color="text.secondary">
-                  1MB
-                </Typography>
-              </Stack>
-            </Stack>
+            </Stack> */}
 
             <Stack direction="row">
               <LabelStyle sx={{ mt: 2 }}>Image Preview</LabelStyle>

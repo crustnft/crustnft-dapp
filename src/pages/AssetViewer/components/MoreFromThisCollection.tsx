@@ -1,8 +1,9 @@
-import { Box, Button, Grid, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Icon } from '@iconify/react';
+import { Box, Button, Grid, Link, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { Contract } from 'ethers';
 import { useEffect, useState } from 'react';
-import { NftItem } from 'services/fetchCollection/getNFTList';
+import { createEmptyNFTList, NftItem } from 'services/fetchCollection/createEmptyNFTList';
 import { getDataFromTokenUri } from 'services/http';
 import {
   connectContract,
@@ -26,17 +27,7 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
   const [contract, setContract] = useState<Contract>();
   const [contractLoading, setContractLoading] = useState(true);
 
-  const emptyNftList = new Array(NB_OF_NFT_PER_ROW).fill(null).map((_, index) => ({
-    key: index.toString(),
-    failToLoad: false,
-    tokenId: '',
-    imageUrl: '',
-    name: '',
-    nftContract: '',
-    owner: '',
-    chainName: '',
-    contractAddr: ''
-  }));
+  const emptyNftList = createEmptyNFTList(NB_OF_NFT_PER_ROW);
 
   const [NftList, setNftList] = useState<NftItem[]>(emptyNftList);
   const [totalSupply, setTotalSupply] = useState(0);
@@ -158,8 +149,12 @@ function MoreFromThisCollection({ assetAndOwner }: { assetAndOwner: AssetAndOwne
     <Stack direction="column">
       {totalSupply > 1 ? (
         <>
-          <Stack>
-            <Typography variant="h3">More from this collection</Typography>
+          <Stack direction="row" alignItems="flex-end" spacing={1}>
+            <Typography variant="h4">More from this collection</Typography>
+
+            <Link href={`#/collection/${assetAndOwner.chain}/${assetAndOwner.contractAddress}/1`}>
+              <Icon icon="akar-icons:link-out" width="20px" />
+            </Link>
           </Stack>
 
           <Grid container>

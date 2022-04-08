@@ -1,4 +1,4 @@
-let contractName = 'TenkeyCollection';
+let contractName = 'NFTSmartContract';
 
 export const setContractName = (newContractName: string) => {
   newContractName && (contractName = newContractName);
@@ -24,7 +24,7 @@ contract ${contractName} is ERC721A, Ownable, ReentrancyGuard {
   mapping(address => bool) public whitelistClaimed;
 
   string public uriPrefix = '';
-  string public uriSuffix = '';
+  string public uriSuffix = '.json';
   string public hiddenMetadataUri;
 
   uint256 public cost;

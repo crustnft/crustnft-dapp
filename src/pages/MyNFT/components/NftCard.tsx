@@ -1,13 +1,11 @@
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
-import { Box, ButtonBase, Link, Paper, Stack, Typography } from '@mui/material';
+import { Box, Link, Paper, Stack, Typography } from '@mui/material';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
-import LightboxModal from 'components/LightboxModal';
-import React, { useEffect, useState } from 'react';
-import { BallClipRotateMultiple } from 'react-pure-loaders';
-// To be moved to its place
-import type { NftCardCollectionViewerProps } from '../MyNFT.types';
+import { useEffect, useState } from 'react';
+import type { NftCardCollectionViewerProps } from '../../CollectionViewer/CollectionViewer.types';
+import NFTCardSkeleton from './NFTCardSkeleton';
 
+// To be moved to its place
 export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText('#EAECEF'),
   backgroundColor: '#EAECEF',
@@ -20,172 +18,118 @@ export const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   borderRadius: '3px'
 }));
 
-interface setDisplayTokenIdType {
-  setDisplayTokenId?: React.Dispatch<React.SetStateAction<number>>;
-}
+const randomColorList = [
+  '#dbbc21',
+  '#db4021',
+  '#91db21',
+  '#21db53',
+  '#21d2db',
+  '#2153db',
+  '#b621db',
+  '#db2187'
+];
 
-function NftCard({
+export default function NftCard({
   tokenId,
   imageUrl,
   name,
   owner,
-  chainName,
   contractAddr,
-  setDisplayTokenId
-}: NftCardCollectionViewerProps & setDisplayTokenIdType) {
+  chainName
+}: NftCardCollectionViewerProps) {
   const theme = useTheme();
   const [loading, setLoading] = useState(true);
-  const [openLightbox, setOpenLightbox] = useState(false);
-
   useEffect(() => {
-    setLoading(true);
+    if (imageUrl !== '') {
+      setLoading(false);
+    }
   }, [imageUrl]);
 
-  const handleClick = (tokenId: number) => {
-    if (setDisplayTokenId !== undefined) {
-      setDisplayTokenId(tokenId);
-    }
-  };
-
-  const handleOpenLightbox = (url: string) => {
-    setOpenLightbox(true);
-  };
-
   return (
-    <Paper
-      sx={{
-        borderRadius: 2,
-        boxShadow: 'none',
-        bgcolor: 'transparent',
-        transition: 'all .2s ease-in-out',
-        '&:hover': {
-          transform: `translateY(-${theme.spacing(1 / 4)})`,
-          boxShadow: (theme) => theme.shadows['4']
-        }
-      }}
-    >
-      <Box sx={{ p: 1, position: 'relative', paddingBottom: 0 }}>
-        <Link
-          href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
-          onClick={() => {
-            handleClick(parseInt(tokenId));
+    <>
+      {loading ? (
+        <NFTCardSkeleton />
+      ) : (
+        <Paper
+          sx={{
+            boxShadow: theme.shadows['4'],
+            borderRadius: 2,
+            bgcolor: theme.palette.card.background,
+            transition: 'all .2s ease-in-out',
+            '&:hover': {
+              transform: `translateY(-${theme.spacing(1 / 4)})`,
+              boxShadow: theme.shadows['4']
+            },
+            p: 2,
+            my: 1
           }}
         >
-          <Box sx={{ borderRadius: '18px' }}>
+          <Stack direction="row" sx={{ display: 'flex', alignItems: 'baseline' }}>
             <Stack
               sx={{
-                paddingTop: '100%',
-                position: 'relative'
+                borderRadius: 5,
+                background: randomColorList[Math.floor(Math.random() * randomColorList.length)],
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
-              direction="row"
-              alignItems="center"
-              justifyContent="center"
             >
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-                sx={{
-                  display: loading ? 'flex' : 'none !important',
-                  position: 'absolute',
-                  top: 0,
-                  width: '100%',
-                  height: '100%'
-                }}
-              >
-                <BallClipRotateMultiple color={'#637381'} loading={loading} />
-              </Stack>
-
-              <Box
-                component="img"
-                src={imageUrl}
-                alt="nftcard"
-                onLoad={() => setLoading(false)}
-                sx={{
-                  top: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  display: loading ? 'none !important' : 'block !important',
-                  position: 'absolute',
-                  borderRadius: '18px'
-                }}
-              />
-            </Stack>
-          </Box>
-        </Link>
-        <LightboxModal
-          images={[imageUrl]}
-          mainSrc={imageUrl}
-          photoIndex={0}
-          setPhotoIndex={() => {}}
-          isOpen={openLightbox}
-          onCloseRequest={() => setOpenLightbox(false)}
-        />
-        {loading ? (
-          <></>
-        ) : (
-          <ButtonBase
-            sx={{
-              position: 'absolute',
-              top: '10px',
-              left: '10px',
-              p: 1,
-              borderRadius: '50%',
-              opacity: 0.5
-            }}
-            onClick={() => handleOpenLightbox(imageUrl)}
-          >
-            <FullscreenIcon />
-          </ButtonBase>
-        )}
-      </Box>
-
-      <Stack spacing={0.5} sx={{ p: 1, pb: 0 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Link
-            color="inherit"
-            underline="none"
-            href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
-            sx={{ maxWidth: '70%' }}
-          >
-            <Typography variant="subtitle2" noWrap>
-              {name}
-            </Typography>
-          </Link>
-          <ColorButton
-            variant="contained"
-            size="small"
-            disableElevation
-            disableFocusRipple
-            disableRipple
-          >
-            <Typography variant="caption" noWrap>
-              {chainName}
-            </Typography>
-          </ColorButton>
-        </Stack>
-
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Link
-            color="inherit"
-            underline="none"
-            href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}
-          >
-            <Stack direction="row" alignItems="center" spacing={0.5}>
-              <Typography variant="caption" noWrap>
-                Token ID
+              <Typography variant="caption" noWrap sx={{ px: 2, fontSize: 13 }}>
+                #{tokenId || ''}
               </Typography>
             </Stack>
-          </Link>
+            <Stack direction="row" justifyContent="flex-end" sx={{ width: '100%' }}>
+              <Typography variant="caption" noWrap sx={{ fontSize: 13 }}>
+                {chainName}
+              </Typography>
+            </Stack>
+          </Stack>
+          <Box sx={{ py: 1, position: 'relative' }}>
+            <Link href={`#/assets/${chainName.toLowerCase()}/${contractAddr}/${tokenId}`}>
+              <Box sx={{ border: 1, borderRadius: '5px', borderColor: '#DFE3E8' }}>
+                <Stack
+                  sx={{
+                    paddingTop: '100%',
+                    position: 'relative'
+                  }}
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Box
+                    component="img"
+                    src={imageUrl}
+                    onLoad={() => setLoading(false)}
+                    sx={{
+                      top: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: loading ? 'none' : 'block',
+                      position: 'absolute',
+                      borderRadius: '5px'
+                    }}
+                  />
+                </Stack>
+              </Box>
+            </Link>
+          </Box>
 
-          <Typography variant="body2" noWrap sx={{ fontSize: 13, maxWidth: '30%' }}>
-            #{tokenId || ''}
-          </Typography>
-        </Stack>
-      </Stack>
-    </Paper>
+          <Stack direction="row" sx={{ justifyContent: 'center', alignItems: 'baseline' }}>
+            <Typography variant="h6" noWrap>
+              {name}
+            </Typography>
+          </Stack>
+
+          <Stack
+            direction="row"
+            spacing={0.5}
+            sx={{ justifyContent: 'center', alignItems: 'baseline' }}
+          >
+            <Typography variant="subtitle2">0.00</Typography>
+            <Typography variant="caption">ETH</Typography>
+          </Stack>
+        </Paper>
+      )}
+    </>
   );
 }
-
-export default React.memo(NftCard);

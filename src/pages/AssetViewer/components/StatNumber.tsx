@@ -8,8 +8,8 @@ export default function StatNumber({ statType, max, value }: StatProps) {
         sx={{
           p: 1,
           borderRadius: 1,
-          backgroundColor: 'background.neural',
-          borderColor: 'header.menuText'
+          backgroundColor: 'background.neutral',
+          borderColor: '#15B2E5'
         }}
         variant="outlined"
       >

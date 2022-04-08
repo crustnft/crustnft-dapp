@@ -1,26 +1,86 @@
-import { Container, Stack } from '@mui/material';
+import { Button, Container, Stack } from '@mui/material';
+import {
+  getCollectionInfo,
+  updateCPCollection
+} from 'clients/crustnft-explore-api/nft-collections';
+import { NftCollectionDto, UpdateNftCollectionDto } from 'clients/crustnft-explore-api/types';
 import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
-import { useEffect } from 'react';
+import useAuth from 'hooks/useAuth';
+import useWeb3 from 'hooks/useWeb3';
+import { isEmpty } from 'lodash';
+import { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
 import Page from '../../components/Page';
-import { getBoard, persistCard, persistColumn } from '../../redux/slices/imagesGCS';
+import { getBoard, persistImage, persistLayer } from '../../redux/slices/imagesGCS';
 import { useDispatch, useSelector } from '../../redux/store';
-import ImagesColumn from './components/ImagesColumn';
-import ImagesColumnAdd from './components/ImagesColumnAdd';
+import ImagesLayer from './components/ImagesLayer';
+import ImagesLayerAdd from './components/ImagesLayerAdd';
+import PreviewDialog from './components/PreviewDialog';
+import ToggleButton from './components/ToggleButton';
 
 export default function CPProjectUpload() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { board } = useSelector((state) => state.image);
+  const { board, isFirstLoaded } = useSelector((state) => state.image);
+  const { accessToken, isAuthenticated } = useAuth();
+  const { signInWallet } = useWeb3();
+  const [collectionInfo, setCollectionInfo] = useState<NftCollectionDto | undefined>(undefined);
+  const [error, setError] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
+  const [collectionStatus, setCollectionStatus] = useState<string>('pending');
+  const [collectionProcessed, setCollectionProcessed] = useState<boolean>(false);
 
   useEffect(() => {
-    dispatch(getBoard());
-  }, [dispatch]);
+    if (accessToken && id) {
+      dispatch(getBoard(accessToken, id));
+    }
+  }, [dispatch, accessToken, id]);
 
+  // FIXME: workaround for the first load
   useEffect(() => {
-    console.log('board', board);
+    if (!isEmpty(board.layers) && !isEmpty(board.layerOrder) && collectionInfo) {
+      const { id, name, description } = collectionInfo;
+      const updateDto = {
+        id,
+        name,
+        description
+      };
+      updateCPCollection(
+        {
+          ...updateDto,
+          layerOrder: board.layerOrder,
+          images: Object.values(board.images),
+          layers: Object.values(board.layers)
+        } as UpdateNftCollectionDto,
+        accessToken
+      );
+    }
   }, [board]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      signInWallet();
+    }
+  }, [signInWallet]);
+
+  useEffect(() => {
+    const getCollection = async () => {
+      if (!id) return;
+      const _collectionInfo = await getCollectionInfo(accessToken, id);
+
+      if (!_collectionInfo) {
+        setError(true);
+        return;
+      }
+
+      setCollectionStatus(_collectionInfo.status);
+      setCollectionProcessed(_collectionInfo.status !== 'pending');
+      setCollectionInfo(_collectionInfo);
+    };
+
+    getCollection();
+  }, [id]);
 
   const onDragEnd = (result: DropResult) => {
     // Reorder card
@@ -32,53 +92,55 @@ export default function CPProjectUpload() {
       return;
 
     if (type === 'column') {
-      const newColumnOrder = Array.from(board.columnOrder);
-      newColumnOrder.splice(source.index, 1);
-      newColumnOrder.splice(destination.index, 0, draggableId);
+      const newLayerOrder = Array.from(board.layerOrder);
+      newLayerOrder.splice(source.index, 1);
+      newLayerOrder.splice(destination.index, 0, draggableId);
 
-      dispatch(persistColumn(newColumnOrder));
+      console.log('newLayerOrder', newLayerOrder);
+
+      dispatch(persistLayer(newLayerOrder));
       return;
     }
 
-    const start = board.columns[source.droppableId];
-    const finish = board.columns[destination.droppableId];
+    const start = board.layers[source.droppableId];
+    const finish = board.layers[destination.droppableId];
 
     if (start.id === finish.id) {
-      const updatedCardIds = [...start.cardIds];
-      updatedCardIds.splice(source.index, 1);
-      updatedCardIds.splice(destination.index, 0, draggableId);
+      const updatedImageIds = [...start.imageIds];
+      updatedImageIds.splice(source.index, 1);
+      updatedImageIds.splice(destination.index, 0, draggableId);
 
-      const updatedColumn = {
+      const updatedLayer = {
         ...start,
-        cardIds: updatedCardIds
+        imageIds: updatedImageIds
       };
 
       dispatch(
-        persistCard({
-          ...board.columns,
-          [updatedColumn.id]: updatedColumn
+        persistImage({
+          ...board.layers,
+          [updatedLayer.id]: updatedLayer
         })
       );
       return;
     }
 
-    const startCardIds = [...start.cardIds];
-    startCardIds.splice(source.index, 1);
+    const startImageIds = [...start.imageIds];
+    startImageIds.splice(source.index, 1);
     const updatedStart = {
       ...start,
-      cardIds: startCardIds
+      imageIds: startImageIds
     };
 
-    const finishCardIds = [...finish.cardIds];
-    finishCardIds.splice(destination.index, 0, draggableId);
+    const finishImageIds = [...finish.imageIds];
+    finishImageIds.splice(destination.index, 0, draggableId);
     const updatedFinish = {
       ...finish,
-      cardIds: finishCardIds
+      imageIds: finishImageIds
     };
 
     dispatch(
-      persistCard({
-        ...board.columns,
+      persistImage({
+        ...board.layers,
         [updatedStart.id]: updatedStart,
         [updatedFinish.id]: updatedFinish
       })
@@ -90,8 +152,12 @@ export default function CPProjectUpload() {
       <Container maxWidth="lg" sx={{ mt: { lg: -3 } }}>
         <HeaderBreadcrumbs
           heading="Dashboard"
+          headingLink="#/tenK-collection"
           links={[
-            { name: 'Project Name', href: `/project-details/${id}` },
+            {
+              name: collectionInfo?.name || 'Back to collection details',
+              href: `/collection-details/${id}`
+            },
             {
               name: 'Upload Image'
             }
@@ -99,7 +165,12 @@ export default function CPProjectUpload() {
         />
 
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="all-columns" direction="vertical" type="column">
+          <Droppable
+            droppableId="all-columns"
+            direction="vertical"
+            type="column"
+            isDropDisabled={collectionProcessed}
+          >
             {(provided) => (
               <Stack
                 {...provided.droppableProps}
@@ -109,16 +180,40 @@ export default function CPProjectUpload() {
                 spacing={3}
                 sx={{ height: 'calc(100% - 32px)', overflowY: 'hidden' }}
               >
-                {board.columnOrder.map((columnId, index) => (
-                  <ImagesColumn index={index} key={columnId} column={board.columns[columnId]} />
+                {board.layerOrder.map((layerId, index) => (
+                  <ImagesLayer
+                    index={index}
+                    key={layerId}
+                    layer={board.layers[layerId]}
+                    collectionProcessed={collectionProcessed}
+                  />
                 ))}
 
                 {provided.placeholder}
-                <ImagesColumnAdd />
+                {!collectionProcessed && <ImagesLayerAdd />}
               </Stack>
             )}
           </Droppable>
         </DragDropContext>
+        <Button
+          variant="contained"
+          color="info"
+          sx={{ mt: 5 }}
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          Review and generate
+        </Button>
+        <ToggleButton open={open} setOpen={setOpen} />
+        <PreviewDialog
+          open={open}
+          setOpen={setOpen}
+          name={collectionInfo?.name || ''}
+          status={collectionInfo?.status || ''}
+          collectionCid={collectionInfo?.collectionCID || ''}
+          metadataCid={collectionInfo?.metadataCID || ''}
+        />
       </Container>
     </Page>
   );

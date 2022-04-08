@@ -11,6 +11,11 @@ export function getChainByNetworkName(chain: string): Chain | undefined {
   return chainObj || undefined;
 }
 
+export function getChainIdByNetworkName(chain: string): number | undefined {
+  const chainObj = SUPPORTED_CHAINS.find((c) => c.name.toLowerCase() === chain.toLowerCase());
+  return chainObj?.chainId || undefined;
+}
+
 export function getRpcUrlByChainId(chainId: number): string {
   const chainObj = SUPPORTED_CHAINS.find((c) => c.chainId === chainId);
   return chainObj?.rpcUrl || '';
@@ -23,4 +28,9 @@ export function getChainByChainId(chainId: number): Chain | undefined {
 export function getChainNameByChainId(chainId: number): string {
   const chainObj = getChainByChainId(chainId);
   return chainObj?.name || '';
+}
+
+export function getCollectionUrlByChainId(chainId: number, address: string): string {
+  const chainObj = getChainByChainId(chainId);
+  return chainObj ? chainObj.blockExplorerUrl + '/address/' + address : '';
 }
