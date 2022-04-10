@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import { uploadImage } from 'clients/crustnft-explore-api/medias';
 import useAuth from 'hooks/useAuth';
 import useWeb3 from 'hooks/useWeb3';
+import { useSnackbar } from 'notistack';
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Image as ImageType } from '../../../@types/imagesGCS';
@@ -30,6 +31,8 @@ type UploadFileProps = {
 export default function ImagesAdd({ onAddImage, onCloseAddImage }: UploadFileProps) {
   const { accessToken } = useAuth();
   const { account } = useWeb3();
+  const { enqueueSnackbar } = useSnackbar();
+
   const handleAddImage = async (file: File) => {
     try {
       if (!account) return;
@@ -40,8 +43,9 @@ export default function ImagesAdd({ onAddImage, onCloseAddImage }: UploadFilePro
         name: file.name.split('.').slice(0, -1).join('.'),
         id: imageId
       });
-    } catch (e) {
-      console.log('Error uploading image to GCS', e);
+    } catch (error) {
+      console.log('Error uploading image to GCS', error);
+      enqueueSnackbar((error as any).message, { variant: 'error' });
     }
   };
 
