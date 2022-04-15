@@ -173,6 +173,10 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
   const deactivate = useCallback(() => {
     setPending(true);
     logOutAuth();
+    if (library) {
+      library.removeAllListeners();
+    }
+
     web3Modal.clearCachedProvider();
     refreshState();
     setPending(false);
@@ -253,8 +257,11 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     if (library && account) {
       const signingMessage = await challengeLogin(account);
       if (!signingMessage) return;
-      const signer = library.getSigner(account);
-      const signature = await signer.signMessage(signingMessage);
+      const signature = await (library as any).provider.request({
+        method: 'personal_sign',
+        params: [signingMessage, account]
+      });
+
       loginAuth(account, signature);
     }
   }, [account, library, challengeLogin, loginAuth]);
