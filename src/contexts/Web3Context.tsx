@@ -51,21 +51,37 @@ export const toHex = (num: number) => {
 };
 
 export const networkParams: any = {
-  '0x63564c40': {
-    chainId: '0x63564c40',
-    rpcUrls: ['https://api.harmony.one'],
-    chainName: 'Harmony Mainnet',
-    nativeCurrency: { name: 'ONE', decimals: 18, symbol: 'ONE' },
-    blockExplorerUrls: ['https://explorer.harmony.one'],
+  '0x1': {
+    chainId: '0x1',
+    rpcUrls: ['https://mainnet.infura.io/v3/741c5f1257a24106934fe4105c784478'],
+    chainName: 'Ethereum',
+    nativeCurrency: { name: 'ETH', decimals: 18, symbol: 'ETH' },
+    blockExplorerUrls: ['https://etherscan.io'],
     iconUrls: ['https://harmonynews.one/wp-content/uploads/2019/11/slfdjs.png']
   },
-  '0xa4ec': {
-    chainId: '0xa4ec',
-    rpcUrls: ['https://forno.celo.org'],
-    chainName: 'Celo Mainnet',
-    nativeCurrency: { name: 'CELO', decimals: 18, symbol: 'CELO' },
-    blockExplorerUrl: ['https://explorer.celo.org'],
-    iconUrls: ['https://celo.org/images/marketplace-icons/icon-celo-CELO-color-f.svg']
+  '0x4': {
+    chainId: '0x4',
+    rpcUrls: ['https://mainnet.infura.io/v3/741c5f1257a24106934fe4105c784478'],
+    chainName: 'Rinkeby',
+    nativeCurrency: { name: 'RIN', decimals: 18, symbol: 'RIN' },
+    blockExplorerUrls: ['https://rinkeby.etherscan.io'],
+    iconUrls: ['https://harmonynews.one/wp-content/uploads/2019/11/slfdjs.png']
+  },
+  '0x61': {
+    chainId: '0x61',
+    rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
+    chainName: 'TBSC',
+    nativeCurrency: { name: 'tBNB', decimals: 18, symbol: 'tBNB' },
+    blockExplorerUrls: ['https://testnet.bscscan.com'],
+    iconUrls: ['https://harmonynews.one/wp-content/uploads/2019/11/slfdjs.png']
+  },
+  '0x89': {
+    chainId: '0x89',
+    rpcUrls: ['https://polygonscan.com'],
+    chainName: 'Polygon',
+    nativeCurrency: { name: 'MATIC', decimals: 18, symbol: 'MATIC' },
+    blockExplorerUrls: ['https://polygon-rpc.com/'],
+    iconUrls: ['https://harmonynews.one/wp-content/uploads/2019/11/slfdjs.png']
   }
 };
 
@@ -173,9 +189,6 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
   const deactivate = useCallback(() => {
     setPending(true);
     logOutAuth();
-    if (library) {
-      library.removeAllListeners();
-    }
 
     web3Modal.clearCachedProvider();
     refreshState();
