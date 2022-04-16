@@ -13,7 +13,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint --ext .ts,.tsx ./src",
     "lint:fix": "eslint --fix --ext .ts,.tsx ./src",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "postbuild": "node scripts/generate-info.js"
   },
   "engines": {
     "npm": ">=8.0.0",
