@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
+    "build": "react-scripts build",
     "build:prod": "env-cmd -f ./.env.prod npm run-script build",
     "build:stage": "env-cmd -f ./.env.stage npm run-script build",
     "test": "react-scripts test",
