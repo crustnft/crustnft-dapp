@@ -6,3 +6,4 @@ src/reportWebVitals.ts
 src/service-worker.ts
 src/serviceWorkerRegistration.ts
 src/setupTests.ts
+scripts/generate-info.js
