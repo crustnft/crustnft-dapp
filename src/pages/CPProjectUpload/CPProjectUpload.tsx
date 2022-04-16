@@ -24,7 +24,7 @@ export default function CPProjectUpload() {
   const dispatch = useDispatch();
   const { board, isFirstLoaded } = useSelector((state) => state.image);
   const { accessToken, isAuthenticated } = useAuth();
-  const { signInWallet } = useWeb3();
+  const { signInWallet, pending } = useWeb3();
   const [collectionInfo, setCollectionInfo] = useState<NftCollectionDto | undefined>(undefined);
   const [error, setError] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
@@ -59,10 +59,10 @@ export default function CPProjectUpload() {
   }, [board]);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !pending) {
       signInWallet();
     }
-  }, [signInWallet]);
+  }, [isAuthenticated, signInWallet, pending]);
 
   useEffect(() => {
     const getCollection = async () => {

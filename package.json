@@ -6,9 +6,7 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "buildDev": "CI=false GENERATE_SOURCEMAP=false REACT_APP_SUPPORT_TESTNET=true react-scripts build",
-    "build": "CI=false GENERATE_SOURCEMAP=false react-scripts build",
-    "buildTestnet": "CI=false GENERATE_SOURCEMAP=false REACT_APP_SUPPORT_TESTNET=true react-scripts build",
+    "build": "react-scripts build",
     "build:prod": "env-cmd -f ./.env.prod npm run-script build",
     "build:stage": "env-cmd -f ./.env.stage npm run-script build",
     "test": "react-scripts test",

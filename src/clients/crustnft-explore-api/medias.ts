@@ -20,7 +20,11 @@ export const generateMedia = async (accessToken: string, fileId: string, content
   return response?.data?.data;
 };
 
+const MAX_FILE_SIZE = 20 * 1024 * 1024;
 export const uploadImage = async (accessToken: string, fileId: string, file: File) => {
+  if (file.size > MAX_FILE_SIZE) {
+    throw new Error('Limit file upload is 20MB');
+  }
   try {
     const signedUrl = await generateMedia(accessToken, fileId, file.type);
 

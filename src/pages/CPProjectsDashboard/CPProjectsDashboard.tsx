@@ -13,7 +13,7 @@ export const CPProjectsContext = createContext(initProjects);
 
 export default function CPProjectsDashboard() {
   const { isAuthenticated, accessToken } = useAuth();
-  const { signInWallet } = useWeb3();
+  const { signInWallet, pending } = useWeb3();
 
   const [projectsInfo, setProjectsInfo] = useState<NftCollectionDto[]>([]);
 
@@ -29,10 +29,10 @@ export default function CPProjectsDashboard() {
   }, [isAuthenticated, accessToken, getProjects]);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !pending) {
       signInWallet();
     }
-  }, [signInWallet]);
+  }, [isAuthenticated, signInWallet, pending]);
 
   return (
     <Page title="Crypto Punks Collection">

@@ -14,7 +14,7 @@ import UploadStep from './components/UploadStep';
 export default function CPProjectDetails() {
   const { id } = useParams();
   const { accessToken, isAuthenticated } = useAuth();
-  const { signInWallet } = useWeb3();
+  const { signInWallet, pending } = useWeb3();
   const [error, setError] = useState<boolean>(false);
   const [collectionInfo, setCollectionInfo] = useState<any>();
   const [maxNft, setMaxNft] = useState(0);
@@ -45,10 +45,10 @@ export default function CPProjectDetails() {
   }, [id]);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !pending) {
       signInWallet();
     }
-  }, [signInWallet]);
+  }, [isAuthenticated, signInWallet, pending]);
 
   return (
     <Page title="Crypto Punks Projects">
