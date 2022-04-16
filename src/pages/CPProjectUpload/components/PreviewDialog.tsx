@@ -19,7 +19,7 @@ import { useParams } from 'react-router-dom';
 import { getPublicUrlFromId } from 'utils/googleApisUtils';
 import useWeb3 from '../../../hooks/useWeb3';
 import { useSelector } from '../../../redux/store';
-import { normalizeAndMergeImages } from '../service';
+import mergeImages from 'merge-images';
 
 export default function PreviewDialog({
   open,
@@ -66,8 +66,12 @@ export default function PreviewDialog({
     setMaxNft(_maxNft);
     setNbPhoto(_nbPhoto);
     if (images.length > 0) {
-      const randomImage = await normalizeAndMergeImages(images);
-      setImage(randomImage);
+      const mergedImage = await mergeImages(images, {
+        crossOrigin: 'anonymous',
+        width: 800,
+        height: 600
+      });
+      setImage(mergedImage);
     }
     setLoading(false);
   };
@@ -76,6 +80,7 @@ export default function PreviewDialog({
     if (open) {
       getRandomImage();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   return (
