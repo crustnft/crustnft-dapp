@@ -9,7 +9,6 @@ export type CreateContractDto = {
 
 export type GenerateNftCollectionDto = {
   id: string;
-  composingBatchSize: number;
   collectionSize: number;
 };
 export interface Image {
