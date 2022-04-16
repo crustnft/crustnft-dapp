@@ -11,16 +11,17 @@ import ProjectCardEmpty from './components/ProjectCardEmpty';
 const initProjects = { getProjects: () => {} };
 export const CPProjectsContext = createContext(initProjects);
 
-export default function CPProjectsDashboard() {
+export default function CollectionDashboard() {
   const { isAuthenticated, accessToken } = useAuth();
   const { signInWallet, pending } = useWeb3();
 
-  const [projectsInfo, setProjectsInfo] = useState<NftCollectionDto[]>([]);
+  const [tenKCollectionsInfo, setTenKCollectionsInfo] = useState<NftCollectionDto[]>([]);
+  const [expandableCollectionsInfo, setExpandableCollectionsInfo] = useState<any[]>([]);
 
   const getProjects = useCallback(async () => {
     const collections = await getCollections(accessToken);
     if (!collections) return;
-    setProjectsInfo(collections);
+    setTenKCollectionsInfo(collections);
   }, []);
 
   useEffect(() => {
@@ -40,19 +41,19 @@ export default function CPProjectsDashboard() {
         <CPProjectsContext.Provider value={{ getProjects }}>
           <Stack>
             <Typography variant="h5" sx={{ color: 'text.primary' }}>
-              COLLECTIONS
+              CRYPTOPUNK COLLECTIONS
             </Typography>
 
             <Typography
               sx={{ color: 'text.secondary', display: isAuthenticated ? 'none' : 'block' }}
             >
               This version is reserved for wallet with beta access. You can connect and sign with
-              the registered wallet to see your tenK collections.
+              the registered wallet to see your collections.
             </Typography>
           </Stack>
 
           <Grid container sx={{ pt: 2, display: isAuthenticated ? 'flex' : 'none' }} spacing={2}>
-            {projectsInfo.map((project) => (
+            {tenKCollectionsInfo.map((project) => (
               <Grid key={project.id} item xs={12} sm={6} md={4} lg={3}>
                 <ProjectCard project={project} />
               </Grid>

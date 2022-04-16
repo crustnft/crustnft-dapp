@@ -1,6 +1,6 @@
 import { Box, Button, Card, Divider, Link, Stack, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
-import { TProject } from '../CPProjectsDashboard.type';
+import { TProject } from '../CollectionsDashboard.type';
 
 type ProjectCardProps = { project: TProject };
 

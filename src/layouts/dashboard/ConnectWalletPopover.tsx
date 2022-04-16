@@ -175,13 +175,13 @@ const ConnectWalletPopover = () => {
 
         <Stack>
           <List sx={{ color: 'text.secondary' }}>
-            <Link href="#/tenK-collection" color="text.secondary">
+            <Link href="#/my-collections" color="text.secondary">
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
                     <Iconify icon="fa6-regular:image" />
                   </ListItemIcon>
-                  <ListItemText primary="TenK Collections" />
+                  <ListItemText primary="My Collections" />
                 </ListItemButton>
               </ListItem>
             </Link>

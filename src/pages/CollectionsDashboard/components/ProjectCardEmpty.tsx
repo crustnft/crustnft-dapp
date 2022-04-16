@@ -9,7 +9,7 @@ import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { FormProvider } from '../../../components/hook-form';
-import { CPProjectsContext } from '../CPProjectsDashboard';
+import { CPProjectsContext } from '../CollectionsDashboard';
 import TextField from './TextField';
 
 type FormValues = {

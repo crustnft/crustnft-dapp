@@ -44,9 +44,10 @@ export default function Router() {
         { path: 'wallet', element: <MyNFT /> },
         { path: 'create-expandable-collection', element: <CreateCollection /> },
         { path: 'mint-nft/:chain/:contractAddr', element: <MintNft /> },
+        { path: 'mint-exp-nft', element: <MintExpNft /> },
         { path: 'collection-explore', element: <CollectionsExplorer /> },
         { path: 'collection/:chain/:contractAddr/:pageNb', element: <CollectionViewer /> },
-        { path: 'tenK-collection', element: <CPProjectsDashboard /> },
+        { path: 'my-collections', element: <CollectionsDashboard /> },
         { path: 'collection-details/:id', element: <CPProjectDetails /> },
         { path: 'collection-upload/:id', element: <CPProjectUpload /> },
         { path: 'create-collection', element: <IntroCreateCollection /> },
@@ -106,7 +107,10 @@ const CreateCollection = LoadWithoutSpinner(lazy(() => import('../pages/CreateCo
 const MyNFT = LoadWithoutSpinner(lazy(() => import('../pages/MyNFT')));
 const CollectionViewer = LoadWithoutSpinner(lazy(() => import('../pages/CollectionViewer')));
 const MintNft = LoadWithoutSpinner(lazy(() => import('../pages/MintNft')));
-const CPProjectsDashboard = LoadWithoutSpinner(lazy(() => import('../pages/CPProjectsDashboard')));
+const MintExpNft = LoadWithoutSpinner(lazy(() => import('../pages/MintExpNft')));
+const CollectionsDashboard = LoadWithoutSpinner(
+  lazy(() => import('../pages/CollectionsDashboard'))
+);
 const CPProjectDetails = LoadWithoutSpinner(lazy(() => import('../pages/CPProjectDetails')));
 const CPProjectUpload = LoadWithoutSpinner(lazy(() => import('../pages/CPProjectUpload')));
 const IntroCreateCollection = LoadWithoutSpinner(
