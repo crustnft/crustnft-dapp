@@ -7,13 +7,14 @@ import CallAction from './components/CallAction';
 import MyCollections from './components/MyCollections';
 
 export default function MyNFT() {
-  const { signInWallet, active } = useWeb3();
+  const { signInWallet, active, pending } = useWeb3();
   const { isAuthenticated } = useAuth();
+
   useEffect(() => {
-    if (!isAuthenticated && active) {
+    if (!isAuthenticated && !pending) {
       signInWallet();
     }
-  }, [isAuthenticated, signInWallet, active]);
+  }, [isAuthenticated, signInWallet, pending]);
   return (
     <Page title="My NFTs">
       <Container maxWidth="lg">

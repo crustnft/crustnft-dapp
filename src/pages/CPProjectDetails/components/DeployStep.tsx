@@ -55,7 +55,7 @@ export default function DeployStep({
 }) {
   const [openDeploySm, setOpenDeploySm] = useState(false);
   const [openConfigSm, setOpenConfigSm] = useState(false);
-  const { signInWallet } = useWeb3();
+  const { signInWallet, pending } = useWeb3();
   const { isAuthenticated } = useAuth();
 
   const method = useForm<FormSmartContractConfig>({
@@ -66,10 +66,10 @@ export default function DeployStep({
   const [startedCreation, setStartedCreation] = useState(false);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !pending) {
       signInWallet();
     }
-  }, [isAuthenticated, signInWallet]);
+  }, [isAuthenticated, signInWallet, pending]);
 
   useEffect(() => {
     const { setValue } = method;

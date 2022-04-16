@@ -30,7 +30,6 @@ type Web3ContextProps = {
   pending: boolean;
   connectedChain: Chain | null;
   connectedChainId: number | null;
-  connectWalletConnect: () => void;
   balance: number;
   providerInfo: IProviderInfo | undefined;
   networkNotSupported: boolean;
@@ -95,7 +94,6 @@ const initialContext: Web3ContextProps = {
   pending: false,
   connectedChain: null,
   connectedChainId: null,
-  connectWalletConnect: () => {},
   balance: 0,
   providerInfo: undefined,
   networkNotSupported: false,
@@ -145,11 +143,6 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     []
   );
 
-  const connectWalletConnect = async () => {
-    const provider = await web3Modal.connectTo('walletconnect');
-    console.log(provider);
-  };
-
   const activate = useCallback(async () => {
     try {
       setPending(true);
@@ -162,6 +155,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
       if (accounts) setAccount(accounts[0]);
       setConnectedChainId(network.chainId);
       setActive(true);
+      setPending(false);
     } catch (error) {
       // setError(error);
     }
@@ -184,17 +178,27 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     }
   }, [library, account, connectedChainId]);
 
-  const refreshState = () => {};
+  const refreshState = () => {
+    setProvider(undefined);
+    setLibrary(undefined);
+    setActive(false);
+  };
 
-  const deactivate = useCallback(() => {
+  const deactivate = useCallback(async () => {
     setPending(true);
-    logOutAuth();
+    setAccount(undefined);
+
+    await logOutAuth();
+
+    if (provider?.disconnect && typeof provider.disconnect === 'function') {
+      await provider.disconnect();
+    }
 
     web3Modal.clearCachedProvider();
+
     refreshState();
+
     setPending(false);
-    setActive(false);
-    setAccount(undefined);
   }, [web3Modal, logOutAuth]);
 
   useEffect(() => {
@@ -291,7 +295,6 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
         pending,
         connectedChain,
         connectedChainId,
-        connectWalletConnect,
         balance,
         providerInfo,
         networkNotSupported,
