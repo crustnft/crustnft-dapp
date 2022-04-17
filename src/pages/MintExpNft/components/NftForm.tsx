@@ -7,13 +7,11 @@ import { getContractsByAccount } from 'clients/crustnft-explore-api/contracts';
 import { AUTH_HEADER, IPFS_GATEWAY } from 'constants/ipfsGateways';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useAuth from 'hooks/useAuth';
-import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
 import { create } from 'ipfs-http-client';
 import { useSnackbar } from 'notistack';
 import { createContext, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 import { connectRWContract } from 'services/smartContract/evmCompatible';
 import { pinW3Crust } from 'services/w3AuthIpfs';
 import * as Yup from 'yup';
@@ -81,17 +79,16 @@ type FormValues = {
 };
 
 export default function NftForm() {
-  const { chain, contractAddr } = useParams();
   const { accessToken } = useAuth();
   const [collections, setCollections] = useState<any[]>([]);
 
   const { enqueueSnackbar } = useSnackbar();
-  const { chain: selectedChain } = useWallet();
 
   const { account, library } = useWeb3();
   const [mintingState, setMintingState] = useState<'notstarted' | 'success' | 'error'>(
     'notstarted'
   );
+  const [contractAddr, setContractAddr] = useState('');
 
   const [openDialogProperties, setOpenDialogProperties] = useState(false);
   const [openDialogLevels, setOpenDialogLevels] = useState(false);
@@ -173,7 +170,6 @@ export default function NftForm() {
           authorization: 'Basic ' + authHeader
         }
       });
-      console.log('start pin w3');
       const reader = new FileReader();
       reader.onabort = () => reject('file reading was aborted');
       reader.onerror = () => reject('file reading has failed');
@@ -184,7 +180,6 @@ export default function NftForm() {
         if (!added) {
           reject('unable to upload file');
         } else {
-          console.log(added.cid.toV0().toString());
           resolve({
             cid: added.cid.toV0().toString(),
             name: file.name || '',
@@ -306,16 +301,28 @@ export default function NftForm() {
             setMintingNft(true);
             const signer = library?.getSigner(account);
             if (signer) {
-              const contract = connectRWContract(contractAddr || '', SIMPLIFIED_ERC721_ABI, signer);
-              const tx: TransactionResponse = await contract.mint(`ipfs://${newMetadataCid}`);
-              setTxHash(tx.hash);
-              const txReceipt: TransactionReceipt = await tx.wait(1);
-              setTxHash(txReceipt.transactionHash);
+              try {
+                const contract = connectRWContract(
+                  contractAddr || '',
+                  SIMPLIFIED_ERC721_ABI,
+                  signer
+                );
+                const tx: TransactionResponse = await contract.mint(`ipfs://${newMetadataCid}`);
+                setTxHash(tx.hash);
+                const txReceipt: TransactionReceipt = await tx.wait(1);
+                setTxHash(txReceipt.transactionHash);
+              } catch (e: any) {
+                if (e.reason === 'repriced') {
+                  setTxHash(e.receipt.transactionHash);
+                } else {
+                  throw new Error(e);
+                }
+              }
               setMintingNft(false);
               setMintNftSuccess(true);
+              enqueueSnackbar('Create success!');
+              setMintingState('success');
             }
-            enqueueSnackbar('Create success!');
-            setMintingState('success');
           } catch {
             setMintingNft(false);
             setMintNftSuccess(false);
@@ -572,7 +579,14 @@ export default function NftForm() {
                 </Button>
               </Grid>
               {collections.map((collection) => (
-                <Grid item xs={3} key={collection.id}>
+                <Grid
+                  item
+                  xs={3}
+                  key={collection.id}
+                  onClick={() => {
+                    setContractAddr(collection.contractAddress);
+                  }}
+                >
                   <CollectionInfo
                     contractAddr={collection.contractAddress}
                     chainId={collection.chainId}
