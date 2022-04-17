@@ -296,16 +296,28 @@ export default function NftForm() {
             setMintingNft(true);
             const signer = library?.getSigner(account);
             if (signer) {
-              const contract = connectRWContract(contractAddr || '', SIMPLIFIED_ERC721_ABI, signer);
-              const tx: TransactionResponse = await contract.mint(`ipfs://${newMetadataCid}`);
-              setTxHash(tx.hash);
-              const txReceipt: TransactionReceipt = await tx.wait(1);
-              setTxHash(txReceipt.transactionHash);
+              try {
+                const contract = connectRWContract(
+                  contractAddr || '',
+                  SIMPLIFIED_ERC721_ABI,
+                  signer
+                );
+                const tx: TransactionResponse = await contract.mint(`ipfs://${newMetadataCid}`);
+                setTxHash(tx.hash);
+                const txReceipt: TransactionReceipt = await tx.wait(1);
+                setTxHash(txReceipt.transactionHash);
+              } catch (e: any) {
+                if (e.reason === 'repriced') {
+                  setTxHash(e.receipt.transactionHash);
+                } else {
+                  throw new Error(e);
+                }
+              }
               setMintingNft(false);
               setMintNftSuccess(true);
+              enqueueSnackbar('Create success!');
+              setMintingState('success');
             }
-            enqueueSnackbar('Create success!');
-            setMintingState('success');
           } catch {
             setMintingNft(false);
             setMintNftSuccess(false);
