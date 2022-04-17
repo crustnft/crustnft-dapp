@@ -3,8 +3,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Icon } from '@iconify/react';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, Card, Grid, Stack, Typography } from '@mui/material';
+import { getContractsByAccount } from 'clients/crustnft-explore-api/contracts';
 import { AUTH_HEADER, IPFS_GATEWAY } from 'constants/ipfsGateways';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
+import useAuth from 'hooks/useAuth';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
 import { create } from 'ipfs-http-client';
@@ -21,6 +23,7 @@ import { fData } from '../../../utils/formatNumber';
 import type { BoostProps, LevelProps, PropertyProps, StatProps } from '../MintNft.types';
 import Property from './/Property';
 import CircularBoost from './CircularBoost';
+import CollectionInfo from './CollectionInfo';
 import LevelProgress from './LevelProgress';
 import NewBoostsDialog from './NewBoostsDialog';
 import NewLevelsDialog from './NewLevelsDialog';
@@ -79,10 +82,11 @@ type FormValues = {
 
 export default function NftForm() {
   const { chain, contractAddr } = useParams();
+  const { accessToken } = useAuth();
+  const [collections, setCollections] = useState<any[]>([]);
 
   const { enqueueSnackbar } = useSnackbar();
   const { chain: selectedChain } = useWallet();
-  const [isNetworkCorrect, setIsNetworkCorrect] = useState(true);
 
   const { account, library } = useWeb3();
   const [mintingState, setMintingState] = useState<'notstarted' | 'success' | 'error'>(
@@ -145,12 +149,17 @@ export default function NftForm() {
   const { name, description, externalLink, avatar, properties, levels, stats, boosts } = watch();
 
   useEffect(() => {
-    if (selectedChain?.name?.toLowerCase() === chain?.toLowerCase()) {
-      setIsNetworkCorrect(true);
-    } else {
-      setIsNetworkCorrect(false);
+    if (account && accessToken) {
+      getContractsByAccount(accessToken, 50, account.toLowerCase()).then((res) => {
+        console.log(
+          res.data?.data?.filter((collection: any) => collection.collectionType === 'expandable')
+        );
+        setCollections(
+          res.data?.data?.filter((collection: any) => collection.collectionType === 'expandable')
+        );
+      });
     }
-  }, [selectedChain, chain]);
+  }, [account, accessToken]);
 
   function uploadFileToW3AuthGateway(
     ipfsGateway: string,
@@ -548,9 +557,13 @@ export default function NftForm() {
             </Stack>
 
             <Typography variant="subtitle1">Choose Collection</Typography>
-            <Grid container sx={{ mt: 1 }}>
-              <Grid item xs={2}>
-                <Button variant="outlined" sx={{ borderColor: '#15B2E5', p: 2 }} fullWidth>
+            <Grid container sx={{ mt: 1 }} spacing={1}>
+              <Grid item xs={3}>
+                <Button
+                  variant="outlined"
+                  sx={{ borderColor: '#15B2E5', p: 2, aspectRatio: '1/1' }}
+                  fullWidth
+                >
                   <Stack alignItems="center">
                     <Icon icon="fluent:add-circle-16-filled" width="32" />
                     <Typography variant="subtitle1">Create</Typography>
@@ -558,6 +571,14 @@ export default function NftForm() {
                   </Stack>
                 </Button>
               </Grid>
+              {collections.map((collection) => (
+                <Grid item xs={3} key={collection.id}>
+                  <CollectionInfo
+                    contractAddr={collection.contractAddress}
+                    chainId={collection.chainId}
+                  />
+                </Grid>
+              ))}
             </Grid>
 
             <NftCreationStatusContext.Provider

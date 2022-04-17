@@ -13,7 +13,7 @@ export default function MyCollections() {
 
   useEffect(() => {
     if (account && accessToken) {
-      getContractsByAccount(accessToken, 10, account.toLowerCase()).then((res) => {
+      getContractsByAccount(accessToken, 50, account.toLowerCase()).then((res) => {
         setCollections(res.data?.data);
         setNbOfContractCreated(res.data?.data?.length || 0);
       });
