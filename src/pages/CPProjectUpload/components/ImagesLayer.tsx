@@ -1,5 +1,4 @@
-import { Paper, Stack } from '@mui/material';
-import ScrollBar from 'components/Scrollbar';
+import { Box, Paper, Stack } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
@@ -66,8 +65,9 @@ export default function ImagesLayer({ layer, index, collectionProcessed }: Props
               onDelete={handleDeleteLayer}
               onUpdate={handleUpdateLayer}
             />
-            <ScrollBar>
-              <Stack direction="row" spacing={2}>
+
+            <Box sx={{ overflowX: 'auto' }}>
+              <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
                 {imageIds.length !== 0 && (
                   <Droppable
                     droppableId={id}
@@ -102,7 +102,7 @@ export default function ImagesLayer({ layer, index, collectionProcessed }: Props
                   </Stack>
                 )}
               </Stack>
-            </ScrollBar>
+            </Box>
           </Stack>
         </Paper>
       )}
