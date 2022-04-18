@@ -152,7 +152,7 @@ export default function CPProjectUpload() {
       <Container maxWidth="lg" sx={{ mt: { lg: -3 } }}>
         <HeaderBreadcrumbs
           heading="Dashboard"
-          headingLink="#/tenK-collection"
+          headingLink="#/my-collections"
           links={[
             {
               name: collectionInfo?.name || 'Back to collection details',
