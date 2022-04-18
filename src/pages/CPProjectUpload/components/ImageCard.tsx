@@ -1,6 +1,6 @@
 import { Box, Input, Paper } from '@mui/material';
 import { UPLOAD_IMAGE_PUBLIC_BUCKET } from 'constants/gcpApis';
-import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Image as ImageType } from '../../../@types/imagesGCS';
 import Image from '../../../components/Image';
@@ -33,6 +33,11 @@ export default function ImageCard({ image, onDeleteImage, index }: Props) {
 
   const nameInputRef = useRef<HTMLInputElement>(null);
   const [localName, setLocalName] = useState(name);
+
+  useEffect(() => {
+    setLocalName(name);
+  }, [name]);
+
   const handleChangeName = (event: ChangeEvent<HTMLInputElement>) => {
     setLocalName(event.target.value);
   };

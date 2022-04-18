@@ -1,6 +1,6 @@
 import { Divider, Drawer, OutlinedInput, Stack, Tooltip, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { getPublicUrlFromId } from 'utils/googleApisUtils';
 import { Image } from '../../../@types/imagesGCS';
 import { IconButtonAnimate } from '../../../components/animate';
@@ -38,6 +38,10 @@ export default function ImageDetails({ image, isOpen, onClose, onDeleteImage }: 
   const imageUrl = getPublicUrlFromId(`${account?.toLocaleLowerCase()}/${id}`);
 
   const [localName, setLocalName] = useState(name);
+
+  useEffect(() => {
+    setLocalName(name);
+  }, [name]);
 
   const handleChangeName = (event: ChangeEvent<HTMLInputElement>) => {
     setLocalName(event.target.value);
