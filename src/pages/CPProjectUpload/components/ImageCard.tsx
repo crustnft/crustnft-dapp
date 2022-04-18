@@ -1,10 +1,12 @@
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Input, Paper } from '@mui/material';
 import { UPLOAD_IMAGE_PUBLIC_BUCKET } from 'constants/gcpApis';
-import { useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Image as ImageType } from '../../../@types/imagesGCS';
 import Image from '../../../components/Image';
 import useWeb3 from '../../../hooks/useWeb3';
+import { updatePartialImage } from '../../../redux/slices/imagesGCS';
+import { useDispatch } from '../../../redux/store';
 import ImageDetails from './ImageDetails';
 
 type Props = {
@@ -14,6 +16,7 @@ type Props = {
 };
 
 export default function ImageCard({ image, onDeleteImage, index }: Props) {
+  const dispatch = useDispatch();
   const { account } = useWeb3();
   const { name, id } = image;
 
@@ -28,6 +31,22 @@ export default function ImageCard({ image, onDeleteImage, index }: Props) {
     setOpenDetails(false);
   };
 
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const [localName, setLocalName] = useState(name);
+  const handleChangeName = (event: ChangeEvent<HTMLInputElement>) => {
+    setLocalName(event.target.value);
+  };
+
+  const handleKeyUpNameInput = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && nameInputRef.current) {
+      nameInputRef.current.blur();
+    }
+  };
+
+  const handleUpdateName = () => {
+    dispatch(updatePartialImage({ image: { id, name: localName } }));
+  };
+
   return (
     <Draggable draggableId={image.id} index={index}>
       {(provided) => (
@@ -35,41 +54,40 @@ export default function ImageCard({ image, onDeleteImage, index }: Props) {
           <Paper
             sx={{
               position: 'relative',
-              boxShadow: (theme) => theme.customShadows.z1,
               '&:hover': {
                 boxShadow: (theme) => theme.customShadows.z16
               }
             }}
           >
-            <Box onClick={handleOpenDetails} sx={{ cursor: 'pointer' }}>
+            <Box>
               <Box
                 sx={{
                   borderRadius: 1,
                   overflow: 'hidden',
                   position: 'relative',
+                  cursor: 'pointer',
                   transition: (theme) =>
                     theme.transitions.create('opacity', {
                       duration: theme.transitions.duration.shortest
                     })
                 }}
+                onClick={handleOpenDetails}
               >
                 <Image src={imageUrl} sx={{ width: '200px', height: '200px' }} />
               </Box>
-
-              <Typography
-                noWrap
-                variant="subtitle2"
+              <Input
+                size="small"
                 sx={{
-                  py: 2,
-                  maxWidth: '200px',
-                  transition: (theme) =>
-                    theme.transitions.create('opacity', {
-                      duration: theme.transitions.duration.shortest
-                    })
+                  px: 1,
+                  typography: 'subtitle2'
                 }}
-              >
-                {name}
-              </Typography>
+                disableUnderline
+                inputRef={nameInputRef}
+                onChange={handleChangeName}
+                onKeyUp={handleKeyUpNameInput}
+                onBlur={handleUpdateName}
+                value={localName}
+              />
             </Box>
           </Paper>
 
