@@ -18,11 +18,7 @@ import useWeb3 from 'hooks/useWeb3';
 import { Chain } from 'interfaces/chain';
 import { useEffect, useMemo, useState } from 'react';
 import { createEmptyNFTList, NftItem } from 'services/fetchCollection/createEmptyNFTList';
-import {
-  ALLOWED_CHAIN_NAME_FOR_OPENSEA,
-  getCollectionUrlOpensea,
-  OPENSEA_LINK_NOT_FOUND
-} from 'services/fetchCollection/getCollectionUrlOpensea';
+import { getCollectionUrlOpensea } from 'services/fetchCollection/getCollectionUrlOpensea';
 import { getNftList4CollectionCard } from 'services/fetchCollection/getNFTList';
 import {
   connectContract,
@@ -107,7 +103,7 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   useEffect(() => {
     let isSubscribed = true;
     const fetchOpenseaLink = async () => {
-      const _openseaLink = await getCollectionUrlOpensea(network, contractOwner, contract.address);
+      const _openseaLink = await getCollectionUrlOpensea(network, contractAddress);
       if (!_openseaLink) return;
       if (isSubscribed) {
         setOpenseaLink(_openseaLink);
@@ -272,23 +268,13 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
                     <Box component="img" src={chain?.icon || ''} className={classes.internalIcon} />
                   </ButtonBase>
                 </Tooltip>
-                {ALLOWED_CHAIN_NAME_FOR_OPENSEA.indexOf(network) !== -1 ? (
+                {openseaLink ? (
                   <Tooltip title="Opensea Viewer" className={classes.tooltip}>
-                    <ButtonBase
-                      href={openseaLink}
-                      target="_blank"
-                      disabled={openseaLink === OPENSEA_LINK_NOT_FOUND}
-                    >
+                    <ButtonBase href={openseaLink} target="_blank">
                       <Box
                         component="img"
                         src="./static/icons/shared/opensea.svg"
                         className={classes.internalIcon}
-                        sx={{
-                          opacity:
-                            openseaLink === '' || openseaLink === OPENSEA_LINK_NOT_FOUND
-                              ? '30%'
-                              : '100%'
-                        }}
                       />
                       {openseaLink !== '' ? (
                         <></>

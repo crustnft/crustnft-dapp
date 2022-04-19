@@ -1,22 +1,15 @@
 import axios, { Method } from 'axios';
 import axiosRetry from 'axios-retry';
-import { OPENSEA_GET_COLLECTION_API } from 'constants/openseaAPI';
+import { openseaCollectionUrl, OPENSEA_API } from 'constants/openseaUrl';
 
 const WAIT_TIME_BASE_BEFORE_RETRY = 1000;
 const WAIT_TIME_VARIABLE = 1000;
 const NB_RETRY_GET_DATA_FROM_TOKEN_URI = 100;
-export const ALLOWED_CHAIN_NAME_FOR_OPENSEA = ['Polygon', 'Rinkeby'];
-export const OPENSEA_LINK_NOT_FOUND = 'NotFound';
 
-export const getCollectionUrlOpensea = async (
-  network: string,
-  assetOwner: string,
-  collectionAddress: string
-) => {
-  if (ALLOWED_CHAIN_NAME_FOR_OPENSEA.indexOf(network) === -1) return;
-  if (assetOwner === '') return;
-  const NUM_TRIES = 300;
+export const getCollectionUrlOpensea = async (network: string, collectionAddress: string) => {
+  if (!collectionAddress) return;
   const instance = axios.create();
+
   axiosRetry(instance, {
     retryCondition: (error) => {
       return error?.response?.status === 429;
@@ -26,30 +19,27 @@ export const getCollectionUrlOpensea = async (
       return Math.floor(WAIT_TIME_BASE_BEFORE_RETRY + Math.random() * WAIT_TIME_VARIABLE);
     }
   });
-  const apiInfo = OPENSEA_GET_COLLECTION_API.get(network);
+
+  const apiInfo = OPENSEA_API.get(network.toLowerCase());
   if (!apiInfo) return;
   const { apiUrl, apiKey } = apiInfo;
 
+  console.log('apiUrl', apiUrl);
   const options = {
     method: 'GET' as Method,
-    url: apiUrl,
-    params: { asset_owner: assetOwner, offset: '0', limit: NUM_TRIES },
+    url: apiUrl + '/asset_contract/' + collectionAddress,
     headers: { 'X-API-KEY': apiKey }
   };
+
   const response = await instance.request(options);
 
   if (response.status === 200) {
     const responseJson = response.data;
-    for (let i = 0; i < NUM_TRIES; i++) {
-      if (!responseJson[i]) return OPENSEA_LINK_NOT_FOUND;
-
-      const foundAddress = responseJson[i].primary_asset_contracts[0].address;
-      if (collectionAddress.toLowerCase() === foundAddress.toLowerCase()) {
-        const slug = responseJson[i].slug;
-        return `https://testnets.opensea.io/collection/${slug}`;
-      }
+    console.log('responseJson', responseJson);
+    const slug = responseJson?.collection?.slug;
+    if (slug) {
+      return `${openseaCollectionUrl.get(network.toLocaleLowerCase())}/${slug}`;
     }
   }
-  if (response.status === 400) return OPENSEA_LINK_NOT_FOUND;
-  throw new Error('Error while fetching data');
+  return;
 };

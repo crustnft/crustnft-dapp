@@ -1,7 +1,7 @@
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import { Box, Button, Card, IconButton, Skeleton, Stack, Tooltip } from '@mui/material';
 import LightboxModal from 'components/LightboxModal';
-import { openseaUrlDictionary } from 'constants/openseaChainUrl';
+import { openseaAssetUrl } from 'constants/openseaUrl';
 import { Chain } from 'interfaces/chain';
 import { useEffect, useState } from 'react';
 import { getChainByNetworkName } from 'utils/blockchainHandlers';
@@ -18,7 +18,7 @@ export default function AssetCard({ assetAndOwner }: { assetAndOwner: AssetAndOw
       const chainObj = getChainByNetworkName(assetAndOwner.chain);
       setChain(chainObj);
       if (!chainObj) return;
-      const openseaLinkPrefix = openseaUrlDictionary.get(chainObj?.name.toLowerCase());
+      const openseaLinkPrefix = openseaAssetUrl.get(chainObj?.name.toLowerCase());
       if (openseaLinkPrefix && openseaLinkPrefix !== '') {
         setOpenseaLinkPreFix(openseaLinkPrefix);
       }
