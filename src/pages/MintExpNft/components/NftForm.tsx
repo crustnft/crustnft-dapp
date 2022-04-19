@@ -48,7 +48,7 @@ const initialNftCreationStatus = {
   metadataCid: ''
 };
 
-type NftCreationStatus = {
+type TNftCreationStatus = {
   uploadingImage: boolean;
   uploadImageSuccess: boolean;
   uploadImageError: boolean;
@@ -65,7 +65,7 @@ type NftCreationStatus = {
   metadataCid: string;
 };
 
-export const NftCreationStatusContext = createContext<NftCreationStatus>(initialNftCreationStatus);
+export const NftCreationStatusContext = createContext<TNftCreationStatus>(initialNftCreationStatus);
 
 type FormValues = {
   name: string;

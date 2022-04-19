@@ -1,16 +1,11 @@
-// @mui
 import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import isString from 'lodash/isString';
 import { useDropzone } from 'react-dropzone';
 import Iconify from '../Iconify';
-//
 import Image from '../Image';
 import RejectionFiles from './RejectionFiles';
-// type
 import { UploadProps } from './type';
-
-// ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
   width: 144,

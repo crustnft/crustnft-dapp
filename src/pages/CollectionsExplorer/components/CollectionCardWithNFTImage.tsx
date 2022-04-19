@@ -13,12 +13,12 @@ import {
   Typography
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { retrieveSingleContract as retrieveSingleContractOpensea } from 'clients/opensea-api/retrieveSingleContract';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWeb3 from 'hooks/useWeb3';
 import { Chain } from 'interfaces/chain';
 import { useEffect, useMemo, useState } from 'react';
 import { createEmptyNFTList, NftItem } from 'services/fetchCollection/createEmptyNFTList';
-import { getCollectionUrlOpensea } from 'services/fetchCollection/getCollectionUrlOpensea';
 import { getNftList4CollectionCard } from 'services/fetchCollection/getNFTList';
 import {
   connectContract,
@@ -103,7 +103,7 @@ const CollectionCardWithNFTImage = ({ collection }: CollectionCardProps) => {
   useEffect(() => {
     let isSubscribed = true;
     const fetchOpenseaLink = async () => {
-      const _openseaLink = await getCollectionUrlOpensea(network, contractAddress);
+      const _openseaLink = await retrieveSingleContractOpensea(network, contractAddress);
       if (!_openseaLink) return;
       if (isSubscribed) {
         setOpenseaLink(_openseaLink);

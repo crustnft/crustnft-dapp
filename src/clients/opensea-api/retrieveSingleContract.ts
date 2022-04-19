@@ -2,11 +2,11 @@ import axios, { Method } from 'axios';
 import axiosRetry from 'axios-retry';
 import { openseaCollectionUrl, OPENSEA_API } from 'constants/openseaUrl';
 
-const WAIT_TIME_BASE_BEFORE_RETRY = 1000;
-const WAIT_TIME_VARIABLE = 1000;
+const WAIT_TIME_BASE_BEFORE_RETRY = 1_000;
+const WAIT_TIME_VARIABLE = 1_000;
 const NB_RETRY_GET_DATA_FROM_TOKEN_URI = 100;
 
-export const getCollectionUrlOpensea = async (network: string, collectionAddress: string) => {
+export const retrieveSingleContract = async (network: string, collectionAddress: string) => {
   if (!collectionAddress) return;
   const instance = axios.create();
 

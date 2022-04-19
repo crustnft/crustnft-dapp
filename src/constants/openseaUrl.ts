@@ -18,7 +18,6 @@ export const openseaCollectionUrl = new Map<string, string>([
 
 const OPENSEA_API_MAINNET = 'https://api.opensea.io/api/v1';
 const OPENSEA_API_TESTNET = 'https://testnets-api.opensea.io/api/v1';
-
 const API_KEY_MAINNET = '6524d46495a2498589928fc59599e8ac';
 const API_KEY_TESTNET = ' ';
 

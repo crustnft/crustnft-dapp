@@ -1,16 +1,11 @@
-// @mui
 import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import isString from 'lodash/isString';
 import { useDropzone } from 'react-dropzone';
 import Iconify from '../Iconify';
-//
 import Image from '../Image';
 import RejectionFiles from './RejectionFiles';
-// type
 import { UploadProps } from './type';
-
-// ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
   width: '100%',
@@ -53,8 +48,6 @@ const PlaceholderStyle = styled('div')(({ theme }) => ({
   }),
   '&:hover': { opacity: 0.72 }
 }));
-
-// ----------------------------------------------------------------------
 
 export default function UploadNftCard({ error, file, helperText, sx, ...other }: UploadProps) {
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
