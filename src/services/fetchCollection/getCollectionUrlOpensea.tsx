@@ -24,7 +24,6 @@ export const getCollectionUrlOpensea = async (network: string, collectionAddress
   if (!apiInfo) return;
   const { apiUrl, apiKey } = apiInfo;
 
-  console.log('apiUrl', apiUrl);
   const options = {
     method: 'GET' as Method,
     url: apiUrl + '/asset_contract/' + collectionAddress,
@@ -35,7 +34,6 @@ export const getCollectionUrlOpensea = async (network: string, collectionAddress
 
   if (response.status === 200) {
     const responseJson = response.data;
-    console.log('responseJson', responseJson);
     const slug = responseJson?.collection?.slug;
     if (slug) {
       return `${openseaCollectionUrl.get(network.toLocaleLowerCase())}/${slug}`;
