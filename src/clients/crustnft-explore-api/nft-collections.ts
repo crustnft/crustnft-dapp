@@ -61,14 +61,11 @@ export const updatePartialCPCollection = async (
     generatedNfts,
     ...updateDto
   } = collectionInfo;
-  console.log('update partial CP Collection', updateDto);
-  console.log('partial update CP Collection', partialUpdateDto);
-  console.log('both', { ...updateDto, ...partialUpdateDto });
   const updatedCPCollection = await updateCPCollection(
     { ...updateDto, ...partialUpdateDto },
     accessToken
   );
-  console.log('updatedCPCollection', updatedCPCollection);
+  return updatedCPCollection;
 };
 
 export const getCollections = async (
