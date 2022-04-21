@@ -17,7 +17,7 @@ const DropZoneStyle = styled('div')(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
   backgroundColor: theme.palette.background.neutral,
   border: `1px dashed ${theme.palette.grey[500_32]}`,
-  '&:hover': { opacity: 0.72, cursor: 'pointer' },
+  '&:hover': { opacity: 0.72, cursor: 'pointer' }
 }));
 
 // ----------------------------------------------------------------------
@@ -34,7 +34,7 @@ export default function UploadMultiFile({
   ...other
 }: UploadMultiFileProps) {
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
-    ...other,
+    ...other
   });
 
   return (
@@ -46,8 +46,8 @@ export default function UploadMultiFile({
           ...((isDragReject || error) && {
             color: 'error.main',
             borderColor: 'error.light',
-            bgcolor: 'error.lighter',
-          }),
+            bgcolor: 'error.lighter'
+          })
         }}
       >
         <input {...getInputProps()} />

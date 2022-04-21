@@ -50,8 +50,20 @@ export const updatePartialCPCollection = async (
 ) => {
   const collectionInfo = await getCollectionInfo(accessToken, id);
   if (!collectionInfo) return;
-  const { status, updatedAt, metadataCID, creator, collectionCID, createdAt, ...updateDto } =
-    collectionInfo;
+  const {
+    status,
+    updatedAt,
+    metadataCID,
+    creator,
+    collectionCID,
+    createdAt,
+    collectionSize,
+    generatedNfts,
+    ...updateDto
+  } = collectionInfo;
+  console.log('update partial CP Collection', updateDto);
+  console.log('partial update CP Collection', partialUpdateDto);
+  console.log('both', { ...updateDto, ...partialUpdateDto });
   const updatedCPCollection = await updateCPCollection(
     { ...updateDto, ...partialUpdateDto },
     accessToken

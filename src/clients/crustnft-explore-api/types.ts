@@ -46,6 +46,8 @@ export interface NftCollectionDto {
   txHash?: string;
   whiteList?: string[];
   updatedAt?: string;
+  collectionSize?: number;
+  generatedNfts?: number;
 }
 
 export type CreateNftCollectionDto = Omit<
