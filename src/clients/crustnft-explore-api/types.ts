@@ -52,12 +52,27 @@ export interface NftCollectionDto {
 
 export type CreateNftCollectionDto = Omit<
   NftCollectionDto,
-  'id' | 'collectionCID' | 'metadataCID' | 'status' | 'createdAt' | 'creator' | 'updatedAt'
+  | 'id'
+  | 'collectionCID'
+  | 'metadataCID'
+  | 'status'
+  | 'createdAt'
+  | 'creator'
+  | 'updatedAt'
+  | 'collectionSize'
+  | 'generatedNfts'
 >;
 
 export type UpdateNftCollectionDto = Omit<
   NftCollectionDto,
-  'collectionCID' | 'metadataCID' | 'createdAt' | 'status' | 'creator' | 'updatedAt'
+  | 'collectionCID'
+  | 'metadataCID'
+  | 'createdAt'
+  | 'status'
+  | 'creator'
+  | 'updatedAt'
+  | 'collectionSize'
+  | 'generatedNfts'
 >;
 
 export const EMPTY_CREATENFTCOLLECTIONDTO: CreateNftCollectionDto = {
