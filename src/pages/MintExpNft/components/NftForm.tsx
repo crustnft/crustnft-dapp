@@ -4,20 +4,22 @@ import { Icon } from '@iconify/react';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, Card, Grid, Stack, Typography } from '@mui/material';
 import { getContractsByAccount } from 'clients/crustnft-explore-api/contracts';
+import Image from 'components/Image';
+import { CustomFile } from 'components/upload/type';
 import { AUTH_HEADER, IPFS_GATEWAY } from 'constants/ipfsGateways';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useAuth from 'hooks/useAuth';
 import useWeb3 from 'hooks/useWeb3';
 import { create } from 'ipfs-http-client';
+import isString from 'lodash/isString';
 import { useSnackbar } from 'notistack';
 import { createContext, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { connectRWContract } from 'services/smartContract/evmCompatible';
 import { pinW3Crust } from 'services/w3AuthIpfs';
 import * as Yup from 'yup';
-import { FormProvider, RHFUploadNftCard } from '../../../components/hook-form';
+import { FormProvider, RHFUploadMultiFile } from '../../../components/hook-form';
 import Iconify from '../../../components/Iconify';
-import { fData } from '../../../utils/formatNumber';
 import type { BoostProps, LevelProps, PropertyProps, StatProps } from '../MintNft.types';
 import Property from './/Property';
 import CircularBoost from './CircularBoost';
@@ -71,11 +73,12 @@ type FormValues = {
   name: string;
   description: string;
   externalLink: string;
-  avatar: File | null;
+  avatar: CustomFile | null;
   properties: PropertyProps[];
   levels: LevelProps[];
   stats: StatProps[];
   boosts: BoostProps[];
+  images: File[];
 };
 
 export default function NftForm() {
@@ -127,7 +130,8 @@ export default function NftForm() {
     properties: [],
     levels: [],
     stats: [],
-    boosts: []
+    boosts: [],
+    images: []
   };
 
   const methods = useForm<FormValues>({
@@ -354,36 +358,15 @@ export default function NftForm() {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
-          <Card sx={{ py: 2, px: 2 }}>
-            <Box sx={{ mb: 5 }}>
-              <RHFUploadNftCard
-                name="avatar"
-                accept="image/*"
-                maxSize={31457280}
-                onDrop={handleDrop}
-                helperText={
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      mt: 2,
-                      mx: 'auto',
-                      display: 'block',
-                      textAlign: 'center',
-                      color: 'text.secondary'
-                    }}
-                  >
-                    Allowed *.jpeg, *.jpg, *.png, *.gif
-                    <br /> max size of {fData(31457280)}
-                  </Typography>
-                }
-              />
-            </Box>
-          </Card>
-        </Grid>
-
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
+            <RHFUploadMultiFile
+              name="avatar"
+              accept="image/*"
+              maxSize={3145728}
+              onDrop={handleDrop}
+              onRemove={() => {}}
+            />
             <Stack spacing={2}>
               <NftTextField
                 name="name"
@@ -632,6 +615,23 @@ export default function NftForm() {
                 {mintingState === 'error' ? 'Try Again' : 'Mint NFT'}
               </LoadingButton>
             </Stack>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Card sx={{ py: 2, px: 2 }}>
+            <Box sx={{ mb: 5 }}>
+              <Image
+                alt="avatar"
+                src={
+                  isString(avatar)
+                    ? avatar
+                    : avatar
+                    ? avatar.preview
+                    : 'https://www.translationvalley.com/wp-content/uploads/2020/03/no-iamge-placeholder.jpg'
+                }
+                sx={{ zIndex: 8 }}
+              />
+            </Box>
           </Card>
         </Grid>
       </Grid>

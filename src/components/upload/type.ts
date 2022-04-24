@@ -1,10 +1,7 @@
 import { Theme } from '@mui/material/styles';
-// @mui
 import { SxProps } from '@mui/system';
 import { ReactNode } from 'react';
 import { DropzoneOptions } from 'react-dropzone';
-
-// ----------------------------------------------------------------------
 
 export interface CustomFile extends File {
   path?: string;
@@ -20,12 +17,10 @@ export interface UploadProps extends DropzoneOptions {
 }
 
 export interface UploadMultiFileProps extends DropzoneOptions {
-  files: (File | string)[];
+  file: CustomFile | string | null;
   error?: boolean;
   showPreview?: boolean;
   sx?: SxProps<Theme>;
   helperText?: ReactNode;
-  onUpload?: VoidFunction;
   onRemove?: (file: File | string) => void;
-  onRemoveAll?: VoidFunction;
 }

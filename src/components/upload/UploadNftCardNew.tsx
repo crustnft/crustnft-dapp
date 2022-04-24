@@ -1,15 +1,10 @@
-import { useDropzone } from 'react-dropzone';
-// @mui
+import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Box, Stack, Button } from '@mui/material';
-// type
-import { UploadMultiFileProps } from './type';
-//
+import { useDropzone } from 'react-dropzone';
 import BlockContent from './BlockContent';
-import RejectionFiles from './RejectionFiles';
 import MultiFilePreview from './MultiFilePreview';
-
-// ----------------------------------------------------------------------
+import RejectionFiles from './RejectionFiles';
+import { UploadMultiFileProps } from './type';
 
 const DropZoneStyle = styled('div')(({ theme }) => ({
   outline: 'none',
@@ -20,20 +15,16 @@ const DropZoneStyle = styled('div')(({ theme }) => ({
   '&:hover': { opacity: 0.72, cursor: 'pointer' }
 }));
 
-// ----------------------------------------------------------------------
-
-export default function UploadMultiFile({
+export default function UploadNftCard({
   error,
-  showPreview = false,
-  files,
-  onUpload,
+  file,
   onRemove,
-  onRemoveAll,
   helperText,
   sx,
   ...other
 }: UploadMultiFileProps) {
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
+    multiple: false,
     ...other
   });
 
@@ -57,18 +48,7 @@ export default function UploadMultiFile({
 
       {fileRejections.length > 0 && <RejectionFiles fileRejections={fileRejections} />}
 
-      <MultiFilePreview files={files} showPreview={showPreview} onRemove={onRemove} />
-
-      {files.length > 0 && (
-        <Stack direction="row" justifyContent="flex-end" spacing={1.5}>
-          <Button color="inherit" size="small" onClick={onRemoveAll}>
-            Remove all
-          </Button>
-          <Button size="small" variant="contained" onClick={onUpload}>
-            Upload files
-          </Button>
-        </Stack>
-      )}
+      <MultiFilePreview file={file} onRemove={onRemove} />
 
       {helperText && helperText}
     </Box>

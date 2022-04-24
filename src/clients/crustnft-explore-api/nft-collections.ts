@@ -50,6 +50,7 @@ export const updatePartialCPCollection = async (
 ) => {
   const collectionInfo = await getCollectionInfo(accessToken, id);
   if (!collectionInfo) return;
+
   const {
     status,
     updatedAt,
