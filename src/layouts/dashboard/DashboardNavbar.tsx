@@ -25,7 +25,7 @@ const APPBAR_MIN_HEIGHT = 64;
 const RootStyle = styled(AppBar)(({ theme }) => ({
   backdropFilter: 'blur(32px)',
   WebkitBackdropFilter: 'blur(32px)', // Fix on Mobile
-  backgroundColor: theme.palette.header.background,
+  backgroundColor: theme.palette.header?.background,
   boxShadow: 'none'
 }));
 

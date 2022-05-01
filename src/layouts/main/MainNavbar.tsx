@@ -63,7 +63,14 @@ export default function MainNavbar() {
   const isHome = pathname === '/';
 
   return (
-    <AppBar sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
+    <AppBar
+      sx={{
+        boxShadow: 's0px 8px 16px rgba(145, 158, 171, 0.16)',
+        bgcolor: 'transparent',
+        height: 64,
+        
+      }}
+    >
       <ToolbarStyle
         disableGutters
         sx={{

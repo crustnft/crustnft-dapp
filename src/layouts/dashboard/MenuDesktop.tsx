@@ -12,7 +12,7 @@ interface RouterLinkProps extends LinkProps {
 
 const LinkStyle = styled(Link)<RouterLinkProps>(({ theme }) => ({
   ...theme.typography.subtitle1,
-  color: theme.palette.header.menuText,
+  color: theme.palette.header?.menuText,
   marginRight: theme.spacing(5),
   transition: theme.transitions.create('opacity', {
     duration: theme.transitions.duration.shorter

@@ -1,13 +1,13 @@
-import { ReactNode } from 'react';
-import { Icon, IconifyIcon } from '@iconify/react';
-import { SnackbarProvider } from 'notistack';
-import infoFill from '@iconify/icons-eva/info-fill';
 import alertCircleFill from '@iconify/icons-eva/alert-circle-fill';
 import alertTriangleFill from '@iconify/icons-eva/alert-triangle-fill';
 import checkmarkCircle2Fill from '@iconify/icons-eva/checkmark-circle-2-fill';
+import infoFill from '@iconify/icons-eva/info-fill';
+import { Icon, IconifyIcon } from '@iconify/react';
+import { Box, GlobalStyles } from '@mui/material';
 // material
 import { alpha, useTheme } from '@mui/material/styles';
-import { Box, GlobalStyles } from '@mui/material';
+import { SnackbarProvider } from 'notistack';
+import { ReactNode } from 'react';
 // @types
 import { ColorSchema } from '../@types/theme';
 
@@ -25,7 +25,7 @@ function SnackbarStyles() {
             width: '100%',
             padding: theme.spacing(1.5),
             margin: theme.spacing(0.25, 0),
-            boxShadow: theme.customShadows.z8,
+            boxShadow: theme.customShadows?.z8,
             borderRadius: theme.shape.borderRadius,
             color: theme.palette.grey[isLight ? 0 : 800],
             backgroundColor: theme.palette.grey[isLight ? 900 : 0],

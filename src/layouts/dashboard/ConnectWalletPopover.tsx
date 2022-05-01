@@ -70,8 +70,8 @@ const ConnectWalletPopover = () => {
             {
               color: 'text.primary',
               borderRadius: '32px',
-              border: theme.palette.header.walletButtonBorder,
-              borderColor: theme.palette.header.menuText
+              border: theme.palette.header?.walletButtonBorder,
+              borderColor: theme.palette.header?.menuText
             }
           ]}
         >
@@ -92,8 +92,8 @@ const ConnectWalletPopover = () => {
           ref={walletInfoAnchorRef}
           onClick={handleWalletInfoOpen}
           sx={{
-            border: theme.palette.header.walletButtonBorder,
-            borderColor: theme.palette.header.menuText,
+            border: theme.palette.header?.walletButtonBorder,
+            borderColor: theme.palette.header?.menuText,
             borderRadius: '20px',
             height: '100%',
             padding: '2px',
@@ -148,7 +148,7 @@ const ConnectWalletPopover = () => {
         </Stack>
         <Stack
           sx={{
-            border: theme.palette.header.yellowBorder,
+            border: theme.palette.header?.yellowBorder,
             borderRadius: '25px',
             padding: '12px',
             mt: 2

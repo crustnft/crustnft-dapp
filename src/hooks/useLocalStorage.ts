@@ -1,9 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-export default function useLocalStorage<ValueType>(key: string, defaultValue?: ValueType) {
+export default function useLocalStorage<ValueType>(
+  key: string,
+  defaultValue?: ValueType,
+  mustHave?: Array<string>
+) {
   const [value, setValue] = useState(() => {
     const storedValue = localStorage.getItem(key);
-    return storedValue === null ? defaultValue : JSON.parse(storedValue);
+    const values = storedValue === null ? defaultValue : JSON.parse(storedValue);
+    if (mustHave?.length) {
+      for (let i = 0; i < mustHave.length; i++) {
+        const k = mustHave[i];
+        if (!values[k]) {
+          values[k] = (defaultValue && defaultValue[k as keyof typeof defaultValue]) || undefined;
+        }
+      }
+    }
+    return values;
   });
 
   useEffect(() => {

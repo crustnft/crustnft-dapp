@@ -75,13 +75,13 @@ declare module '@mui/material/styles/createPalette' {
     card: CardOptions;
   }
   interface PaletteOptions {
-    gradients: GradientsPaletteOptions;
-    chart: ChartPaletteOptions;
-    header: HeaderColor;
-    additional: AdditionalColor;
-    customBackground: BackgroundColor;
-    collectionSlider: string;
-    card: CardOptions;
+    gradients?: GradientsPaletteOptions;
+    chart?: ChartPaletteOptions;
+    header?: HeaderColor;
+    additional?: AdditionalColor;
+    customBackground?: BackgroundColor;
+    collectionSlider?: string;
+    card?: CardOptions;
   }
 }
 

@@ -17,6 +17,7 @@ type ColorVariants = {
 };
 
 export type SettingsValueProps = {
+  theme: string;
   themeMode: ThemeMode;
   themeDirection: ThemeDirection;
   themeColorPresets: ThemeColorPresets;
@@ -25,6 +26,7 @@ export type SettingsValueProps = {
 };
 
 export type SettingsContextProps = {
+  theme: string;
   themeMode: ThemeMode;
   themeDirection: ThemeDirection;
   themeColorPresets: ThemeColorPresets;
@@ -39,6 +41,7 @@ export type SettingsContextProps = {
   onToggleStretch: VoidFunction;
   onResetSetting: VoidFunction;
   onChangeMode: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeTheme: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeDirection: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeColor: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeLayout: (event: React.ChangeEvent<HTMLInputElement>) => void;

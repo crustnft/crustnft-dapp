@@ -69,7 +69,7 @@ export default function CallAction() {
                 {
                   color: '#fff',
                   borderRadius: '32px',
-                  border: theme.palette.header.walletButtonBorder,
+                  border: theme.palette.header?.walletButtonBorder,
                   borderColor: '#fff'
                 }
               ]}
