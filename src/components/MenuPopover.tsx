@@ -1,6 +1,6 @@
 // material
-import { alpha, styled } from '@mui/material/styles';
 import { Popover, PopoverProps } from '@mui/material';
+import { alpha, styled } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ export default function MenuPopover({ children, sx, ...other }: PopoverProps) {
           mt: 1.5,
           ml: 0.5,
           overflow: 'inherit',
-          boxShadow: (theme) => theme.customShadows.z20,
+          boxShadow: (theme) => theme.customShadows?.z20,
           border: (theme) => `solid 1px ${theme.palette.grey[500_8]}`,
           width: 200,
           ...sx

@@ -1,6 +1,18 @@
-import { PaletteOptions } from '@mui/material/styles';
-import { CommonColors } from '@mui/material/styles/createPalette';
+import { CommonColors, PaletteOptions } from '@mui/material/styles/createPalette';
 import { COLORS, COLORS_DARK, COLORS_LIGHT } from './colors';
+declare module '@mui/material/styles/createPalette' {
+  interface PaletteOptions {
+    type?: string;
+    secondary2?: {
+      main: React.CSSProperties['color'];
+      contrastText: React.CSSProperties['color'];
+      light: React.CSSProperties['color'];
+      dark: React.CSSProperties['color'];
+      darker: React.CSSProperties['color'];
+      lighter: React.CSSProperties['color'];
+    };
+  }
+}
 const COMMON: Partial<CommonColors> = {
   black: '#000'
 };

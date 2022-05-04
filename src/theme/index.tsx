@@ -27,7 +27,9 @@ export const AVAILABLE_THEMES = {
 export default function ThemeProvider({ children }: Props) {
   const { theme: themeName, themeMode, themeDirection } = useSettings();
   const [themeConfigs, setThemeConfigs] = useState<ThemeOptions>();
-  const [componentsOverride, setComponentsOverride] = useState<ComponentOverrides>();
+  const [componentsOverride, setComponentsOverride] = useState<
+    ComponentOverrides | (() => ComponentOverrides)
+  >();
   useEffect(() => {
     const name = themeName as keyof typeof AVAILABLE_THEMES;
 
@@ -44,7 +46,8 @@ export default function ThemeProvider({ children }: Props) {
       }) => {
         setThemeConfigs(getThemeOptions(themeMode));
         if (overrides) {
-          setComponentsOverride(overrides);
+          // avoid autoexecution of function state
+          setComponentsOverride(() => overrides);
         }
       }
     );
@@ -64,7 +67,7 @@ export default function ThemeProvider({ children }: Props) {
   }
   const theme = createTheme(themeOptions);
   if (componentsOverride) {
-    theme.components = componentsOverride(theme);
+    theme.components = (componentsOverride as ComponentOverrides)(theme);
   }
 
   return (

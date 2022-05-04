@@ -3,6 +3,7 @@ import palette from './palette';
 import shadows, { customShadows } from './shadows';
 import typography from './typography';
 export { default as componentsOverride } from './overrides';
+
 export default function getThemeOptions(themeMode: 'light' | 'dark'): ThemeOptions {
   const isLight = themeMode === 'light';
   return {
