@@ -30,7 +30,12 @@ export default function DashboardLayout() {
   const { theme: themeName } = useSettings();
   const Navbar = useMemo(() => {
     if (themeName) {
-      return React.lazy(() => import(`components/${themeName}/Header`));
+      return React.lazy(() =>
+        import(`components/${themeName}/Header`).then(
+          (c) => c,
+          () => ({ default: DashboardNavbar })
+        )
+      );
     }
     return DashboardNavbar;
   }, [themeName]);
@@ -41,7 +46,7 @@ export default function DashboardLayout() {
 
   return (
     <RootStyle>
-      <Suspense fallback={LoadingScreen}>
+      <Suspense fallback={<LoadingScreen />}>
         <Navbar onOpenSidebar={onOpenSidebar} />
         <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
         <MainStyle
