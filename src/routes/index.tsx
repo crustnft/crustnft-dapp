@@ -1,5 +1,7 @@
+import { createCollectionRoutes } from 'pages';
 import { lazy, Suspense } from 'react';
 import { Navigate, useRoutes } from 'react-router-dom';
+import { getRouteConfig } from 'utils/routes';
 import LoadingScreen from '../components/LoadingScreen';
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
@@ -42,7 +44,7 @@ export default function Router() {
       children: [
         { element: <Navigate to="/wallet" replace /> },
         { path: 'wallet', element: <MyNFT /> },
-        { path: 'create-expandable-collection', element: <CreateCollection /> },
+        getRouteConfig(createCollectionRoutes, Loadable),
         { path: 'mint-nft/:chain/:contractAddr', element: <MintNft /> },
         { path: 'mint-exp-nft', element: <MintExpNft /> },
         { path: 'collection-explore', element: <CollectionsExplorer /> },
@@ -103,7 +105,6 @@ const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 const TermsOfService = Loadable(lazy(() => import('../pages/TermsOfService')));
 const Disclaimer = Loadable(lazy(() => import('../pages/Disclaimer')));
 const AssetViewer = LoadWithoutSpinner(lazy(() => import('../pages/AssetViewer')));
-const CreateCollection = LoadWithoutSpinner(lazy(() => import('../pages/CreateCollection')));
 const MyNFT = LoadWithoutSpinner(lazy(() => import('../pages/MyNFT')));
 const CollectionViewer = LoadWithoutSpinner(lazy(() => import('../pages/CollectionViewer')));
 const MintNft = LoadWithoutSpinner(lazy(() => import('../pages/MintNft')));
