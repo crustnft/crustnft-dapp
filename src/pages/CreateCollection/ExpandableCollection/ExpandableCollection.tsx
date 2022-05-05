@@ -1,25 +1,73 @@
-import TabPanel from '@mui/lab/TabPanel';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { Box, Container, Grid, styled, Tab, Typography } from '@mui/material';
 import { useCallback, useState } from 'react';
 
+const CrustTab = styled(Tab)(({ theme }) => ({
+  padding: 0,
+  marginRight: 35,
+  alignItems: 'flex-start',
+  textTransform: 'capitalize',
+  ...theme.typography.h6,
+  height: theme.typography.h6.lineHeight,
+  minWidth: 'auto',
+  color: theme.palette.grey[500],
+  '&.Mui-selected': {
+    color: theme.palette.grey[700]
+  }
+}));
 export default function ExpandableCollection() {
   const [tab, setTab] = useState<string>('General');
   const onTabChange = useCallback(
-    (v) => {
+    (_e, v) => {
       setTab(v);
     },
     [setTab]
   );
   return (
-    <div>
-      <h3>Create multiple</h3>
-      <Tabs value={tab} onChange={onTabChange} aria-label="basic tabs example">
-        <Tab label="General" />
-        <Tab label="Create" />
-      </Tabs>
-      <TabPanel value="General">Item One</TabPanel>
-      <TabPanel value="Create">Item Two</TabPanel>
-    </div>
+    <Container fixed>
+      <Typography variant="h3" component="h3" gutterBottom>
+        Create multiple
+      </Typography>
+      <Box>
+        <TabContext value={tab}>
+          <Box>
+            <TabList onChange={onTabChange} aria-label="basic tabs example">
+              <CrustTab label="General" value="General" />
+              <CrustTab label="Create" value="Create" />
+            </TabList>
+          </Box>
+          <TabPanel value="General" sx={{ padding: 0 }}>
+            <Grid container padding={0}>
+              <Grid container xs={8}>
+                <Grid item xs={12}>
+                  <Typography variant="h5" component="h5" gutterBottom>
+                    Choose a network
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Box>s</Box>
+                </Grid>
+                <Grid item xs={6}>
+                  <Box>s</Box>
+                </Grid>
+                <Grid item xs={6}>
+                  <Box>s</Box>
+                </Grid>
+                <Grid item xs={6}>
+                  <Box>s</Box>
+                </Grid>
+              </Grid>
+            </Grid>
+          </TabPanel>
+          <TabPanel value="Create" sx={{ padding: 0 }}>
+            <Grid container padding={0}>
+              <Grid item xs={8}>
+                Item Two
+              </Grid>
+            </Grid>
+          </TabPanel>
+        </TabContext>
+      </Box>
+    </Container>
   );
 }
