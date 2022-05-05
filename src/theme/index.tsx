@@ -1,5 +1,5 @@
 // @mui
-import { CssBaseline } from '@mui/material';
+import { BreakpointsOptions, CssBaseline } from '@mui/material';
 import {
   createTheme,
   StyledEngineProvider,
@@ -10,7 +10,6 @@ import {
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 // hooks
 import useSettings from '../hooks/useSettings';
-import breakpoints from './breakpoints';
 
 // ----------------------------------------------------------------------
 
@@ -27,6 +26,7 @@ export const AVAILABLE_THEMES = {
 export default function ThemeProvider({ children }: Props) {
   const { theme: themeName, themeMode, themeDirection } = useSettings();
   const [themeConfigs, setThemeConfigs] = useState<ThemeOptions>();
+  const [breakpoints, setBreakpoints] = useState<BreakpointsOptions>();
   const [componentsOverride, setComponentsOverride] = useState<
     ComponentOverrides | (() => ComponentOverrides)
   >();
@@ -39,12 +39,15 @@ export default function ThemeProvider({ children }: Props) {
     AVAILABLE_THEMES[name].then(
       ({
         default: getThemeOptions,
-        componentsOverride: overrides
+        componentsOverride: overrides,
+        breakpoints: bps
       }: {
         default: (themeMode: 'light' | 'dark') => ThemeOptions;
         componentsOverride?: ComponentOverrides;
+        breakpoints: BreakpointsOptions;
       }) => {
         setThemeConfigs(getThemeOptions(themeMode));
+        setBreakpoints(bps);
         if (overrides) {
           // avoid autoexecution of function state
           setComponentsOverride(() => overrides);
@@ -60,7 +63,7 @@ export default function ThemeProvider({ children }: Props) {
         breakpoints
       }) ||
       undefined,
-    [themeDirection, themeConfigs]
+    [themeDirection, themeConfigs, breakpoints]
   );
   if (!themeOptions) {
     return null;

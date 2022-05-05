@@ -2,6 +2,7 @@ import { ThemeOptions } from '@mui/material/styles';
 import palette from './palette';
 import shadows, { customShadows } from './shadows';
 import typography from './typography';
+export { default as breakpoints } from './breakpoints';
 export { default as componentsOverride } from './overrides';
 
 export default function getThemeOptions(themeMode: 'light' | 'dark'): ThemeOptions {

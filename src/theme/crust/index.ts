@@ -9,6 +9,7 @@ export const darkThemeOptions: ThemeOptions = {
   palette: PALETTE_DARK,
   typography: TYPOGRAPHY
 };
+export { default as breakpoints } from './breakpoints';
 export { default as componentsOverride } from './overrides';
 export default function getThemeOptions(themeMode: 'light' | 'dark'): ThemeOptions {
   return themeMode === 'light' ? lightThemeOptions : darkThemeOptions;
