@@ -8,6 +8,7 @@ export { default as componentsOverride } from './overrides';
 export default function getThemeOptions(themeMode: 'light' | 'dark'): ThemeOptions {
   const isLight = themeMode === 'light';
   return {
+    name: 'v0',
     palette: isLight ? palette.light : palette.dark,
     typography,
     shape: { borderRadius: 8 },

@@ -12,7 +12,14 @@ import { ReactNode, useEffect, useMemo, useState } from 'react';
 import useSettings from '../hooks/useSettings';
 
 // ----------------------------------------------------------------------
-
+declare module '@mui/material/styles' {
+  export interface Theme {
+    name: string;
+  }
+  export interface ThemeOptions {
+    name: string;
+  }
+}
 type Props = {
   children: ReactNode;
 };

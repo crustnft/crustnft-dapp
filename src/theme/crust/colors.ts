@@ -45,7 +45,7 @@ export const TERTIARY = {
 export const ERROR_HEX = '#FF4842';
 export const WARNING_HEX = '#F1B007';
 export const SUCCESS_HEX = '#1CD1A6';
-export const BODY_LIGHT_HEX = '#E5E5E5';
+export const BODY_LIGHT_HEX = '#FFFFFF';
 export const BODY_DARK_HEX = '#161C24';
 export const PAPER_RGBA = 'rgba(145, 158, 171, 0.08)';
 

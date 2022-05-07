@@ -1,11 +1,26 @@
 import { ThemeOptions } from '@mui/material/styles';
+import { COLORS } from './colors';
 import { PALETTE_DARK, PALETTE_LIGHT } from './palettes';
 import { TYPOGRAPHY } from './typography';
+declare module '@mui/material/styles' {
+  export interface Theme {
+    colors?: typeof COLORS;
+  }
+  export interface ThemeOptions {
+    colors?: typeof COLORS;
+  }
+}
+const commonOptions = {
+  name: 'crust',
+  colors: COLORS
+};
 export const lightThemeOptions: ThemeOptions = {
+  ...commonOptions,
   palette: PALETTE_LIGHT,
   typography: TYPOGRAPHY
 };
 export const darkThemeOptions: ThemeOptions = {
+  ...commonOptions,
   palette: PALETTE_DARK,
   typography: TYPOGRAPHY
 };
