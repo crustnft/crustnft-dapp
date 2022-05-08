@@ -1,7 +1,12 @@
-export default function IconEthereum({ width = 'auto', height = 42 }) {
+import React from 'react';
+import { IconProps } from '../../../@types/icon';
+import useCrustIconProps from '../../../hooks/useCrustIconProps';
+
+const IconEthereum = (props: IconProps) => {
+  const { style } = useCrustIconProps(props, { height: 42, ratio: 256 / 417 });
   return (
     <svg
-      style={{ width, height }}
+      style={style}
       viewBox="0 0 256 417"
       xmlns="http://www.w3.org/2000/svg"
       preserveAspectRatio="xMidYMid"
@@ -14,4 +19,5 @@ export default function IconEthereum({ width = 'auto', height = 42 }) {
       <path fill="#393939" d="M0 212.32l127.96 75.638v-133.8z" />
     </svg>
   );
-}
+};
+export default React.memo(IconEthereum);

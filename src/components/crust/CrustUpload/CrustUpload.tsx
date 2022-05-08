@@ -8,6 +8,7 @@ import { useDropzone } from 'react-dropzone';
 import { Controller, useFormContext } from 'react-hook-form';
 import { pxToRem } from 'utils/getFontValue';
 import CrustButton from '../CrustButton';
+import { IconUpload } from '../icons';
 type Props = Omit<UploadProps, 'file'> & {
   name: string;
   file?: CustomFile;
@@ -51,7 +52,8 @@ const UploadButton = styled(CrustButton)(({ theme }) => {
   return {
     ...theme.typography.buttonM,
     boxShadow: theme.customShadows?.z12,
-    backgroundColor: theme.palette.grey[300]
+    backgroundColor: theme.palette.grey[300],
+    textTransform: 'none'
   };
 });
 
@@ -91,7 +93,7 @@ export default function CrustUpload({ name, file, helperText, sx, rule }: Props)
 
                 {rule ? <Rule>{rule}</Rule> : null}
                 <UploadButton color="default" variant="contained">
-                  Choose file
+                  <IconUpload style={{ marginRight: 12 }} /> Choose file
                 </UploadButton>
               </DropZoneStyle>
             </RootStyle>

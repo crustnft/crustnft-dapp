@@ -1,7 +1,16 @@
-export default function IconPolygon({ width = 42, height = 'auto', color = '#8247E5' }) {
+import React from 'react';
+import { IconProps } from '../../../@types/icon';
+import useCrustIconProps from '../../../hooks/useCrustIconProps';
+
+const IconPolygon = (props: IconProps) => {
+  const { color, style } = useCrustIconProps(props, {
+    width: 42,
+    color: '#8247E5',
+    ratio: 38.4 / 33.5
+  });
   return (
     <svg
-      style={{ width, height }}
+      style={style}
       version="1.1"
       id="Layer_1"
       xmlns="http://www.w3.org/2000/svg"
@@ -25,4 +34,5 @@ export default function IconPolygon({ width = 42, height = 'auto', color = '#824
       </g>
     </svg>
   );
-}
+};
+export default React.memo(IconPolygon);

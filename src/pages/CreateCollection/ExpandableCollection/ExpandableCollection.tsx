@@ -1,10 +1,13 @@
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Container, Grid, Tab, Typography } from '@mui/material';
 import { CrustButton, CrustOptionBox } from 'components/crust';
+import CrustUpload from 'components/crust/CrustUpload';
+import { FormProvider } from 'components/hook-form';
 import { SUPPORTED_CHAINS } from 'constants/chains';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
 import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { pxToRem } from 'utils/getFontValue';
@@ -21,7 +24,7 @@ export default function ExpandableCollection() {
       navigate('/create-collection/expandable/' + tab);
     }
   }, [tabFromRoute, tab, location, navigate]);
-
+  const createMultipleForm = useForm();
   const onTabChange = useCallback(
     (_e, v) => {
       setTab(v);
@@ -43,54 +46,57 @@ export default function ExpandableCollection() {
           </Box>
           <TabPanel value="general" sx={{ padding: 0 }}>
             <Grid container padding={0}>
-              <Grid container xs={12} sm={8}>
-                <Grid item xs={12}>
-                  <Typography variant="h5" component="h5" sx={{ margin: '25px 0' }}>
-                    Choose a network
-                  </Typography>
-                </Grid>
-                <Grid container xs={12} style={{ margin: '-12.5px -15px' }}>
-                  {SUPPORTED_CHAINS.map((chain) => (
-                    <Grid
-                      item
-                      xs={12}
-                      sm={6}
-                      key={chain.chainId}
-                      style={{
-                        padding: '12.5px 15px'
-                      }}
-                    >
-                      <CrustOptionBox
-                        className={
-                          chain.chainId === selectedChain.chainId ? 'Mui-selected' : undefined
-                        }
-                        onClick={() => {
-                          switchNetwork(chain.chainId);
+              <Grid item xs={12} sm={8}>
+                <Grid container>
+                  <Grid item xs={12}>
+                    <Typography variant="h5" component="h5" sx={{ margin: '25px 0' }}>
+                      Choose a network
+                    </Typography>
+                  </Grid>
+                  <Grid container style={{ margin: '-12.5px -15px' }}>
+                    {SUPPORTED_CHAINS.map((chain) => (
+                      <Grid
+                        item
+                        xs={12}
+                        sm={6}
+                        key={chain.chainId}
+                        style={{
+                          padding: '12.5px 15px'
                         }}
                       >
-                        <div
-                          style={{
-                            marginRight: pxToRem(15),
-                            width: pxToRem(42),
-                            height: pxToRem(42)
+                        <CrustOptionBox
+                          className={
+                            chain.chainId === selectedChain.chainId ? 'Mui-selected' : undefined
+                          }
+                          onClick={() => {
+                            switchNetwork(chain.chainId);
                           }}
                         >
-                          <chain.Icon />
-                        </div>
-                        <Typography variant="subtitle1">{chain.name}</Typography>
-                      </CrustOptionBox>
-                    </Grid>
-                  ))}
-                </Grid>
-                <Grid item xs={12} sx={{ marginTop: '32px' }}>
-                  <CrustButton
-                    variant="contained"
-                    onClick={() => {
-                      setTab('create');
-                    }}
-                  >
-                    Next
-                  </CrustButton>
+                          <div
+                            style={{
+                              marginRight: pxToRem(15),
+                              width: pxToRem(42),
+                              height: pxToRem(42)
+                            }}
+                          >
+                            <chain.Icon />
+                          </div>
+                          <Typography variant="subtitle1">{chain.name}</Typography>
+                        </CrustOptionBox>
+                      </Grid>
+                    ))}
+                  </Grid>
+                  <Grid item xs={12} sx={{ marginTop: '32px' }}>
+                    <CrustButton
+                      variant="contained"
+                      onClick={() => {
+                        setTab('create');
+                      }}
+                      sx={{ paddingLeft: pxToRem(74.5), paddingRight: pxToRem(74.5) }}
+                    >
+                      Next
+                    </CrustButton>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
@@ -98,8 +104,12 @@ export default function ExpandableCollection() {
           <TabPanel value="create" sx={{ padding: 0 }}>
             <Grid container padding={0}>
               <Grid item xs={8}>
-                <Typography variant="h5">Upload file</Typography>
-                {/* <Upload */}
+                <FormProvider methods={createMultipleForm}>
+                  <Typography variant="h5">Upload file</Typography>
+                  <CrustUpload name="file" />
+                  <Typography variant="h5">Item details</Typography>
+                  <Typography variant="subtitle1">Item name</Typography>
+                </FormProvider>
               </Grid>
             </Grid>
           </TabPanel>

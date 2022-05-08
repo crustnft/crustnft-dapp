@@ -10,11 +10,12 @@ function CrustButton(props: CrustButtonProps) {
   let color: CrustButtonProps['color'] = props.color;
   let size: CrustButtonProps['size'] = props.size;
   let variant: CrustButtonProps['variant'] = props.variant;
-  let sx;
+  let sx = props.sx;
   let Button = MatButton;
   if (color === 'default' || !color) {
     color = undefined;
     sx = {
+      ...sx,
       color: theme.palette.grey[800],
       borderColor: theme.palette.grey[300]
     };

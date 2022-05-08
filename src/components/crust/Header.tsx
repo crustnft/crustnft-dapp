@@ -67,8 +67,13 @@ export default function Header({ onOpenSidebar }: HeaderProps) {
         <Box sx={{ flexGrow: 1 }} />
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
           {notSmall ? (
-            <Link href="#/create-collection">
-              <CrustButton size="small" variant="contained" startIcon={<Iconify icon="bx:plus" />}>
+            <Link href="#/create-collection" sx={{ textDecoration: 'none' }}>
+              <CrustButton
+                size="small"
+                variant="contained"
+                startIcon={<Iconify icon="bx:plus" />}
+                color="primary"
+              >
                 Create
               </CrustButton>
             </Link>
