@@ -118,10 +118,12 @@ export const TYPOGRAPHY: TypographyOptions = {
     fontWeight: FONT_WEIGHT.subtitle
   },
   body2: {
-    fontSize: pxToRem(14)
+    fontSize: pxToRem(14),
+    lineHeight: FONT_HEIGHT.body2
   },
   body1: {
-    fontSize: pxToRem(16)
+    fontSize: pxToRem(16),
+    lineHeight: FONT_HEIGHT.body1
   },
   buttonXl: {
     fontSize: FONT_SIZE.buttonXl,

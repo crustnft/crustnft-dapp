@@ -1,5 +1,7 @@
 export { default as ConnectWalletPopover } from './ConnectWalletPopover';
 export { default as CrustButton } from './CrustButton';
+export { default as CrustFieldset } from './CrustFieldset';
+export { default as CrustInput } from './CrustInput';
 export { default as CrustOptionBox } from './CrustOptionBox';
 export { default as Header } from './Header';
 export * from './icons';

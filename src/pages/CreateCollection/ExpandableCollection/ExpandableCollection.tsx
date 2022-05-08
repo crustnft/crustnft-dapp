@@ -1,6 +1,7 @@
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Container, Grid, Tab, Typography } from '@mui/material';
-import { CrustButton, CrustOptionBox } from 'components/crust';
+import { CrustButton, CrustFieldset, CrustOptionBox } from 'components/crust';
+import CrustInput from 'components/crust/CrustInput';
 import CrustUpload from 'components/crust/CrustUpload';
 import { FormProvider } from 'components/hook-form';
 import { SUPPORTED_CHAINS } from 'constants/chains';
@@ -105,10 +106,21 @@ export default function ExpandableCollection() {
             <Grid container padding={0}>
               <Grid item xs={8}>
                 <FormProvider methods={createMultipleForm}>
-                  <Typography variant="h5">Upload file</Typography>
-                  <CrustUpload name="file" />
-                  <Typography variant="h5">Item details</Typography>
-                  <Typography variant="subtitle1">Item name</Typography>
+                  <CrustFieldset label="Upload file">
+                    <CrustUpload name="file" />
+                    <CrustFieldset label="Item details">
+                      <CrustInput
+                        label="Item name"
+                        name="name"
+                        placeholder={`e. g. "Redeemable Bitcoin Card with logo"`}
+                      />
+                      <CrustInput
+                        label="Description"
+                        name="name"
+                        placeholder={`e. g. "Redeemable Bitcoin Card with logo"`}
+                      />
+                    </CrustFieldset>
+                  </CrustFieldset>
                 </FormProvider>
               </Grid>
             </Grid>

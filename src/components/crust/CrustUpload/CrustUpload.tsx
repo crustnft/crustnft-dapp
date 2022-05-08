@@ -1,5 +1,4 @@
-import { Typography } from '@mui/material';
-import FormHelperText from '@mui/material/FormHelperText';
+import { FormHelperText, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { CustomFile, UploadProps } from 'components/upload';
 import RejectionFiles from 'components/upload/RejectionFiles';
