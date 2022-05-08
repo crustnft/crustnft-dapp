@@ -12,9 +12,9 @@ export default function Tab(theme: Theme) {
           ...theme.typography.h6,
           height: theme.typography.h6.lineHeight,
           minWidth: 'auto',
-          color: theme.palette.grey[500],
+          color: theme.palette.mode === 'light' ? theme.palette.grey[500] : theme.palette.grey[400],
           '&.Mui-selected': {
-            color: theme.palette.grey[700]
+            color: theme.palette.mode === 'light' ? theme.palette.grey[700] : theme.palette.grey[0]
           }
         }
       }

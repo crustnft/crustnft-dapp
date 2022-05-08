@@ -20,8 +20,11 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 const DropZoneStyle = styled('div')(({ theme }) => ({
   alignItems: 'center',
-  backgroundColor: theme.palette.grey[100],
-  border: `dashed 2px ${theme.palette.grey[400]}`,
+  backgroundColor:
+    theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[800],
+  border: `dashed 2px ${
+    theme.palette.mode === 'light' ? theme.palette.grey[400] : theme.palette.grey[600]
+  }`,
   borderRadius: pxToRem(15),
   display: 'flex',
   flexFlow: 'column',
