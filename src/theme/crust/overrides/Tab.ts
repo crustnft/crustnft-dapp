@@ -8,7 +8,7 @@ export default function Tab(theme: Theme) {
           padding: 0,
           marginRight: 35,
           alignItems: 'flex-start',
-          textTransform: 'capitalize' as unknown,
+          textTransform: 'capitalize' as any,
           ...theme.typography.h6,
           height: theme.typography.h6.lineHeight,
           minWidth: 'auto',
