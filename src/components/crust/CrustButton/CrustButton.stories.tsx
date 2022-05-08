@@ -8,13 +8,13 @@ export default CrustButtonStories;
 
 export const Variants = () => (
   <Stack direction="row" spacing={2}>
-    <CrustButton color="primary" variant="contained">
+    <CrustButton color="primary" variant="contained" size="medium">
       Contained
     </CrustButton>
-    <CrustButton color="primary" variant="outlined">
+    <CrustButton color="primary" variant="outlined" size="medium">
       Outlined
     </CrustButton>
-    <CrustButton color="primary" variant="fab">
+    <CrustButton color="primary" variant="fab" size="medium">
       fab
     </CrustButton>
   </Stack>
