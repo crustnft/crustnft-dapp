@@ -36,66 +36,6 @@ const LoadWithoutSpinner = (Component: any) => (props: any) => {
   );
 };
 
-export default function Router() {
-  return useRoutes([
-    {
-      path: '/',
-      element: <DashboardLayout />,
-      children: [
-        { element: <Navigate to="/wallet" replace /> },
-        { path: 'wallet', element: <MyNFT /> },
-        getRouteConfig(createCollectionRoutes, Loadable),
-        { path: 'mint-nft/:chain/:contractAddr', element: <MintNft /> },
-        { path: 'mint-exp-nft', element: <MintExpNft /> },
-        { path: 'collection-explore', element: <CollectionsExplorer /> },
-        { path: 'collection/:chain/:contractAddr/:pageNb', element: <CollectionViewer /> },
-        { path: 'my-collections', element: <CollectionsDashboard /> },
-        { path: 'collection-details/:id', element: <CPProjectDetails /> },
-        { path: 'collection-upload/:id', element: <CPProjectUpload /> },
-        { path: 'create-collection', element: <IntroCreateCollection /> },
-        {
-          path: 'faucets',
-          children: [
-            { path: '/faucets', element: <FunBox /> },
-            { path: '/faucets/crust', element: <CruFaucet /> },
-            { path: '/faucets/polygon', element: <MaticFaucet /> }
-          ]
-        },
-        {
-          path: 'learn-more',
-          element: <LearnMore />
-        },
-        { path: 'assets/:chain/:contractAddr/:tokenId', element: <AssetViewer /> }
-      ]
-    },
-
-    {
-      path: '/',
-      element: <SimplifiedLayout />,
-      children: [{ path: 'mint-cp-nft/:chain/:contractAddr', element: <MintCPNft /> }]
-    },
-
-    // Main Routes
-    {
-      path: '*',
-      element: <LogoOnlyLayout />,
-      children: [
-        { path: '404', element: <NotFound /> },
-        { path: '*', element: <Navigate to="/404" replace /> }
-      ]
-    },
-    {
-      path: '/',
-      element: <MainLayout />,
-      children: [
-        { path: 'terms-of-service', element: <TermsOfService /> },
-        { path: 'disclaimer', element: <Disclaimer /> }
-      ]
-    },
-    { path: '*', element: <Navigate to="/404" replace /> }
-  ]);
-}
-
 // Dashboard
 const FunBox = Loadable(lazy(() => import('../pages/FunBox')));
 const CruFaucet = Loadable(lazy(() => import('../pages/CruFaucet')));
@@ -131,3 +71,63 @@ const CollectionsExplorer = LoadWithoutSpinner(lazy(() => import('../pages/Colle
 // const Disclaimer = lazy(() => import('../pages/Disclaimer'));
 // const AssetViewer = lazy(() => import('../pages/AssetViewer'));
 // const Homepage from '../pages/Homepage';
+export const routes = [
+  {
+    path: '/',
+    element: <DashboardLayout />,
+    children: [
+      { element: <Navigate to="/wallet" replace /> },
+      { path: 'wallet', element: <MyNFT /> },
+      getRouteConfig(createCollectionRoutes, Loadable),
+      { path: 'mint-nft/:chain/:contractAddr', element: <MintNft /> },
+      { path: 'mint-exp-nft', element: <MintExpNft /> },
+      { path: 'collection-explore', element: <CollectionsExplorer /> },
+      { path: 'collection/:chain/:contractAddr/:pageNb', element: <CollectionViewer /> },
+      { path: 'my-collections', element: <CollectionsDashboard /> },
+      { path: 'collection-details/:id', element: <CPProjectDetails /> },
+      { path: 'collection-upload/:id', element: <CPProjectUpload /> },
+      { path: 'create-collection', element: <IntroCreateCollection /> },
+      {
+        path: 'faucets',
+        children: [
+          { path: '/faucets', element: <FunBox /> },
+          { path: '/faucets/crust', element: <CruFaucet /> },
+          { path: '/faucets/polygon', element: <MaticFaucet /> }
+        ]
+      },
+      {
+        path: 'learn-more',
+        element: <LearnMore />
+      },
+      { path: 'assets/:chain/:contractAddr/:tokenId', element: <AssetViewer /> }
+    ]
+  },
+
+  {
+    path: '/',
+    element: <SimplifiedLayout />,
+    children: [{ path: 'mint-cp-nft/:chain/:contractAddr', element: <MintCPNft /> }]
+  },
+
+  // Main Routes
+  {
+    path: '*',
+    element: <LogoOnlyLayout />,
+    children: [
+      { path: '404', element: <NotFound /> },
+      { path: '*', element: <Navigate to="/404" replace /> }
+    ]
+  },
+  {
+    path: '/',
+    element: <MainLayout />,
+    children: [
+      { path: 'terms-of-service', element: <TermsOfService /> },
+      { path: 'disclaimer', element: <Disclaimer /> }
+    ]
+  },
+  { path: '*', element: <Navigate to="/404" replace /> }
+];
+export default function Router() {
+  return useRoutes(routes);
+}

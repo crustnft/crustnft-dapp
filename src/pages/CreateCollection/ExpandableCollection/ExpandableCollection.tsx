@@ -4,13 +4,23 @@ import { CrustButton, CrustOptionBox } from 'components/crust';
 import { SUPPORTED_CHAINS } from 'constants/chains';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { pxToRem } from 'utils/getFontValue';
-
 export default function ExpandableCollection() {
-  const [tab, setTab] = useState<string>('General');
+  const { tab: tabFromRoute } = useParams<'tab'>();
+  const [tab, setTab] = useState<string>(tabFromRoute?.toLowerCase() || 'general');
   const { chain: selectedChain } = useWallet();
+  const location = useLocation();
   const { switchNetwork } = useWeb3();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (tabFromRoute !== tab) {
+      navigate('/create-collection/expandable/' + tab);
+    }
+  }, [tabFromRoute, tab, location, navigate]);
 
   const onTabChange = useCallback(
     (_e, v) => {
@@ -27,11 +37,11 @@ export default function ExpandableCollection() {
         <TabContext value={tab}>
           <Box>
             <TabList onChange={onTabChange} aria-label="basic tabs example">
-              <Tab label="General" value="General" />
-              <Tab label="Create" value="Create" />
+              <Tab label="General" value="general" />
+              <Tab label="Create" value="create" />
             </TabList>
           </Box>
-          <TabPanel value="General" sx={{ padding: 0 }}>
+          <TabPanel value="general" sx={{ padding: 0 }}>
             <Grid container padding={0}>
               <Grid container xs={12} sm={8}>
                 <Grid item xs={12}>
@@ -76,7 +86,7 @@ export default function ExpandableCollection() {
                   <CrustButton
                     variant="contained"
                     onClick={() => {
-                      setTab('Create');
+                      setTab('create');
                     }}
                   >
                     Next
@@ -85,10 +95,11 @@ export default function ExpandableCollection() {
               </Grid>
             </Grid>
           </TabPanel>
-          <TabPanel value="Create" sx={{ padding: 0 }}>
+          <TabPanel value="create" sx={{ padding: 0 }}>
             <Grid container padding={0}>
               <Grid item xs={8}>
-                Item Two
+                <Typography variant="h5">Upload file</Typography>
+                {/* <Upload */}
               </Grid>
             </Grid>
           </TabPanel>

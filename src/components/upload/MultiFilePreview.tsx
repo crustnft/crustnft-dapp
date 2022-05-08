@@ -7,7 +7,7 @@ import Iconify from '../Iconify';
 import { UploadMultiFileProps } from './type';
 
 export default function MultiFilePreview({ file, onRemove }: UploadMultiFileProps) {
-  if (file === null) return <></>;
+  if (!file) return <></>;
 
   const { name, size } = getFileData(file);
   return (
