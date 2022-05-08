@@ -21,8 +21,8 @@ import Iconify from 'components/Iconify';
 import useSettings from 'hooks/useSettings';
 import useWeb3 from 'hooks/useWeb3';
 import React, { useRef, useState } from 'react';
-import MenuPopover from '../MenuPopover';
-import CrustButton from './CrustButton';
+import MenuPopover from '../../MenuPopover';
+import CrustButton from '../CrustButton';
 const ConnectWalletPopover = () => {
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up('sm'));

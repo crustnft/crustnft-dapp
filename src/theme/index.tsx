@@ -22,6 +22,7 @@ declare module '@mui/material/styles' {
 }
 type Props = {
   children: ReactNode;
+  theme?: string;
 };
 type ComponentOverrides = (theme: Theme) => Theme['components'];
 
@@ -30,7 +31,7 @@ export const AVAILABLE_THEMES = {
   crust: import('./crust')
 };
 
-export default function ThemeProvider({ children }: Props) {
+export default function ThemeProvider({ children, theme: controlledThemeName }: Props) {
   const { theme: themeName, themeMode, themeDirection } = useSettings();
   const [themeConfigs, setThemeConfigs] = useState<ThemeOptions>();
   const [breakpoints, setBreakpoints] = useState<BreakpointsOptions>();
@@ -38,7 +39,7 @@ export default function ThemeProvider({ children }: Props) {
     ComponentOverrides | (() => ComponentOverrides)
   >();
   useEffect(() => {
-    const name = themeName as keyof typeof AVAILABLE_THEMES;
+    const name = (controlledThemeName || themeName) as keyof typeof AVAILABLE_THEMES;
 
     if (!AVAILABLE_THEMES[name]) {
       return;
@@ -61,7 +62,7 @@ export default function ThemeProvider({ children }: Props) {
         }
       }
     );
-  }, [themeName, themeMode]);
+  }, [themeName, themeMode, controlledThemeName]);
   const themeOptions: ThemeOptions | undefined = useMemo(
     () =>
       (themeConfigs && {
