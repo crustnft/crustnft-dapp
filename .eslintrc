@@ -3,8 +3,19 @@
   "extends": ["airbnb-typescript", "react-app", "prettier", "react-app/jest"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "extraFileExtensions": [".mdx"]
   },
+  "overrides": [
+    {
+      "files": [".tsx", ".ts"],
+      "extends": "airbnb-typescript"
+    },
+    {
+      "files": ["*.mdx"],
+      "extends": "plugin:mdx/recommended"
+    }
+  ],
   "settings": {
     "import/resolver": {
       "typescript": {
@@ -49,6 +60,7 @@
         "vars": "all",
         "args": "none"
       }
-    ]
+    ],
+    "@typescript-eslint/no-floating-promises": [1, { "ignoreVoid": true }]
   }
 }

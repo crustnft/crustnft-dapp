@@ -1,7 +1,7 @@
 import { Button as MatButton, ButtonProps, styled, useTheme } from '@mui/material';
 import React from 'react';
 type CrustButtonProps = Omit<Omit<Omit<ButtonProps, 'color'>, 'size'>, 'variant'> & {
-  size?: ButtonProps['size'] | 'ExtraLarge';
+  size?: ButtonProps['size'] | 'extraLarge';
   color?: ButtonProps['color'] | 'default';
   variant?: ButtonProps['variant'] | 'fab';
 };
@@ -19,7 +19,7 @@ function CrustButton(props: CrustButtonProps) {
       borderColor: theme.palette.grey[300]
     };
   }
-  if (size === 'ExtraLarge') {
+  if (size === 'extraLarge') {
     size = undefined;
     Button = styled(MatButton)({
       ...theme.typography.buttonXl!

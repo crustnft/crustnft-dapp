@@ -15,24 +15,24 @@ type Props = Omit<UploadProps, 'file'> & {
 };
 
 const RootStyle = styled('div')(({ theme }) => ({
-  margin: 'auto',
-  border: `1px dashed ${theme.palette.grey[500_32]}`
+  margin: 'auto'
 }));
 
 const DropZoneStyle = styled('div')(({ theme }) => ({
-  zIndex: 0,
-  width: '100%',
-  height: '100%',
-  outline: 'none',
+  alignItems: 'center',
+  backgroundColor: theme.palette.grey[100],
+  border: `dashed 2px ${theme.palette.grey[400]}`,
+  borderRadius: pxToRem(15),
   display: 'flex',
   flexFlow: 'column',
+  height: '100%',
+  justifyContent: 'center',
+  outline: 'none',
   overflow: 'hidden',
-  borderRadius: pxToRem(15),
   padding: pxToRem(40),
   position: 'relative',
-  alignItems: 'center',
-  border: `dashed 2px ${theme.palette.grey[400]}`,
-  justifyContent: 'center',
+  width: '100%',
+  zIndex: 0,
   '&:hover': {
     cursor: 'pointer',
     '& .placeholder': {
@@ -47,10 +47,11 @@ const Rule = styled(Typography)(({ theme }) => ({
   color: theme.palette.grey[600]
 }));
 
-const DownloadButton = styled(CrustButton)(({ theme }) => {
-  console.log(theme);
+const UploadButton = styled(CrustButton)(({ theme }) => {
   return {
-    boxShadow: theme.customShadows?.z12
+    ...theme.typography.buttonM,
+    boxShadow: theme.customShadows?.z12,
+    backgroundColor: theme.palette.grey[300]
   };
 });
 
@@ -70,9 +71,11 @@ export default function CrustUpload({ name, file, helperText, sx, rule }: Props)
           <div>
             <RootStyle
               sx={{
-                ...((isDragReject || error) && {
-                  borderColor: 'error.light'
-                }),
+                ...(isDragReject || error
+                  ? {
+                      borderColor: 'error.light'
+                    }
+                  : {}),
                 ...sx
               }}
             >
@@ -87,9 +90,9 @@ export default function CrustUpload({ name, file, helperText, sx, rule }: Props)
                 {file && <img alt="avatar" src={isString(file) ? file : file.preview} />}
 
                 {rule ? <Rule>{rule}</Rule> : null}
-                <DownloadButton color="default" variant="contained">
+                <UploadButton color="default" variant="contained">
                   Choose file
-                </DownloadButton>
+                </UploadButton>
               </DropZoneStyle>
             </RootStyle>
 

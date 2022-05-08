@@ -126,7 +126,7 @@ const ConnectWalletPopover = () => {
           <IconButton
             size="small"
             onClick={() => {
-              navigator.clipboard.writeText(account || '');
+              void navigator.clipboard.writeText(account || '');
             }}
           >
             <Iconify icon="ion:copy-outline" sx={{ height: '12px', color: 'text.primary' }} />

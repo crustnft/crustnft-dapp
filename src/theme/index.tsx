@@ -44,7 +44,7 @@ export default function ThemeProvider({ children, theme: controlledThemeName }: 
     if (!AVAILABLE_THEMES[name]) {
       return;
     }
-    AVAILABLE_THEMES[name].then(
+    void AVAILABLE_THEMES[name].then(
       ({
         default: getThemeOptions,
         componentsOverride: overrides,
