@@ -1,19 +1,19 @@
 import { Stack } from '@mui/material';
+import { FormProvider } from 'components/hook-form';
 import { useForm } from 'react-hook-form';
-import FormProvider from './FormProvider';
-import { RHFUploadAvatar } from './RHFUpload';
-const RHFUploadStories = {
-  title: 'RHFUploadAvatar',
-  component: RHFUploadAvatar
+import CrustUpload from './CrustUpload';
+const CrustUploadStories = {
+  title: 'CrustUpload',
+  component: CrustUpload
 };
-export default RHFUploadStories;
+export default CrustUploadStories;
 
 export const Default = () => {
   const formContext = useForm();
   return (
     <FormProvider methods={formContext}>
       <Stack direction="row" spacing={2}>
-        <RHFUploadAvatar name="avatar" />
+        <CrustUpload name="file" rule="PNG, JPEG or GIF. Max 3GB" />
       </Stack>
     </FormProvider>
   );

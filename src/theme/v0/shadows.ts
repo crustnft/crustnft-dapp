@@ -28,10 +28,10 @@ interface CustomShadowOptions {
 
 declare module '@mui/material/styles' {
   interface Theme {
-    customShadows: CustomShadowOptions;
+    customShadows: Partial<CustomShadowOptions>;
   }
   interface ThemeOptions {
-    customShadows?: CustomShadowOptions;
+    customShadows?: Partial<CustomShadowOptions>;
   }
 }
 

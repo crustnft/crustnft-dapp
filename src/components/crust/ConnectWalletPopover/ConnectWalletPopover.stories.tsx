@@ -1,4 +1,3 @@
-import ThemeProvider from 'theme';
 import ConnectWalletPopover from './ConnectWalletPopover';
 const ConnectWalletPopoverStories = {
   title: 'ConnectWalletPopover',
@@ -6,8 +5,4 @@ const ConnectWalletPopoverStories = {
 };
 export default ConnectWalletPopoverStories;
 
-export const Default = () => (
-  <ThemeProvider theme="crust">
-    <ConnectWalletPopover />
-  </ThemeProvider>
-);
+export const Default = () => <ConnectWalletPopover />;

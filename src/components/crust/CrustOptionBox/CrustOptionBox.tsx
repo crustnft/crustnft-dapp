@@ -1,7 +1,7 @@
-import { Box, styled } from '@mui/material';
+import { Box, BoxProps, styled } from '@mui/material';
 import { pxToRem } from 'utils/getFontValue';
 
-const CrustOptionBox = styled(Box)(({ theme }) => ({
+const OptionBox = styled(Box)(({ theme }) => ({
   border: `solid 2px ${theme.palette.grey[300]}`,
   borderRadius: pxToRem(12),
   padding: pxToRem(19),
@@ -15,4 +15,11 @@ const CrustOptionBox = styled(Box)(({ theme }) => ({
     backgroundColor: theme.colors?.accent.lighter || theme.palette.secondary.lighter
   }
 }));
+const CrustOptionBox = (props: BoxProps & { selected?: boolean }) => (
+  <OptionBox
+    {...props}
+    className={(props.className || '').concat(' ', (props.selected && 'Mui-selected') || '')}
+  />
+);
+
 export default CrustOptionBox;
