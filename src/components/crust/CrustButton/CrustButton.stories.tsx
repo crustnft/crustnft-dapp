@@ -21,7 +21,13 @@ export const Variants = () => (
 );
 export const Colors = () => (
   <Stack direction="row" spacing={2}>
-    <CrustButton color="default" variant="outlined">
+    <CrustButton
+      color="default"
+      variant="outlined"
+      onClick={() => {
+        alert('default ');
+      }}
+    >
       Default color
     </CrustButton>
     <CrustButton color="primary" variant="outlined">

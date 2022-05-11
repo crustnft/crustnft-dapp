@@ -1,4 +1,5 @@
 import { Box, BoxProps, styled } from '@mui/material';
+import React from 'react';
 import { pxToRem } from 'utils/getFontValue';
 
 const OptionBox = styled(Box)(({ theme }) => ({
@@ -12,7 +13,10 @@ const OptionBox = styled(Box)(({ theme }) => ({
   },
   '&.Mui-selected': {
     borderColor: theme.colors?.accent.main || theme.palette.secondary.main,
-    backgroundColor: theme.colors?.accent.lighter || theme.palette.secondary.lighter
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? theme.colors?.accent.lighter || theme.palette.secondary.lighter
+        : theme.palette.grey[700]
   }
 }));
 const CrustOptionBox = (props: BoxProps & { selected?: boolean }) => (
@@ -22,4 +26,4 @@ const CrustOptionBox = (props: BoxProps & { selected?: boolean }) => (
   />
 );
 
-export default CrustOptionBox;
+export default React.memo(CrustOptionBox);
