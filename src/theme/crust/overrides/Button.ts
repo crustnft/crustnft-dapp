@@ -14,7 +14,8 @@ export default function Button(theme: Theme) {
         },
         sizeLarge: {
           ...theme.typography.buttonL!,
-          padding: `${pxToRem(11)} ${pxToRem(22)}`
+          padding: `${pxToRem(11)} ${pxToRem(22)}`,
+          minWidth: pxToRem(221)
         },
         sizeMedium: {
           ...theme.typography.buttonM!,
