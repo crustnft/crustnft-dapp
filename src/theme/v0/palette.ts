@@ -229,7 +229,7 @@ const palette = {
     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action },
     header: {
-      background: '#f0f2f5a1',
+      background: '#fff',
       menuText: '#0000004d',
       menuTextHover: '#000000',
       walletPopoverBackground: '#FCFCFD',
@@ -240,7 +240,7 @@ const palette = {
     },
     customBackground: {
       menu: '#F2F4FA',
-      themeBackground: '#f0f2f5',
+      themeBackground: '#fff',
       cpCardHeader: '#F4F6F8'
     },
     collectionSlider: '#ffffff',
@@ -255,7 +255,7 @@ const palette = {
     background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
     action: { active: GREY[500], ...COMMON.action },
     header: {
-      background: '#141416a1',
+      background: '#161C24',
       menuText: '#ffffff4d',
       menuTextHover: '#000000',
       walletPopoverBackground: '#23262F',
