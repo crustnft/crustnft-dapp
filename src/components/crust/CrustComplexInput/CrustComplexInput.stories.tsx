@@ -1,6 +1,7 @@
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { FormProvider } from 'components/hook-form';
 import { useForm } from 'react-hook-form';
+import CrustButton from '../CrustButton';
 import CrustOptionBox from '../CrustOptionBox';
 import CrustComplexInput from './CrustComplexInput';
 const CrustComplexInputStories = {
@@ -20,11 +21,23 @@ export const Default = () => {
           helpText="This is a properties list"
           addText="Add properties"
           editText="Edit properties"
-          render={({ field, isArray }) => {
-            return isArray
-              ? field.value.map((val: string) => <CrustOptionBox key={val}>{val}</CrustOptionBox>)
-              : null;
+          addModalProps={{
+            title: 'Add properties',
+            children: <Typography>Your subtitle is here. Feel free to change it</Typography>,
+            actions: <CrustButton>Close</CrustButton>
           }}
+          editModalProps={{
+            title: 'Add properties',
+            children: <Typography>Your subtitle is here. Feel free to change it</Typography>,
+            actions: <CrustButton>Close</CrustButton>
+          }}
+          render={({ field, isArray }) => (
+            <>
+              {isArray
+                ? field.value.map((val: string) => <CrustOptionBox key={val}>{val}</CrustOptionBox>)
+                : null}
+            </>
+          )}
         />
       </Stack>
     </FormProvider>

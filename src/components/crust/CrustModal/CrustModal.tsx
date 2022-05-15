@@ -1,19 +1,14 @@
-import { Typography, TypographyProps } from '@mui/material';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
+import { Box, Dialog, DialogActions, Typography, TypographyProps } from '@mui/material';
 import CrustModalContent, { DialogContentProps } from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import * as React from 'react';
+import { pxToRem } from 'utils/getFontValue';
 import uuidv4 from 'utils/uuidv4';
 import { IconCloseSquare } from '../icons';
 const CrustDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
-    padding: theme.spacing(2)
-  },
-  '& .MuiDialogActions-root': {
-    padding: theme.spacing(1)
+    padding: `${pxToRem(30)} ${pxToRem(70)}`
   }
 }));
 
@@ -26,14 +21,15 @@ const CrustTitle = styled(Typography)(({ theme }) => ({
   color: theme.colors?.secondary.main
 }));
 const CrustModalActions = styled(DialogActions)(({ theme }) => ({
-  justifyContent: 'center'
+  justifyContent: 'center',
+  paddingBottom: pxToRem(31)
 }));
 
 const CrustModalTitle = (props: CrustModalTitleProps) => {
   const { children, onClose, ...other } = props;
 
   return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+    <Box sx={{ m: 0, px: pxToRem(70), pt: pxToRem(31) }} {...other}>
       <CrustTitle variant="h4">{children}</CrustTitle>
       {onClose ? (
         <IconButton
@@ -41,15 +37,15 @@ const CrustModalTitle = (props: CrustModalTitleProps) => {
           onClick={onClose}
           sx={{
             position: 'absolute',
-            right: 8,
-            top: 8,
+            right: pxToRem(60),
+            top: pxToRem(31),
             color: (theme) => theme.palette.grey[500]
           }}
         >
           <IconCloseSquare />
         </IconButton>
       ) : null}
-    </DialogTitle>
+    </Box>
   );
 };
 type ButtonPropsType = { onClick?: (...args: Array<any>) => void };
