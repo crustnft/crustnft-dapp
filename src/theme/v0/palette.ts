@@ -189,7 +189,7 @@ const CHART_COLORS = {
   red: ['#FF6C40', '#FF8F6D', '#FFBD98', '#FFF2D4']
 };
 
-const COMMON = {
+export const COMMON = {
   common: { black: '#000', white: '#fff' },
   primary: { ...CUSTOM_PRIMARY, contrastText: '#fff' },
   secondary: { ...SECONDARY, contrastText: '#fff' },

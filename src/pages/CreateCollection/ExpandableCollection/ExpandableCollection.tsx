@@ -50,6 +50,10 @@ export default function ExpandableCollection() {
     }
   }, [tabFromRoute, tab, location, navigate]);
   const createMultipleForm = useForm<CollectionFormType>();
+  const propertiesField = useFieldArray({
+    control: createMultipleForm.control,
+    name: 'properties'
+  });
   const addEditPropertiesForm = useForm<CollectionComplexInputFormType<'properties'>>({
     defaultValues: { properties: [propertyPlaceholderRow] },
     mode: 'onBlur'
@@ -72,11 +76,21 @@ export default function ExpandableCollection() {
     },
     [setTab]
   );
+  const { isValid: isPropertiesValid } = addEditPropertiesForm.formState;
   const addEditPropertiesModalProps = useMemo<CrustComplexInputProps['addModalProps']>(() => {
-    const { isValid } = addEditPropertiesForm.formState;
     return {
       actions: (
-        <CrustButton variant="contained" color="primary" size="large">
+        <CrustButton
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={() => {
+            if (!isPropertiesValid) {
+              return;
+            }
+            propertiesField.replace(addEditPropertiesForm.getValues('properties'));
+          }}
+        >
           Save
         </CrustButton>
       ),
@@ -102,12 +116,14 @@ export default function ExpandableCollection() {
                     rules={{ required: true }}
                   />
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    {isValid && i === addEditPropertiesField.fields.length - 1 ? (
+                    {(addEditPropertiesField.fields.length === 1 && i === 0) ||
+                    (isPropertiesValid && i === addEditPropertiesField.fields.length - 1) ? (
                       <IconButton
                         sx={{ marginRight: pxToRem(-8) }}
                         onClick={() => {
                           addEditPropertiesField.append(propertyPlaceholderRow);
                         }}
+                        disabled={!isPropertiesValid}
                       >
                         <IconPlusSquare />
                       </IconButton>
@@ -129,7 +145,7 @@ export default function ExpandableCollection() {
         </>
       )
     };
-  }, [addEditPropertiesField, addEditPropertiesForm]);
+  }, [addEditPropertiesField, addEditPropertiesForm, propertiesField, isPropertiesValid]);
   const addEditLevelsModalProps = useMemo<CrustComplexInputProps['addModalProps']>(() => {
     return {
       actions: (
@@ -236,50 +252,51 @@ export default function ExpandableCollection() {
                 <FormProvider methods={createMultipleForm}>
                   <CrustFieldset label="Upload file">
                     <CrustUpload name="file" rule="PNG, JPEG or GIF. Max 3GB" />
-                    <CrustFieldset label="Item details">
-                      <CrustInput
-                        label="Item name"
-                        name="name"
-                        placeholder={`e. g. "Redeemable Bitcoin Card with logo"`}
-                      />
-                      <CrustInput
-                        label="Description"
-                        name="name"
-                        placeholder={`e. g. "Redeemable Bitcoin Card with logo"`}
-                      />
-                      <CrustComplexInput
-                        name="properties"
-                        helpText="Properties of the collection"
-                        label="Properties"
-                        addModalProps={addEditPropertiesModalProps}
-                        editModalProps={addEditPropertiesModalProps}
-                        render={({ field, isArray }) => {
-                          return isArray
-                            ? field.value.map((val: string) => (
-                                <CrustOptionBox key={val}>{val}</CrustOptionBox>
-                              ))
-                            : null;
-                        }}
-                        addText="Add Properties"
-                        editText="Edit Properties"
-                      />
-                      <CrustComplexInput
-                        name="levels"
-                        helpText="Levels of the collection"
-                        label="Levels"
-                        addModalProps={addEditLevelsModalProps}
-                        editModalProps={addEditLevelsModalProps}
-                        render={({ field, isArray }) => {
-                          return isArray
-                            ? field.value.map((val: string) => (
-                                <CrustOptionBox key={val}>{val}</CrustOptionBox>
-                              ))
-                            : null;
-                        }}
-                        addText="Add Properties"
-                        editText="Edit Properties"
-                      />
-                    </CrustFieldset>
+                  </CrustFieldset>
+                  <CrustFieldset label="Item details">
+                    <CrustInput
+                      label="Item name"
+                      name="name"
+                      placeholder={`e. g. "Redeemable Bitcoin Card with logo"`}
+                    />
+                    <CrustInput
+                      label="Description"
+                      name="name"
+                      placeholder={`e. g. "Redeemable Bitcoin Card with logo"`}
+                    />
+                    <CrustComplexInput
+                      name="properties"
+                      helpText="Properties of the collection"
+                      label="Properties"
+                      addModalProps={addEditPropertiesModalProps}
+                      editModalProps={addEditPropertiesModalProps}
+                      render={({ field, isArray }) => {
+                        console.log(field, field.value, isArray);
+                        return isArray
+                          ? field.value.map((val: string) => (
+                              <CrustOptionBox key={val}>{val}</CrustOptionBox>
+                            ))
+                          : null;
+                      }}
+                      addText="Add Properties"
+                      editText="Edit Properties"
+                    />
+                    <CrustComplexInput
+                      name="levels"
+                      helpText="Levels of the collection"
+                      label="Levels"
+                      addModalProps={addEditLevelsModalProps}
+                      editModalProps={addEditLevelsModalProps}
+                      render={({ field, isArray }) => {
+                        return isArray
+                          ? field.value.map((val: string) => (
+                              <CrustOptionBox key={val}>{val}</CrustOptionBox>
+                            ))
+                          : null;
+                      }}
+                      addText="Add Properties"
+                      editText="Edit Properties"
+                    />
                   </CrustFieldset>
                 </FormProvider>
               </Grid>

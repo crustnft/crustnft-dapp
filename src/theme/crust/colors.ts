@@ -1,5 +1,4 @@
 import { Color } from '@mui/material';
-
 /// COLORS
 export const GREY_HEX: Partial<Color> = {
   0: '#FFFFFF',
@@ -104,9 +103,12 @@ export const COLORS_FEEDBACK = {
     main: SUCCESS_HEX
   }
 };
-export const COLORS_LIGHT = {
+export const COLORS_COMMON = {
   ...COLORS,
-  ...COLORS_FEEDBACK,
+  ...COLORS_FEEDBACK
+};
+export const COLORS_LIGHT = {
+  ...COLORS_COMMON,
   background: {
     default: BODY_LIGHT_HEX,
     paper: PAPER_RGBA
@@ -118,8 +120,7 @@ export const COLORS_LIGHT = {
   }
 };
 export const COLORS_DARK = {
-  ...COLORS,
-  ...COLORS_FEEDBACK,
+  ...COLORS_COMMON,
   background: {
     default: BODY_DARK_HEX,
     paper: PAPER_RGBA

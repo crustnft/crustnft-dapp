@@ -1,5 +1,7 @@
 import { CommonColors, PaletteOptions } from '@mui/material/styles/createPalette';
+import FALLBACK_SETTINGS from '../v0/palette';
 import { COLORS, COLORS_DARK, COLORS_LIGHT } from './colors';
+
 declare module '@mui/material/styles/createPalette' {
   interface PaletteOptions {
     secondary2?: {
@@ -16,6 +18,7 @@ const COMMON: Partial<CommonColors> = {
   black: '#000'
 };
 export const PALETTE_LIGHT: PaletteOptions = {
+  ...FALLBACK_SETTINGS.light, // FIXME: remove this after finish migrating new theme
   mode: 'light',
   primary: COLORS_LIGHT.primary,
   // accent
@@ -31,6 +34,7 @@ export const PALETTE_LIGHT: PaletteOptions = {
   common: COMMON
 };
 export const PALETTE_DARK: PaletteOptions = {
+  ...FALLBACK_SETTINGS.dark, // FIXME: remove this after finish migrating new theme
   mode: 'dark',
   primary: COLORS_DARK.primary,
   // accent
