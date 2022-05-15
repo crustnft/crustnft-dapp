@@ -8,6 +8,7 @@ import {
   Path,
   UseFormStateReturn
 } from 'react-hook-form';
+import { pxToRem } from 'utils/getFontValue';
 import CrustButton, { CrustButtonProps } from '../CrustButton';
 import type { CrustLabelProps } from '../CrustLabel';
 import CrustLabel from '../CrustLabel';
@@ -59,7 +60,7 @@ export default function CrustComplexInput<T = any>({
     [render, isEmpty, isEmptyArray, isArray]
   );
   return (
-    <Stack sx={{ width: '100%' }}>
+    <Stack sx={{ width: '100%', marginBottom: pxToRem(20) }}>
       <Stack
         justifyContent="space-between"
         direction="row"

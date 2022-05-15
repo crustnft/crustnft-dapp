@@ -62,6 +62,10 @@ export default function ExpandableCollection() {
     defaultValues: { levels: [] },
     mode: 'onBlur'
   });
+  const addEditLevelsField = useFieldArray({
+    control: addEditLevelsForm.control,
+    name: 'levels'
+  });
   const onTabChange = useCallback(
     (_e, v) => {
       setTab(v);
@@ -140,7 +144,7 @@ export default function ExpandableCollection() {
 
           <FormProvider methods={addEditLevelsForm}>
             <Grid container>
-              {addEditLevelsForm.watch('levels').map((level) => (
+              {addEditLevelsField.fields.map((level) => (
                 <Fragment key={level.name}>
                   <Grid item sm={6}>
                     <CrustInput name="properties[0].name" value={level.name} />
@@ -155,7 +159,7 @@ export default function ExpandableCollection() {
         </>
       )
     };
-  }, [addEditLevelsForm]);
+  }, [addEditLevelsForm, addEditLevelsField]);
   return (
     <Container fixed>
       <Typography variant="h3" component="h3" gutterBottom>
