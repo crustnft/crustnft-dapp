@@ -7,6 +7,7 @@ import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 import MainLayout from '../layouts/main';
 import SimplifiedLayout from '../layouts/simplified';
+import TenKCollection from '../pages/TenKCollection';
 
 const Loadable = (Component: any) => (props: any) => {
   return (
@@ -84,6 +85,8 @@ export const routes = [
       { path: 'collection-explore', element: <CollectionsExplorer /> },
       { path: 'collection/:chain/:contractAddr/:pageNb', element: <CollectionViewer /> },
       { path: 'my-collections', element: <CollectionsDashboard /> },
+      { path: '10k-collections', element: <TenKCollection /> },
+      { path: '10k-collections/:id', element: <TenKCollection /> },
       { path: 'collection-details/:id', element: <CPProjectDetails /> },
       { path: 'collection-upload/:id', element: <CPProjectUpload /> },
       { path: 'create-collection', element: <IntroCreateCollection /> },
