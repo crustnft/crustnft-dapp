@@ -14,7 +14,7 @@ import { FormProvider } from 'components/hook-form';
 import { SUPPORTED_CHAINS } from 'constants/chains';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router';
 import { useParams } from 'react-router-dom';
@@ -27,15 +27,16 @@ type Property = {
 type CollectionFormType = {
   properties: Array<Property>;
   levels: Array<{
+    levelType: string;
     value: number;
-    total: number;
-    name: string;
+    max: number;
   }>;
 };
 type CollectionComplexInputFormType<T extends keyof CollectionFormType> = {
   [k: string]: CollectionFormType[T];
 };
 const propertyPlaceholderRow = { name: '', value: '', isPlaceholder: true };
+const levelPlaceholderRow = { levelType: '', value: 0, max: 0, isPlaceholder: true };
 export default function ExpandableCollection() {
   const { tab: tabFromRoute } = useParams<'tab'>();
   const [tab, setTab] = useState<string>(tabFromRoute?.toLowerCase() || 'general');
@@ -54,6 +55,10 @@ export default function ExpandableCollection() {
     control: createMultipleForm.control,
     name: 'properties'
   });
+  const levelsField = useFieldArray({
+    control: createMultipleForm.control,
+    name: 'levels'
+  });
   const addEditPropertiesForm = useForm<CollectionComplexInputFormType<'properties'>>({
     defaultValues: { properties: [propertyPlaceholderRow] },
     mode: 'onBlur'
@@ -63,7 +68,7 @@ export default function ExpandableCollection() {
     name: 'properties'
   });
   const addEditLevelsForm = useForm<CollectionComplexInputFormType<'levels'>>({
-    defaultValues: { levels: [] },
+    defaultValues: { levels: [levelPlaceholderRow] },
     mode: 'onBlur'
   });
   const addEditLevelsField = useFieldArray({
@@ -77,6 +82,7 @@ export default function ExpandableCollection() {
     [setTab]
   );
   const { isValid: isPropertiesValid } = addEditPropertiesForm.formState;
+  const { isValid: isLevelsValid } = addEditLevelsForm.formState;
   const addEditPropertiesModalProps = useMemo<CrustComplexInputProps['addModalProps']>(() => {
     return {
       actions: (
@@ -107,7 +113,11 @@ export default function ExpandableCollection() {
                     name={`properties.${i}.name`}
                     sx={{ mb: 0 }}
                     placeholder={`e.g "Gender"`}
-                    rules={{ required: true }}
+                    rules={{
+                      required: true
+                      // validate: (name) =>
+                      //   !addEditPropertiesField.fields.find((field) => name === field.name)
+                    }}
                   />
                   <CrustInput
                     name={`properties.${i}.value`}
@@ -149,33 +159,86 @@ export default function ExpandableCollection() {
   const addEditLevelsModalProps = useMemo<CrustComplexInputProps['addModalProps']>(() => {
     return {
       actions: (
-        <CrustButton variant="contained" color="primary" size="large">
+        <CrustButton
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={() => {
+            if (!isLevelsValid) {
+              return;
+            }
+            levelsField.replace(addEditLevelsForm.getValues('levels'));
+          }}
+        >
           Save
         </CrustButton>
       ),
-      title: 'Add properties',
+      title: 'Add levels',
       children: (
         <>
-          <Typography variant="subtitle1">Your subtitle is here. Feel free to change it</Typography>
+          <Typography variant="subtitle1">
+            Levels show up underneath your item, are clickable, and can be filtered in your
+            collection's sidebar.
+          </Typography>
 
           <FormProvider methods={addEditLevelsForm}>
-            <Grid container>
-              {addEditLevelsField.fields.map((level) => (
-                <Fragment key={level.name}>
-                  <Grid item sm={6}>
-                    <CrustInput name="properties[0].name" value={level.name} />
-                  </Grid>
-                  <Grid item sm={6}>
-                    <CrustInput name="properties[0].value" type="number" value="Legend" />
-                  </Grid>
-                </Fragment>
+            <Stack spacing={2.5} direction="column">
+              {addEditLevelsField.fields.map((level, i) => (
+                <Stack spacing={2.5} direction="row" key={level.id}>
+                  <CrustInput
+                    name={`levels.${i}.levelType`}
+                    value={level.levelType}
+                    sx={{ mb: 0 }}
+                    rules={{
+                      required: true,
+                      // validate: (levelType) =>
+                      //   !addEditLevelsField.fields.find((field) => levelType === field.levelType)
+                    }}
+                  />
+                  <CrustInput
+                    name={`levels.${i}.value`}
+                    type="number"
+                    value={level.value}
+                    sx={{ mb: 0 }}
+                  />
+                  <Typography sx={{ pt: 0.8 }}>of</Typography>
+                  <CrustInput
+                    name={`levels.${i}.max`}
+                    type="number"
+                    value={level.max}
+                    sx={{ mb: 0 }}
+                  />
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    {(addEditLevelsField.fields.length === 1 && i === 0) ||
+                    (isLevelsValid && i === addEditLevelsField.fields.length - 1) ? (
+                      <IconButton
+                        sx={{ marginRight: pxToRem(-8) }}
+                        onClick={() => {
+                          addEditLevelsField.append(levelPlaceholderRow);
+                        }}
+                        disabled={!isLevelsValid}
+                      >
+                        <IconPlusSquare />
+                      </IconButton>
+                    ) : (
+                      <IconButton
+                        sx={{ marginRight: pxToRem(-8) }}
+                        onClick={() => {
+                          addEditLevelsField.remove(i);
+                        }}
+                      >
+                        <IconTrash />
+                      </IconButton>
+                    )}
+                  </Box>
+                </Stack>
               ))}
-            </Grid>
+            </Stack>
           </FormProvider>
         </>
       )
     };
-  }, [addEditLevelsForm, addEditLevelsField]);
+  }, [addEditLevelsForm, addEditLevelsField, levelsField, isLevelsValid]);
   return (
     <Container fixed>
       <Typography variant="h3" component="h3" gutterBottom>
@@ -294,8 +357,8 @@ export default function ExpandableCollection() {
                             ))
                           : null;
                       }}
-                      addText="Add Properties"
-                      editText="Edit Properties"
+                      addText="Add Levels"
+                      editText="Edit Levels"
                     />
                   </CrustFieldset>
                 </FormProvider>
