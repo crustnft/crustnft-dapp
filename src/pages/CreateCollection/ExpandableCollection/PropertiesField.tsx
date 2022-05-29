@@ -41,7 +41,9 @@ export default function PropertiesField({ form }: { form: UseFormReturn<Collecti
             if (!isPropertiesValid) {
               return;
             }
+            console.log(addEditPropertiesForm.getValues('properties'));
             propertiesField.replace(addEditPropertiesForm.getValues('properties'));
+            console.log(propertiesField.fields);
           }}
         >
           Save
@@ -110,11 +112,16 @@ export default function PropertiesField({ form }: { form: UseFormReturn<Collecti
       label="Properties"
       addModalProps={addEditPropertiesModalProps}
       editModalProps={addEditPropertiesModalProps}
-      render={({ field, isArray }) => {
-        console.log(field, field.value, isArray);
-        return isArray
-          ? field.value.map((val: string) => <CrustOptionBox key={val}>{val}</CrustOptionBox>)
-          : null;
+      render={({ field }) => {
+        return (
+          <Stack spacing={2.5} direction="row">
+            {propertiesField.fields.map((property) => (
+              <CrustOptionBox key={property.id}>
+                {property.name}: {property.value}
+              </CrustOptionBox>
+            ))}
+          </Stack>
+        );
       }}
       addText="Add Properties"
       editText="Edit Properties"
