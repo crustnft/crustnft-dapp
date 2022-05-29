@@ -2,12 +2,19 @@ import { FormHelperText, Input, InputProps, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { Controller, ControllerProps, useFormContext } from 'react-hook-form';
 import { pxToRem } from 'utils/getFontValue';
-type Props = Omit<InputProps, 'name'> & {
+export type CurstInputProps = Omit<InputProps, 'name'> & {
   name: string;
   label?: string;
   rules?: ControllerProps['rules'];
 };
-export default function CrustInput({ name, label, defaultValue, rules, sx, ...rest }: Props) {
+export default function CrustInput({
+  name,
+  label,
+  defaultValue,
+  rules,
+  sx,
+  ...rest
+}: CurstInputProps) {
   const { control } = useFormContext();
   const processedSx = useMemo(() => ({ marginBottom: pxToRem(20), ...sx }), [sx]);
   return (
