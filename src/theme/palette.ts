@@ -262,7 +262,7 @@ const palette = {
     ...COMMON,
     mode: 'light',
     text: { primary: '#000', secondary: '#637381', disabled: GREY[500] },
-    background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
+    background: { paper: '#fff', default: '#E5E5E5', neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action },
     header: {
       background: GREY[0],
