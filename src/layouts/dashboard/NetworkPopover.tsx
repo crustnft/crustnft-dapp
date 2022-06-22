@@ -7,7 +7,7 @@ import {
   Stack,
   Typography
 } from '@mui/material';
-import Iconify from 'components/Iconify';
+import { ArrowDownSquare } from 'assets/icons';
 import Scrollbar from 'components/Scrollbar';
 import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
@@ -31,7 +31,8 @@ export default function LanguagePopover() {
         size="small"
         marginTop={{ xs: 2, sm: 0 }}
         marginLeft={{ sm: 2 }}
-        endIcon={<Iconify height={12} icon={'akar-icons:chevron-down'} />}
+        sx={[(theme) => theme.palette.customCSS.buttonHeader.common, { ml: '15px !important' }]}
+        endIcon={<ArrowDownSquare />}
       >
         {selectedChain.name}
       </Box>
