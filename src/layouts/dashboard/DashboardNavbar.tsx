@@ -1,16 +1,6 @@
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 import { Icon } from '@iconify/react';
-import {
-  AppBar,
-  Box,
-  Button,
-  Divider,
-  IconButton,
-  Link,
-  Stack,
-  Toolbar,
-  ToolbarProps
-} from '@mui/material';
+import { AppBar, Box, Button, IconButton, Link, Stack, Toolbar, ToolbarProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Iconify from 'components/Iconify';
 import useResponsive from 'hooks/useResponsive';
@@ -23,11 +13,12 @@ import NetworkPopover from './NetworkPopover';
 const APPBAR_MIN_HEIGHT = 64;
 
 const RootStyle = styled(AppBar)(({ theme }) => ({
-  backdropFilter: 'blur(32px)',
-  WebkitBackdropFilter: 'blur(32px)', // Fix on Mobile
   backgroundColor: theme.palette.header.background,
-  boxShadow: 'none'
+  boxShadow: '0px 8px 16px rgba(145, 158, 171, 0.16)'
 }));
+
+export const APP_BAR_MIN_HEIGHT = '64px';
+export const APP_BAR_MAX_WIDTH = '1150px';
 
 const ToolbarStyle = styled(Toolbar)<ToolbarProps>(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
@@ -47,7 +38,16 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
   const notSmall = useResponsive('up', 'sm');
   return (
     <RootStyle>
-      <ToolbarStyle sx={{ minHeight: 200 }}>
+      <ToolbarStyle
+        sx={{
+          minHeight: APP_BAR_MIN_HEIGHT,
+          display: 'flex',
+          height: '100%',
+          width: '100%',
+          maxWidth: APP_BAR_MAX_WIDTH,
+          margin: '0 auto'
+        }}
+      >
         <IconButton onClick={onOpenSidebar} sx={{ color: 'header.menuText' }}>
           <Icon icon={menu2Fill} />
         </IconButton>
@@ -62,20 +62,12 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           </Box>
 
           {isDesktop && (
-            <>
-              <Divider
-                orientation="vertical"
-                variant="middle"
-                flexItem
-                sx={{ borderRightWidth: 2, minHeight: '34px' }}
-              />
-              <MenuDesktop
-                navConfig={[
-                  { title: 'Wallet', path: 'wallet' },
-                  { title: 'Explore', path: 'collection-explore' }
-                ]}
-              />
-            </>
+            <MenuDesktop
+              navConfig={[
+                { title: 'Wallet', path: 'wallet' },
+                { title: 'Explore', path: 'collection-explore' }
+              ]}
+            />
           )}
         </Stack>
 
@@ -87,12 +79,12 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
                 variant="contained"
                 startIcon={<Iconify icon="bx:plus" />}
                 sx={[
+                  (theme) => theme.palette.customCSS.buttonHeader.common,
+                  (theme) => theme.palette.customCSS.buttonHeader.container,
                   {
-                    backgroundColor: '#3772FF',
-                    color: '#ffffff',
-                    borderRadius: '32px'
-                  },
-                  { '& .MuiButton-startIcon': { mr: 0.5 } }
+                    backgroundColor: (theme) => theme.palette.primary.main,
+                    '& .MuiButton-startIcon': { mr: 0.5 }
+                  }
                 ]}
               >
                 Create

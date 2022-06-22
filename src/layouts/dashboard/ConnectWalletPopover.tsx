@@ -67,11 +67,14 @@ const ConnectWalletPopover = () => {
           variant="outlined"
           onClick={handleWalletModalOpen}
           sx={[
+            (theme) => theme.palette.customCSS.buttonHeader.common,
+            (theme) => theme.palette.customCSS.buttonHeader.outline,
             {
               color: 'text.primary',
-              borderRadius: '32px',
-              border: theme.palette.header.walletButtonBorder,
-              borderColor: theme.palette.header.menuText
+              '& .MuiButtonBase-root:hover': {
+                border: (theme) => theme.palette.customCSS.buttonHeader.outline.border
+              },
+              ml: '20px !important'
             }
           ]}
         >

@@ -1,4 +1,5 @@
-import { Box, Card, Container, Grid, Paper, Typography } from '@mui/material';
+import { Box, Container, Grid, Stack, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
 import useAuth from 'hooks/useAuth';
 import useWeb3 from 'hooks/useWeb3';
 import { useEffect } from 'react';
@@ -28,33 +29,49 @@ export default function MyNFT() {
             <MyCollections />
           </Box>
         </Box>
-        <Card sx={{ p: 3, display: active && isAuthenticated ? 'none' : 'block' }}>
-          <Typography
-            variant="overline"
-            sx={{
-              mb: 3,
 
-              color: 'text.secondary'
+        <Stack sx={{ alignItems: 'center', display: active && isAuthenticated ? 'none' : 'flex' }}>
+          <Typography
+            variant="h3"
+            color={(theme) => theme.palette.secondary.main}
+            sx={{
+              marginTop: '60px',
+              p: '11px 22px'
             }}
           >
-            Select network & Connect wallet
+            Hi, Welcome back Rachel!
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            color={(theme) => theme.palette.grey[600]}
+            sx={{
+              marginTop: '10px'
+            }}
+          >
+            No account creation needed to start creating your collection. Try now!
           </Typography>
 
-          <Paper
+          <Button
+            variant="contained"
             sx={{
-              p: 3,
-              mt: 4,
-              mb: 3,
-              width: 1,
-              border: (theme) => `solid 1px ${theme.palette.grey[500_32]}`
+              fontWeight: '700',
+              fontSize: '18px',
+              lineHeight: '32px',
+              height: '50px',
+              mt: '30px',
+              p: '11px 22px',
+              textTransform: 'none'
             }}
           >
-            <Typography variant="subtitle2">
-              This version is reserved for wallet with beta access. You can connect and sign with
-              the registered wallet to view your collection
-            </Typography>
-          </Paper>
-        </Card>
+            Login with a wallet
+          </Button>
+          <Box
+            component="img"
+            src="./static/mock-images/other/welcomeBackPageImage.png"
+            alt=""
+            sx={{ mt: '60px', height: '400px' }}
+          />
+        </Stack>
       </Container>
     </Page>
   );

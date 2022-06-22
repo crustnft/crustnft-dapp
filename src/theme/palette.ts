@@ -74,16 +74,8 @@ declare module '@mui/material/styles/createPalette' {
     neutral: string;
   }
 
-  interface CustomDimension {
-    header?: CustomDimension;
-    button?: CustomDimension;
-    height: number | string;
-    width: number | string;
-  }
-  interface Palette {
-    tertiary: PaletteColor;
-    accent: PaletteColor;
-    dimension: CustomDimension;
+  interface CustomCSS {
+    [key: string]: CustomCSS;
   }
   interface Palette {
     gradients: GradientsPaletteOptions;
@@ -93,6 +85,10 @@ declare module '@mui/material/styles/createPalette' {
     customBackground: BackgroundColor;
     collectionSlider: string;
     card: CardOptions;
+
+    tertiary: PaletteColor;
+    accent: PaletteColor;
+    customCSS: CustomCSS;
   }
   interface PaletteOptions {
     gradients?: GradientsPaletteOptions;
@@ -222,11 +218,22 @@ export const COMMON = {
   gradients: GRADIENTS,
   chart: CHART_COLORS,
   divider: GREY[500_24],
-  dimension: {
-    header: {
-      button: {
-        width: '111px',
-        height: '44px'
+  customCSS: {
+    buttonHeader: {
+      common: {
+        minWidth: '111px',
+        height: '44px',
+        borderRadius: '8px',
+        p: '11px 22px !important'
+      },
+      container: {
+        boxShadow: '0px 8px 16px rgba(255, 140, 0, 0.2)',
+        color: GREY[0]
+      },
+      outline: {
+        boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.16)',
+        color: 'text.primary',
+        border: `2px solid ${GREY[300]} !important`
       }
     }
   },
@@ -255,7 +262,7 @@ const palette = {
     ...COMMON,
     mode: 'light',
     text: { primary: '#000', secondary: '#637381', disabled: GREY[500] },
-    background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
+    background: { paper: '#fff', default: '#E5E5E5', neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action },
     header: {
       background: GREY[0],

@@ -25,7 +25,7 @@ const LinkStyle = styled(Link)<RouterLinkProps>(({ theme }) => ({
 
 export default function MenuDesktop({ navConfig }: MenuProps) {
   return (
-    <Stack direction="row">
+    <Stack direction="row" sx={{ ml: '50px !important' }}>
       {navConfig.map((link) => (
         <MenuDesktopItem key={link.title} item={link} />
       ))}
