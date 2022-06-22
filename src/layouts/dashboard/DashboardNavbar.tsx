@@ -29,6 +29,9 @@ const RootStyle = styled(AppBar)(({ theme }) => ({
   boxShadow: 'none'
 }));
 
+export const APP_BAR_MIN_HEIGHT = 64;
+export const APP_BAR_MAX_WIDTH = 1150;
+
 const ToolbarStyle = styled(Toolbar)<ToolbarProps>(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     padding: theme.spacing(0, 5)
@@ -47,7 +50,16 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
   const notSmall = useResponsive('up', 'sm');
   return (
     <RootStyle>
-      <ToolbarStyle sx={{ minHeight: 200 }}>
+      <ToolbarStyle
+        sx={{
+          minHeight: APP_BAR_MIN_HEIGHT,
+          display: 'flex',
+          height: '100%',
+          width: '100%',
+          maxWidth: APP_BAR_MAX_WIDTH,
+          margin: '0 auto'
+        }}
+      >
         <IconButton onClick={onOpenSidebar} sx={{ color: 'header.menuText' }}>
           <Icon icon={menu2Fill} />
         </IconButton>
