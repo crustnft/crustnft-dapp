@@ -4,11 +4,19 @@ function createGradient(color1: string, color2: string) {
   return `linear-gradient(to bottom, ${color1}, ${color2})`;
 }
 
-export type ColorSchema = 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
+export type ColorSchema =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'accent'
+  | 'success'
+  | 'warning'
+  | 'error';
 
 interface GradientsPaletteOptions {
   primary: string;
-  info: string;
+  accent: string;
+  tertiary: string;
   success: string;
   warning: string;
   error: string;
@@ -59,11 +67,23 @@ declare module '@mui/material/styles/createPalette' {
   }
   interface SimplePaletteColorOptions {
     lighter: string;
-    darker: string;
+    neutral: string;
   }
   interface PaletteColor {
     lighter: string;
-    darker: string;
+    neutral: string;
+  }
+
+  interface CustomDimension {
+    header?: CustomDimension;
+    button?: CustomDimension;
+    height: number | string;
+    width: number | string;
+  }
+  interface Palette {
+    tertiary: PaletteColor;
+    accent: PaletteColor;
+    dimension: CustomDimension;
   }
   interface Palette {
     gradients: GradientsPaletteOptions;
@@ -75,13 +95,13 @@ declare module '@mui/material/styles/createPalette' {
     card: CardOptions;
   }
   interface PaletteOptions {
-    gradients: GradientsPaletteOptions;
-    chart: ChartPaletteOptions;
-    header: HeaderColor;
-    additional: AdditionalColor;
-    customBackground: BackgroundColor;
-    collectionSlider: string;
-    card: CardOptions;
+    gradients?: GradientsPaletteOptions;
+    chart?: ChartPaletteOptions;
+    header?: HeaderColor;
+    additional?: AdditionalColor;
+    customBackground?: BackgroundColor;
+    collectionSlider?: string;
+    card?: CardOptions;
   }
 }
 
@@ -101,55 +121,54 @@ declare module '@mui/material' {
 
 // SETUP COLORS
 const PRIMARY = {
-  lighter: '#C8FACD',
-  light: '#5BE584',
-  main: '#00AB55',
-  dark: '#007B55',
-  darker: '#005249'
-};
-
-const CUSTOM_PRIMARY = {
-  lighter: '#F4F6F8',
-  light: '#F4F6F8',
-  main: '#454F5B',
-  dark: '#212B36',
-  darker: '#161C24'
+  lighter: '#FBEDDD',
+  light: '#FBC27C',
+  main: '#FF8C00',
+  neutral: '#FDA232',
+  dark: '#DF7B00'
 };
 
 const SECONDARY = {
-  lighter: '#D6E4FF',
-  light: '#84A9FF',
-  main: '#3366FF',
-  dark: '#1939B7',
-  darker: '#091A7A'
+  lighter: '#E3EBF3',
+  light: '#9EB6CE',
+  main: '#143F6B',
+  neutral: '#58799B',
+  dark: '#0E2E4E'
 };
-const INFO = {
-  lighter: '#D0F2FF',
-  light: '#74CAFF',
-  main: '#1890FF',
-  dark: '#0C53B7',
-  darker: '#04297A'
+const TERTIARY = {
+  lighter: '#F8EDEC',
+  light: '#FABBB2',
+  main: '#FE7E6D',
+  neutral: '#FC9789',
+  dark: '#DC6C5D'
+};
+const ACCENT = {
+  lighter: '#E5F2F8',
+  light: '#ACDDF1',
+  main: '#3CB3E7',
+  neutral: '#75C8ED',
+  dark: '#329BC9'
 };
 const SUCCESS = {
   lighter: '#E9FCD4',
   light: '#AAF27F',
   main: '#54D62C',
-  dark: '#229A16',
-  darker: '#08660D'
+  neutral: '#229A16',
+  dark: '#08660D'
 };
 const WARNING = {
   lighter: '#FFF7CD',
   light: '#FFE16A',
   main: '#FFC107',
-  dark: '#B78103',
-  darker: '#7A4F01'
+  neutral: '#B78103',
+  dark: '#7A4F01'
 };
 const ERROR = {
   lighter: '#FFE7D9',
   light: '#FFA48D',
   main: '#FF4842',
-  dark: '#B72136',
-  darker: '#7A0C2E'
+  neutral: '#B72136',
+  dark: '#7A0C2E'
 };
 
 const GREY = {
@@ -175,7 +194,8 @@ const GREY = {
 
 const GRADIENTS = {
   primary: createGradient(PRIMARY.light, PRIMARY.main),
-  info: createGradient(INFO.light, INFO.main),
+  accent: createGradient(ACCENT.light, ACCENT.main),
+  tertiary: createGradient(TERTIARY.light, TERTIARY.main),
   success: createGradient(SUCCESS.light, SUCCESS.main),
   warning: createGradient(WARNING.light, WARNING.main),
   error: createGradient(ERROR.light, ERROR.main)
@@ -189,11 +209,12 @@ const CHART_COLORS = {
   red: ['#FF6C40', '#FF8F6D', '#FFBD98', '#FFF2D4']
 };
 
-const COMMON = {
+export const COMMON = {
   common: { black: '#000', white: '#fff' },
-  primary: { ...CUSTOM_PRIMARY, contrastText: '#fff' },
+  primary: { ...PRIMARY, contrastText: '#fff' },
   secondary: { ...SECONDARY, contrastText: '#fff' },
-  info: { ...INFO, contrastText: '#fff' },
+  tertiary: { ...TERTIARY, contrastText: '#fff' },
+  accent: { ...ACCENT, contrastText: '#fff' },
   success: { ...SUCCESS, contrastText: GREY[800] },
   warning: { ...WARNING, contrastText: GREY[800] },
   error: { ...ERROR, contrastText: '#fff' },
@@ -201,6 +222,14 @@ const COMMON = {
   gradients: GRADIENTS,
   chart: CHART_COLORS,
   divider: GREY[500_24],
+  dimension: {
+    header: {
+      button: {
+        width: '111px',
+        height: '44px'
+      }
+    }
+  },
   action: {
     hover: GREY[500_8],
     selected: GREY[500_16],
@@ -229,7 +258,7 @@ const palette = {
     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action },
     header: {
-      background: '#f0f2f5a1',
+      background: GREY[0],
       menuText: '#0000004d',
       menuTextHover: '#000000',
       walletPopoverBackground: '#FCFCFD',
@@ -240,7 +269,7 @@ const palette = {
     },
     customBackground: {
       menu: '#F2F4FA',
-      themeBackground: '#f0f2f5',
+      themeBackground: '#fff',
       cpCardHeader: '#F4F6F8'
     },
     collectionSlider: '#ffffff',
@@ -255,7 +284,7 @@ const palette = {
     background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
     action: { active: GREY[500], ...COMMON.action },
     header: {
-      background: '#141416a1',
+      background: '#161C24',
       menuText: '#ffffff4d',
       menuTextHover: '#000000',
       walletPopoverBackground: '#23262F',
