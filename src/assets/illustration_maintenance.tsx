@@ -1,13 +1,13 @@
 // material
-import { useTheme } from '@mui/material/styles';
 import { Box, BoxProps } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
 export default function MaintenanceIllustration({ ...other }: BoxProps) {
   const theme = useTheme();
   const PRIMARY_MAIN = theme.palette.primary.main;
-  const PRIMARY_DARKER = theme.palette.primary.darker;
+  const PRIMARY_DARK = theme.palette.primary.dark;
 
   return (
     <Box {...other}>
@@ -98,7 +98,7 @@ export default function MaintenanceIllustration({ ...other }: BoxProps) {
               d="M172.581 194.781l-2.399 2.399c-3.425 3.431-9.046 3.315-12.32-.318l-16.564-18.475a2.176 2.176 0 01.081-2.989l9.309-9.313a2.174 2.174 0 012.978-.091l18.552 16.422.004.004c3.646 3.243 3.812 8.907.359 12.361z"
             />
             <path
-              fill={PRIMARY_DARKER}
+              fill={PRIMARY_DARK}
               fillRule="nonzero"
               d="M172.581 194.781l-1.199 1.199-25.289-25.298 4.595-4.597a2.173 2.173 0 012.977-.091l18.553 16.422.004.004c3.645 3.243 3.812 8.907.359 12.361z"
               opacity="0.24"
@@ -109,7 +109,7 @@ export default function MaintenanceIllustration({ ...other }: BoxProps) {
               d="M174.711 138.762c-.332-1.582-2.287-2.165-3.429-1.021l-7.117 7.12a3.31 3.31 0 01-4.681 0l-1.906-1.907-1.907-1.908a3.308 3.308 0 010-4.68l7.117-7.122c1.143-1.142.561-3.098-1.02-3.43-5.355-1.126-11.157.392-15.316 4.552-5.296 5.299-6.308 13.259-3.037 19.573l-40.33 33.142a5.766 5.766 0 00-.516 8.61l3.144 3.146 3.145 3.145a5.761 5.761 0 008.607-.516l33.13-40.345c6.312 3.272 14.268 2.26 19.566-3.038 4.159-4.16 5.675-9.964 4.55-15.321zm-61.338 50.587a2.174 2.174 0 110-4.349 2.174 2.174 0 010 4.349z"
             />
             <path
-              fill={PRIMARY_DARKER}
+              fill={PRIMARY_DARK}
               fillRule="nonzero"
               d="M170.161 154.083c-5.298 5.298-13.254 6.31-19.566 3.038l-33.13 40.345a5.761 5.761 0 01-8.607.516l-3.145-3.145 6.122-6.125a2.174 2.174 0 103.075-3.076l42.668-42.682 1.907 1.907a3.308 3.308 0 004.68 0l7.117-7.12c1.142-1.144 3.097-.561 3.429 1.021 1.125 5.357-.392 11.161-4.55 15.321z"
               opacity="0.24"

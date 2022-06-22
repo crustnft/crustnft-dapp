@@ -1,4 +1,4 @@
-import { Theme, alpha } from '@mui/material/styles';
+import { alpha, Theme } from '@mui/material/styles';
 //
 import { ColorSchema } from '../palette';
 
@@ -31,7 +31,7 @@ export default function ToggleButton(theme: Theme) {
         },
         style('primary'),
         style('secondary'),
-        style('info'),
+        style('accent'),
         style('success'),
         style('warning'),
         style('error')

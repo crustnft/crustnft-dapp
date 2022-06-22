@@ -3,7 +3,7 @@ import { Theme } from '@mui/material/styles';
 // theme
 import { ColorSchema } from '../palette';
 //
-import { ErrorIcon, InfoIcon, SuccessIcon, WarningIcon } from './CustomIcons';
+import { AccentIcon, ErrorIcon, SuccessIcon, WarningIcon } from './CustomIcons';
 
 // ----------------------------------------------------------------------
 
@@ -11,8 +11,8 @@ export default function Alert(theme: Theme) {
   const isLight = theme.palette.mode === 'light';
 
   const standardStyle = (color: ColorSchema) => ({
-    color: theme.palette[color][isLight ? 'darker' : 'lighter'],
-    backgroundColor: theme.palette[color][isLight ? 'lighter' : 'darker'],
+    color: theme.palette[color][isLight ? 'dark' : 'lighter'],
+    backgroundColor: theme.palette[color][isLight ? 'lighter' : 'dark'],
     '& .MuiAlert-icon': {
       color: theme.palette[color][isLight ? 'main' : 'light']
     }
@@ -23,9 +23,9 @@ export default function Alert(theme: Theme) {
   });
 
   const outlinedStyle = (color: ColorSchema) => ({
-    color: theme.palette[color][isLight ? 'darker' : 'lighter'],
+    color: theme.palette[color][isLight ? 'dark' : 'lighter'],
     border: `solid 1px ${theme.palette[color][isLight ? 'light' : 'dark']}`,
-    backgroundColor: theme.palette[color][isLight ? 'lighter' : 'darker'],
+    backgroundColor: theme.palette[color][isLight ? 'lighter' : 'dark'],
     '& .MuiAlert-icon': {
       color: theme.palette[color][isLight ? 'main' : 'light']
     }
@@ -35,7 +35,7 @@ export default function Alert(theme: Theme) {
     MuiAlert: {
       defaultProps: {
         iconMapping: {
-          info: <InfoIcon />,
+          accent: <AccentIcon />,
           success: <SuccessIcon />,
           warning: <WarningIcon />,
           error: <ErrorIcon />
@@ -54,17 +54,17 @@ export default function Alert(theme: Theme) {
           }
         },
 
-        standardInfo: standardStyle('info'),
+        standardAccent: standardStyle('accent'),
         standardSuccess: standardStyle('success'),
         standardWarning: standardStyle('warning'),
         standardError: standardStyle('error'),
 
-        filledInfo: filledStyle('info'),
+        filledAccent: filledStyle('accent'),
         filledSuccess: filledStyle('success'),
         filledWarning: filledStyle('warning'),
         filledError: filledStyle('error'),
 
-        outlinedInfo: outlinedStyle('info'),
+        outlinedAccent: outlinedStyle('accent'),
         outlinedSuccess: outlinedStyle('success'),
         outlinedWarning: outlinedStyle('warning'),
         outlinedError: outlinedStyle('error')

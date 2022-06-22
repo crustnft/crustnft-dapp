@@ -1,13 +1,13 @@
 // material
-import { useTheme } from '@mui/material/styles';
 import { Box, BoxProps } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
 export default function PageNotFoundIllustration({ ...other }: BoxProps) {
   const theme = useTheme();
   const PRIMARY_MAIN = theme.palette.primary.main;
-  const PRIMARY_DARKER = theme.palette.primary.darker;
+  const PRIMARY_DARK = theme.palette.primary.dark;
 
   return (
     <Box {...other}>
@@ -42,7 +42,7 @@ export default function PageNotFoundIllustration({ ...other }: BoxProps) {
             <circle cx="182.109" cy="97.623" r="23.406" fill="url(#linearGradient-2)" />
 
             <path
-              fill={PRIMARY_DARKER}
+              fill={PRIMARY_DARK}
               d="M244.878 181.46c34.559 0 62.575 28.016 62.575 62.576 0 34.559-28.016 62.575-62.575 62.575-34.56 0-62.576-28.016-62.576-62.575 0-34.56 28.016-62.576 62.576-62.576zm0 23.186c-21.754 0-39.389 17.635-39.389 39.39 0 21.754 17.635 39.389 39.389 39.389s39.389-17.635 39.389-39.389c0-21.755-17.635-39.39-39.389-39.39z"
             />
             <path
