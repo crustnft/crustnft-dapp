@@ -75,13 +75,13 @@ declare module '@mui/material/styles/createPalette' {
     card: CardOptions;
   }
   interface PaletteOptions {
-    gradients?: GradientsPaletteOptions;
-    chart?: ChartPaletteOptions;
-    header?: HeaderColor;
-    additional?: AdditionalColor;
-    customBackground?: BackgroundColor;
-    collectionSlider?: string;
-    card?: CardOptions;
+    gradients: GradientsPaletteOptions;
+    chart: ChartPaletteOptions;
+    header: HeaderColor;
+    additional: AdditionalColor;
+    customBackground: BackgroundColor;
+    collectionSlider: string;
+    card: CardOptions;
   }
 }
 
@@ -189,7 +189,7 @@ const CHART_COLORS = {
   red: ['#FF6C40', '#FF8F6D', '#FFBD98', '#FFF2D4']
 };
 
-export const COMMON = {
+const COMMON = {
   common: { black: '#000', white: '#fff' },
   primary: { ...CUSTOM_PRIMARY, contrastText: '#fff' },
   secondary: { ...SECONDARY, contrastText: '#fff' },
@@ -229,7 +229,7 @@ const palette = {
     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action },
     header: {
-      background: '#fff',
+      background: '#f0f2f5a1',
       menuText: '#0000004d',
       menuTextHover: '#000000',
       walletPopoverBackground: '#FCFCFD',
@@ -240,7 +240,7 @@ const palette = {
     },
     customBackground: {
       menu: '#F2F4FA',
-      themeBackground: '#fff',
+      themeBackground: '#f0f2f5',
       cpCardHeader: '#F4F6F8'
     },
     collectionSlider: '#ffffff',
@@ -255,7 +255,7 @@ const palette = {
     background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
     action: { active: GREY[500], ...COMMON.action },
     header: {
-      background: '#161C24',
+      background: '#141416a1',
       menuText: '#ffffff4d',
       menuTextHover: '#000000',
       walletPopoverBackground: '#23262F',

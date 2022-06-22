@@ -58,7 +58,6 @@ export const ICON = {
 // ----------------------------------------------------------------------
 
 export const defaultSettings: SettingsValueProps = {
-  theme: 'crust',
   themeMode: 'light',
   themeDirection: 'ltr',
   themeColorPresets: 'blue',

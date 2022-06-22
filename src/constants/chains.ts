@@ -1,10 +1,7 @@
-import React from 'react';
-
 const PROD_CHAINS = [
   {
     name: 'Ethereum',
     currencySymbol: 'ETH',
-    Icon: React.lazy(() => import('components/crust/icons/IconEthereum')),
     icon: './static/icons/networks/ethereum.svg',
     iconDark: './static/icons/networks/ethereum-dark.svg',
     chainId: 1,
@@ -14,7 +11,6 @@ const PROD_CHAINS = [
   {
     name: 'Binance',
     currencySymbol: 'BNB',
-    Icon: React.lazy(() => import('components/crust/icons/IconBinance')),
     icon: './static/icons/networks/binance.svg',
     iconDark: './static/icons/networks/binance-dark.png',
     chainId: 56,
@@ -24,7 +20,6 @@ const PROD_CHAINS = [
   {
     name: 'Polygon',
     currencySymbol: 'MATIC',
-    Icon: React.lazy(() => import('components/crust/icons/IconPolygon')),
     icon: './static/icons/networks/polygon.svg',
     iconDark: './static/icons/networks/polygon-dark.png',
     chainId: 137,
@@ -37,7 +32,6 @@ const TEST_CHAINS = [
   {
     name: 'Rinkeby',
     currencySymbol: 'RIN',
-    Icon: React.lazy(() => import('components/crust/icons/IconRinkeby')),
     icon: './static/icons/networks/rinkeby.svg',
     iconDark: './static/icons/networks/rinkeby-dark.svg',
     chainId: 4,
@@ -47,7 +41,6 @@ const TEST_CHAINS = [
   {
     name: 'BSC Testnet',
     currencySymbol: 'tBNB',
-    Icon: React.lazy(() => import('components/crust/icons/IconBinance')),
     icon: './static/icons/networks/binance.svg',
     iconDark: './static/icons/networks/binance-dark.png',
     chainId: 97,

@@ -14,9 +14,7 @@
     "lint": "eslint --ext .ts,.tsx ./src",
     "lint:fix": "eslint --fix --ext .ts,.tsx ./src",
     "format": "prettier --write .",
-    "postbuild": "node scripts/generate-info.js",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "postbuild": "node scripts/generate-info.js"
   },
   "engines": {
     "npm": ">=8.0.0",
@@ -97,7 +95,6 @@
     "lazysizes": "^5.3.0",
     "lodash": "^4.17.19",
     "mapbox-gl": "^2.4.1",
-    "merge-images": "^2.0.0",
     "notistack": "^1.0.6-next.3",
     "nprogress": "^0.2.0",
     "numeral": "^2.0.6",
@@ -161,15 +158,6 @@
     "@arkweid/lefthook": "^0.7.7",
     "@babel/core": "^7.15.5",
     "@babel/eslint-parser": "^7.15.4",
-    "@storybook/addon-actions": "^6.5.0-beta.6",
-    "@storybook/addon-docs": "^6.5.0-beta.6",
-    "@storybook/addon-essentials": "^6.5.0-beta.6",
-    "@storybook/addon-interactions": "^6.5.0-beta.6",
-    "@storybook/addon-links": "^6.5.0-beta.6",
-    "@storybook/node-logger": "^6.5.0-beta.6",
-    "@storybook/preset-create-react-app": "^3.2.0",
-    "@storybook/react": "^6.5.0-beta.6",
-    "@storybook/testing-library": "0.0.11",
     "@types/autosuggest-highlight": "^3.1.1",
     "@types/d3-array": "^3.0.1",
     "@types/d3-scale": "^4.0.1",
@@ -179,7 +167,6 @@
     "@types/gtag.js": "^0.0.7",
     "@types/jest": "^27.0.1",
     "@types/jsonwebtoken": "^8.5.5",
-    "@types/merge-images": "^1.2.1",
     "@types/node": "^16.10.2",
     "@types/nprogress": "^0.2.0",
     "@types/numeral": "^2.0.1",
@@ -196,7 +183,7 @@
     "@types/redux-state-sync": "^3.1.2",
     "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
-    "@typescript-eslint/parser": "^4.33.0",
+    "@typescript-eslint/parser": "^4.31.1",
     "env-cmd": "^10.1.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "18.2.1",
@@ -208,22 +195,9 @@
     "eslint-plugin-flowtype": "^6.0.1",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-jsx-a11y": "6.4.1",
-    "eslint-plugin-mdx": "^1.17.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.25.2",
     "eslint-plugin-react-hooks": "4.2.0",
     "prettier": "^2.4.1"
-  },
-  "eslintConfig": {
-    "overrides": [
-      {
-        "files": [
-          "**/*.stories.*"
-        ],
-        "rules": {
-          "import/no-anonymous-default-export": "off"
-        }
-      }
-    ]
   }
 }

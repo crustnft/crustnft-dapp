@@ -10,7 +10,6 @@ import {
   Stack,
   Typography
 } from '@mui/material';
-import mergeImages from 'merge-images';
 import { startGenerateNftCollection } from 'clients/crustnft-explore-api/nft-collections';
 import { MAX_ALLOWED_NFT } from 'constants/cryptopunkConfig';
 import useAuth from 'hooks/useAuth';
@@ -20,7 +19,7 @@ import { useParams } from 'react-router-dom';
 import { getPublicUrlFromId } from 'utils/googleApisUtils';
 import useWeb3 from '../../../hooks/useWeb3';
 import { useSelector } from '../../../redux/store';
-import { getImageDimension } from '../service';
+import mergeImages from '../../../utils/merge-images';
 
 export default function PreviewDialog({
   open,
@@ -67,11 +66,10 @@ export default function PreviewDialog({
     setMaxNft(_maxNft);
     setNbPhoto(_nbPhoto);
     if (images.length > 0) {
-      const { width, height } = await getImageDimension(images[0]);
+      //@ts-ignore
       const mergedImage = await mergeImages(images, {
         crossOrigin: 'anonymous',
-        width,
-        height
+        useFirstImageAsBackground: true
       });
       setImage(mergedImage);
     }

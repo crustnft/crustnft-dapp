@@ -1,85 +1,46 @@
 // @mui
-import { BreakpointsOptions, CssBaseline } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 import {
   createTheme,
   StyledEngineProvider,
-  Theme,
   ThemeOptions,
   ThemeProvider as MUIThemeProvider
 } from '@mui/material/styles';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useMemo } from 'react';
 // hooks
 import useSettings from '../hooks/useSettings';
+import breakpoints from './breakpoints';
+import componentsOverride from './overrides';
+//
+import palette from './palette';
+import shadows, { customShadows } from './shadows';
+import typography from './typography';
 
 // ----------------------------------------------------------------------
-declare module '@mui/material/styles' {
-  export interface Theme {
-    name: string;
-  }
-  export interface ThemeOptions {
-    name: string;
-  }
-}
+
 type Props = {
   children: ReactNode;
-  theme?: string;
-};
-type ComponentOverrides = (theme: Theme) => Theme['components'];
-
-export const AVAILABLE_THEMES = {
-  v0: import('./v0'),
-  crust: import('./crust')
 };
 
-export default function ThemeProvider({ children, theme: controlledThemeName }: Props) {
-  const { theme: themeName, themeMode, themeDirection } = useSettings();
-  const [themeConfigs, setThemeConfigs] = useState<ThemeOptions>();
-  const [breakpoints, setBreakpoints] = useState<BreakpointsOptions>();
-  const [componentsOverride, setComponentsOverride] = useState<
-    ComponentOverrides | (() => ComponentOverrides)
-  >();
-  useEffect(() => {
-    const name = (controlledThemeName || themeName) as keyof typeof AVAILABLE_THEMES;
+export default function ThemeProvider({ children }: Props) {
+  const { themeMode, themeDirection } = useSettings();
+  const isLight = themeMode === 'light';
 
-    if (!AVAILABLE_THEMES[name]) {
-      return;
-    }
-    void AVAILABLE_THEMES[name].then(
-      ({
-        default: getThemeOptions,
-        componentsOverride: overrides,
-        breakpoints: bps
-      }: {
-        default: (themeMode: 'light' | 'dark') => ThemeOptions;
-        componentsOverride?: ComponentOverrides;
-        breakpoints: BreakpointsOptions;
-      }) => {
-        setThemeConfigs(getThemeOptions(themeMode));
-        setBreakpoints(bps);
-        if (overrides) {
-          // avoid autoexecution of function state
-          setComponentsOverride(() => overrides);
-        }
-      }
-    );
-  }, [themeName, themeMode, controlledThemeName]);
-  const themeOptions: ThemeOptions | undefined = useMemo(
-    () =>
-      (themeConfigs && {
-        ...themeConfigs,
-        direction: themeDirection,
-        breakpoints
-      }) ||
-      undefined,
-    [themeDirection, themeConfigs, breakpoints]
+  const themeOptions: ThemeOptions = useMemo(
+    () => ({
+      palette: isLight ? palette.light : palette.dark,
+      typography,
+      breakpoints,
+      shape: { borderRadius: 8 },
+      direction: themeDirection,
+      shadows: isLight ? shadows.light : shadows.dark,
+      customShadows: isLight ? customShadows.light : customShadows.dark
+    }),
+    [isLight, themeDirection]
   );
-  if (!themeOptions) {
-    return null;
-  }
+
   const theme = createTheme(themeOptions);
-  if (componentsOverride) {
-    theme.components = (componentsOverride as ComponentOverrides)(theme);
-  }
+  theme.components = componentsOverride(theme);
 
   return (
     <StyledEngineProvider injectFirst>

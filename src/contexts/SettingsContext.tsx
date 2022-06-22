@@ -21,7 +21,6 @@ const initialState: SettingsContextProps = {
   onChangeMode: () => {},
   onToggleMode: () => {},
   onChangeDirection: () => {},
-  onChangeTheme: () => {},
   onChangeColor: () => {},
   onToggleStretch: () => {},
   onChangeLayout: () => {},
@@ -37,25 +36,14 @@ type SettingsProviderProps = {
 };
 
 function SettingsProvider({ children }: SettingsProviderProps) {
-  const { value: settings, setValueInLocalStorage: setSettings } = useLocalStorage(
-    'settings',
-    {
-      theme: initialState.theme,
-      themeMode: initialState.themeMode,
-      themeDirection: initialState.themeDirection,
-      themeColorPresets: initialState.themeColorPresets,
-      themeStretch: initialState.themeStretch,
-      themeLayout: initialState.themeLayout
-    },
-    ['theme']
-  );
+  const { value: settings, setValueInLocalStorage: setSettings } = useLocalStorage('settings', {
+    themeMode: initialState.themeMode,
+    themeDirection: initialState.themeDirection,
+    themeColorPresets: initialState.themeColorPresets,
+    themeStretch: initialState.themeStretch,
+    themeLayout: initialState.themeLayout
+  });
 
-  const onChangeTheme = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSettings({
-      ...settings,
-      theme: (event.target as HTMLInputElement).value
-    });
-  };
   const onChangeMode = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSettings({
       ...settings,
@@ -100,7 +88,6 @@ function SettingsProvider({ children }: SettingsProviderProps) {
 
   const onResetSetting = () => {
     setSettings({
-      theme: initialState.theme,
       themeMode: initialState.themeMode,
       themeLayout: initialState.themeLayout,
       themeStretch: initialState.themeStretch,
@@ -113,8 +100,6 @@ function SettingsProvider({ children }: SettingsProviderProps) {
     <SettingsContext.Provider
       value={{
         ...settings,
-        // Theme
-        onChangeTheme,
         // Mode
         onChangeMode,
         onToggleMode,
