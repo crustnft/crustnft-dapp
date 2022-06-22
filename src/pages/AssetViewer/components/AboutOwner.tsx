@@ -23,7 +23,7 @@ const CardMediaStyle = styled('div')(({ theme }) => ({
     WebkitBackdropFilter: 'blur(3px)', // Fix on Mobile
     borderTopLeftRadius: theme.shape.borderRadius,
     borderTopRightRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.primary.darker, 0.72)
+    backgroundColor: alpha(theme.palette.primary.dark, 0.72)
   }
 }));
 

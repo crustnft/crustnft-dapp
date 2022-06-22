@@ -14,8 +14,8 @@ export type SettingsContextProps = {
     lighter: string;
     light: string;
     main: string;
+    neutral: string;
     dark: string;
-    darker: string;
     contrastText: string;
   };
   colorOption: {
