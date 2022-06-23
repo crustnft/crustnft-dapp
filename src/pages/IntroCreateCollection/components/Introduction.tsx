@@ -29,10 +29,10 @@ export default function Introduction() {
       }}
     >
       <Box position={'relative'} zIndex={2}>
-        <Box marginBottom={2}>
+        <Box sx={{margin: "0 auto" ,marginBottom:2}} width={{sm:"100%",lg: "49%"}}>
           <Typography
             variant="h3"
-            color="text.primary"
+            color="text.info"
             align={'center'}
             sx={{
               fontWeight: 700
@@ -41,10 +41,10 @@ export default function Introduction() {
             Create your own collection like a pro
           </Typography>
           <Typography
-            variant="h6"
+            variant="body1"
             component="p"
             color="text.secondary"
-            sx={{ fontWeight: 400 }}
+            sx={{ fontWeight: 400,fontSize:"1rem"}}           
             align={'center'}
           >
             With CrustNFTs, generate collection, write smart contract and deploy it on blockchain in
@@ -57,21 +57,26 @@ export default function Introduction() {
           alignItems={{ xs: 'stretched', sm: 'center' }}
           justifyContent={'center'}
         >
+          <Box
+            marginRight={{ sm: 1 }}
+            width={{ xs: '100%', md: 'auto' }}
+          >
           <Button
             component={'a'}
-            variant="contained"
+            variant="text"
             size="large"
             fullWidth={isMd ? false : true}
             href={'/'}
             target={'_blank'}
-            color="info"
-            sx={{ backgroundColor: '#377dff' }}
+            color="primary"
+            sx={{backgroundColor: '#DFE3E8',fontSize: "1.125rem" }}
           >
             Case studies
           </Button>
+          </Box>
           <Box
             marginTop={{ xs: 2, sm: 0 }}
-            marginLeft={{ sm: 2 }}
+            marginLeft={{ sm: 1 }}
             width={{ xs: '100%', md: 'auto' }}
           >
             <Button
@@ -81,6 +86,7 @@ export default function Introduction() {
               color="primary"
               size="large"
               fullWidth={isMd ? false : true}
+              sx={{fontSize: "1.125rem" }}
             >
               View documentation
             </Button>

@@ -1,68 +1,56 @@
 import { Icon } from '@iconify/react';
 import { Button, Card, Container, Grid, Link, Stack, Typography } from '@mui/material';
+import image1 from "../../assets/images/create10K.png";
+import image2 from "../../assets/images/createMultiple.png";
 import Page from '../../components/Page';
 import Introduction from './components/Introduction';
+
 export default function LearnMore() {
   return (
     <Page title="Create your collection in minutes">
       <Container maxWidth={'lg'}>
         <Introduction />
         <Grid container spacing={3} justifyContent="center">
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={3}>
             <Card sx={{ backgroundColor: 'background.neutral', p: 2 }}>
               <Card
                 sx={{
                   backgroundColor: 'background.paper',
-                  p: { xs: 5, md: 8 },
-                  aspectRatio: '1 / 1'
+                  aspectRatio: 'auto'
                 }}
-              >
-                <Stack sx={{ color: 'text.secondary' }}>
-                  {new Array(2).fill(0).map((_, i) => (
-                    <Stack key={i} direction="row">
-                      <Icon icon="akar-icons:image" width="100%" />
-                      <Icon icon="akar-icons:image" width="100%" />
-                    </Stack>
-                  ))}
-                </Stack>
+              >                
+                  <img src={image1} alt="create 10k collection" style={{width:"100%", objectFit: 'fill'}}/>
               </Card>
               <Stack alignItems="center" sx={{ pt: 2 }} spacing={2}>
                 <Link href="#/my-collections">
-                  <Button variant="outlined" sx={{ borderRadius: '20px', color: 'text.primary' }}>
+                  <Button variant="text" sx={{ borderRadius: '8px', color: 'text.primary', fontSize:"1.125rem" }}>
                     Create 10K collection
                   </Button>
                 </Link>
-                <Typography variant="body2" color="text.secondary" align="center">
+                <Typography variant="body1" color="text.secondary" align="center">
                   Upload different pieces of your collection and let us generate a complete
                   collection
                 </Typography>
               </Stack>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={3}>
             <Card sx={{ backgroundColor: 'background.neutral', p: 2 }}>
               <Card
                 sx={{
                   backgroundColor: 'background.paper',
-                  p: 8,
-                  aspectRatio: '1 / 1'
+                  aspectRatio: 'auto'
                 }}
               >
-                <Stack
-                  alignItems="center"
-                  justifyContent="center"
-                  sx={{ color: 'text.secondary', height: '100%' }}
-                >
-                  <Icon icon="bx:image-add" width="50%" />
-                </Stack>
+                  <img src={image2} alt="create multiple collection" style={{width:"100%", objectFit: 'fill'}}/>
               </Card>
               <Stack alignItems="center" sx={{ pt: 2 }} spacing={2}>
                 <Link href="#/create-expandable-collection">
-                  <Button variant="outlined" sx={{ borderRadius: '20px', color: 'text.primary' }}>
-                    Create expandable collection
+                  <Button variant="text" sx={{ borderRadius: '8px', color: 'text.primary', fontSize:"1.125rem" }}>
+                    Create Multiple
                   </Button>
                 </Link>
-                <Typography variant="body2" color="text.secondary" align="center">
+                <Typography variant="body1" color="text.secondary" align="center">
                   Create a collection that can be expanded to include more arts at any time
                 </Typography>
               </Stack>
