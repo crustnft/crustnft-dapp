@@ -17,8 +17,8 @@ export const colorPresets = [
     lighter: '#EBD6FD',
     light: '#B985F4',
     main: '#7635dc',
-    dark: '#431A9E',
-    darker: '#200A69',
+    neutral: '#431A9E',
+    dark: '#200A69',
     contrastText: '#fff'
   },
   // CYAN
@@ -27,8 +27,8 @@ export const colorPresets = [
     lighter: '#D1FFFC',
     light: '#76F2FF',
     main: '#1CCAFF',
-    dark: '#0E77B7',
-    darker: '#053D7A',
+    neutral: '#0E77B7',
+    dark: '#053D7A',
     contrastText: palette.light.grey[800]
   },
   // BLUE
@@ -37,8 +37,8 @@ export const colorPresets = [
     lighter: '#D1E9FC',
     light: '#76B0F1',
     main: '#2065D1',
-    dark: '#103996',
-    darker: '#061B64',
+    neutral: '#103996',
+    dark: '#061B64',
     contrastText: '#fff'
   },
   // ORANGE
@@ -47,8 +47,8 @@ export const colorPresets = [
     lighter: '#FEF4D4',
     light: '#FED680',
     main: '#fda92d',
-    dark: '#B66816',
-    darker: '#793908',
+    neutral: '#B66816',
+    dark: '#793908',
     contrastText: palette.light.grey[800]
   },
   // RED
@@ -57,8 +57,8 @@ export const colorPresets = [
     lighter: '#FFE3D5',
     light: '#FFC1AC',
     main: '#FF3030',
-    dark: '#B71833',
-    darker: '#7A0930',
+    neutral: '#B71833',
+    dark: '#7A0930',
     contrastText: '#fff'
   }
 ];

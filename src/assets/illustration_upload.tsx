@@ -1,14 +1,14 @@
 // material
-import { useTheme } from '@mui/material/styles';
 import { Box, BoxProps } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
 export default function UploadIllustration({ ...other }: BoxProps) {
   const theme = useTheme();
   const PRIMARY_MAIN = theme.palette.primary.main;
+  const PRIMARY_NEUTRAL = theme.palette.primary.neutral;
   const PRIMARY_DARK = theme.palette.primary.dark;
-  const PRIMARY_DARKER = theme.palette.primary.darker;
 
   return (
     <Box {...other}>
@@ -48,7 +48,7 @@ export default function UploadIllustration({ ...other }: BoxProps) {
             opacity="0.05"
           />
           <path
-            fill={PRIMARY_DARKER}
+            fill={PRIMARY_DARK}
             fillRule="nonzero"
             d="M157.592 279.461a4.114 4.114 0 01-.917-3.131l13.196-107.979 1.094-8.97a4.142 4.142 0 014.078-3.635l38.654-.257a4.135 4.135 0 004.108-4.249l-.015-.409a4.14 4.14 0 014.135-4.279h40.619a4.134 4.134 0 014.098 4.682 4.137 4.137 0 003.995 4.682l39.01.996a4.13 4.13 0 013.97 4.831l-19.502 113.909-.368 2.152a4.042 4.042 0 01-.598 1.543l-135.557.114z"
           />
@@ -348,7 +348,7 @@ export default function UploadIllustration({ ...other }: BoxProps) {
             d="M269.277 168.76l-45.767.493a3.127 3.127 0 00-3.094 3.125v3.782a3.127 3.127 0 01-3.05 3.124l-33.024.792a3.124 3.124 0 01-3.095-2.308l-1.551-5.701a3.124 3.124 0 00-3.053-2.308l-44.113.475a3.125 3.125 0 00-3.05 3.648l17.747 104.449a3.129 3.129 0 003.071 2.604l139.363.598a3.129 3.129 0 003.082-3.714l-20.366-106.521a3.125 3.125 0 00-3.1-2.538z"
           />
           <path
-            fill={PRIMARY_DARK}
+            fill={PRIMARY_NEUTRAL}
             fillRule="nonzero"
             d="M269.277 168.76l-45.767.493a3.127 3.127 0 00-3.094 3.125v3.782a3.127 3.127 0 01-3.05 3.124l-33.024.792a3.124 3.124 0 01-3.095-2.308l-1.551-5.701a3.124 3.124 0 00-3.053-2.308l-44.113.475a3.125 3.125 0 00-3.05 3.648l17.747 104.449a3.129 3.129 0 003.071 2.604l139.363.598a3.129 3.129 0 003.082-3.714l-20.366-106.521a3.125 3.125 0 00-3.1-2.538z"
             opacity="0.243"
@@ -401,7 +401,7 @@ export default function UploadIllustration({ ...other }: BoxProps) {
             d="M100.925 260.398s6.796-22.279-1.064-31.204c-5.881-6.676-12.557-5.877-15.547-5.052a5.528 5.528 0 00-3.564 2.963c-1.046 2.254-.858 5.913 6.521 10.186 12.35 7.151 13.119 16.96 13.119 16.96l.535 6.147z"
           />
           <path
-            stroke={PRIMARY_DARKER}
+            stroke={PRIMARY_DARK}
             strokeLinecap="round"
             strokeWidth="0.5"
             d="M85.382 227.302s20.031 6.278 15.546 33.096M97.083 229.547s-2.76 1.86-1.88 4.655M87.39 231.203s1.687-1.716 3.741-.768M95.31 239.832s2.963-1.495 3.728.379M102.638 242.962s-2.224-.176-2.263.897"
@@ -412,31 +412,31 @@ export default function UploadIllustration({ ...other }: BoxProps) {
             d="M101.2 260.575s-7.961-16.193-10.147-15.846c-1.037.17-1.516 1.196-1.734 2.218a6.516 6.516 0 00.434 3.941c1.13 2.601 4.165 7.519 11.447 9.687z"
           />
           <path
-            stroke={PRIMARY_DARKER}
+            stroke={PRIMARY_DARK}
             strokeLinecap="round"
             strokeWidth="0.5"
             d="M91.113 247.808s8.353 12.115 9.968 12.647"
           />
           <path
-            stroke={PRIMARY_DARKER}
+            stroke={PRIMARY_DARK}
             strokeLinecap="round"
             strokeWidth="0.5"
             d="M90.344 249.701L92.293 249.701"
           />
           <path
-            stroke={PRIMARY_DARKER}
+            stroke={PRIMARY_DARK}
             strokeLinecap="round"
             strokeWidth="0.5"
             d="M92.68 254.132L95.738 254.263"
           />
           <path
-            stroke={PRIMARY_DARKER}
+            stroke={PRIMARY_DARK}
             strokeLinecap="round"
             strokeWidth="0.5"
             d="M94.542 250.586L94.21 252.179"
           />
           <path
-            stroke={PRIMARY_DARKER}
+            stroke={PRIMARY_DARK}
             strokeLinecap="round"
             strokeWidth="0.5"
             d="M97.792 255.432L97.732 256.879"
@@ -447,31 +447,31 @@ export default function UploadIllustration({ ...other }: BoxProps) {
             d="M100.964 260.575s7.959-16.193 10.144-15.846c1.041.17 1.519 1.196 1.734 2.218a6.514 6.514 0 01-.433 3.941c-1.13 2.601-4.168 7.519-11.445 9.687z"
           />
           <path
-            stroke={PRIMARY_DARKER}
+            stroke={PRIMARY_DARK}
             strokeLinecap="round"
             strokeWidth="0.5"
             d="M111.051 247.808s-8.371 12.115-9.97 12.647"
           />
           <path
-            stroke={PRIMARY_DARKER}
+            stroke={PRIMARY_DARK}
             strokeLinecap="round"
             strokeWidth="0.5"
             d="M111.82 249.701L109.871 249.701"
           />
           <path
-            stroke={PRIMARY_DARKER}
+            stroke={PRIMARY_DARK}
             strokeLinecap="round"
             strokeWidth="0.5"
             d="M109.485 254.132L106.426 254.263"
           />
           <path
-            stroke={PRIMARY_DARKER}
+            stroke={PRIMARY_DARK}
             strokeLinecap="round"
             strokeWidth="0.5"
             d="M107.622 250.586L107.954 252.179"
           />
           <path
-            stroke={PRIMARY_DARKER}
+            stroke={PRIMARY_DARK}
             strokeLinecap="round"
             strokeWidth="0.5"
             d="M104.372 255.432L104.432 256.879"
@@ -514,7 +514,7 @@ export default function UploadIllustration({ ...other }: BoxProps) {
             opacity="0.1"
           />
           <path
-            fill={PRIMARY_DARK}
+            fill={PRIMARY_NEUTRAL}
             fillRule="nonzero"
             d="M206.029 209.911c-7.975 0-14.44 6.465-14.44 14.44s6.465 14.44 14.44 14.44 14.44-6.465 14.44-14.44-6.465-14.44-14.44-14.44z"
           />
@@ -525,7 +525,7 @@ export default function UploadIllustration({ ...other }: BoxProps) {
             opacity="0.72"
           />
           <path
-            fill={PRIMARY_DARK}
+            fill={PRIMARY_NEUTRAL}
             fillRule="nonzero"
             d="M200.058 225.406l-.699-.681a.721.721 0 010-1.065l6.127-5.984a.753.753 0 01.546-.231c.206 0 .404.083.545.231l6.127 5.978a.733.733 0 010 1.065l-.699.682a.768.768 0 01-1.091 0l-3.622-3.727v8.843a.725.725 0 01-.219.523.76.76 0 01-.534.217h-1.009a.75.75 0 01-.759-.74v-8.832l-3.622 3.726a.768.768 0 01-1.091-.005z"
           />

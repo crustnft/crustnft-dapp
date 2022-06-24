@@ -1,6 +1,6 @@
 // material
-import { useTheme } from '@mui/material/styles';
 import { Box, BoxProps } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
@@ -8,8 +8,8 @@ export default function MotivationIllustration({ ...other }: BoxProps) {
   const theme = useTheme();
   const PRIMARY_LIGHTER = theme.palette.primary.lighter;
   const PRIMARY_MAIN = theme.palette.primary.main;
+  const PRIMARY_NEUTRAL = theme.palette.primary.neutral;
   const PRIMARY_DARK = theme.palette.primary.dark;
-  const PRIMARY_DARKER = theme.palette.primary.darker;
 
   return (
     <Box {...other}>
@@ -27,7 +27,7 @@ export default function MotivationIllustration({ ...other }: BoxProps) {
           </linearGradient>
           <linearGradient id="STYLE" x1="0%" x2="0%" y1="0%" y2="100%">
             <stop offset="0%" stopColor={PRIMARY_LIGHTER} />
-            <stop offset="100%" stopColor={PRIMARY_DARK} />
+            <stop offset="100%" stopColor={PRIMARY_NEUTRAL} />
           </linearGradient>
         </defs>
         <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
@@ -51,7 +51,7 @@ export default function MotivationIllustration({ ...other }: BoxProps) {
               opacity="0.5"
             />
             <path
-              fill={PRIMARY_DARKER}
+              fill={PRIMARY_DARK}
               fillRule="nonzero"
               d="M359.154 253.356c-1.067 3.094-2.278 6.349-3.697 9.673-5.064.144-10.138.277-15.196.427-3.334.09-6.877.245-9.604 2.134-5.186 3.559-.693 6.066-1.27 9.604-.672 4.188-4.914 5.053-8.995 5.069-14.075.058-27.692 4.572-41.505 7.293-13.814 2.721-28.903 3.5-41.196-3.356-.848-.464-1.729-1.04-2.049-1.953-.581-1.638.918-3.228 2.348-4.215a30.144 30.144 0 0110.457-4.54c2.209-.496 4.541-.768 6.472-1.958 1.932-1.19 3.298-3.708 2.332-5.757a1885.958 1885.958 0 00-96.013 8.441c-41.084 4.673-81.719 12.805-122.963 15.745l-.384.037A68.66 68.66 0 0130 280.684c.172-.249.363-.484.57-.704 2.034-2.172 4.974-3.201 7.818-4.087 15.862-4.909 32.36-7.395 48.788-9.871 81.633-12.304 164.249-21.065 246.848-15.281 8.393.582 16.78 1.43 25.13 2.615z"
               opacity="0.24"

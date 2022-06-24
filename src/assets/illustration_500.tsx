@@ -1,6 +1,6 @@
 // material
-import { useTheme } from '@mui/material/styles';
 import { Box, BoxProps } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
@@ -8,8 +8,8 @@ export default function SeverErrorIllustration({ ...other }: BoxProps) {
   const theme = useTheme();
   const PRIMARY_LIGHTER = theme.palette.primary.lighter;
   const PRIMARY_MAIN = theme.palette.primary.main;
+  const PRIMARY_NEUTRAL = theme.palette.primary.neutral;
   const PRIMARY_DARK = theme.palette.primary.dark;
-  const PRIMARY_DARKER = theme.palette.primary.darker;
 
   return (
     <Box {...other}>
@@ -70,7 +70,7 @@ export default function SeverErrorIllustration({ ...other }: BoxProps) {
               height="47.766"
               x="217.347"
               y="242.234"
-              fill={PRIMARY_DARKER}
+              fill={PRIMARY_DARK}
               fillRule="nonzero"
               rx="7.305"
             />
@@ -79,12 +79,12 @@ export default function SeverErrorIllustration({ ...other }: BoxProps) {
               height="47.756"
               x="225.633"
               y="242.244"
-              fill={PRIMARY_DARK}
+              fill={PRIMARY_NEUTRAL}
               fillRule="nonzero"
               rx="7.297"
             />
             <path
-              fill={PRIMARY_DARKER}
+              fill={PRIMARY_DARK}
               fillRule="nonzero"
               d="M244.424 267.737c.503-1.769-.846-3.727-1.168-5.539a3.038 3.038 0 115.987-.025c-.307 1.813-1.628 3.808-1.075 5.562l.399 1.269a2.361 2.361 0 11-4.522.064l.379-1.331z"
             />
@@ -127,7 +127,7 @@ export default function SeverErrorIllustration({ ...other }: BoxProps) {
               rx="3"
             />
             <path
-              fill={PRIMARY_DARKER}
+              fill={PRIMARY_DARK}
               fillRule="nonzero"
               d="M60 243.462c.21 1.976.895 3.872 1.998 5.525 4.42 7.807 9.373 15.495 16.213 21.286 10.064 8.507 23.229 12.181 35.953 15.652-1.132-.553-2.504-6.445-3.01-7.706-.985-2.523-1.906-5.073-2.845-7.615-1.501-4.005-4.604-7.227-7.697-10.182a60.761 60.761 0 00-24.546-14.437A57.813 57.813 0 0060 243.462z"
             />
@@ -141,7 +141,7 @@ export default function SeverErrorIllustration({ ...other }: BoxProps) {
               height="36"
               x="111.587"
               y="164"
-              fill={PRIMARY_DARK}
+              fill={PRIMARY_NEUTRAL}
               fillRule="nonzero"
               rx="8.428"
             />
@@ -164,7 +164,7 @@ export default function SeverErrorIllustration({ ...other }: BoxProps) {
               height="36"
               x="111.587"
               y="208"
-              fill={PRIMARY_DARK}
+              fill={PRIMARY_NEUTRAL}
               fillRule="nonzero"
               rx="8.428"
             />
@@ -192,7 +192,7 @@ export default function SeverErrorIllustration({ ...other }: BoxProps) {
               height="36"
               x="111.587"
               y="252.209"
-              fill={PRIMARY_DARK}
+              fill={PRIMARY_NEUTRAL}
               fillRule="nonzero"
               rx="8.428"
             />
@@ -220,7 +220,7 @@ export default function SeverErrorIllustration({ ...other }: BoxProps) {
               rx="1"
             />
             <path
-              fill={PRIMARY_DARKER}
+              fill={PRIMARY_DARK}
               fillRule="nonzero"
               d="M238 158.813l9.186-4.813 8.814 4.787s-1.638 11.825-8.597 15.213c-.017 0-8.649-3.31-9.403-15.187z"
             />

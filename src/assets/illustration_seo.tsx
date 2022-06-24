@@ -1,6 +1,6 @@
 // material
-import { useTheme } from '@mui/material/styles';
 import { Box, BoxProps } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
@@ -8,8 +8,8 @@ export default function SeoIllustration({ ...other }: BoxProps) {
   const theme = useTheme();
   const PRIMARY_LIGHTER = theme.palette.primary.lighter;
   const PRIMARY_MAIN = theme.palette.primary.main;
+  const PRIMARY_NEUTRAL = theme.palette.primary.neutral;
   const PRIMARY_DARK = theme.palette.primary.dark;
-  const PRIMARY_DARKER = theme.palette.primary.darker;
 
   return (
     <Box {...other}>
@@ -74,7 +74,7 @@ export default function SeoIllustration({ ...other }: BoxProps) {
               d="M326.33 161.777c.478 1.24.717 1.86 1.228 2.212.512.35 1.176.35 2.505.35h.314c2.649 0 3.973 0 4.569-.868.596-.87.118-2.105-.839-4.574l-1.586-4.1c-.479-1.236-.718-1.854-1.229-2.204-.511-.351-1.175-.351-2.501-.351h-.305c-2.644 0-3.966 0-4.562.868-.596.868-.121 2.102.829 4.569l1.577 4.098zM304.397 161.779c.478 1.24.717 1.86 1.228 2.21.512.352 1.176.352 2.505.352h.315c2.648 0 3.973 0 4.568-.87.596-.87.118-2.105-.838-4.575l-2.705-6.986c-.479-1.237-.718-1.855-1.229-2.205-.511-.35-1.175-.35-2.501-.35h-.303c-2.645 0-3.967 0-4.563.868-.596.868-.12 2.102.831 4.57l2.692 6.986zM293.442 161.784c.479 1.237.718 1.856 1.229 2.206.511.35 1.175.35 2.502.35h.32c2.648 0 3.972 0 4.568-.87.596-.868.118-2.103-.838-4.573l-9.445-24.417c-.479-1.238-.718-1.856-1.229-2.207-.511-.35-1.175-.35-2.502-.35h-.32c-2.648 0-3.972 0-4.568.869-.596.87-.118 2.104.837 4.574l9.446 24.418z"
             />
             <path
-              fill={PRIMARY_DARKER}
+              fill={PRIMARY_DARK}
               fillRule="nonzero"
               d="M315.375 161.784c.478 1.237.718 1.856 1.229 2.206.511.35 1.174.35 2.501.35h.32c2.648 0 3.972 0 4.568-.87.596-.868.118-2.103-.837-4.573l-6.427-16.612c-.479-1.238-.719-1.856-1.23-2.207-.511-.35-1.174-.35-2.501-.35h-.32c-2.648 0-3.972 0-4.568.87-.596.869-.118 2.104.837 4.573l6.428 16.613z"
             />
@@ -114,7 +114,7 @@ export default function SeoIllustration({ ...other }: BoxProps) {
               d="M117.435 90.0869996L124.486 83.1403996 151.154 70.8081996z"
             />
             <path
-              fill={PRIMARY_DARK}
+              fill={PRIMARY_NEUTRAL}
               fillRule="nonzero"
               d="M117.435 90.0869996L124.486 83.1403996 151.154 70.8081996 122.249 78.5352996z"
             />

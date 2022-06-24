@@ -1,6 +1,6 @@
 // material
-import { useTheme } from '@mui/material/styles';
 import { Box, BoxProps } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
@@ -9,8 +9,8 @@ export default function OrderCompleteIllustration({ ...other }: BoxProps) {
   const PRIMARY_LIGHTER = theme.palette.primary.lighter;
   const PRIMARY_LIGHT = theme.palette.primary.light;
   const PRIMARY_MAIN = theme.palette.primary.main;
+  const PRIMARY_NEUTRAL = theme.palette.primary.neutral;
   const PRIMARY_DARK = theme.palette.primary.dark;
-  const PRIMARY_DARKER = theme.palette.primary.darker;
 
   return (
     <Box {...other}>
@@ -36,7 +36,7 @@ export default function OrderCompleteIllustration({ ...other }: BoxProps) {
               opacity="0.2"
             />
             <path
-              fill={PRIMARY_DARKER}
+              fill={PRIMARY_DARK}
               fillRule="nonzero"
               d="M286.704 127.154l-7.264 61.709a6.287 6.287 0 01-6.978 5.513l-97.91-11.516a6.289 6.289 0 01-5.508-6.981l7.263-61.711a5.854 5.854 0 016.498-5.127l98.77 11.618a5.851 5.851 0 015.129 6.495z"
             />
@@ -71,7 +71,7 @@ export default function OrderCompleteIllustration({ ...other }: BoxProps) {
               d="M179.8 164.408a1.298 1.298 0 011.44-1.136l49.849 5.864a1.296 1.296 0 01-.303 2.575l-49.85-5.863a1.296 1.296 0 01-1.136-1.439v-.001zM179.127 170.128a1.296 1.296 0 011.439-1.136l34.539 4.063a1.297 1.297 0 11-.303 2.576l-34.539-4.064a1.296 1.296 0 01-1.136-1.439zM230.17 126.66a1.297 1.297 0 011.439-1.136l23.572 2.773a1.297 1.297 0 11-.304 2.575l-23.571-2.772a1.297 1.297 0 01-1.136-1.44z"
             />
             <path
-              fill={PRIMARY_DARKER}
+              fill={PRIMARY_DARK}
               fillRule="nonzero"
               d="M286 305.012c0 7.173-36.563 12.988-81.667 12.988-45.103 0-81.666-5.815-81.666-12.988 0-7.173 36.563-12.987 81.666-12.987 45.104 0 81.667 5.814 81.667 12.987z"
               opacity="0.24"
@@ -175,22 +175,22 @@ export default function OrderCompleteIllustration({ ...other }: BoxProps) {
               d="M154.784 300.52L224.078 300.52 224.078 251.34 154.784 251.34z"
             />
             <path
-              fill={PRIMARY_DARKER}
+              fill={PRIMARY_DARK}
               fillRule="nonzero"
               d="M154.788 300.523L178.382 300.523 178.382 251.34 154.788 251.34z"
             />
             <path
-              fill={PRIMARY_DARK}
+              fill={PRIMARY_NEUTRAL}
               fillRule="nonzero"
               d="M176.756 254.729c-1.643 3.571-3.3 7.13-4.976 10.678l-5.007 10.525 5.007 10.524c1.117 2.365 2.226 4.736 3.328 7.111l1.648 3.567c-1.748-3.496-3.48-7.004-5.195-10.525l-4.977-10.286-4.977 10.286a1039.096 1039.096 0 01-3.451 7.025l-1.743 3.5c1.644-3.57 3.3-7.13 4.977-10.678l5.006-10.525-5.006-10.525a1049.598 1049.598 0 01-3.329-7.111l-1.648-3.566c1.748 3.497 3.48 7.004 5.194 10.525l4.977 10.286 4.977-10.287c1.143-2.347 2.294-4.688 3.453-7.024l1.742-3.5z"
             />
             <path
-              fill={PRIMARY_DARK}
+              fill={PRIMARY_NEUTRAL}
               fillRule="nonzero"
               d="M231.68 262.314L185.989 262.314 178.382 251.34 224.074 251.34z"
             />
             <path
-              fill={PRIMARY_DARK}
+              fill={PRIMARY_NEUTRAL}
               fillRule="nonzero"
               d="M170.774 262.314L147.181 262.314 154.788 251.34 178.382 251.34z"
             />
@@ -200,17 +200,17 @@ export default function OrderCompleteIllustration({ ...other }: BoxProps) {
               d="M198.04 307.176L270.55 307.176 259.972 233.346 208.611 233.346z"
             />
             <path
-              fill={PRIMARY_DARK}
+              fill={PRIMARY_NEUTRAL}
               fillRule="nonzero"
               d="M216.67 307.176L198.04 307.176 208.613 233.345 208.613 233.346 216.67 307.179"
             />
             <path
-              fill={PRIMARY_DARKER}
+              fill={PRIMARY_DARK}
               fillRule="nonzero"
               d="M245.42 225.345c.847 3.774 1.66 7.527 2.176 9.928a3.071 3.071 0 012.123 2.923 3.077 3.077 0 11-5.143-2.28 1370.12 1370.12 0 00-1.65-7.568l-.146-.66-.372-1.667c-1.171-5.215-6.349-7.611-10.672-6.909-1.529.247-6.468 1.549-5.828 7.926.369 3.685.696 6.413.931 8.22a3.074 3.074 0 01-.91 6.014 3.076 3.076 0 01-2.115-5.311 283.46 283.46 0 01-.98-8.616c-.594-5.931 2.706-10.359 8.409-11.281 5.736-.926 12.61 2.292 14.177 9.281zM208.146 244.59l-.099 7.075-.16 7.072-.414 14.143-.548 14.138-.322 7.067-.364 6.753.123.069c.798.439 1.575.915 2.361 1.375l2.351 1.395c1.551.957 3.102 1.912 4.615 2.935-1.643-.798-3.247-1.662-4.851-2.527l-2.384-1.337c-.528-.299-1.06-.593-1.587-.894l-.63-.371-.782.563c-.931.675-1.857 1.355-2.809 1.998-1.26.876-2.528 1.737-3.825 2.559a103.914 103.914 0 013.577-2.894c1.195-.961 2.44-1.855 3.657-2.785l.141-.109.03.016.096-6.756.159-7.073.414-14.142.548-14.138.321-7.067.382-7.065z"
             />
             <path
-              fill={PRIMARY_DARKER}
+              fill={PRIMARY_DARK}
               fillRule="nonzero"
               d="M22.9863 246.344L25.9503 246.344 25.1575 255.432 20 313.917 23.3724 313.917 33.184 255.432 34.6129 246.344 56.7827 246.344 58.2108 255.432 68.0231 313.917 71.3956 313.917 66.2381 255.432 65.4445 246.344 68.4061 246.344 68.4061 232.278 22.9863 232.278z"
             />

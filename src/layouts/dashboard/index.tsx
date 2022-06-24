@@ -1,23 +1,21 @@
 import { styled, useTheme } from '@mui/material/styles';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import DashboardNavbar from './DashboardNavbar';
+
+import DashboardNavbar, { APP_BAR_MIN_HEIGHT } from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
 import Footer from './Footer';
 
-const APP_BAR = 64;
-
 const RootStyle = styled('div')({
   display: 'flex',
-  minHeight: '100%',
-  overflow: 'hidden'
+  minHeight: '100%'
 });
 
 const MainStyle = styled('div')(({ theme }) => ({
   flexGrow: 1,
   overflow: 'auto',
   minHeight: '100%',
-  paddingTop: APP_BAR + 24,
+  paddingTop: `calc(${APP_BAR_MIN_HEIGHT} + 24px)`,
   paddingBottom: theme.spacing(4)
 }));
 
