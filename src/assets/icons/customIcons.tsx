@@ -28,4 +28,67 @@ const FloatingBalloon = ({ width = 35, height = 42, fill = 'none' }) => {
   );
 };
 
-export { ArrowDownSquare, FloatingBalloon };
+const PlusIcon = ({ width = 94, height = 74, fill = 'none' }) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 94 74"
+      fill={fill}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g filter="url(#filter0_d_899_590)">
+        <path
+          d="M20 35C20 20.0883 32.0883 8 47 8C61.9117 8 74 20.0883 74 35C74 49.9117 61.9117 62 47 62C32.0883 62 20 49.9117 20 35Z"
+          fill="#DFE3E8"
+        />
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M48 28.75C48 28.1977 47.5523 27.75 47 27.75C46.4477 27.75 46 28.1977 46 28.75V34H40.75C40.1977 34 39.75 34.4477 39.75 35C39.75 35.5523 40.1977 36 40.75 36H46V41.25C46 41.8023 46.4477 42.25 47 42.25C47.5523 42.25 48 41.8023 48 41.25V36H53.25C53.8023 36 54.25 35.5523 54.25 35C54.25 34.4477 53.8023 34 53.25 34H48V28.75Z"
+          fill="#161C24"
+        />
+      </g>
+      <defs>
+        <filter
+          id="filter0_d_899_590"
+          x="0"
+          y="0"
+          width="94"
+          height="94"
+          filterUnits="userSpaceOnUse"
+          colorInterpolationFilters="sRGB"
+        >
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feMorphology
+            radius="4"
+            operator="erode"
+            in="SourceAlpha"
+            result="effect1_dropShadow_899_590"
+          />
+          <feOffset dy="12" />
+          <feGaussianBlur stdDeviation="12" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.568627 0 0 0 0 0.619608 0 0 0 0 0.670588 0 0 0 0.16 0"
+          />
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_899_590" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="effect1_dropShadow_899_590"
+            result="shape"
+          />
+        </filter>
+      </defs>
+    </svg>
+  );
+};
+
+export { ArrowDownSquare, FloatingBalloon, PlusIcon };

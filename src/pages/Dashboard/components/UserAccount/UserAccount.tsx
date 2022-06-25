@@ -12,11 +12,12 @@ const accountInfo = [
 const UserAccount = () => {
   return (
     <Card
-      sx={{
-        p: '20px',
-        boxShadow:
-          '0px 0px 2px rgba(145, 158, 171, 0.2), 0px 12px 24px -4px rgba(145, 158, 171, 0.12);'
-      }}
+      sx={[
+        {
+          p: '20px'
+        },
+        (theme) => theme.palette.customCSS.card
+      ]}
     >
       <Box
         component="img"

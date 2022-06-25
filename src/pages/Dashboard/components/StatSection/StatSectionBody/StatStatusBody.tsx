@@ -77,7 +77,7 @@ const Stage = ({ title, backgroundColor, value }: StageProps) => {
 
 const StatStatusBody = () => {
   return (
-    <Stack sx={{ flexDirection: 'row', gap: '5%' }}>
+    <Stack sx={{ flexDirection: 'row', gap: '5%', mb: '25px' }}>
       {STAGES.map((stage, index) => (
         <Stage
           key={index}

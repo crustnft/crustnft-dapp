@@ -8,7 +8,7 @@ interface StatSectionHeaderProps {
 
 const StatSectionHeader = ({ title, menuItems }: StatSectionHeaderProps) => {
   return (
-    <Stack sx={{ mt: '25px', flexDirection: 'row', justifyContent: 'space-between' }}>
+    <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between' }}>
       <Typography
         variant="subtitle1"
         color={(theme) => theme.palette.grey[700]}

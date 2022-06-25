@@ -235,6 +235,9 @@ export const COMMON = {
         color: 'text.primary',
         border: `2px solid ${GREY[300]} !important`
       }
+    },
+    cardBorder: {
+      border: '0px 0px 2px rgba(145, 158, 171, 0.2), 0px 12px 24px -4px rgba(145, 158, 171, 0.12)'
     }
   },
   action: {
