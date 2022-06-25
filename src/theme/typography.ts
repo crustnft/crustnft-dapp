@@ -1,5 +1,14 @@
 import { pxToRem, responsiveFontSizes } from '../utils/getFontValue';
 
+declare module '@mui/material/Typography' {
+  interface TypographyPropsVariantOverrides {
+    'button.large': true;
+    'button.big': true;
+    'button.medium': true;
+    'button.small': true;
+  }
+}
+
 const FONT_PRIMARY = 'Public Sans, sans-serif';
 
 // const FONT_SECONDARY = 'CircularStd, sans-serif'; // Local Font
@@ -75,10 +84,26 @@ const typography = {
     textTransform: 'uppercase'
   },
   button: {
-    fontWeight: 700,
-    lineHeight: 24 / 14,
-    fontSize: pxToRem(14),
-    textTransform: 'capitalize'
+    large: {
+      fontWeight: 700,
+      fontSize: pxToRem(18),
+      lineHeight: pxToRem(32)
+    },
+    big: {
+      fontWeight: 700,
+      fontSize: pxToRem(15),
+      lineHeight: pxToRem(26)
+    },
+    medium: {
+      fontWeight: 700,
+      fontSize: pxToRem(14),
+      lineHeight: pxToRem(24)
+    },
+    small: {
+      fontWeight: 700,
+      fontSize: pxToRem(13),
+      lineHeight: pxToRem(22)
+    }
   }
 } as const;
 

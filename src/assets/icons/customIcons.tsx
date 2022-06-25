@@ -11,4 +11,21 @@ const ArrowDownSquare = () => {
   );
 };
 
-export { ArrowDownSquare };
+const FloatingBalloon = ({ width = 35, height = 42, fill = 'none' }) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 35 42"
+      fill={fill}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M34.5 17.1818C34.5 30.5455 17.5 42 17.5 42C17.5 42 0.5 30.5455 0.5 17.1818C0.5 12.6249 2.29107 8.25465 5.47918 5.03244C8.6673 1.81022 12.9913 0 17.5 0C22.0087 0 26.3327 1.81022 29.5208 5.03244C32.7089 8.25465 34.5 12.6249 34.5 17.1818Z"
+        fill="#E3EBF3"
+      />
+    </svg>
+  );
+};
+
+export { ArrowDownSquare, FloatingBalloon };
