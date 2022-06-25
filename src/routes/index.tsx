@@ -42,6 +42,7 @@ export default function Router() {
       children: [
         { element: <Navigate to="/wallet" replace /> },
         { path: 'wallet', element: <MyNFT /> },
+        { path: 'dashboard', element: <Dashboard /> },
         { path: 'create-expandable-collection', element: <CreateCollection /> },
         { path: 'mint-nft/:chain/:contractAddr', element: <MintNft /> },
         { path: 'mint-exp-nft', element: <MintExpNft /> },
@@ -96,6 +97,7 @@ export default function Router() {
 
 // Dashboard
 const FunBox = Loadable(lazy(() => import('../pages/FunBox')));
+const Dashboard = Loadable(lazy(() => import('../pages/Dashboard')));
 const CruFaucet = Loadable(lazy(() => import('../pages/CruFaucet')));
 const MaticFaucet = Loadable(lazy(() => import('../pages/MaticFaucet')));
 const LearnMore = Loadable(lazy(() => import('../pages/LearnMore')));
