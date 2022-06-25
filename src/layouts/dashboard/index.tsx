@@ -2,7 +2,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import DashboardNavbar, { APP_BAR_MIN_HEIGHT } from './DashboardNavbar';
+import DashboardNavbar, { APP_BAR_MAX_WIDTH, APP_BAR_MIN_HEIGHT } from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
 import Footer from './Footer';
 
@@ -12,9 +12,12 @@ const RootStyle = styled('div')({
 });
 
 const MainStyle = styled('div')(({ theme }) => ({
+  width: '100%',
+  maxWidth: APP_BAR_MAX_WIDTH,
+  minHeight: '100%',
+  margin: '0 auto',
   flexGrow: 1,
   overflow: 'auto',
-  minHeight: '100%',
   paddingTop: `calc(${APP_BAR_MIN_HEIGHT} + 24px)`,
   paddingBottom: theme.spacing(4)
 }));

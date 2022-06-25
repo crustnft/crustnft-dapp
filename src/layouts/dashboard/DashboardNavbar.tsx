@@ -25,7 +25,8 @@ const ToolbarStyle = styled(Toolbar)<ToolbarProps>(({ theme }) => ({
     padding: theme.spacing(0, 5)
   },
   '@media all': {
-    minHeight: APPBAR_MIN_HEIGHT
+    minHeight: APPBAR_MIN_HEIGHT,
+    padding: '0px'
   }
 }));
 
