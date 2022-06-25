@@ -8,6 +8,7 @@ import Footer from './Footer';
 
 const RootStyle = styled('div')({
   display: 'flex',
+  flexDirection: 'column',
   minHeight: '100%'
 });
 
@@ -17,7 +18,7 @@ const MainStyle = styled('div')(({ theme }) => ({
   minHeight: '100%',
   margin: '0 auto',
   flexGrow: 1,
-  overflow: 'auto',
+  overflow: 'visible',
   paddingTop: `calc(${APP_BAR_MIN_HEIGHT} + 24px)`,
   paddingBottom: theme.spacing(4)
 }));
@@ -44,8 +45,8 @@ export default function DashboardLayout() {
         }}
       >
         <Outlet />
-        <Footer />
       </MainStyle>
+      <Footer />
     </RootStyle>
   );
 }
