@@ -1,17 +1,17 @@
 import { Stack, Typography } from '@mui/material';
-import StatSectionMenu from './StatSectionMenu';
+import StatSectionMenu from './StatSection/StatSectionMenu';
 
-interface StatSectionHeaderProps {
+interface SectionHeaderProps {
   title: string;
   menuItems: string[];
 }
 
-const StatSectionHeader = ({ title, menuItems }: StatSectionHeaderProps) => {
+const SectionHeader = ({ title, menuItems }: SectionHeaderProps) => {
   return (
-    <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+    <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', mb: '20px' }}>
       <Typography
         variant="subtitle1"
-        color={(theme) => theme.palette.grey[700]}
+        color="text.secondary"
         sx={{
           display: 'flex',
           alignItems: 'center'
@@ -24,4 +24,4 @@ const StatSectionHeader = ({ title, menuItems }: StatSectionHeaderProps) => {
   );
 };
 
-export default StatSectionHeader;
+export default SectionHeader;

@@ -236,7 +236,7 @@ export const COMMON = {
         border: `2px solid ${GREY[300]} !important`
       }
     },
-    cardBorder: {
+    card: {
       border: '0px 0px 2px rgba(145, 158, 171, 0.2), 0px 12px 24px -4px rgba(145, 158, 171, 0.12)'
     }
   },
@@ -264,7 +264,7 @@ const palette = {
   light: {
     ...COMMON,
     mode: 'light',
-    text: { primary: '#000', secondary: '#637381', disabled: GREY[500] },
+    text: { primary: GREY[800], secondary: GREY[700], header: SECONDARY.main, disabled: GREY[500] },
     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action },
     header: {
@@ -290,8 +290,8 @@ const palette = {
   dark: {
     ...COMMON,
     mode: 'dark',
-    text: { primary: '#fff', secondary: '#637381', disabled: GREY[600] },
-    background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
+    text: { primary: GREY[0], secondary: GREY[300], header: SECONDARY.light, disabled: GREY[600] },
+    background: { paper: GREY[900], default: GREY[900], neutral: GREY[500_16] },
     action: { active: GREY[500], ...COMMON.action },
     header: {
       background: '#161C24',

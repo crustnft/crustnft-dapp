@@ -18,8 +18,9 @@ const StatSectionMenu = ({ menuItems }: StatSectionMenuProps) => {
         component={Button}
         ref={anchorRef}
         onClick={() => setOpen(true)}
-        color="grey.900"
+        color="text.primary"
         endIcon={<ArrowDownSquare />}
+        sx={{ textTransform: 'none', fontSize: '16px', fontWeight: 600, lineHeight: '24px' }}
       >
         {menuItems[selectedItem]}
       </Box>
@@ -45,7 +46,7 @@ const StatSectionMenu = ({ menuItems }: StatSectionMenuProps) => {
             >
               <Typography
                 variant="subtitle1"
-                color="grey.900"
+                color="text.primary"
                 sx={{ fontSize: '0.875rem', lineHeight: 1.5 }}
               >
                 {item}

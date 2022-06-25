@@ -10,7 +10,7 @@
 <path d="M16.7585 23.333C17.8948 23.3336 19.0312 23.3336 20.1675 23.3332C20.1678 24.4463 20.1678 25.5594 20.1675 26.6725C20.1672 27.1932 20.043 27.7135 19.8057 28.1772C19.5267 28.7263 19.0921 29.1948 18.5659 29.5148C18.0758 29.8157 17.5065 29.9808 16.9324 29.9999H16.7396C16.4835 29.9895 16.228 29.9554 15.9801 29.8888C15.3848 29.7324 14.8363 29.4047 14.4139 28.9573C13.8664 28.3831 13.5356 27.6079 13.5044 26.8149C13.4777 26.2333 13.6062 25.6452 13.8764 25.1292C14.171 24.5618 14.6329 24.0831 15.1891 23.7676C15.6654 23.4949 16.2102 23.3471 16.7585 23.333Z" fill="#0ACF83"/>
 <defs>
 <filter id="filter0_b" x="-9.5" y="-10" width="60" height="60" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feFlood floodOpacity="0" result="BackgroundImageFix"/>
 <feGaussianBlur in="BackgroundImage" stdDeviation="5"/>
 <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur"/>
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur" result="shape"/>

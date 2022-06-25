@@ -41,7 +41,7 @@ export default function DashboardLayout() {
           transition: theme.transitions.create('margin', {
             duration: theme.transitions.duration.complex
           }),
-          backgroundColor: 'customBackground.themeBackground'
+          backgroundColor: 'background.default'
         }}
       >
         <Outlet />

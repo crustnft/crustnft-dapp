@@ -1,4 +1,4 @@
-import { Box, Card, Typography } from '@mui/material';
+import { Box, Card, Stack, Typography } from '@mui/material';
 
 const accountInfo = [
   {
@@ -26,18 +26,18 @@ const UserAccount = () => {
         sx={{ width: '100%' }}
       />
 
-      {accountInfo.map((item, index) => (
-        <>
-          <Typography variant="h6" color="grey.900" sx={{ mt: '17px' }} key={index}>
+      {accountInfo.map((item) => (
+        <Stack key={item.title}>
+          <Typography variant="h6" color="text.primary" sx={{ mt: '17px' }}>
             {item.title}
           </Typography>
 
-          {item.content.map((content, ind) => (
-            <Typography variant="body1" color="grey.600" sx={{ mt: '5px' }} key={ind}>
+          {item.content.map((content, index) => (
+            <Typography variant="body1" color="text.secondary" sx={{ mt: '5px' }} key={index}>
               {content}
             </Typography>
           ))}
-        </>
+        </Stack>
       ))}
     </Card>
   );

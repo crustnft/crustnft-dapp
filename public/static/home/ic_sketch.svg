@@ -13,7 +13,7 @@
 <path fill-rule="evenodd" clip-rule="evenodd" d="M26.1212 11.6102L26.4022 17.5081L20.5 11L26.1212 11.6102Z" fill="#FED305"/>
 <defs>
 <filter id="filter0_b" x="-9.5" y="-10" width="60" height="60" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feFlood floodOpacity="0" result="BackgroundImageFix"/>
 <feGaussianBlur in="BackgroundImage" stdDeviation="5"/>
 <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur"/>
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur" result="shape"/>

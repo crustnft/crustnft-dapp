@@ -49,7 +49,6 @@ const LINKS = [
 ];
 
 const RootStyle = styled('div')(({ theme }) => ({
-  marginTop: '50px',
   backgroundColor: theme.palette.background.default,
   marginBottom: '-32px'
 }));

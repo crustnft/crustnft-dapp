@@ -41,7 +41,10 @@ const CollectionBtn = ({ title, total, isSelected, onClick }: CollectionBtnProps
         isSelected
           ? {
               borderColor: 'accent.main',
-              backgroundColor: 'accent.lighter'
+              backgroundColor: 'accent.lighter',
+              '& >.MuiTypography-root:first-child': {
+                color: 'grey.900'
+              }
             }
           : {
               borderColor: 'grey.300'
@@ -49,12 +52,16 @@ const CollectionBtn = ({ title, total, isSelected, onClick }: CollectionBtnProps
       ]}
       onClick={onClick}
     >
-      <Typography variant="subtitle2" color="grey.900">
+      <Typography variant="subtitle2" color="text.primary">
         {title}
       </Typography>
       <Typography variant="h6" color="accent.dark" sx={{ display: 'flex', alignItems: 'baseline' }}>
         {total}
-        <Typography variant="subtitle2" color="accent.dark" sx={{ ml: '3px' }}>
+        <Typography
+          variant="caption"
+          color="accent.dark"
+          sx={{ ml: '3px', fontSize: '14px', fontWeight: 600, lineHeight: '22px' }}
+        >
           collections
         </Typography>
       </Typography>

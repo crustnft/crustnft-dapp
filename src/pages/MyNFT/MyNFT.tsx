@@ -33,7 +33,7 @@ export default function MyNFT() {
         <Stack sx={{ alignItems: 'center', display: active && isAuthenticated ? 'none' : 'flex' }}>
           <Typography
             variant="h3"
-            color={(theme) => theme.palette.secondary.main}
+            color="text.header"
             sx={{
               marginTop: '60px',
               p: '11px 22px'
@@ -43,7 +43,7 @@ export default function MyNFT() {
           </Typography>
           <Typography
             variant="subtitle1"
-            color={(theme) => theme.palette.grey[600]}
+            color="text.secondary"
             sx={{
               marginTop: '10px'
             }}
