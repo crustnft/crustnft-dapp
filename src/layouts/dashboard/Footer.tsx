@@ -87,7 +87,17 @@ export default function MainFooter() {
   return (
     <RootStyle>
       <Divider />
-      <Container maxWidth="lg" sx={{ pt: 3, pb: 2 }}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          pt: 3,
+          pb: 2,
+          [theme.breakpoints.up('sm')]: {
+            paddingLeft: '0px',
+            paddingRight: '0px'
+          }
+        }}
+      >
         <Grid
           container
           justifyContent={{ xs: 'center', md: 'space-between' }}
