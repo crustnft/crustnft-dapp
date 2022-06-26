@@ -1,7 +1,6 @@
-import { Icon } from '@iconify/react';
 import { Button, Card, Container, Grid, Link, Stack, Typography } from '@mui/material';
-import image1 from "../../assets/images/create10K.png";
-import image2 from "../../assets/images/createMultiple.png";
+import image1 from '../../assets/images/create10K.png';
+import image2 from '../../assets/images/createMultiple.png';
 import Page from '../../components/Page';
 import Introduction from './components/Introduction';
 
@@ -18,12 +17,19 @@ export default function LearnMore() {
                   backgroundColor: 'background.paper',
                   aspectRatio: 'auto'
                 }}
-              >                
-                  <img src={image1} alt="create 10k collection" style={{width:"100%", objectFit: 'fill'}}/>
+              >
+                <img
+                  src={image1}
+                  alt="create 10k collection"
+                  style={{ width: '100%', objectFit: 'fill' }}
+                />
               </Card>
               <Stack alignItems="center" sx={{ pt: 2 }} spacing={2}>
-                <Link href="#/my-collections">
-                  <Button variant="text" sx={{ borderRadius: '8px', color: 'text.primary', fontSize:"1.125rem" }}>
+                <Link href="#/my-collections" underline="none">
+                  <Button
+                    variant="text"
+                    sx={{ borderRadius: '8px', color: 'text.primary', fontSize: '1.125rem' }}
+                  >
                     Create 10K collection
                   </Button>
                 </Link>
@@ -42,11 +48,18 @@ export default function LearnMore() {
                   aspectRatio: 'auto'
                 }}
               >
-                  <img src={image2} alt="create multiple collection" style={{width:"100%", objectFit: 'fill'}}/>
+                <img
+                  src={image2}
+                  alt="create multiple collection"
+                  style={{ width: '100%', objectFit: 'fill' }}
+                />
               </Card>
               <Stack alignItems="center" sx={{ pt: 2 }} spacing={2}>
-                <Link href="#/create-expandable-collection">
-                  <Button variant="text" sx={{ borderRadius: '8px', color: 'text.primary', fontSize:"1.125rem" }}>
+                <Link href="#/create-expandable-collection" underline="none">
+                  <Button
+                    variant="text"
+                    sx={{ borderRadius: '8px', color: 'text.primary', fontSize: '1.125rem' }}
+                  >
                     Create Multiple
                   </Button>
                 </Link>
