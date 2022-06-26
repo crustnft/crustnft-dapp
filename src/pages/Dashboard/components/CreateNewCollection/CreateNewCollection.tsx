@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Card, Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { PlusIcon } from 'assets/icons/customIcons';
 import { COLLECTION_CATEGORIES } from './constants';
@@ -9,24 +9,23 @@ const CreateNewCollectionElement = ({
   category: { title: string; description: string };
 }) => {
   return (
-    <Stack
-      gap="10px"
+    <Card
       sx={{
         p: '25px',
         cursor: 'pointer',
-        alignItems: 'center',
-        borderRadius: '20px',
-        boxShadow: (theme) => theme.customShadows.card
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
       }}
     >
       <PlusIcon />
-      <Typography variant="subtitle1" color="grey.900">
+      <Typography variant="subtitle1" color="text.primary" sx={{ mt: '10px' }}>
         {category.title}
       </Typography>
-      <Typography variant="caption" color="grey.600" sx={{ textAlign: 'center' }}>
+      <Typography variant="caption" color="text.secondary" sx={{ textAlign: 'center', mt: '15px' }}>
         {category.description}
       </Typography>
-    </Stack>
+    </Card>
   );
 };
 

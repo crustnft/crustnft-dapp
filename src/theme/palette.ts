@@ -288,7 +288,7 @@ const palette = {
     ...COMMON,
     mode: 'dark',
     text: { primary: GREY[0], secondary: GREY[300], header: SECONDARY.light, disabled: GREY[600] },
-    background: { paper: GREY[900], default: GREY[900], neutral: GREY[500_16] },
+    background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
     action: { active: GREY[500], ...COMMON.action },
     header: {
       background: '#161C24',
