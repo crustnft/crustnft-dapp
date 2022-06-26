@@ -16,10 +16,6 @@
     "format": "prettier --write .",
     "postbuild": "node scripts/generate-info.js"
   },
-  "engines": {
-    "npm": ">=8.0.0",
-    "node": ">=16.0.0"
-  },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.18.0",
     "@coinbase/wallet-sdk": "^3.0.3",
