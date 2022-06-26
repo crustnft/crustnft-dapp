@@ -80,9 +80,10 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
                 variant="contained"
                 startIcon={<Iconify icon="bx:plus" />}
                 sx={[
-                  (theme) => theme.palette.customCSS.buttonHeader.common,
-                  (theme) => theme.palette.customCSS.buttonHeader.container,
+                  (theme) => theme.palette.customCSS.buttonHeader,
                   {
+                    color: 'grey.0',
+                    boxShadow: (theme) => theme.customShadows.z8,
                     backgroundColor: (theme) => theme.palette.primary.main,
                     '& .MuiButton-startIcon': { mr: 0.5 }
                   }

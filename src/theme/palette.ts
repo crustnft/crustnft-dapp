@@ -220,21 +220,10 @@ export const COMMON = {
   divider: GREY[500_24],
   customCSS: {
     buttonHeader: {
-      common: {
-        minWidth: '111px',
-        height: '44px',
-        borderRadius: '8px',
-        p: '11px 22px !important'
-      },
-      container: {
-        boxShadow: '0px 8px 16px rgba(255, 140, 0, 0.2)',
-        color: GREY[0]
-      },
-      outline: {
-        boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.16)',
-        color: 'text.primary',
-        border: `2px solid ${GREY[300]} !important`
-      }
+      minWidth: '111px',
+      height: '44px',
+      borderRadius: '8px',
+      p: '11px 22px !important'
     }
   },
   action: {
