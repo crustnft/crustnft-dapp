@@ -36,7 +36,7 @@ declare module '@mui/material/styles' {
 }
 
 const LIGHT_MODE = palette.light.grey[500];
-const DARK_MODE = '#000000';
+const DARK_MODE = palette.dark.grey[800];
 
 const createShadow = (color: string): Shadows => {
   const transparent1 = alpha(color, 0.2);

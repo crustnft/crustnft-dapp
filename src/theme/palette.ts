@@ -235,10 +235,6 @@ export const COMMON = {
         color: 'text.primary',
         border: `2px solid ${GREY[300]} !important`
       }
-    },
-    card: {
-      boxShadow:
-        '0px 0px 2px rgba(145, 158, 171, 0.2), 0px 12px 24px -4px rgba(145, 158, 171, 0.12)'
     }
   },
   action: {
@@ -292,7 +288,7 @@ const palette = {
     ...COMMON,
     mode: 'dark',
     text: { primary: GREY[0], secondary: GREY[300], header: SECONDARY.light, disabled: GREY[600] },
-    background: { paper: GREY[900], default: GREY[900], neutral: GREY[500_16] },
+    background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
     action: { active: GREY[500], ...COMMON.action },
     header: {
       background: '#161C24',
