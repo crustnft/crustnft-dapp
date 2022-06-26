@@ -74,8 +74,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
 
         <Box sx={{ flexGrow: 1 }} />
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          {notSmall ? (
-            <Link href="#/create-collection">
+          <Link href="#/create-collection" underline="none">
+            {notSmall ? (
               <Button
                 variant="contained"
                 startIcon={<Iconify icon="bx:plus" />}
@@ -90,12 +90,12 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
               >
                 Create
               </Button>
-            </Link>
-          ) : (
-            <IconButton>
-              <Iconify icon="fluent:channel-add-28-regular" />
-            </IconButton>
-          )}
+            ) : (
+              <IconButton>
+                <Iconify icon="fluent:channel-add-28-regular" />
+              </IconButton>
+            )}
+          </Link>
           <ConnectWalletPopover />
           <NetworkPopover />
         </Stack>
