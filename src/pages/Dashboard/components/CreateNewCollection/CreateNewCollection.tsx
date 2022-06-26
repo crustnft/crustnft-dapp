@@ -11,15 +11,13 @@ const CreateNewCollectionElement = ({
   return (
     <Stack
       gap="10px"
-      sx={[
-        {
-          p: '25px',
-          cursor: 'pointer',
-          alignItems: 'center',
-          borderRadius: '20px'
-        },
-        (theme) => theme.palette.customCSS.card
-      ]}
+      sx={{
+        p: '25px',
+        cursor: 'pointer',
+        alignItems: 'center',
+        borderRadius: '20px',
+        boxShadow: (theme) => theme.customShadows.card
+      }}
     >
       <PlusIcon />
       <Typography variant="subtitle1" color="grey.900">
