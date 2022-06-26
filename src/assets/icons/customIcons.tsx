@@ -1,6 +1,12 @@
-const ArrowDownSquare = () => {
+const ArrowDownSquare = ({ width = 13, height = 14, fill = 'none' }) => {
   return (
-    <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width={width}
+      height={height}
+      viewBox="0.2 0.7 13 14"
+      fill={fill}
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <path
         fillRule="evenodd"
         clipRule="evenodd"

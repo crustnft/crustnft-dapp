@@ -1,4 +1,5 @@
 import { alpha } from '@mui/material/styles';
+import { HTMLAttributes } from 'react';
 
 function createGradient(color1: string, color2: string) {
   return `linear-gradient(to bottom, ${color1}, ${color2})`;
@@ -85,6 +86,7 @@ declare module '@mui/material/styles/createPalette' {
     customBackground: BackgroundColor;
     collectionSlider: string;
     card: CardOptions;
+    textField: HTMLAttributes<HTMLElement>;
 
     tertiary: PaletteColor;
     accent: PaletteColor;
@@ -271,6 +273,9 @@ const palette = {
     collectionSlider: '#ffffff',
     card: {
       background: '#ffffff'
+    },
+    textField: {
+      borderColor: GREY[300]
     }
   },
   dark: {
@@ -297,6 +302,9 @@ const palette = {
     collectionSlider: '#23262F',
     card: {
       background: '#1d1f25'
+    },
+    textField: {
+      borderColor: GREY[600]
     }
   }
 } as const;
