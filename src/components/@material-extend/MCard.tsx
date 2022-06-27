@@ -6,6 +6,7 @@ interface MCardProps extends CardProps {
 }
 
 const MCard = styled(Card)<MCardProps>(({ hoverEffect, theme }) => ({
+  backgroundColor: theme.palette.card.background,
   ...(hoverEffect && {
     transition: 'all 0.3s ease-in-out',
     '&:hover': {

@@ -17,7 +17,6 @@ export default function NetworkPopover() {
   const { chain: selectedChain } = useWallet();
   const { deactivate, switchNetwork } = useWeb3();
   const theme = useTheme();
-  console.log(typeof theme);
 
   const MenuHeader = () => (
     <Typography variant="subtitle1" sx={{ p: 1.5 }}>

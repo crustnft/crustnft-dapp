@@ -1,6 +1,18 @@
-import { Container, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import {
+  Container,
+  Divider,
+  Grid,
+  MenuItem,
+  Pagination,
+  PaginationItem,
+  Stack,
+  TextField,
+  Typography
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { RegularArrowLeftIcon, RegularArrowRightIcon } from 'assets/icons/customIcons';
 import ButtonPopover from 'components/ButtonPopover';
+import CollectionSumary from 'components/CollectionSumary';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { NftItem } from 'services/fetchCollection/createEmptyNFTList';
@@ -112,9 +124,72 @@ export default function CollectionViewer() {
   const [sortBy, setSortBy] = useState(SORT_BY[0]);
   const theme = useTheme();
 
+  const fakeCollectionList = [
+    {
+      title: 'Khoa pug',
+      nfts: [
+        'static/mock-images/other/bean_1.png',
+        'static/mock-images/other/bean_2.png',
+        'static/mock-images/other/bean_3.png',
+        'static/mock-images/other/bean_4.png'
+      ],
+      onChain: ['./static/icons/shared/opensea.svg', './static/icons/shared/near.svg']
+    },
+    {
+      title: 'Kha Banh',
+      nfts: ['static/mock-images/other/dummy-avatar.png'],
+      onChain: ['./static/icons/shared/opensea.svg', './static/icons/shared/avalanche.svg']
+    },
+    {
+      title: 'Donal Trump',
+      nfts: [],
+      onChain: ['./static/icons/shared/opensea.svg']
+    },
+    {
+      title: 'Donal Marc',
+      nfts: [
+        'static/mock-images/other/bean_1.png',
+        'static/mock-images/other/bean_2.png',
+        'static/mock-images/other/bean_3.png',
+        'static/mock-images/other/bean_4.png'
+      ],
+      onChain: ['./static/icons/shared/avalanche.svg', './static/icons/shared/near.svg']
+    },
+    {
+      title: 'Vincom',
+      nfts: [
+        'static/mock-images/other/bean_1.png',
+        'static/mock-images/other/bean_2.png',
+        'static/mock-images/other/bean_3.png',
+        'static/mock-images/other/bean_4.png'
+      ],
+      onChain: ['./static/icons/shared/near.svg']
+    },
+    {
+      title: 'Viet Nam',
+      nfts: [
+        'static/mock-images/other/bean_1.png',
+        'static/mock-images/other/bean_2.png',
+        'static/mock-images/other/bean_3.png',
+        'static/mock-images/other/bean_4.png'
+      ],
+      onChain: ['./static/icons/shared/avalanche.svg']
+    },
+    {
+      title: 'USA',
+      nfts: [
+        'static/mock-images/other/bean_1.png',
+        'static/mock-images/other/bean_2.png',
+        'static/mock-images/other/bean_3.png',
+        'static/mock-images/other/bean_4.png'
+      ],
+      onChain: ['./static/icons/shared/opensea.svg', './static/icons/shared/avalanche.svg']
+    }
+  ];
+
   return (
     <Page title={`Collection - ${name}`}>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ display: 'flex', flexDirection: 'column' }}>
         <Stack direction="row" gap="60px">
           <TextField placeholder="Search for a collection" sx={{ flex: 2.5 }} />
           <Stack direction="row" gap="15px" sx={{ flex: 1, alignItems: 'center' }}>
@@ -157,6 +232,45 @@ export default function CollectionViewer() {
             </ButtonPopover>
           </Stack>
         </Stack>
+
+        <Divider sx={{ mt: '30px', border: '1px solid', borderColor: 'grey.200' }} />
+
+        <Grid
+          container
+          justifyContent="space-around"
+          spacing="50px"
+          sx={{ mt: '-30px', width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}
+        >
+          {fakeCollectionList.map((collection, index) => (
+            <Grid item xs={12} md={6} lg={4} key={index}>
+              <CollectionSumary
+                title={collection.title}
+                nfts={collection.nfts}
+                onChain={collection.onChain}
+              />
+            </Grid>
+          ))}
+        </Grid>
+        <Pagination
+          count={7}
+          boundaryCount={1}
+          siblingCount={0}
+          renderItem={(item) => (
+            <PaginationItem
+              components={{ previous: RegularArrowLeftIcon, next: RegularArrowRightIcon }}
+              {...item}
+            />
+          )}
+          sx={{
+            mt: '30px',
+            alignSelf: 'center',
+            '& .Mui-selected.MuiPaginationItem-page': {
+              backgroundColor: 'tertiary.lighter',
+              color: 'tertiary.dark',
+              fontWeight: 400
+            }
+          }}
+        />
       </Container>
     </Page>
   );
