@@ -36,25 +36,10 @@ const CollectionSumary = ({ collection }: CollectionSumaryProps) => {
       try {
         let _totalSupply = await getTotalSupply(contract);
         setTotalSupply(_totalSupply);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
-    fetchCollectionInfo();
-  }, [contract]);
-
-  useEffect(() => {
-    const fetchCollectionImages = async () => {
-      if (!contract) {
-        return;
-      } else {
-        console.log(contract);
-      }
-      try {
         setName(await getName(contract));
+
         let images: string[] = [];
-        for (let i = 1; i < Math.min(totalSupply, 5); i++) {
+        for (let i = 1; i < Math.min(_totalSupply, 5); i++) {
           const tokenUri = await getTokenURI(contract, i);
           const parsedTokenUri = parseNftUri(tokenUri);
           const data = await getDataFromTokenUri(parsedTokenUri);
@@ -66,8 +51,9 @@ const CollectionSumary = ({ collection }: CollectionSumaryProps) => {
         console.error(e);
       }
     };
-    fetchCollectionImages();
-  }, [contract, totalSupply]);
+
+    fetchCollectionInfo();
+  }, [contract]);
 
   const CollectionImage = ({ images }: { images: string[] }) => {
     if (images.length === 0) {
