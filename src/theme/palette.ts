@@ -218,7 +218,7 @@ export const COMMON = {
   grey: GREY,
   gradients: GRADIENTS,
   chart: CHART_COLORS,
-  divider: GREY[200],
+
   customCSS: {
     buttonHeader: {
       minWidth: '111px',
@@ -254,6 +254,7 @@ const palette = {
     text: { primary: GREY[800], secondary: GREY[700], header: SECONDARY.main, disabled: GREY[500] },
     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action },
+    divider: GREY[200],
     header: {
       background: GREY[0],
       menuText: '#0000004d',
@@ -283,6 +284,7 @@ const palette = {
     text: { primary: GREY[0], secondary: GREY[300], header: SECONDARY.light, disabled: GREY[600] },
     background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
     action: { active: GREY[500], ...COMMON.action },
+    divider: GREY[700],
     header: {
       background: '#161C24',
       menuText: '#ffffff4d',
