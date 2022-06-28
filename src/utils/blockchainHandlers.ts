@@ -34,3 +34,8 @@ export function getCollectionUrlByChainId(chainId: number, address: string): str
   const chainObj = getChainByChainId(chainId);
   return chainObj ? chainObj.blockExplorerUrl + '/address/' + address : '';
 }
+
+export function getIconByChainId(chainId: number, iconDark?: boolean): string {
+  const chainObj = SUPPORTED_CHAINS.find((c) => c.chainId === chainId);
+  return (iconDark ? chainObj?.iconDark : chainObj?.icon) || '';
+}

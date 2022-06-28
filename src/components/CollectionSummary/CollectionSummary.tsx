@@ -1,4 +1,4 @@
-import { Chip, Stack, Typography } from '@mui/material';
+import { Box, Button, Chip, Stack, Typography } from '@mui/material';
 import { CreateContractDto } from 'clients/crustnft-explore-api/types';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { useEffect, useMemo, useState } from 'react';
@@ -9,7 +9,11 @@ import {
   getTokenURI,
   getTotalSupply
 } from 'services/smartContract/evmCompatible';
-import { getRpcUrlByChainId } from 'utils/blockchainHandlers';
+import {
+  getCollectionUrlByChainId,
+  getIconByChainId,
+  getRpcUrlByChainId
+} from 'utils/blockchainHandlers';
 import { parseNftUri } from 'utils/tokenUriHandlers';
 import MCard from '../@material-extend/MCard';
 import CollectionImage from './components/CollectionImage';
@@ -81,21 +85,21 @@ const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
             }}
           />
         </Stack>
-        {/* <Stack
+        <Stack
           direction="row"
           sx={{ mt: '25px', justifyContent: 'space-between', alignItems: 'center' }}
         >
-          <Stack direction="row" spacing="15px">
-            {onChain.map((item, index) => (
-              <Box
-                component="img"
-                src={item}
-                alt=""
-                key={index}
-                sx={{ width: '32px', height: '32px' }}
-              />
-            ))}
-          </Stack>
+          <Box
+            component="a"
+            href={getCollectionUrlByChainId(collection.chainId, collection.contractAddress)}
+            target="_blank"
+            sx={{
+              width: '32px',
+              height: '32px',
+              cursor: 'pointer',
+              background: `center / contain no-repeat url(${getIconByChainId(collection.chainId)})`
+            }}
+          />
 
           <Button
             variant="contained"
@@ -105,7 +109,7 @@ const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
           >
             Mint
           </Button>
-        </Stack> */}
+        </Stack>
       </Stack>
     </MCard>
   );
