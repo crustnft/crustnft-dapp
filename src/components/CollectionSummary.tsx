@@ -14,11 +14,11 @@ import { getRpcUrlByChainId } from 'utils/blockchainHandlers';
 import { parseNftUri } from 'utils/tokenUriHandlers';
 import MCard from './@material-extend/MCard';
 
-interface CollectionSumaryProps {
+interface CollectionSummaryProps {
   collection: CreateContractDto;
 }
 
-const CollectionSumary = ({ collection }: CollectionSumaryProps) => {
+const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
   const [name, setName] = useState('');
   const [totalSupply, setTotalSupply] = useState(0);
   const [displayImages, setDisplayImages] = useState<string[]>([]);
@@ -149,4 +149,4 @@ const CollectionSumary = ({ collection }: CollectionSumaryProps) => {
   );
 };
 
-export default CollectionSumary;
+export default CollectionSummary;

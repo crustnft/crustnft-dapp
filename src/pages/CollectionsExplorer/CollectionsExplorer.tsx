@@ -14,7 +14,7 @@ import { RegularArrowLeftIcon, RegularArrowRightIcon } from 'assets/icons/custom
 import { getListingContracts } from 'clients/crustnft-explore-api/contracts';
 import { CreateContractDto } from 'clients/crustnft-explore-api/types';
 import ButtonPopover from 'components/ButtonPopover';
-import CollectionSumary from 'components/CollectionSumary';
+import CollectionSummary from 'components/CollectionSummary';
 import { Key, useEffect, useState } from 'react';
 import Page from '../../components/Page';
 
@@ -90,7 +90,7 @@ export default function CollectionsExplorer() {
         >
           {collections.map((collection: any, index: Key | null | undefined) => (
             <Grid item xs={12} md={6} lg={4} key={index}>
-              <CollectionSumary collection={collection} />
+              <CollectionSummary collection={collection} />
             </Grid>
           ))}
         </Grid>
