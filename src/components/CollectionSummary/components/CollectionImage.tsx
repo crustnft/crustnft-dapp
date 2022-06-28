@@ -1,7 +1,13 @@
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Link } from '@mui/material';
 import { AddCollectionIcon } from 'assets/icons/customIcons';
 
-const CollectionImage = ({ images }: { images: string[] }) => {
+interface CollectionSummaryProps {
+  images: string[];
+  chainName: string;
+  contractAddress: string;
+}
+
+const CollectionImage = ({ images, chainName, contractAddress }: CollectionSummaryProps) => {
   if (images.length === 0) {
     return (
       <Box
@@ -17,24 +23,28 @@ const CollectionImage = ({ images }: { images: string[] }) => {
     );
   } else if (images.length < 4) {
     return (
-      <Box
-        component="img"
-        src={images[0]}
-        alt={'nft'}
-        sx={{ borderRadius: '6.5px', aspectRatio: '1' }}
-      />
+      <Link href={`#/assets/${chainName}/${contractAddress}/1`}>
+        <Box
+          component="img"
+          src={images[0]}
+          alt={'nft'}
+          sx={{ borderRadius: '6.5px', aspectRatio: '1' }}
+        />
+      </Link>
     );
   } else {
     return (
       <Grid container spacing="18px">
         {images.map((item, index) => (
           <Grid item xs={6} key={index}>
-            <Box
-              component="img"
-              src={item}
-              alt={'nft'}
-              sx={{ borderRadius: '6.5px', aspectRatio: '1' }}
-            />
+            <Link href={`#/assets/${chainName}/${contractAddress}/${index + 1}`}>
+              <Box
+                component="img"
+                src={item}
+                alt={'nft'}
+                sx={{ borderRadius: '6.5px', aspectRatio: '1' }}
+              />
+            </Link>
           </Grid>
         ))}
       </Grid>

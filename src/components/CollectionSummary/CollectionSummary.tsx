@@ -1,4 +1,4 @@
-import { Box, Button, Chip, Stack, Typography } from '@mui/material';
+import { Box, Button, Chip, Link, Stack, Typography } from '@mui/material';
 import { CreateContractDto } from 'clients/crustnft-explore-api/types';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { useEffect, useMemo, useState } from 'react';
@@ -10,6 +10,7 @@ import {
   getTotalSupply
 } from 'services/smartContract/evmCompatible';
 import {
+  getChainNameByChainId,
   getCollectionUrlByChainId,
   getIconByChainId,
   getRpcUrlByChainId
@@ -65,11 +66,29 @@ const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
   return (
     <MCard hoverEffect>
       <Stack sx={{ p: '25px' }}>
-        {loaded ? <CollectionImage images={displayImages} /> : <CollectionImageSkeleton />}
-        <Stack direction="row" sx={{ mt: '35px', justifyContent: 'space-between' }}>
-          <Typography variant="h6" color="text.primary" sx={{ cursor: 'pointer' }}>
-            {name}
-          </Typography>
+        {loaded ? (
+          <CollectionImage
+            images={displayImages}
+            chainName={getChainNameByChainId(collection.chainId)}
+            contractAddress={collection.contractAddress}
+          />
+        ) : (
+          <CollectionImageSkeleton />
+        )}
+        <Stack
+          direction="row"
+          sx={{ mt: '25px', justifyContent: 'space-between', alignItems: 'center' }}
+        >
+          <Link
+            href={`#/collection/${getChainNameByChainId(collection.chainId)}/${
+              collection.contractAddress
+            }/1`}
+            sx={{ p: '10px 0', flex: 1, maxWidth: '70%' }}
+          >
+            <Typography variant="h6" color="text.primary" noWrap>
+              {name}
+            </Typography>
+          </Link>
           <Chip
             label={
               <Typography variant="button.small">
@@ -77,6 +96,7 @@ const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
               </Typography>
             }
             sx={{
+              ml: '10px',
               p: '7px 11px',
               borderRadius: '8px',
               '& .MuiChip-label': {
@@ -87,7 +107,7 @@ const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
         </Stack>
         <Stack
           direction="row"
-          sx={{ mt: '25px', justifyContent: 'space-between', alignItems: 'center' }}
+          sx={{ mt: '15px', justifyContent: 'space-between', alignItems: 'center' }}
         >
           <Box
             component="a"
