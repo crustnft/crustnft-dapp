@@ -87,7 +87,6 @@ declare module '@mui/material/styles/createPalette' {
     collectionSlider: string;
     card: CardOptions;
     textField: HTMLAttributes<HTMLElement>;
-
     tertiary: PaletteColor;
     accent: PaletteColor;
     customCSS: CustomCSS;
@@ -219,7 +218,7 @@ export const COMMON = {
   grey: GREY,
   gradients: GRADIENTS,
   chart: CHART_COLORS,
-  divider: GREY[500_24],
+  divider: GREY[200],
   customCSS: {
     buttonHeader: {
       minWidth: '111px',
