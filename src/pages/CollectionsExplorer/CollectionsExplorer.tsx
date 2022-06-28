@@ -15,17 +15,21 @@ import { getListingContracts } from 'clients/crustnft-explore-api/contracts';
 import { CreateContractDto } from 'clients/crustnft-explore-api/types';
 import ButtonPopover from 'components/ButtonPopover';
 import CollectionSummary from 'components/CollectionSummary';
-import { Key, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Page from '../../components/Page';
+
+const NB_CONTRACTS_PER_PAGE = 12;
+const NB_CONTRACTS_TO_FETCH = 50;
 
 export default function CollectionsExplorer() {
   const theme = useTheme();
   const [collections, setCollections] = useState<CreateContractDto[]>([]);
   const SORT_BY = ['Recently added', 'Name'];
   const [sortBy, setSortBy] = useState(SORT_BY[0]);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    getListingContracts(50)
+    getListingContracts(NB_CONTRACTS_TO_FETCH)
       .then((res) => {
         setCollections(res?.data.data);
       })
@@ -88,14 +92,23 @@ export default function CollectionsExplorer() {
           spacing="50px"
           sx={{ mt: '-30px', width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}
         >
-          {collections.map((collection: any, index: Key | null | undefined) => (
-            <Grid item xs={12} md={6} lg={4} key={index}>
-              <CollectionSummary collection={collection} />
-            </Grid>
-          ))}
+          {collections
+            .slice(
+              (page - 1) * NB_CONTRACTS_PER_PAGE,
+              Math.min(page * NB_CONTRACTS_PER_PAGE, collections.length)
+            )
+            .map((collection: CreateContractDto) => (
+              <Grid item xs={12} md={6} lg={4} key={collection.contractAddress}>
+                <CollectionSummary collection={collection} />
+              </Grid>
+            ))}
         </Grid>
         <Pagination
-          count={7}
+          count={Math.ceil(collections.length / NB_CONTRACTS_PER_PAGE)}
+          page={page}
+          onChange={(event, value) => {
+            setPage(value);
+          }}
           boundaryCount={1}
           siblingCount={0}
           renderItem={(item) => (
