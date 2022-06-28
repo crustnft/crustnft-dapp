@@ -1,5 +1,4 @@
-import { Box, Chip, Grid, Stack, Typography } from '@mui/material';
-import { AddCollectionIcon } from 'assets/icons/customIcons';
+import { Chip, Stack, Typography } from '@mui/material';
 import { CreateContractDto } from 'clients/crustnft-explore-api/types';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import { useEffect, useMemo, useState } from 'react';
@@ -12,13 +11,16 @@ import {
 } from 'services/smartContract/evmCompatible';
 import { getRpcUrlByChainId } from 'utils/blockchainHandlers';
 import { parseNftUri } from 'utils/tokenUriHandlers';
-import MCard from './@material-extend/MCard';
+import MCard from '../@material-extend/MCard';
+import CollectionImage from './components/CollectionImage';
+import CollectionImageSkeleton from './components/CollectionImageSkeleton';
 
 interface CollectionSummaryProps {
   collection: CreateContractDto;
 }
 
 const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
+  const [loaded, setLoaded] = useState(false);
   const [name, setName] = useState('');
   const [totalSupply, setTotalSupply] = useState(0);
   const [displayImages, setDisplayImages] = useState<string[]>([]);
@@ -47,6 +49,7 @@ const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
           images.push(parsedImageUrl);
         }
         setDisplayImages(images);
+        setLoaded(true);
       } catch (e) {
         console.error(e);
       }
@@ -55,51 +58,10 @@ const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
     fetchCollectionInfo();
   }, [contract]);
 
-  const CollectionImage = ({ images }: { images: string[] }) => {
-    if (images.length === 0) {
-      return (
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            aspectRatio: '1'
-          }}
-        >
-          <AddCollectionIcon />
-        </Box>
-      );
-    } else if (images.length < 4) {
-      return (
-        <Box
-          component="img"
-          src={images[0]}
-          alt={'nft'}
-          sx={{ borderRadius: '6.5px', aspectRatio: '1' }}
-        />
-      );
-    } else {
-      return (
-        <Grid container spacing="18px">
-          {images.map((item, index) => (
-            <Grid item xs={6} key={index}>
-              <Box
-                component="img"
-                src={item}
-                alt={'nft'}
-                sx={{ borderRadius: '6.5px', aspectRatio: '1' }}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      );
-    }
-  };
-
   return (
     <MCard hoverEffect>
       <Stack sx={{ p: '25px' }}>
-        <CollectionImage images={displayImages} />
+        {loaded ? <CollectionImage images={displayImages} /> : <CollectionImageSkeleton />}
         <Stack direction="row" sx={{ mt: '35px', justifyContent: 'space-between' }}>
           <Typography variant="h6" color="text.primary" sx={{ cursor: 'pointer' }}>
             {name}
