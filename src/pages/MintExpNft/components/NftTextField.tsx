@@ -19,7 +19,7 @@ export default function NftTextField({
 
   return (
     <Stack>
-      <Typography variant="subtitle1" sx={{ display: 'block' }}>
+      <Typography variant="subtitle1" sx={{ display: 'block', mb: '15px' }}>
         {label}
         <Typography
           variant="subtitle1"

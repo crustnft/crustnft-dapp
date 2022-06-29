@@ -116,7 +116,7 @@ export default function NftForm() {
   const [activeStep, setActiveStep] = useState(0);
 
   const NewNftSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    name: Yup.string().required('Item name is required'),
     description: Yup.string(),
     externalLink: Yup.string().url('Invalid URL'),
     avatar: Yup.mixed().test('required', 'Image is required', (value) => value !== null)
@@ -359,7 +359,7 @@ export default function NftForm() {
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          <Card sx={{ p: 3 }}>
+          <Stack sx={{ p: 3 }}>
             <RHFUploadMultiFile
               name="avatar"
               accept="image/*"
@@ -367,10 +367,13 @@ export default function NftForm() {
               onDrop={handleDrop}
               onRemove={() => {}}
             />
-            <Stack spacing={2}>
+            <Stack spacing={2} sx={{ mt: '25px' }}>
+              <Typography variant="h5" color="text.primary">
+                Item details
+              </Typography>
               <NftTextField
                 name="name"
-                label="Name"
+                label="Item name"
                 size="small"
                 required={true}
                 placeholder="Item name"
@@ -615,7 +618,7 @@ export default function NftForm() {
                 {mintingState === 'error' ? 'Try Again' : 'Mint NFT'}
               </LoadingButton>
             </Stack>
-          </Card>
+          </Stack>
         </Grid>
         <Grid item xs={12} md={4}>
           <Card sx={{ py: 2, px: 2 }}>
