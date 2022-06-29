@@ -4,6 +4,7 @@ import { AppBar, Box, Button, IconButton, Link, Stack, Toolbar, ToolbarProps } f
 import { styled } from '@mui/material/styles';
 import Iconify from 'components/Iconify';
 import useResponsive from 'hooks/useResponsive';
+import useWeb3 from 'hooks/useWeb3';
 import { Link as RouterLink } from 'react-router-dom';
 import LogoIcon from '../../components/LogoIcon';
 import LogoLong from '../../components/LogoLong';
@@ -37,6 +38,7 @@ type DashboardNavbarProps = {
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
   const isDesktop = useResponsive('up', 'md');
   const notSmall = useResponsive('up', 'sm');
+  const { active } = useWeb3();
   return (
     <RootStyle>
       <ToolbarStyle
@@ -56,7 +58,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
         <Stack spacing={3} direction="row" alignItems="center">
           <Box
             component={RouterLink}
-            to="/"
+            to={active ? '/dashboard' : '/wallet'}
             sx={{ display: 'inline-flex', pl: { xs: '5px', sm: '15px', lg: '25px' } }}
           >
             {isDesktop ? <LogoLong /> : <LogoIcon />}
@@ -65,7 +67,9 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           {isDesktop && (
             <MenuDesktop
               navConfig={[
-                { title: 'Wallet', path: 'wallet' },
+                active
+                  ? { title: 'Dashboard', path: 'dashboard' }
+                  : { title: 'Wallet', path: 'wallet' },
                 { title: 'Explore', path: 'collection-explore' }
               ]}
             />

@@ -6,9 +6,9 @@ import Slider from 'react-slick';
 import { getNftList4CollectionCard } from 'services/fetchCollection/getNFTList';
 import { connectContract, getName, getTotalSupply } from 'services/smartContract/evmCompatible';
 import { getChainNameByChainId, getRpcUrlByChainId } from 'utils/blockchainHandlers';
+import NftCard from '../../CollectionViewer/components/NftCard';
 import CarouselArrows from './CarouselArrows';
 import EmptyCollectionBox from './EmptyCollectionBox';
-import NftCard from './NftCard';
 import { TypographyWithSubtitle } from './TitleWithSubtitle';
 
 const NB_OF_NFT_PER_CAROUSEL = 10;

@@ -2,7 +2,6 @@ import { Icon } from '@iconify/react';
 import {
   Avatar,
   Box,
-  Button,
   ButtonBase,
   Divider,
   IconButton,
@@ -60,29 +59,9 @@ const ConnectWalletPopover = () => {
   const handleDarkMode = () => {
     onToggleMode();
   };
+
   return (
     <>
-      {smUp && !walletIsConnected && (
-        <Button
-          variant="outlined"
-          onClick={handleWalletModalOpen}
-          sx={[
-            (theme) => theme.palette.customCSS.buttonHeader,
-            {
-              color: 'text.primary',
-              boxShadow: (theme) => theme.customShadows.z12,
-              border: (theme) => `2px solid ${theme.palette.grey[300]}`,
-              '&:hover': {
-                border: (theme) => `2px solid ${theme.palette.grey[300]}`
-              },
-              ml: '20px !important'
-            }
-          ]}
-        >
-          My Wallet
-        </Button>
-      )}
-
       {!smUp && !walletIsConnected && (
         <ButtonBase onClick={handleWalletModalOpen}>
           <SvgIcon>

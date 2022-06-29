@@ -2,7 +2,7 @@ import { Box, Link, Paper, Stack, Typography } from '@mui/material';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
-import type { NftCardCollectionViewerProps } from '../../CollectionViewer/CollectionViewer.types';
+import type { NftCardCollectionViewerProps } from '../CollectionViewer.types';
 import NFTCardSkeleton from './NFTCardSkeleton';
 
 // To be moved to its place
