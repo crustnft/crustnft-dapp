@@ -18,7 +18,7 @@ const sidebarConfig = [
   {
     subheader: 'DAPP',
     items: [
-      { title: 'Wallet', path: PATH_DASHBOARD.app.homepage, icon: ICONS.home },
+      { title: 'Home', path: PATH_DASHBOARD.app.homepage, icon: ICONS.home },
       {
         title: 'Collections Explore',
         path: PATH_DASHBOARD.app.collectionExplore,
