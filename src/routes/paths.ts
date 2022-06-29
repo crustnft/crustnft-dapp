@@ -11,7 +11,7 @@ const ROOTS_DASHBOARD = '';
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
   app: {
-    homepage: path(ROOTS_DASHBOARD, '/wallet'),
+    homepage: path(ROOTS_DASHBOARD, '/dashboard'),
     myNFT: path(ROOTS_DASHBOARD, '/my-nft'),
     createCollection: path(ROOTS_DASHBOARD, '/create-collection'),
     collectionExplore: path(ROOTS_DASHBOARD, '/collection-explore')

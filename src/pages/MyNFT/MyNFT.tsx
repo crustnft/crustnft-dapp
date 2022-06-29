@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import useAuth from 'hooks/useAuth';
 import useWeb3 from 'hooks/useWeb3';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import Page from '../../components/Page';
 import CallAction from './components/CallAction';
 import MyCollections from './components/MyCollections';
@@ -10,12 +11,22 @@ import MyCollections from './components/MyCollections';
 export default function MyNFT() {
   const { signInWallet, active, pending } = useWeb3();
   const { isAuthenticated } = useAuth();
+  const { activate } = useWeb3();
+  const navigate = useNavigate();
+
+  const handleConnectWallet = async () => {
+    activate();
+  };
 
   useEffect(() => {
     if (!isAuthenticated && !pending) {
       signInWallet();
+    } else if (active) {
+      navigate('/dashboard');
     }
-  }, [isAuthenticated, signInWallet, pending]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, signInWallet, pending, active]);
+
   return (
     <Page title="My NFTs">
       <Container maxWidth="lg">
@@ -39,7 +50,7 @@ export default function MyNFT() {
               p: '11px 22px'
             }}
           >
-            Hi, Welcome back Rachel!
+            Hi, Welcome back!
           </Typography>
           <Typography
             variant="subtitle1"
@@ -62,6 +73,7 @@ export default function MyNFT() {
               p: '11px 22px',
               textTransform: 'none'
             }}
+            onClick={handleConnectWallet}
           >
             Login with a wallet
           </Button>
