@@ -8,7 +8,7 @@ import Page from '../../components/Page';
 import CallAction from './components/CallAction';
 import MyCollections from './components/MyCollections';
 
-export default function MyNFT() {
+export default function WelcomeBack() {
   const { signInWallet, active, pending } = useWeb3();
   const { isAuthenticated } = useAuth();
   const { activate } = useWeb3();

@@ -4,10 +4,8 @@ import PodcastsIcon from '@mui/icons-material/Podcasts';
 import SailingIcon from '@mui/icons-material/Sailing';
 import { Avatar, Box, Card, Divider, Link, Stack, Tooltip, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { useTheme } from '@mui/material/styles';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
 import useWeb3 from 'hooks/useWeb3';
-import { ColorButton } from 'pages/MyNFT/components/NftCard';
 import { useEffect, useMemo, useState } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import {
@@ -19,6 +17,7 @@ import {
 } from 'services/smartContract/evmCompatible';
 import { getChainByChainId, getRpcUrlByChainId } from 'utils/blockchainHandlers';
 import { shortenAddress } from 'utils/formatAddress';
+import { ColorButton } from '../../CollectionViewer/components/NftCard';
 
 export type CollectionData = {
   contractAddress: string;
@@ -34,8 +33,7 @@ type CollectionCardProps = {
 };
 
 export default function SimpleCollectionCard({ collection }: CollectionCardProps) {
-  const theme = useTheme();
-  const { contractAddress, description, avatarUrl, chainId } = collection;
+  const { contractAddress, chainId } = collection;
   const { account } = useWeb3();
   const [name, setName] = useState('');
   const [symbol, setSymbol] = useState('');

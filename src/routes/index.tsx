@@ -41,7 +41,7 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/wallet" replace /> },
-        { path: 'wallet', element: <MyNFT /> },
+        { path: 'wallet', element: <WelcomeBack /> },
         { path: 'dashboard', element: <Dashboard /> },
         { path: 'create-expandable-collection', element: <CreateCollection /> },
         { path: 'mint-nft/:chain/:contractAddr', element: <MintNft /> },
@@ -106,7 +106,7 @@ const TermsOfService = Loadable(lazy(() => import('../pages/TermsOfService')));
 const Disclaimer = Loadable(lazy(() => import('../pages/Disclaimer')));
 const AssetViewer = LoadWithoutSpinner(lazy(() => import('../pages/AssetViewer')));
 const CreateCollection = LoadWithoutSpinner(lazy(() => import('../pages/CreateCollection')));
-const MyNFT = LoadWithoutSpinner(lazy(() => import('../pages/MyNFT')));
+const WelcomeBack = LoadWithoutSpinner(lazy(() => import('../pages/WelcomeBack')));
 const CollectionViewer = LoadWithoutSpinner(lazy(() => import('../pages/CollectionViewer')));
 const MintNft = LoadWithoutSpinner(lazy(() => import('../pages/MintNft')));
 const MintExpNft = LoadWithoutSpinner(lazy(() => import('../pages/MintExpNft')));

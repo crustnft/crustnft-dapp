@@ -20,7 +20,7 @@ import { parseNftUri } from 'utils/tokenUriHandlers';
 import Page from '../../components/Page';
 import { NB_NFT_PER_PAGE } from '../../constants/pagination';
 import { SIMPLIFIED_ERC721_ABI } from '../../constants/simplifiedERC721ABI';
-import NftCard from '../MyNFT/components/NftCard';
+import NftCard from './components/NftCard';
 
 export default function CollectionViewer() {
   const { chain, contractAddr, pageNb } = useParams();
