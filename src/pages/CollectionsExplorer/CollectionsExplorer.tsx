@@ -82,7 +82,7 @@ export default function CollectionsExplorer() {
           </Stack>
         </Stack>
 
-        <Divider sx={{ mt: '30px', border: '1px solid', borderColor: 'grey.200' }} />
+        <Divider sx={{ mt: '30px', borderColor: 'divider', borderBottomWidth: 2 }} />
 
         <Grid
           container
