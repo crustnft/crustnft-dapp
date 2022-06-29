@@ -2,7 +2,9 @@ import { TransactionReceipt, TransactionResponse } from '@ethersproject/provider
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Icon } from '@iconify/react';
 import { LoadingButton } from '@mui/lab';
-import { Box, Button, Card, Grid, Stack, Typography } from '@mui/material';
+import { Box, Button, Card, Grid, Stack, Tooltip, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { QuestionIcon } from 'assets/icons/customIcons';
 import { getContractsByAccount } from 'clients/crustnft-explore-api/contracts';
 import Image from 'components/Image';
 import { CustomFile } from 'components/upload/type';
@@ -17,9 +19,9 @@ import { createContext, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { connectRWContract } from 'services/smartContract/evmCompatible';
 import { pinW3Crust } from 'services/w3AuthIpfs';
+import { Theme } from 'theme';
 import * as Yup from 'yup';
 import { FormProvider, RHFUploadMultiFile } from '../../../components/hook-form';
-import Iconify from '../../../components/Iconify';
 import type { BoostProps, LevelProps, PropertyProps, StatProps } from '../MintNft.types';
 import Property from './/Property';
 import CircularBoost from './CircularBoost';
@@ -114,6 +116,8 @@ export default function NftForm() {
   const [imageCid, setImageCid] = useState('');
   const [metadataCid, setMetadataCid] = useState('');
   const [activeStep, setActiveStep] = useState(0);
+
+  const theme = useTheme() as Theme;
 
   const NewNftSchema = Yup.object().shape({
     name: Yup.string().required('Item name is required'),
@@ -397,27 +401,52 @@ export default function NftForm() {
                 placeholder="Provide a detailed description of your item."
                 autoComplete="off"
               />
-              <Stack spacing={1}>
+              <Stack>
                 <Stack>
                   <Stack direction="row" alignItems="center" justifyContent="space-between">
-                    <Stack>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <Iconify icon="bxs:tag" rotate={2} />
-                        <Typography variant="subtitle1">Properties</Typography>
-                      </Stack>
-                      <Typography variant="caption">
-                        Textual traits that show up as rectangles
-                      </Typography>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Typography variant="subtitle1">Properties</Typography>
+                      <Tooltip
+                        title="Textual traits that show up as rectangles"
+                        placement="top"
+                        arrow={true}
+                      >
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <QuestionIcon />
+                        </Box>
+                      </Tooltip>
                     </Stack>
 
                     <Button
-                      sx={{ borderColor: '#15B2E5' }}
+                      sx={{
+                        width: '50%',
+                        maxWidth: '200px',
+                        border: '2px solid',
+                        borderColor: theme.palette.textField.borderColor,
+                        py: '11px',
+                        mb: '15px',
+                        '&:hover': {
+                          border: '2px solid',
+                          borderColor: theme.palette.primary.main
+                        }
+                      }}
                       onClick={() => {
                         setOpenDialogProperties(true);
                       }}
                       variant="outlined"
                     >
-                      Add Properties
+                      <Typography
+                        variant="buttonMedium"
+                        color="text.primary"
+                        sx={{
+                          textTransform: 'none',
+                          '& >span': {
+                            mr: '10px'
+                          }
+                        }}
+                      >
+                        <span>+</span> Add Properties
+                      </Typography>
                     </Button>
                   </Stack>
 
@@ -441,24 +470,49 @@ export default function NftForm() {
 
                 <Stack>
                   <Stack direction="row" alignItems="center" justifyContent="space-between">
-                    <Stack>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <Iconify icon="bxs:star" />
-                        <Typography variant="subtitle1">Levels</Typography>
-                      </Stack>
-                      <Typography variant="caption">
-                        Numerical traits that show as a progress bar
-                      </Typography>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Typography variant="subtitle1">Levels</Typography>
+                      <Tooltip
+                        title="Numerical traits that show as a progress bar"
+                        placement="top"
+                        arrow={true}
+                      >
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <QuestionIcon />
+                        </Box>
+                      </Tooltip>
                     </Stack>
 
                     <Button
-                      variant="outlined"
-                      sx={{ borderColor: '#15B2E5' }}
+                      sx={{
+                        width: '50%',
+                        maxWidth: '200px',
+                        border: '2px solid',
+                        borderColor: theme.palette.textField.borderColor,
+                        py: '11px',
+                        mb: '15px',
+                        '&:hover': {
+                          border: '2px solid',
+                          borderColor: theme.palette.primary.main
+                        }
+                      }}
                       onClick={() => {
                         setOpenDialogLevels(true);
                       }}
+                      variant="outlined"
                     >
-                      Add Levels
+                      <Typography
+                        variant="buttonMedium"
+                        color="text.primary"
+                        sx={{
+                          textTransform: 'none',
+                          '& >span': {
+                            mr: '10px'
+                          }
+                        }}
+                      >
+                        <span>+</span> Add Levels
+                      </Typography>
                     </Button>
                   </Stack>
 
@@ -476,24 +530,49 @@ export default function NftForm() {
 
                 <Stack>
                   <Stack direction="row" alignItems="center" justifyContent="space-between">
-                    <Stack>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <Iconify icon="ion:stats-chart" />
-                        <Typography variant="subtitle1">Stats</Typography>
-                      </Stack>
-                      <Typography variant="caption">
-                        Numerical traits that just show as numbers
-                      </Typography>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Typography variant="subtitle1">Stats</Typography>
+                      <Tooltip
+                        title="Numerical traits that just show as numbers"
+                        placement="top"
+                        arrow={true}
+                      >
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <QuestionIcon />
+                        </Box>
+                      </Tooltip>
                     </Stack>
 
                     <Button
-                      variant="outlined"
-                      sx={{ borderColor: '#15B2E5' }}
+                      sx={{
+                        width: '50%',
+                        maxWidth: '200px',
+                        border: '2px solid',
+                        borderColor: theme.palette.textField.borderColor,
+                        py: '11px',
+                        mb: '15px',
+                        '&:hover': {
+                          border: '2px solid',
+                          borderColor: theme.palette.primary.main
+                        }
+                      }}
                       onClick={() => {
                         setOpenDialogStats(true);
                       }}
+                      variant="outlined"
                     >
-                      Add Stats
+                      <Typography
+                        variant="buttonMedium"
+                        color="text.primary"
+                        sx={{
+                          textTransform: 'none',
+                          '& >span': {
+                            mr: '10px'
+                          }
+                        }}
+                      >
+                        <span>+</span> Add Stats
+                      </Typography>
                     </Button>
                   </Stack>
 
@@ -515,24 +594,49 @@ export default function NftForm() {
 
                 <Stack>
                   <Stack direction="row" alignItems="center" justifyContent="space-between">
-                    <Stack>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <Iconify icon="ic:baseline-flash-on" />
-                        <Typography variant="subtitle1">Boosts</Typography>
-                      </Stack>
-                      <Typography variant="caption">
-                        Number or percentage boosts that show up as a circular boost
-                      </Typography>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Typography variant="subtitle1">Boosts</Typography>
+                      <Tooltip
+                        title="Number or percentage boosts that show up as a circular boost"
+                        placement="top"
+                        arrow={true}
+                      >
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <QuestionIcon />
+                        </Box>
+                      </Tooltip>
                     </Stack>
 
                     <Button
-                      variant="outlined"
-                      sx={{ borderColor: '#15B2E5' }}
+                      sx={{
+                        width: '50%',
+                        maxWidth: '200px',
+                        border: '2px solid',
+                        borderColor: theme.palette.textField.borderColor,
+                        py: '11px',
+                        mb: '15px',
+                        '&:hover': {
+                          border: '2px solid',
+                          borderColor: theme.palette.primary.main
+                        }
+                      }}
                       onClick={() => {
                         setOpenDialogBoosts(true);
                       }}
+                      variant="outlined"
                     >
-                      Add Boosts
+                      <Typography
+                        variant="buttonMedium"
+                        color="text.primary"
+                        sx={{
+                          textTransform: 'none',
+                          '& >span': {
+                            mr: '10px'
+                          }
+                        }}
+                      >
+                        <span>+</span> Add Boots
+                      </Typography>
                     </Button>
                   </Stack>
 
@@ -549,7 +653,9 @@ export default function NftForm() {
               </Stack>
             </Stack>
 
-            <Typography variant="subtitle1">Choose Collection</Typography>
+            <Typography variant="h5" color="text.primary" sx={{ mt: '30px' }}>
+              Choose your Collection
+            </Typography>
             <Grid container sx={{ mt: 1 }} spacing={1}>
               <Grid item xs={3}>
                 <Button
