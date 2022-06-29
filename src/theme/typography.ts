@@ -2,10 +2,10 @@ import { pxToRem, responsiveFontSizes } from '../utils/getFontValue';
 
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
-    'button.large': true;
-    'button.big': true;
-    'button.medium': true;
-    'button.small': true;
+    buttonLarge: true;
+    buttonBig: true;
+    buttonMedium: true;
+    buttonSmall: true;
   }
 }
 
@@ -83,28 +83,10 @@ const typography = {
     fontSize: pxToRem(12),
     textTransform: 'uppercase'
   },
-  button: {
-    large: {
-      fontWeight: 700,
-      fontSize: pxToRem(18),
-      lineHeight: pxToRem(32)
-    },
-    big: {
-      fontWeight: 700,
-      fontSize: pxToRem(15),
-      lineHeight: pxToRem(26)
-    },
-    medium: {
-      fontWeight: 700,
-      fontSize: pxToRem(14),
-      lineHeight: pxToRem(24)
-    },
-    small: {
-      fontWeight: 700,
-      fontSize: pxToRem(13),
-      lineHeight: pxToRem(22)
-    }
-  }
+  buttonLarge: { fontWeight: 700, fontSize: pxToRem(18), lineHeight: pxToRem(32) },
+  buttonBig: { fontWeight: 700, fontSize: pxToRem(15), lineHeight: pxToRem(26) },
+  buttonMedium: { fontWeight: 700, fontSize: pxToRem(14), lineHeight: pxToRem(24) },
+  buttonSmall: { fontWeight: 700, fontSize: pxToRem(13), lineHeight: pxToRem(22) }
 } as const;
 
 export default typography;

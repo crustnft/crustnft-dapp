@@ -91,7 +91,7 @@ const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
           </Link>
           <Chip
             label={
-              <Typography variant="button.small">
+              <Typography variant="buttonSmall">
                 {totalSupply} NFT{totalSupply > 1 && 's'}
               </Typography>
             }

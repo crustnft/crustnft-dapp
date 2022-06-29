@@ -254,11 +254,12 @@ const palette = {
     text: {
       primary: GREY[800],
       secondary: GREY[700],
-      tertiary: GREY[500],
+      tertiary: GREY[600],
+      quaternary: GREY[500],
       header: SECONDARY.main,
       disabled: GREY[500]
     },
-    background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
+    background: { primary: GREY[0], neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action },
     divider: GREY[200],
     header: {
@@ -288,13 +289,14 @@ const palette = {
     ...COMMON,
     mode: 'dark',
     text: {
-      primary: GREY[0],
-      secondary: GREY[300],
-      tertiary: GREY[400],
+      primary: GREY[100],
+      secondary: GREY[200],
+      tertiary: GREY[300],
+      quaternary: GREY[400],
       header: SECONDARY.light,
       disabled: GREY[600]
     },
-    background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
+    background: { primary: GREY[900], neutral: GREY[500_16] },
     action: { active: GREY[500], ...COMMON.action },
     divider: GREY[700],
     header: {

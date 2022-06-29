@@ -1,8 +1,16 @@
-import { Container, Tab, Tabs, Typography } from '@mui/material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { Container, Tab, Typography } from '@mui/material';
 import useAuth from 'hooks/useAuth';
 import useWeb3 from 'hooks/useWeb3';
-import { useEffect, useState } from 'react';
+import { createContext, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Page from '../../components/Page';
+import NetworkSelection from './components/NetworkSelection';
+import NftForm from './components/NftForm';
+
+export const MintContext = createContext<{
+  tab: string;
+  setTab: Dispatch<SetStateAction<string>>;
+}>({ tab: '', setTab: () => {} });
 
 export default function MintNft() {
   const { signInWallet, pending } = useWeb3();
@@ -20,17 +28,26 @@ export default function MintNft() {
   }, [isAuthenticated, signInWallet, pending]);
 
   return (
-    <Page title="Mint your NFT">
-      <Container maxWidth={'lg'}>
-        <Typography variant="h3" color="text.header">
-          Create multiple
-        </Typography>
-        <Tabs value={tab} sx={{ mt: '20px' }} onChange={handleChange}>
-          <Tab label="General" value="General" />
-          <Tab label="Create" value="Create" />
-        </Tabs>
-        {/* <NftForm /> */}
-      </Container>
-    </Page>
+    <MintContext.Provider value={{ tab, setTab }}>
+      <Page title="Mint your NFT">
+        <Container maxWidth={'lg'}>
+          <Typography variant="h3" color="text.header">
+            Create multiple
+          </Typography>
+          <TabContext value={tab}>
+            <TabList sx={{ mt: '20px', mb: '25px' }} onChange={handleChange}>
+              <Tab label="General" value="General" />
+              <Tab label="Create" value="Create" />
+            </TabList>
+            <TabPanel value="General">
+              <NetworkSelection />
+            </TabPanel>
+            <TabPanel value="Create">
+              <NftForm />
+            </TabPanel>
+          </TabContext>
+        </Container>
+      </Page>
+    </MintContext.Provider>
   );
 }
