@@ -4,13 +4,11 @@ import {
   Grid,
   MenuItem,
   Pagination,
-  PaginationItem,
   Stack,
   TextField,
   Typography
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { RegularArrowLeftIcon, RegularArrowRightIcon } from 'assets/icons/customIcons';
 import { getListingContracts } from 'clients/crustnft-explore-api/contracts';
 import { CreateContractDto } from 'clients/crustnft-explore-api/types';
 import ButtonPopover from 'components/ButtonPopover';
@@ -109,22 +107,9 @@ export default function CollectionsExplorer() {
           onChange={(event, value) => {
             setPage(value);
           }}
-          boundaryCount={1}
-          siblingCount={0}
-          renderItem={(item) => (
-            <PaginationItem
-              components={{ previous: RegularArrowLeftIcon, next: RegularArrowRightIcon }}
-              {...item}
-            />
-          )}
           sx={{
             mt: '30px',
-            alignSelf: 'center',
-            '& .Mui-selected.MuiPaginationItem-page': {
-              backgroundColor: 'tertiary.lighter',
-              color: 'tertiary.dark',
-              fontWeight: 400
-            }
+            alignSelf: 'center'
           }}
         />
       </Container>

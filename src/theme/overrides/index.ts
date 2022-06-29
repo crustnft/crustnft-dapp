@@ -1,4 +1,4 @@
-import { Theme } from '@mui/material/styles';
+import { Theme } from '..';
 //
 import Accordion from './Accordion';
 import Alert from './Alert';
@@ -82,8 +82,8 @@ export default function ComponentsOverrides(theme: Theme) {
     Progress(theme),
     TextField(theme),
     Accordion(theme),
-    Typography(theme),
     Pagination(theme),
+    Typography(theme),
     ButtonGroup(theme),
     Breadcrumbs(theme),
     CssBaseline(theme),
