@@ -1,7 +1,10 @@
 import { Box, Stack, Typography } from '@mui/material';
-import { UploadIllustration } from '../../assets';
+import { useTheme } from '@mui/styles';
+import { UploadIcon } from 'assets/icons/customIcons';
+import { Theme } from 'theme';
 
 export default function BlockContent() {
+  const theme = useTheme() as Theme;
   return (
     <Stack
       spacing={2}
@@ -10,24 +13,35 @@ export default function BlockContent() {
       direction={{ xs: 'column', md: 'row' }}
       sx={{ width: 1, textAlign: { xs: 'center', md: 'left' } }}
     >
-      <UploadIllustration sx={{ width: 220 }} />
-
-      <Box sx={{ p: 3 }}>
-        <Typography gutterBottom variant="h5">
-          Drop or Select file
+      <Box
+        sx={{
+          p: 3,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <Typography gutterBottom variant="subtitle1" color="text.tertiary">
+          PNG, JPEG or GIF. Max 3GB
         </Typography>
 
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          Drop files here or click&nbsp;
-          <Typography
-            variant="body2"
-            component="span"
-            sx={{ color: 'primary.main', textDecoration: 'underline' }}
-          >
-            browse
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            p: '11px 22px',
+            backgroundColor: 'background.quaternary',
+            borderRadius: '8px',
+            boxShadow: theme.customShadows.z12
+          }}
+        >
+          <UploadIcon fill={theme.palette.text.primary} />
+          <Typography variant="buttonMedium" sx={{ color: 'text.primary', ml: '5px' }}>
+            Choose file
           </Typography>
-          &nbsp;thorough your machine
-        </Typography>
+        </Box>
       </Box>
     </Stack>
   );

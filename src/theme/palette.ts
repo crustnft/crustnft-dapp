@@ -259,7 +259,13 @@ const palette = {
       header: SECONDARY.main,
       disabled: GREY[500]
     },
-    background: { primary: GREY[0], neutral: GREY[200] },
+    background: {
+      primary: GREY[0],
+      secondary: GREY[100],
+      tertiary: GREY[200],
+      quaternary: GREY[300],
+      neutral: GREY[200]
+    },
     action: { active: GREY[600], ...COMMON.action },
     divider: GREY[200],
     header: {
@@ -296,7 +302,13 @@ const palette = {
       header: SECONDARY.light,
       disabled: GREY[600]
     },
-    background: { primary: GREY[900], neutral: GREY[500_16] },
+    background: {
+      primary: GREY[900],
+      secondary: GREY[800],
+      tertiary: GREY[700],
+      quaternary: GREY[600],
+      neutral: GREY[500_16]
+    },
     action: { active: GREY[500], ...COMMON.action },
     divider: GREY[700],
     header: {

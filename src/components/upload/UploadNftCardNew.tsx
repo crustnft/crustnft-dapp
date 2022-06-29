@@ -1,16 +1,17 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useDropzone } from 'react-dropzone';
+import { Theme } from 'theme';
 import BlockContent from './BlockContent';
 import MultiFilePreview from './MultiFilePreview';
 import RejectionFiles from './RejectionFiles';
 import { UploadMultiFileProps } from './type';
 
-const DropZoneStyle = styled('div')(({ theme }) => ({
+const DropZoneStyle = styled('div')(({ theme }: { theme: Theme }) => ({
   outline: 'none',
-  padding: theme.spacing(5, 1),
+  padding: theme.spacing(2, 1),
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: theme.palette.background.neutral,
+  backgroundColor: theme.palette.background.secondary,
   border: `1px dashed ${theme.palette.grey[500_32]}`,
   '&:hover': { opacity: 0.72, cursor: 'pointer' }
 }));
@@ -30,6 +31,9 @@ export default function UploadNftCard({
 
   return (
     <Box sx={{ width: '100%', ...sx }}>
+      <Typography variant="h5" color="text.primary" sx={{ mb: '25px' }}>
+        Upload file
+      </Typography>
       <DropZoneStyle
         {...getRootProps()}
         sx={{
