@@ -264,6 +264,7 @@ const palette = {
       secondary: GREY[100],
       tertiary: GREY[200],
       quaternary: GREY[300],
+      quinary: GREY[400],
       neutral: GREY[200]
     },
     action: { active: GREY[600], ...COMMON.action },
@@ -307,6 +308,7 @@ const palette = {
       secondary: GREY[800],
       tertiary: GREY[700],
       quaternary: GREY[600],
+      quinary: GREY[500],
       neutral: GREY[500_16]
     },
     action: { active: GREY[500], ...COMMON.action },

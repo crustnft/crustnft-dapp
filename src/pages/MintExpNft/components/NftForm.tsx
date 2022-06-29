@@ -1,6 +1,5 @@
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Icon } from '@iconify/react';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, Card, Grid, Stack, Tooltip, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -362,7 +361,7 @@ export default function NftForm() {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={9}>
           <Stack sx={{ p: 3 }}>
             <RHFUploadMultiFile
               name="avatar"
@@ -402,7 +401,7 @@ export default function NftForm() {
                 autoComplete="off"
               />
               <Stack>
-                <Stack>
+                <Stack sx={{ mb: '20px' }}>
                   <Stack direction="row" alignItems="center" justifyContent="space-between">
                     <Stack direction="row" alignItems="center" spacing={1}>
                       <Typography variant="subtitle1">Properties</Typography>
@@ -424,7 +423,7 @@ export default function NftForm() {
                         border: '2px solid',
                         borderColor: theme.palette.textField.borderColor,
                         py: '11px',
-                        mb: '15px',
+
                         '&:hover': {
                           border: '2px solid',
                           borderColor: theme.palette.primary.main
@@ -468,7 +467,7 @@ export default function NftForm() {
                   setOpenDialogProperties={setOpenDialogProperties}
                 />
 
-                <Stack>
+                <Stack sx={{ mb: '20px' }}>
                   <Stack direction="row" alignItems="center" justifyContent="space-between">
                     <Stack direction="row" alignItems="center" spacing={1}>
                       <Typography variant="subtitle1">Levels</Typography>
@@ -490,7 +489,7 @@ export default function NftForm() {
                         border: '2px solid',
                         borderColor: theme.palette.textField.borderColor,
                         py: '11px',
-                        mb: '15px',
+
                         '&:hover': {
                           border: '2px solid',
                           borderColor: theme.palette.primary.main
@@ -528,7 +527,7 @@ export default function NftForm() {
                   setOpenDialogLevels={setOpenDialogLevels}
                 />
 
-                <Stack>
+                <Stack sx={{ mb: '20px' }}>
                   <Stack direction="row" alignItems="center" justifyContent="space-between">
                     <Stack direction="row" alignItems="center" spacing={1}>
                       <Typography variant="subtitle1">Stats</Typography>
@@ -550,7 +549,7 @@ export default function NftForm() {
                         border: '2px solid',
                         borderColor: theme.palette.textField.borderColor,
                         py: '11px',
-                        mb: '15px',
+
                         '&:hover': {
                           border: '2px solid',
                           borderColor: theme.palette.primary.main
@@ -592,7 +591,7 @@ export default function NftForm() {
                   setOpenDialogStats={setOpenDialogStats}
                 />
 
-                <Stack>
+                <Stack sx={{ mb: '20px' }}>
                   <Stack direction="row" alignItems="center" justifyContent="space-between">
                     <Stack direction="row" alignItems="center" spacing={1}>
                       <Typography variant="subtitle1">Boosts</Typography>
@@ -614,7 +613,6 @@ export default function NftForm() {
                         border: '2px solid',
                         borderColor: theme.palette.textField.borderColor,
                         py: '11px',
-                        mb: '15px',
                         '&:hover': {
                           border: '2px solid',
                           borderColor: theme.palette.primary.main
@@ -653,39 +651,95 @@ export default function NftForm() {
               </Stack>
             </Stack>
 
-            <Typography variant="h5" color="text.primary" sx={{ mt: '30px' }}>
+            <Typography variant="h5" color="text.primary" sx={{ my: '30px' }}>
               Choose your Collection
             </Typography>
-            <Grid container sx={{ mt: 1 }} spacing={1}>
-              <Grid item xs={3}>
-                <Button
-                  variant="outlined"
-                  sx={{ borderColor: '#15B2E5', p: 2, aspectRatio: '1/1' }}
-                  fullWidth
-                >
-                  <Stack alignItems="center">
-                    <Icon icon="fluent:add-circle-16-filled" width="32" />
-                    <Typography variant="subtitle1">Create</Typography>
-                    <Typography variant="caption">ERC-721</Typography>
-                  </Stack>
-                </Button>
-              </Grid>
-              {collections.map((collection) => (
-                <Grid
-                  item
-                  xs={3}
-                  key={collection.id}
-                  onClick={() => {
-                    setContractAddr(collection.contractAddress);
-                  }}
-                >
-                  <CollectionInfo
-                    contractAddr={collection.contractAddress}
-                    chainId={collection.chainId}
-                  />
-                </Grid>
-              ))}
-            </Grid>
+            <Box sx={{ width: '100%', aspectRatio: '4' }}>
+              <Stack
+                direction="row"
+                sx={{
+                  mt: 1,
+                  height: '100%',
+                  flexGrow: 1,
+                  maxWidth: '100%',
+                  overflowX: 'overlay',
+                  '&:hover': {
+                    '&::-webkit-scrollbar-thumb': {
+                      backgroundColor: theme.palette.primary.light
+                    }
+                  },
+                  '&::-webkit-scrollbar': {
+                    height: '8px'
+                  },
+                  '&::-webkit-scrollbar-thumb': {
+                    borderRadius: '8px',
+                    backgroundColor: 'transparent',
+                    '&:hover': {
+                      backgroundColor: theme.palette.primary.main
+                    }
+                  },
+                  '&::-webkit-scrollbar-track': {
+                    backgroundColor: 'inherit'
+                  }
+                }}
+              >
+                {[0, 1, 2, 3, 4, 5].map((index) => (
+                  <Button
+                    key={index}
+                    variant="outlined"
+                    sx={{
+                      height: 'calc(100% - 30px)',
+                      minWidth: 'unset',
+                      backgroundColor: theme.palette.background.secondary,
+                      border: '2px dashed',
+                      borderColor: theme.palette.background.quinary,
+                      mx: '15px',
+                      aspectRatio: '1',
+                      '&:hover': {
+                        border: '2px solid'
+                      }
+                    }}
+                  >
+                    <Stack alignItems="center">
+                      <Typography
+                        variant="subtitle1"
+                        color="text.tertiary"
+                        sx={{ textTransform: 'none' }}
+                        gutterBottom
+                      >
+                        New collection
+                      </Typography>
+                      <Button
+                        sx={{
+                          p: '11px 22px',
+                          '& span': { mr: '13px' },
+                          backgroundColor: 'accent.main'
+                        }}
+                      >
+                        <Typography variant="buttonMedium" color="grey.0">
+                          <span>+</span>Create
+                        </Typography>
+                      </Button>
+                    </Stack>
+                  </Button>
+                ))}
+                {collections.map((collection) => (
+                  <Grid
+                    item
+                    xs={3}
+                    key={collection.id}
+                    onClick={() => {
+                      setContractAddr(collection.contractAddress);
+                    }}
+                  >
+                    <CollectionInfo
+                      contractAddr={collection.contractAddress}
+                      chainId={collection.chainId}
+                    />
+                  </Grid>
+                ))}
+              </Stack>
+            </Box>
 
             <NftCreationStatusContext.Provider
               value={{
@@ -726,7 +780,7 @@ export default function NftForm() {
             </Stack>
           </Stack>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <Card sx={{ py: 2, px: 2 }}>
             <Box sx={{ mb: 5 }}>
               <Image
