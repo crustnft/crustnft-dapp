@@ -14,13 +14,14 @@ import useWeb3 from 'hooks/useWeb3';
 import { create } from 'ipfs-http-client';
 import isString from 'lodash/isString';
 import { useSnackbar } from 'notistack';
-import { createContext, useCallback, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { connectRWContract } from 'services/smartContract/evmCompatible';
 import { pinW3Crust } from 'services/w3AuthIpfs';
 import { Theme } from 'theme';
 import * as Yup from 'yup';
 import { FormProvider, RHFUploadMultiFile } from '../../../components/hook-form';
+import { MintContext } from '../MintNft';
 import type { BoostProps, LevelProps, PropertyProps, StatProps } from '../MintNft.types';
 import Property from './/Property';
 import CircularBoost from './CircularBoost';
@@ -117,6 +118,7 @@ export default function NftForm() {
   const [activeStep, setActiveStep] = useState(0);
 
   const theme = useTheme() as Theme;
+  const { setTab } = useContext(MintContext);
 
   const NewNftSchema = Yup.object().shape({
     name: Yup.string().required('Item name is required'),
@@ -763,21 +765,6 @@ export default function NftForm() {
                 <NftCreationStatus />
               </Box>
             </NftCreationStatusContext.Provider>
-
-            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                color="info"
-                loading={isSubmitting}
-                sx={{
-                  backgroundColor: '#1A90FF',
-                  display: mintingState === 'success' ? 'none' : 'block'
-                }}
-              >
-                {mintingState === 'error' ? 'Try Again' : 'Mint NFT'}
-              </LoadingButton>
-            </Stack>
           </Stack>
         </Grid>
         <Grid item xs={12} md={3}>
@@ -796,6 +783,55 @@ export default function NftForm() {
               />
             </Box>
           </Card>
+        </Grid>
+        <Grid item xs={12}>
+          <Stack sx={{ mt: 3 }} direction="row" width="100%">
+            <Button
+              variant="contained"
+              sx={{
+                py: '11px',
+                mr: '20px',
+                flex: 1,
+                maxWidth: '200px',
+                boxShadow: theme.customShadows.z12,
+                backgroundColor: theme.palette.background.quaternary,
+                '&:hover': {
+                  backgroundColor: theme.palette.background.quinary
+                }
+              }}
+              onClick={() => {
+                setTab('General');
+              }}
+            >
+              <Typography
+                variant="buttonLarge"
+                color="text.primary"
+                sx={{ textTransform: 'capitalize' }}
+              >
+                Back
+              </Typography>
+            </Button>
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              color="info"
+              loading={isSubmitting}
+              sx={{
+                py: '11px',
+                flex: 1,
+                maxWidth: '200px',
+                backgroundColor: theme.palette.primary.main,
+                display: mintingState === 'success' ? 'none' : 'block',
+                '&:hover': {
+                  backgroundColor: theme.palette.primary.dark
+                }
+              }}
+            >
+              <Typography variant="buttonLarge" sx={{ textTransform: 'capitalize' }}>
+                {mintingState === 'error' ? 'Try Again' : 'Mint NFT'}
+              </Typography>
+            </LoadingButton>
+          </Stack>
         </Grid>
       </Grid>
     </FormProvider>
