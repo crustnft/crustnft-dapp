@@ -35,8 +35,8 @@ import Slider from './Slider';
 import Stepper from './Stepper';
 import SvgIcon from './SvgIcon';
 import Switch from './Switch';
+import Tab from './Tab';
 import Table from './Table';
-import Tabs from './Tabs';
 import TextField from './TextField';
 import Timeline from './Timeline';
 import ToggleButton from './ToggleButton';
@@ -49,7 +49,7 @@ import Typography from './Typography';
 export default function ComponentsOverrides(theme: Theme) {
   return Object.assign(
     Fab(theme),
-    Tabs(theme),
+    Tab(theme),
     Chip(theme),
     Card(theme),
     Menu(theme),

@@ -1,18 +1,20 @@
-import { Theme } from '@mui/material/styles';
+import { Theme } from '..';
 
 // ----------------------------------------------------------------------
 
-export default function Tabs(theme: Theme) {
+export default function Tab(theme: Theme) {
   return {
     MuiTab: {
       styleOverrides: {
         root: {
           padding: 0,
-          fontWeight: theme.typography.fontWeightMedium,
           borderTopLeftRadius: theme.shape.borderRadius,
           borderTopRightRadius: theme.shape.borderRadius,
+          color: theme.palette.text.tertiary,
+          ...theme.typography.h6,
+          textTransform: 'none',
           '&.Mui-selected': {
-            color: theme.palette.text.primary
+            color: theme.palette.text.secondary
           },
           '&:not(:last-of-type)': {
             marginRight: theme.spacing(5)
