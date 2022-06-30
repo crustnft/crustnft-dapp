@@ -685,60 +685,77 @@ export default function NftForm() {
                   }
                 }}
               >
-                {[0, 1, 2, 3, 4, 5].map((index) => (
-                  <Button
-                    key={index}
-                    variant="outlined"
+                <Button
+                  variant="outlined"
+                  sx={{
+                    height: 'calc(100% - 30px)',
+                    minWidth: 'unset',
+                    backgroundColor:
+                      contractAddr === '' ? 'accent.lighter' : 'background.secondary',
+                    border: '2px dashed',
+                    borderColor: contractAddr === '' ? 'accent.main' : 'background.quinary',
+                    mx: '15px',
+                    aspectRatio: '1',
+                    '&:hover': {
+                      border: '2px solid'
+                    }
+                  }}
+                  onClick={() => {
+                    setContractAddr('');
+                  }}
+                >
+                  <Stack alignItems="center">
+                    <Typography
+                      variant="subtitle1"
+                      color="text.tertiary"
+                      sx={{ textTransform: 'none' }}
+                      gutterBottom
+                    >
+                      New collection
+                    </Typography>
+                    <Button
+                      sx={{
+                        p: '11px 22px',
+                        '& span': { mr: '13px' },
+                        backgroundColor: 'accent.main',
+                        '&:hover': {
+                          backgroundColor: 'accent.main'
+                        }
+                      }}
+                    >
+                      <Typography variant="buttonMedium" color="grey.0">
+                        <span>+</span>Create
+                      </Typography>
+                    </Button>
+                  </Stack>
+                </Button>
+
+                {collections.map((collection) => (
+                  <CollectionInfo
+                    key={collection.id}
+                    contractAddr={collection.contractAddress}
+                    chainId={collection.chainId}
+                    onClick={() => {
+                      setContractAddr(collection.contractAddress);
+                    }}
                     sx={{
                       height: 'calc(100% - 30px)',
-                      minWidth: 'unset',
-                      backgroundColor: theme.palette.background.secondary,
-                      border: '2px dashed',
-                      borderColor: theme.palette.background.quinary,
+                      backgroundColor:
+                        contractAddr === collection.contractAddress
+                          ? 'accent.lighter'
+                          : 'background.secondary',
+                      border: '2px solid',
+                      borderColor:
+                        contractAddr === collection.contractAddress
+                          ? 'accent.main'
+                          : 'background.quinary',
                       mx: '15px',
                       aspectRatio: '1',
                       '&:hover': {
                         border: '2px solid'
                       }
                     }}
-                  >
-                    <Stack alignItems="center">
-                      <Typography
-                        variant="subtitle1"
-                        color="text.tertiary"
-                        sx={{ textTransform: 'none' }}
-                        gutterBottom
-                      >
-                        New collection
-                      </Typography>
-                      <Button
-                        sx={{
-                          p: '11px 22px',
-                          '& span': { mr: '13px' },
-                          backgroundColor: 'accent.main'
-                        }}
-                      >
-                        <Typography variant="buttonMedium" color="grey.0">
-                          <span>+</span>Create
-                        </Typography>
-                      </Button>
-                    </Stack>
-                  </Button>
-                ))}
-                {collections.map((collection) => (
-                  <Grid
-                    item
-                    xs={3}
-                    key={collection.id}
-                    onClick={() => {
-                      setContractAddr(collection.contractAddress);
-                    }}
-                  >
-                    <CollectionInfo
-                      contractAddr={collection.contractAddress}
-                      chainId={collection.chainId}
-                    />
-                  </Grid>
+                  />
                 ))}
               </Stack>
             </Box>
