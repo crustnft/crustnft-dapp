@@ -46,7 +46,7 @@ const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
         setName(await getName(contract));
 
         let images: string[] = [];
-        for (let i = 1; i < Math.min(_totalSupply, 5); i++) {
+        for (let i = 1; i <= Math.min(_totalSupply, 4); i++) {
           const tokenUri = await getTokenURI(contract, i);
           const parsedTokenUri = parseNftUri(tokenUri);
           const data = await getDataFromTokenUri(parsedTokenUri);
