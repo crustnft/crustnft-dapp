@@ -2,17 +2,40 @@ import { Box, Button, Grid, Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/styles';
 import { SUPPORTED_CHAINS } from 'constants/chains';
-import { useContext, useState } from 'react';
+import useWallet from 'hooks/useWallet';
+import useWeb3 from 'hooks/useWeb3';
+import { useContext, useEffect } from 'react';
 import { Theme } from 'theme';
+import { getChainByNetworkName, getChainIdByNetworkName } from 'utils/blockchainHandlers';
 import { MintContext } from '../MintNft';
 
 const NetworkSelection = ({ networkChoice }: { networkChoice?: string }) => {
-  const [selectedNetwork, setSelectedNetwork] = useState(networkChoice || SUPPORTED_CHAINS[0].name);
-  const handleSelectNetwork = (network: string) => {
-    setSelectedNetwork(network);
-  };
+  const { chain: selectedNetwork, onNetworkChange: setSelectedNetwork } = useWallet();
   const theme = useTheme() as Theme;
   const { setTab } = useContext(MintContext);
+  const { switchNetwork, connectedChain } = useWeb3();
+
+  const handleClick = (name: string) => {
+    const chainId = getChainIdByNetworkName(name);
+    if (!chainId) return;
+    switchNetwork(chainId);
+  };
+
+  useEffect(() => {
+    if (!networkChoice) return;
+    if (networkChoice !== selectedNetwork.name) {
+      const chain = getChainByNetworkName(networkChoice);
+      if (!chain) return;
+      setSelectedNetwork(chain);
+    }
+  }, [selectedNetwork, networkChoice, setSelectedNetwork]);
+
+  useEffect(() => {
+    if (!connectedChain) return;
+    if (connectedChain.name !== selectedNetwork.name) {
+      setSelectedNetwork(connectedChain);
+    }
+  }, [connectedChain, selectedNetwork, setSelectedNetwork]);
 
   return (
     <Stack>
@@ -37,7 +60,9 @@ const NetworkSelection = ({ networkChoice }: { networkChoice?: string }) => {
                   }}
                 />
               }
-              onClick={() => handleSelectNetwork(name)}
+              onClick={() => {
+                handleClick(name);
+              }}
               sx={[
                 {
                   width: '100%',
@@ -46,13 +71,13 @@ const NetworkSelection = ({ networkChoice }: { networkChoice?: string }) => {
                   border: '2px solid',
                   borderColor: 'textField.borderColor'
                 },
-                selectedNetwork.toLowerCase() === name.toLowerCase() && {
+                selectedNetwork.name.toLowerCase() === name.toLowerCase() && {
                   backgroundColor: 'accent.lighter',
                   borderColor: 'accent.main'
                 }
               ]}
               disabled={
-                networkChoice ? selectedNetwork.toLowerCase() !== name.toLowerCase() : false
+                networkChoice ? selectedNetwork.name.toLowerCase() !== name.toLowerCase() : false
               }
             >
               {name}

@@ -29,7 +29,7 @@ export default function NetworkPopover() {
       menuHeader={<MenuHeader />}
       sx={[theme.palette.customCSS.buttonHeader, { ml: '15px !important' }]}
     >
-      {SUPPORTED_CHAINS.map((chain, index) => (
+      {SUPPORTED_CHAINS.map((chain) => (
         <MenuItem
           key={chain.chainId}
           selected={chain.chainId === (selectedChain?.chainId || 1)}
