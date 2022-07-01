@@ -6,8 +6,8 @@ import { useContext, useState } from 'react';
 import { Theme } from 'theme';
 import { MintContext } from '../MintNft';
 
-const NetworkSelection = () => {
-  const [selectedNetwork, setSelectedNetwork] = useState(SUPPORTED_CHAINS[0].name);
+const NetworkSelection = ({ networkChoice }: { networkChoice?: string }) => {
+  const [selectedNetwork, setSelectedNetwork] = useState(networkChoice || SUPPORTED_CHAINS[0].name);
   const handleSelectNetwork = (network: string) => {
     setSelectedNetwork(network);
   };
@@ -46,11 +46,14 @@ const NetworkSelection = () => {
                   border: '2px solid',
                   borderColor: 'textField.borderColor'
                 },
-                selectedNetwork === name && {
+                selectedNetwork.toLowerCase() === name.toLowerCase() && {
                   backgroundColor: 'accent.lighter',
                   borderColor: 'accent.main'
                 }
               ]}
+              disabled={
+                networkChoice ? selectedNetwork.toLowerCase() !== name.toLowerCase() : false
+              }
             >
               {name}
             </Button>

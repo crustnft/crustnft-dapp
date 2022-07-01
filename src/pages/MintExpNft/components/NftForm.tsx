@@ -83,7 +83,7 @@ type FormValues = {
   images: File[];
 };
 
-export default function NftForm() {
+export default function NftForm({ defaultContractAddr = '' }: { defaultContractAddr?: string }) {
   const { accessToken } = useAuth();
   const [collections, setCollections] = useState<any[]>([]);
 
@@ -93,7 +93,7 @@ export default function NftForm() {
   const [mintingState, setMintingState] = useState<'notstarted' | 'success' | 'error'>(
     'notstarted'
   );
-  const [contractAddr, setContractAddr] = useState('');
+  const [contractAddr, setContractAddr] = useState(defaultContractAddr);
 
   const [openDialogProperties, setOpenDialogProperties] = useState(false);
   const [openDialogLevels, setOpenDialogLevels] = useState(false);
@@ -703,6 +703,7 @@ export default function NftForm() {
                   onClick={() => {
                     setContractAddr('');
                   }}
+                  disabled={!!defaultContractAddr}
                 >
                   <Stack alignItems="center">
                     <Typography
@@ -738,6 +739,11 @@ export default function NftForm() {
                     onClick={() => {
                       setContractAddr(collection.contractAddress);
                     }}
+                    disabled={
+                      defaultContractAddr
+                        ? defaultContractAddr !== collection.contractAddress
+                        : false
+                    }
                     sx={{
                       height: 'calc(100% - 30px)',
                       backgroundColor:
