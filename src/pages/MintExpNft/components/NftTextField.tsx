@@ -23,6 +23,7 @@ export default function NftTextField({
         {label}
         <Typography
           variant="subtitle1"
+          component="p"
           sx={{ color: '#FF4842', display: required ? 'inline' : 'none' }}
         >
           *

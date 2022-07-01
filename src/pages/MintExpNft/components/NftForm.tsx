@@ -157,9 +157,6 @@ export default function NftForm({ defaultContractAddr = '' }: { defaultContractA
   useEffect(() => {
     if (account && accessToken) {
       getContractsByAccount(accessToken, 50, account.toLowerCase()).then((res) => {
-        console.log(
-          res.data?.data?.filter((collection: any) => collection.collectionType === 'expandable')
-        );
         setCollections(
           res.data?.data?.filter((collection: any) => collection.collectionType === 'expandable')
         );
@@ -714,20 +711,18 @@ export default function NftForm({ defaultContractAddr = '' }: { defaultContractA
                     >
                       New collection
                     </Typography>
-                    <Button
+                    <Box
                       sx={{
                         p: '11px 22px',
+                        borderRadius: '8px',
                         '& span': { mr: '13px' },
-                        backgroundColor: 'accent.main',
-                        '&:hover': {
-                          backgroundColor: 'accent.main'
-                        }
+                        backgroundColor: 'accent.main'
                       }}
                     >
                       <Typography variant="buttonMedium" color="grey.0">
                         <span>+</span>Create
                       </Typography>
-                    </Button>
+                    </Box>
                   </Stack>
                 </Button>
 
