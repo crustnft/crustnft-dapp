@@ -32,7 +32,7 @@ const AvailableCollections = ({
 }: AvailableCollectionsProps) => {
   const theme = useTheme() as Theme;
   const { accessToken } = useAuth();
-  const { account } = useWeb3();
+  const { account, connectedChainId } = useWeb3();
   const [collections, setCollections] = useState<any[]>([]);
   const classes = useStyles();
 
@@ -40,11 +40,14 @@ const AvailableCollections = ({
     if (account && accessToken) {
       getContractsByAccount(accessToken, 50, account.toLowerCase()).then((res) => {
         setCollections(
-          res.data?.data?.filter((collection: any) => collection.collectionType === 'expandable')
+          res.data?.data?.filter(
+            (collection: any) =>
+              collection.collectionType === 'expandable' && collection.chainId === connectedChainId
+          )
         );
       });
     }
-  }, [account, accessToken]);
+  }, [account, accessToken, connectedChainId]);
 
   return (
     <Box sx={{ width: '100%', aspectRatio: '4' }}>
