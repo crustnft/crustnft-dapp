@@ -1,24 +1,12 @@
 import { Grid, Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Section from 'components/Section';
-import useWeb3 from 'hooks/useWeb3';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
 import CollectionsSection from './components/CollectionsSection';
 import CreateNewCollection from './components/CreateNewCollection';
 import StatSection from './components/StatSection';
 import UserAccount from './components/UserAccount';
 
 const Dashboard = () => {
-  const { active } = useWeb3();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!active) {
-      navigate('/wallet');
-    }
-  }, [active, navigate]);
-
   return (
     <Stack>
       <Typography variant="h3" color="text.header">
