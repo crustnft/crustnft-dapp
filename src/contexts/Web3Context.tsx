@@ -210,7 +210,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     } else {
       setNetworkNotSupported(true);
     }
-  }, [connectedChainId, onNetworkChange]);
+  }, [connectedChainId]);
 
   const switchNetwork = async (chainId: number) => {
     try {
