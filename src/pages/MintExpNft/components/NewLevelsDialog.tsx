@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { capitalizeFirstLetter } from 'utils/formatString';
 import Iconify from '../../../components/Iconify';
 import type { LevelProps } from '../MintNft.types';
 
@@ -34,7 +35,7 @@ export default function NewLevelsDialog({
       setValue('levels', [
         ...levels,
         {
-          levelType: newLevelType,
+          levelType: capitalizeFirstLetter(newLevelType),
           value: validValue,
           max: validMax
         }

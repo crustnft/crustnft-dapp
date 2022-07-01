@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { capitalizeFirstLetter } from 'utils/formatString';
 import Iconify from '../../../components/Iconify';
 import type { StatProps } from '../MintNft.types';
 
@@ -32,7 +33,7 @@ export default function NewStatsDialog({
       setValue('stats', [
         ...stats,
         {
-          statType: newStatType,
+          statType: capitalizeFirstLetter(newStatType),
           max: validMax,
           value: validValue
         }

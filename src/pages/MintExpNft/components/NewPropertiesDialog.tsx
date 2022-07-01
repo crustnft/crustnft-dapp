@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { capitalizeFirstLetter } from 'utils/formatString';
 import Iconify from '../../../components/Iconify';
 import type { PropertyProps } from '../MintNft.types';
 export default function NewPropertiesDialog({
@@ -28,8 +29,8 @@ export default function NewPropertiesDialog({
       setValue('properties', [
         ...properties,
         {
-          name: newName,
-          propType: newPropType
+          name: capitalizeFirstLetter(newName),
+          propType: capitalizeFirstLetter(newPropType)
         }
       ]);
       setNewPropType('');

@@ -146,10 +146,34 @@ export default function NftForm({ defaultContractAddr = '' }: { defaultContractA
 
   const { name, description, externalLink, avatar, properties, levels, stats, boosts } = watch();
   const nftDetails: AddingNFTDetailsProps[] = [
-    { title: 'Properties', Dialog: NewPropertiesDialog, items: properties, ItemRenderer: Property },
-    { title: 'Levels', Dialog: NewLevelsDialog, items: levels, ItemRenderer: LevelProgress },
-    { title: 'Stats', Dialog: NewStatsDialog, items: stats, ItemRenderer: StatNumber },
-    { title: 'Boots', Dialog: NewBoostsDialog, items: boosts, ItemRenderer: CircularBoost }
+    {
+      title: 'Properties',
+      description: 'Textual traits that show up as rectangles',
+      Dialog: NewPropertiesDialog,
+      items: properties,
+      ItemRenderer: Property
+    },
+    {
+      title: 'Levels',
+      description: 'Numerical traits that show as a progress bar',
+      Dialog: NewLevelsDialog,
+      items: levels,
+      ItemRenderer: LevelProgress
+    },
+    {
+      title: 'Stats',
+      description: 'Numerical traits that just show as numbers',
+      Dialog: NewStatsDialog,
+      items: stats,
+      ItemRenderer: StatNumber
+    },
+    {
+      title: 'Boots',
+      description: 'Number or percentage boosts that show up as a circular boost',
+      Dialog: NewBoostsDialog,
+      items: boosts,
+      ItemRenderer: CircularBoost
+    }
   ];
 
   function uploadFileToW3AuthGateway(

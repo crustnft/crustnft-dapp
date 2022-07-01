@@ -18,6 +18,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import { alpha, styled } from '@mui/material/styles';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { capitalizeFirstLetter } from 'utils/formatString';
 import Iconify from '../../../components/Iconify';
 import type { BoostProps } from '../MintNft.types';
 
@@ -89,7 +90,7 @@ export default function NewDialogBoost({
         setValue('boosts', [
           ...boosts,
           {
-            boostType: newBoostType,
+            boostType: capitalizeFirstLetter(newBoostType),
             value: parseInt(newRawValue),
             displayType: newDisplayType
           }

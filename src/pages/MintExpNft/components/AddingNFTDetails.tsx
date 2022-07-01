@@ -11,12 +11,19 @@ interface DialogProps {
 
 export interface AddingNFTDetailsProps {
   title: string;
+  description: string;
   Dialog: ({ openDialog, setOpenDialog }: DialogProps) => JSX.Element;
   items: any;
   ItemRenderer: any;
 }
 
-const AddingNFTDetails = ({ title, Dialog, items, ItemRenderer }: AddingNFTDetailsProps) => {
+const AddingNFTDetails = ({
+  title,
+  description,
+  Dialog,
+  items,
+  ItemRenderer
+}: AddingNFTDetailsProps) => {
   const theme = useTheme() as Theme;
   const [openDialog, setOpenDialog] = useState(false);
   return (
@@ -24,8 +31,8 @@ const AddingNFTDetails = ({ title, Dialog, items, ItemRenderer }: AddingNFTDetai
       <Stack sx={{ mb: '20px' }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="subtitle1">Properties</Typography>
-            <Tooltip title="Textual traits that show up as rectangles" placement="top" arrow={true}>
+            <Typography variant="subtitle1">{title}</Typography>
+            <Tooltip title={description} placement="top" arrow={true}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <QuestionIcon />
               </Box>
