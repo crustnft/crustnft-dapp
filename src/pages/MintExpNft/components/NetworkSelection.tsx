@@ -17,7 +17,7 @@ const NetworkSelection = ({ networkChoice }: { networkChoice?: string }) => {
   return (
     <Stack>
       <Typography variant="h5" color="text.primary">
-        Choose a network
+        {networkChoice ? 'Selected network' : 'Choose a network'}
       </Typography>
       <Grid container spacing="30px" sx={{ mt: '5px' }}>
         {SUPPORTED_CHAINS.map(({ name, icon }, index) => (

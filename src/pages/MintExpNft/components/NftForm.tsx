@@ -654,7 +654,7 @@ export default function NftForm({ defaultContractAddr = '' }: { defaultContractA
             </Stack>
 
             <Typography variant="h5" color="text.primary" sx={{ my: '30px' }}>
-              Choose your Collection
+              {defaultContractAddr ? 'Selected Collection' : 'Choose your collection'}
             </Typography>
             <Box sx={{ width: '100%', aspectRatio: '4' }}>
               <Stack

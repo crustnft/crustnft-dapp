@@ -29,6 +29,12 @@ export default function MintNft() {
     }
   }, [isAuthenticated, signInWallet, pending]);
 
+  useEffect(() => {
+    if (chain && contractAddr) {
+      setTab('Create');
+    }
+  }, []);
+
   return (
     <MintContext.Provider value={{ tab, setTab }}>
       <Page title="Mint your NFT">
