@@ -42,7 +42,7 @@ const CollectionBtn = ({ title, total, isSelected, onClick }: CollectionBtnProps
           ? {
               borderColor: 'accent.main',
               backgroundColor: 'accent.lighter',
-              '& >.MuiTypography-root:first-child': {
+              '& >.MuiTypography-root:first-of-type': {
                 color: 'grey.900'
               }
             }
