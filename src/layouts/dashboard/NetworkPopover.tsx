@@ -9,14 +9,23 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import ButtonPopover from 'components/ButtonPopover';
-import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
+import { Chain } from 'interfaces/chain';
+import { useNavigate } from 'react-router-dom';
 import { SUPPORTED_CHAINS } from '../../constants/chains';
 
 export default function NetworkPopover() {
-  const { chain: selectedChain } = useWallet();
-  const { deactivate, switchNetwork } = useWeb3();
+  const { deactivate, switchNetwork, connectedChain, active } = useWeb3();
   const theme = useTheme();
+  const navigate = useNavigate();
+
+  const handleClick = (chain: Chain) => {
+    if (!active) {
+      navigate('/');
+    } else {
+      switchNetwork(chain.chainId);
+    }
+  };
 
   const MenuHeader = () => (
     <Typography variant="subtitle1" sx={{ p: 1.5 }}>
@@ -25,16 +34,16 @@ export default function NetworkPopover() {
   );
   return (
     <ButtonPopover
-      displayName={selectedChain.name}
+      displayName={active ? connectedChain?.name || 'No network' : 'No network'}
       menuHeader={<MenuHeader />}
       sx={[theme.palette.customCSS.buttonHeader, { ml: '15px !important' }]}
     >
       {SUPPORTED_CHAINS.map((chain) => (
         <MenuItem
           key={chain.chainId}
-          selected={chain.chainId === (selectedChain?.chainId || 1)}
+          selected={chain.chainId === (connectedChain?.chainId || 1)}
           onClick={() => {
-            switchNetwork(chain.chainId);
+            handleClick(chain);
           }}
           sx={{ px: 2.5 }}
         >

@@ -2,40 +2,38 @@ import { Box, Button, Grid, Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/styles';
 import { SUPPORTED_CHAINS } from 'constants/chains';
-import useWallet from 'hooks/useWallet';
 import useWeb3 from 'hooks/useWeb3';
 import { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Theme } from 'theme';
-import { getChainByNetworkName, getChainIdByNetworkName } from 'utils/blockchainHandlers';
+import { getChainIdByNetworkName } from 'utils/blockchainHandlers';
 import { MintContext } from '../MintNft';
 
 const NetworkSelection = ({ networkChoice }: { networkChoice?: string }) => {
-  const { chain: selectedNetwork, onNetworkChange: setSelectedNetwork } = useWallet();
   const theme = useTheme() as Theme;
   const { setTab } = useContext(MintContext);
-  const { switchNetwork, connectedChain } = useWeb3();
+  const { switchNetwork, connectedChain, active } = useWeb3();
+  const navigate = useNavigate();
 
   const handleClick = (name: string) => {
-    const chainId = getChainIdByNetworkName(name);
-    if (!chainId) return;
-    switchNetwork(chainId);
+    if (!active) {
+      navigate('/');
+    } else {
+      const chainId = getChainIdByNetworkName(name);
+      if (!chainId) return;
+      switchNetwork(chainId);
+    }
   };
 
   useEffect(() => {
     if (!networkChoice) return;
-    if (networkChoice !== selectedNetwork.name) {
-      const chain = getChainByNetworkName(networkChoice);
-      if (!chain) return;
-      setSelectedNetwork(chain);
+    if (!active) return;
+    if (networkChoice !== connectedChain!.name) {
+      const chainId = getChainIdByNetworkName(networkChoice);
+      if (!chainId) return;
+      switchNetwork(chainId);
     }
-  }, [selectedNetwork, networkChoice, setSelectedNetwork]);
-
-  useEffect(() => {
-    if (!connectedChain) return;
-    if (connectedChain.name !== selectedNetwork.name) {
-      setSelectedNetwork(connectedChain);
-    }
-  }, [connectedChain, selectedNetwork, setSelectedNetwork]);
+  }, [active, connectedChain, networkChoice, switchNetwork]);
 
   return (
     <Stack>
@@ -71,13 +69,13 @@ const NetworkSelection = ({ networkChoice }: { networkChoice?: string }) => {
                   border: '2px solid',
                   borderColor: 'textField.borderColor'
                 },
-                selectedNetwork.name.toLowerCase() === name.toLowerCase() && {
+                connectedChain?.name.toLowerCase() === name.toLowerCase() && {
                   backgroundColor: 'accent.lighter',
                   borderColor: 'accent.main'
                 }
               ]}
               disabled={
-                networkChoice ? selectedNetwork.name.toLowerCase() !== name.toLowerCase() : false
+                networkChoice ? connectedChain?.name.toLowerCase() !== name.toLowerCase() : false
               }
             >
               {name}

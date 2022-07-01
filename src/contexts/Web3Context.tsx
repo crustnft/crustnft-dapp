@@ -199,7 +199,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     refreshState();
 
     setPending(false);
-  }, [web3Modal, logOutAuth]);
+  }, [logOutAuth, provider, web3Modal]);
 
   useEffect(() => {
     if (!connectedChainId) return;
@@ -210,7 +210,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     } else {
       setNetworkNotSupported(true);
     }
-  }, [connectedChainId]);
+  }, [connectedChainId, onNetworkChange]);
 
   const switchNetwork = async (chainId: number) => {
     try {
@@ -218,6 +218,10 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: toHex(chainId) }]
       });
+
+      const chain = getChainByChainId(chainId);
+      if (!chain) return;
+      onNetworkChange(chain);
     } catch (switchError: any) {
       if (switchError.code === 4902) {
         try {
@@ -225,6 +229,9 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
             method: 'wallet_addEthereumChain',
             params: [networkParams[toHex(chainId)]]
           });
+          const chain = getChainByChainId(chainId);
+          if (!chain) return;
+          onNetworkChange(chain);
         } catch (error) {
           // setError(error);
         }
