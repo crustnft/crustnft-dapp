@@ -1,23 +1,13 @@
 import { Grid, Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import Section from 'components/Section';
 import useWeb3 from 'hooks/useWeb3';
-import { ReactNode, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import CollectionsSection from './components/CollectionsSection';
 import CreateNewCollection from './components/CreateNewCollection';
 import StatSection from './components/StatSection';
 import UserAccount from './components/UserAccount';
-
-const Section = ({ title, children }: { title: string; children?: ReactNode }) => {
-  return (
-    <>
-      <Typography variant="h5" color="text.primary" sx={{ mt: '40px', mb: '25px' }}>
-        {title}
-      </Typography>
-      {children}
-    </>
-  );
-};
 
 const Dashboard = () => {
   const { active } = useWeb3();

@@ -59,11 +59,11 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 export default function NewDialogBoost({
-  openDialogBoosts,
-  setOpenDialogBoosts
+  openDialog,
+  setOpenDialog
 }: {
-  openDialogBoosts: boolean;
-  setOpenDialogBoosts: React.Dispatch<React.SetStateAction<boolean>>;
+  openDialog: boolean;
+  setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [newBoostType, setNewBoostType] = useState('');
   const [newRawValue, setNewRawValue] = useState<string>('');
@@ -110,9 +110,9 @@ export default function NewDialogBoost({
 
   return (
     <Dialog
-      open={openDialogBoosts}
+      open={openDialog}
       onClose={() => {
-        setOpenDialogBoosts(false);
+        setOpenDialog(false);
       }}
       scroll="paper"
     >
@@ -220,7 +220,7 @@ export default function NewDialogBoost({
             color="info"
             variant="contained"
             onClick={() => {
-              setOpenDialogBoosts(false);
+              setOpenDialog(false);
             }}
           >
             Save

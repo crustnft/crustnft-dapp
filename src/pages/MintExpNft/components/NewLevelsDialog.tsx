@@ -13,11 +13,11 @@ import Iconify from '../../../components/Iconify';
 import type { LevelProps } from '../MintNft.types';
 
 export default function NewLevelsDialog({
-  openDialogLevels,
-  setOpenDialogLevels
+  openDialog,
+  setOpenDialog
 }: {
-  openDialogLevels: boolean;
-  setOpenDialogLevels: React.Dispatch<React.SetStateAction<boolean>>;
+  openDialog: boolean;
+  setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [newLevelType, setNewLevelType] = useState('');
   const [newValue, setNewValue] = useState<number>(0);
@@ -55,9 +55,9 @@ export default function NewLevelsDialog({
 
   return (
     <Dialog
-      open={openDialogLevels}
+      open={openDialog}
       onClose={() => {
-        setOpenDialogLevels(false);
+        setOpenDialog(false);
       }}
       scroll="paper"
     >
@@ -129,7 +129,7 @@ export default function NewLevelsDialog({
             color="info"
             variant="contained"
             onClick={() => {
-              setOpenDialogLevels(false);
+              setOpenDialog(false);
             }}
           >
             Save
