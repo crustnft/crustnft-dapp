@@ -39,14 +39,14 @@ type DashboardNavbarProps = {
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
   const isDesktop = useResponsive('up', 'md');
   const notSmall = useResponsive('up', 'sm');
-  const { active } = useWeb3();
+  const { active, activationTried } = useWeb3();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!active) {
+    if (activationTried && !active) {
       navigate('/wallet');
     }
-  }, [active, navigate]);
+  }, [activationTried, active, navigate]);
 
   return (
     <RootStyle>
