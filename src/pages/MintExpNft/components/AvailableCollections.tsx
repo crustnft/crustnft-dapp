@@ -7,6 +7,7 @@ import useWeb3 from 'hooks/useWeb3';
 import { useEffect, useState } from 'react';
 import { Theme } from 'theme';
 import CollectionInfo from './CollectionInfo';
+import CreateContractDialog from './CreateContractDialog';
 
 const useStyles = makeStyles({
   root: {
@@ -34,10 +35,12 @@ const AvailableCollections = ({
   const { accessToken } = useAuth();
   const { account, connectedChainId } = useWeb3();
   const [collections, setCollections] = useState<any[]>([]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [newContractCreated, setNewContractCreated] = useState(true);
   const classes = useStyles();
 
   useEffect(() => {
-    if (account && accessToken) {
+    if (account && accessToken && newContractCreated) {
       getContractsByAccount(accessToken, 50, account.toLowerCase()).then((res) => {
         setCollections(
           res.data?.data?.filter(
@@ -45,38 +48,44 @@ const AvailableCollections = ({
               collection.collectionType === 'expandable' && collection.chainId === connectedChainId
           )
         );
+        setNewContractCreated(false);
       });
     }
-  }, [account, accessToken, connectedChainId]);
+  }, [account, accessToken, connectedChainId, newContractCreated]);
 
   return (
-    <Box sx={{ width: '100%', aspectRatio: '4' }}>
+    <Box
+      sx={{
+        mt: 1,
+        width: '100%',
+        aspectRatio: '4',
+        overflowX: 'overlay',
+        '&:hover': {
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: theme.palette.primary.light
+          }
+        },
+        '&::-webkit-scrollbar': {
+          height: '8px'
+        },
+        '&::-webkit-scrollbar-thumb': {
+          borderRadius: '8px',
+          backgroundColor: 'transparent',
+          '&:hover': {
+            backgroundColor: theme.palette.primary.main
+          }
+        },
+        '&::-webkit-scrollbar-track': {
+          backgroundColor: 'inherit'
+        }
+      }}
+    >
       <Stack
         direction="row"
         sx={{
-          mt: 1,
           height: '100%',
           flexGrow: 1,
-          maxWidth: '100%',
-          overflowX: 'overlay',
-          '&:hover': {
-            '&::-webkit-scrollbar-thumb': {
-              backgroundColor: theme.palette.primary.light
-            }
-          },
-          '&::-webkit-scrollbar': {
-            height: '8px'
-          },
-          '&::-webkit-scrollbar-thumb': {
-            borderRadius: '8px',
-            backgroundColor: 'transparent',
-            '&:hover': {
-              backgroundColor: theme.palette.primary.main
-            }
-          },
-          '&::-webkit-scrollbar-track': {
-            backgroundColor: 'inherit'
-          }
+          minWidth: 'max-content'
         }}
       >
         <Button
@@ -90,6 +99,7 @@ const AvailableCollections = ({
           }}
           onClick={() => {
             setSelectedContractAddr('');
+            setOpenDialog(true);
           }}
           disabled={!!defaultContractAddr}
         >
@@ -116,6 +126,13 @@ const AvailableCollections = ({
             </Box>
           </Stack>
         </Button>
+        <CreateContractDialog
+          open={openDialog}
+          onClose={() => {
+            setNewContractCreated(true);
+            setOpenDialog(false);
+          }}
+        />
 
         {collections.map((collection) => (
           <CollectionInfo

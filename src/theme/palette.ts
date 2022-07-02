@@ -252,10 +252,10 @@ const palette = {
     ...COMMON,
     mode: 'light',
     text: {
-      primary: GREY[800],
-      secondary: GREY[700],
-      tertiary: GREY[600],
-      quaternary: GREY[500],
+      primary: GREY[900],
+      secondary: GREY[800],
+      tertiary: GREY[700],
+      quaternary: GREY[600],
       header: SECONDARY.main,
       disabled: GREY[500]
     },
@@ -296,10 +296,10 @@ const palette = {
     ...COMMON,
     mode: 'dark',
     text: {
-      primary: GREY[100],
-      secondary: GREY[200],
-      tertiary: GREY[300],
-      quaternary: GREY[400],
+      primary: GREY[0],
+      secondary: GREY[100],
+      tertiary: GREY[200],
+      quaternary: GREY[300],
       header: SECONDARY.light,
       disabled: GREY[600]
     },
