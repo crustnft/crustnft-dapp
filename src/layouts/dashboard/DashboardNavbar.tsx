@@ -5,7 +5,8 @@ import { styled } from '@mui/material/styles';
 import Iconify from 'components/Iconify';
 import useResponsive from 'hooks/useResponsive';
 import useWeb3 from 'hooks/useWeb3';
-import { Link as RouterLink } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import LogoIcon from '../../components/LogoIcon';
 import LogoLong from '../../components/LogoLong';
 import MenuDesktop from './/MenuDesktop';
@@ -38,7 +39,15 @@ type DashboardNavbarProps = {
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
   const isDesktop = useResponsive('up', 'md');
   const notSmall = useResponsive('up', 'sm');
-  const { active } = useWeb3();
+  const { active, activationTried } = useWeb3();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (activationTried && !active) {
+      navigate('/wallet');
+    }
+  }, [activationTried, active, navigate]);
+
   return (
     <RootStyle>
       <ToolbarStyle
@@ -66,12 +75,14 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
 
           {isDesktop && (
             <MenuDesktop
-              navConfig={[
+              navConfig={
                 active
-                  ? { title: 'Dashboard', path: 'dashboard' }
-                  : { title: 'Wallet', path: 'wallet' },
-                { title: 'Explore', path: 'collection-explore' }
-              ]}
+                  ? [
+                      { title: 'Dashboard', path: 'dashboard' },
+                      { title: 'Explore', path: 'collection-explore' }
+                    ]
+                  : [{ title: 'Wallet', path: 'wallet' }]
+              }
             />
           )}
         </Stack>

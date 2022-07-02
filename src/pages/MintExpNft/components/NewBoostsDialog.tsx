@@ -18,6 +18,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import { alpha, styled } from '@mui/material/styles';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { capitalizeFirstLetter } from 'utils/formatString';
 import Iconify from '../../../components/Iconify';
 import type { BoostProps } from '../MintNft.types';
 
@@ -59,11 +60,11 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 export default function NewDialogBoost({
-  openDialogBoosts,
-  setOpenDialogBoosts
+  openDialog,
+  setOpenDialog
 }: {
-  openDialogBoosts: boolean;
-  setOpenDialogBoosts: React.Dispatch<React.SetStateAction<boolean>>;
+  openDialog: boolean;
+  setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [newBoostType, setNewBoostType] = useState('');
   const [newRawValue, setNewRawValue] = useState<string>('');
@@ -89,7 +90,7 @@ export default function NewDialogBoost({
         setValue('boosts', [
           ...boosts,
           {
-            boostType: newBoostType,
+            boostType: capitalizeFirstLetter(newBoostType),
             value: parseInt(newRawValue),
             displayType: newDisplayType
           }
@@ -110,9 +111,9 @@ export default function NewDialogBoost({
 
   return (
     <Dialog
-      open={openDialogBoosts}
+      open={openDialog}
       onClose={() => {
-        setOpenDialogBoosts(false);
+        setOpenDialog(false);
       }}
       scroll="paper"
     >
@@ -220,7 +221,7 @@ export default function NewDialogBoost({
             color="info"
             variant="contained"
             onClick={() => {
-              setOpenDialogBoosts(false);
+              setOpenDialog(false);
             }}
           >
             Save

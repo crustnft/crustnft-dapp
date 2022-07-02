@@ -45,7 +45,11 @@ export default function Router() {
         { path: 'dashboard', element: <Dashboard /> },
         { path: 'create-expandable-collection', element: <CreateCollection /> },
         { path: 'mint-nft/:chain/:contractAddr', element: <MintNft /> },
-        { path: 'mint-exp-nft', element: <MintExpNft /> },
+        {
+          path: 'mint-exp-nft',
+          element: <MintExpNft />,
+          children: [{ path: ':chain/:contractAddr', element: <MintExpNft /> }]
+        },
         { path: 'collection-explore', element: <CollectionsExplorer /> },
         { path: 'collection/:chain/:contractAddr/:pageNb', element: <CollectionViewer /> },
         { path: 'my-collections', element: <CollectionsDashboard /> },

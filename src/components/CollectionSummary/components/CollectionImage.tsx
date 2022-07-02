@@ -28,7 +28,7 @@ const CollectionImage = ({ images, chainName, contractAddress }: CollectionSumma
           component="img"
           src={images[0]}
           alt={'nft'}
-          sx={{ borderRadius: '6.5px', aspectRatio: '1' }}
+          sx={{ borderRadius: '6.5px', aspectRatio: '1', objectFit: 'cover' }}
         />
       </Link>
     );
@@ -42,7 +42,7 @@ const CollectionImage = ({ images, chainName, contractAddress }: CollectionSumma
                 component="img"
                 src={item}
                 alt={'nft'}
-                sx={{ borderRadius: '6.5px', aspectRatio: '1' }}
+                sx={{ borderRadius: '6.5px', aspectRatio: '1', objectFit: 'cover' }}
               />
             </Link>
           </Grid>

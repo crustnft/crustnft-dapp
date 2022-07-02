@@ -29,24 +29,16 @@ export default function Introduction() {
       }}
     >
       <Box position={'relative'} zIndex={2}>
-        <Box sx={{margin: "0 auto" ,marginBottom:2}} width={{sm:"100%",lg: "49%"}}>
+        <Box sx={{ margin: '0 auto', marginBottom: 2 }} width={{ sm: '100%', lg: '51%' }}>
           <Typography
             variant="h3"
-            color="text.info"
-            align={'center'}
-            sx={{
-              fontWeight: 700
-            }}
+            color="text.header"
+            sx={{ textAlign: 'center', textTransform: 'none' }}
+            gutterBottom
           >
             Create your own collection like a pro
           </Typography>
-          <Typography
-            variant="body1"
-            component="p"
-            color="text.secondary"
-            sx={{ fontWeight: 400,fontSize:"1rem"}}           
-            align={'center'}
-          >
+          <Typography variant="subtitle1" color="text.tertiary" align={'center'}>
             With CrustNFTs, generate collection, write smart contract and deploy it on blockchain in
             minutes.
           </Typography>
@@ -57,22 +49,24 @@ export default function Introduction() {
           alignItems={{ xs: 'stretched', sm: 'center' }}
           justifyContent={'center'}
         >
-          <Box
-            marginRight={{ sm: 1 }}
-            width={{ xs: '100%', md: 'auto' }}
-          >
-          <Button
-            component={'a'}
-            variant="text"
-            size="large"
-            fullWidth={isMd ? false : true}
-            href={'/'}
-            target={'_blank'}
-            color="primary"
-            sx={{backgroundColor: '#DFE3E8',fontSize: "1.125rem" }}
-          >
-            Case studies
-          </Button>
+          <Box marginRight={{ sm: 1 }} width={{ xs: '100%', md: 'auto' }}>
+            <Button
+              component={'a'}
+              variant="text"
+              size="large"
+              fullWidth={isMd ? false : true}
+              href={'/'}
+              target={'_blank'}
+              sx={{
+                backgroundColor: 'background.quaternary',
+                padding: '11px 22px',
+                boxShadow: (theme) => theme.customShadows.z12
+              }}
+            >
+              <Typography variant="buttonLarge" color="text.primary" textTransform="none">
+                Case studies
+              </Typography>
+            </Button>
           </Box>
           <Box
             marginTop={{ xs: 2, sm: 0 }}
@@ -86,9 +80,20 @@ export default function Introduction() {
               color="primary"
               size="large"
               fullWidth={isMd ? false : true}
-              sx={{fontSize: "1.125rem" }}
+              sx={{
+                backgroundColor: 'background.primary',
+                padding: '11px 22px',
+                border: '2px solid',
+                borderColor: 'background.quinary',
+                boxShadow: (theme) => theme.customShadows.z12,
+                '&:hover': {
+                  border: '2px solid'
+                }
+              }}
             >
-              View documentation
+              <Typography variant="buttonLarge" color="text.primary" textTransform="none">
+                View documentation
+              </Typography>
             </Button>
           </Box>
         </Box>

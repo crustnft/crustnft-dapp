@@ -1,10 +1,13 @@
 import { Box, Button, Chip, Link, Stack, Typography } from '@mui/material';
 import { CreateContractDto } from 'clients/crustnft-explore-api/types';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
-import { useEffect, useMemo, useState } from 'react';
+import { Web3Context } from 'contexts/Web3Context';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getDataFromTokenUri } from 'services/http';
 import {
   connectContract,
+  getContractOwner,
   getName,
   getTokenURI,
   getTotalSupply
@@ -29,6 +32,9 @@ const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
   const [name, setName] = useState('');
   const [totalSupply, setTotalSupply] = useState(0);
   const [displayImages, setDisplayImages] = useState<string[]>([]);
+  const [contractOwner, setContractOwner] = useState('');
+  const { account } = useContext(Web3Context);
+  const navigate = useNavigate();
 
   const contract = useMemo(() => {
     return connectContract(
@@ -46,7 +52,7 @@ const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
         setName(await getName(contract));
 
         let images: string[] = [];
-        for (let i = 1; i < Math.min(_totalSupply, 5); i++) {
+        for (let i = 1; i <= Math.min(_totalSupply, 4); i++) {
           const tokenUri = await getTokenURI(contract, i);
           const parsedTokenUri = parseNftUri(tokenUri);
           const data = await getDataFromTokenUri(parsedTokenUri);
@@ -54,6 +60,7 @@ const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
           images.push(parsedImageUrl);
         }
         setDisplayImages(images);
+        setContractOwner(await getContractOwner(contract));
         setLoaded(true);
       } catch (e) {
         console.error(e);
@@ -91,7 +98,7 @@ const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
           </Link>
           <Chip
             label={
-              <Typography variant="button.small">
+              <Typography variant="buttonSmall">
                 {totalSupply} NFT{totalSupply > 1 && 's'}
               </Typography>
             }
@@ -107,7 +114,12 @@ const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
         </Stack>
         <Stack
           direction="row"
-          sx={{ mt: '15px', justifyContent: 'space-between', alignItems: 'center' }}
+          sx={{
+            mt: '15px',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            minHeight: '45px'
+          }}
         >
           <Box
             component="a"
@@ -121,14 +133,26 @@ const CollectionSummary = ({ collection }: CollectionSummaryProps) => {
             }}
           />
 
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            sx={{ p: '11px 38.5px', textTransform: 'none' }}
-          >
-            Mint
-          </Button>
+          {account === contractOwner && (
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              sx={{
+                p: '11px 40px',
+                textTransform: 'none'
+              }}
+              onClick={() => {
+                navigate(
+                  `/mint-exp-nft/${getChainNameByChainId(collection.chainId)}/${
+                    collection.contractAddress
+                  }`
+                );
+              }}
+            >
+              Mint
+            </Button>
+          )}
         </Stack>
       </Stack>
     </MCard>

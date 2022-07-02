@@ -44,7 +44,7 @@ const Stage = ({ title, backgroundColor, value }: StageProps) => {
           <FloatingBalloon />
         </Box>
         <Typography
-          variant="button.medium"
+          variant="buttonMedium"
           color="secondary"
           sx={{
             position: 'absolute',
@@ -60,7 +60,7 @@ const Stage = ({ title, backgroundColor, value }: StageProps) => {
         </Typography>
       </Box>
       <Typography
-        variant="button.medium"
+        variant="buttonMedium"
         color="grey.600"
         sx={{
           mt: '10px',

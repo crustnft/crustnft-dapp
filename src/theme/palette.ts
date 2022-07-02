@@ -251,8 +251,22 @@ const palette = {
   light: {
     ...COMMON,
     mode: 'light',
-    text: { primary: GREY[800], secondary: GREY[700], header: SECONDARY.main, disabled: GREY[500] },
-    background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
+    text: {
+      primary: GREY[900],
+      secondary: GREY[800],
+      tertiary: GREY[700],
+      quaternary: GREY[600],
+      header: SECONDARY.main,
+      disabled: GREY[500]
+    },
+    background: {
+      primary: GREY[0],
+      secondary: GREY[100],
+      tertiary: GREY[200],
+      quaternary: GREY[300],
+      quinary: GREY[400],
+      neutral: GREY[200]
+    },
     action: { active: GREY[600], ...COMMON.action },
     divider: GREY[200],
     header: {
@@ -281,8 +295,22 @@ const palette = {
   dark: {
     ...COMMON,
     mode: 'dark',
-    text: { primary: GREY[0], secondary: GREY[300], header: SECONDARY.light, disabled: GREY[600] },
-    background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
+    text: {
+      primary: GREY[0],
+      secondary: GREY[100],
+      tertiary: GREY[200],
+      quaternary: GREY[300],
+      header: SECONDARY.light,
+      disabled: GREY[600]
+    },
+    background: {
+      primary: GREY[900],
+      secondary: GREY[800],
+      tertiary: GREY[700],
+      quaternary: GREY[600],
+      quinary: GREY[500],
+      neutral: GREY[500_16]
+    },
     action: { active: GREY[500], ...COMMON.action },
     divider: GREY[700],
     header: {

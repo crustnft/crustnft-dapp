@@ -9,16 +9,15 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { capitalizeFirstLetter } from 'utils/formatString';
 import Iconify from '../../../components/Iconify';
 import type { PropertyProps } from '../MintNft.types';
 export default function NewPropertiesDialog({
-  openDialogProperties,
-
-  setOpenDialogProperties
+  openDialog,
+  setOpenDialog
 }: {
-  openDialogProperties: boolean;
-
-  setOpenDialogProperties: React.Dispatch<React.SetStateAction<boolean>>;
+  openDialog: boolean;
+  setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [newPropType, setNewPropType] = useState('');
   const [newName, setNewName] = useState('');
@@ -30,8 +29,8 @@ export default function NewPropertiesDialog({
       setValue('properties', [
         ...properties,
         {
-          name: newName,
-          propType: newPropType
+          name: capitalizeFirstLetter(newName),
+          propType: capitalizeFirstLetter(newPropType)
         }
       ]);
       setNewPropType('');
@@ -48,9 +47,9 @@ export default function NewPropertiesDialog({
 
   return (
     <Dialog
-      open={openDialogProperties}
+      open={openDialog}
       onClose={() => {
-        setOpenDialogProperties(false);
+        setOpenDialog(false);
       }}
       scroll="paper"
     >
@@ -107,7 +106,7 @@ export default function NewPropertiesDialog({
             color="info"
             variant="contained"
             onClick={() => {
-              setOpenDialogProperties(false);
+              setOpenDialog(false);
             }}
           >
             Save

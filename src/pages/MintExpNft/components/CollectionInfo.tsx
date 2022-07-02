@@ -7,10 +7,14 @@ import { getRpcUrlByChainId } from 'utils/blockchainHandlers';
 
 export default function CollectionInfo({
   contractAddr,
-  chainId
+  chainId,
+  onClick,
+  ...other
 }: {
   contractAddr: string;
   chainId: number;
+  onClick: () => void;
+  [key: string]: any;
 }) {
   const [name, setName] = useState('');
   const [symbol, setSymbol] = useState('');
@@ -29,11 +33,7 @@ export default function CollectionInfo({
 
   return (
     <>
-      <Button
-        variant="outlined"
-        sx={{ borderColor: '#15B2E5', p: 2, aspectRatio: '1/1' }}
-        fullWidth
-      >
+      <Button variant="outlined" onClick={onClick} {...other}>
         <Stack alignItems="center" sx={{ width: '100%' }}>
           <Icon icon="icon-park-outline:collection-records" width="32" />
 

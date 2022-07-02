@@ -46,7 +46,7 @@ const columns: GridColDef[] = [
     width: 130,
     renderCell: (params) =>
       params.value ? (
-        <Typography variant="body1" color="text.primary">
+        <Typography variant="body1" component="h6" color="text.primary">
           Mint{' '}
           <Typography
             variant="body1"

@@ -9,15 +9,16 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { capitalizeFirstLetter } from 'utils/formatString';
 import Iconify from '../../../components/Iconify';
 import type { StatProps } from '../MintNft.types';
 
 export default function NewStatsDialog({
-  openDialogStats,
-  setOpenDialogStats
+  openDialog,
+  setOpenDialog
 }: {
-  openDialogStats: boolean;
-  setOpenDialogStats: React.Dispatch<React.SetStateAction<boolean>>;
+  openDialog: boolean;
+  setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [newStatType, setNewStatType] = useState('');
   const [newValue, setNewValue] = useState<number>(0);
@@ -32,7 +33,7 @@ export default function NewStatsDialog({
       setValue('stats', [
         ...stats,
         {
-          statType: newStatType,
+          statType: capitalizeFirstLetter(newStatType),
           max: validMax,
           value: validValue
         }
@@ -52,9 +53,9 @@ export default function NewStatsDialog({
 
   return (
     <Dialog
-      open={openDialogStats}
+      open={openDialog}
       onClose={() => {
-        setOpenDialogStats(false);
+        setOpenDialog(false);
       }}
       scroll="paper"
     >
@@ -126,7 +127,7 @@ export default function NewStatsDialog({
             color="info"
             variant="contained"
             onClick={() => {
-              setOpenDialogStats(false);
+              setOpenDialog(false);
             }}
           >
             Save

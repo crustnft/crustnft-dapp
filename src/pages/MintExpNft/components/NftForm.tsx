@@ -1,29 +1,30 @@
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Icon } from '@iconify/react';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, Card, Grid, Stack, Typography } from '@mui/material';
-import { getContractsByAccount } from 'clients/crustnft-explore-api/contracts';
+import { useTheme } from '@mui/material/styles';
 import Image from 'components/Image';
+import Section from 'components/Section';
 import { CustomFile } from 'components/upload/type';
 import { AUTH_HEADER, IPFS_GATEWAY } from 'constants/ipfsGateways';
 import { SIMPLIFIED_ERC721_ABI } from 'constants/simplifiedERC721ABI';
-import useAuth from 'hooks/useAuth';
 import useWeb3 from 'hooks/useWeb3';
 import { create } from 'ipfs-http-client';
 import isString from 'lodash/isString';
 import { useSnackbar } from 'notistack';
-import { createContext, useCallback, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { connectRWContract } from 'services/smartContract/evmCompatible';
 import { pinW3Crust } from 'services/w3AuthIpfs';
+import { Theme } from 'theme';
 import * as Yup from 'yup';
 import { FormProvider, RHFUploadMultiFile } from '../../../components/hook-form';
-import Iconify from '../../../components/Iconify';
+import { TEXT_FIELDS } from '../constants';
+import { MintContext } from '../MintNft';
 import type { BoostProps, LevelProps, PropertyProps, StatProps } from '../MintNft.types';
-import Property from './/Property';
+import AddingNFTDetails, { AddingNFTDetailsProps } from './AddingNFTDetails';
+import AvailableCollections from './AvailableCollections';
 import CircularBoost from './CircularBoost';
-import CollectionInfo from './CollectionInfo';
 import LevelProgress from './LevelProgress';
 import NewBoostsDialog from './NewBoostsDialog';
 import NewLevelsDialog from './NewLevelsDialog';
@@ -31,6 +32,7 @@ import NewPropertiesDialog from './NewPropertiesDialog';
 import NewStatsDialog from './NewStatsDialog';
 import NftCreationStatus from './NftCreationStatus';
 import NftTextField from './NftTextField';
+import Property from './Property';
 import StatNumber from './StatNumber';
 
 const initialNftCreationStatus = {
@@ -81,22 +83,14 @@ type FormValues = {
   images: File[];
 };
 
-export default function NftForm() {
-  const { accessToken } = useAuth();
-  const [collections, setCollections] = useState<any[]>([]);
-
+export default function NftForm({ defaultContractAddr = '' }: { defaultContractAddr?: string }) {
   const { enqueueSnackbar } = useSnackbar();
 
   const { account, library } = useWeb3();
   const [mintingState, setMintingState] = useState<'notstarted' | 'success' | 'error'>(
     'notstarted'
   );
-  const [contractAddr, setContractAddr] = useState('');
-
-  const [openDialogProperties, setOpenDialogProperties] = useState(false);
-  const [openDialogLevels, setOpenDialogLevels] = useState(false);
-  const [openDialogStats, setOpenDialogStats] = useState(false);
-  const [openDialogBoosts, setOpenDialogBoosts] = useState(false);
+  const [selectedContractAddr, setSelectedContractAddr] = useState(defaultContractAddr);
 
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadImageSuccess, setUploadImageSuccess] = useState(false);
@@ -115,8 +109,11 @@ export default function NftForm() {
   const [metadataCid, setMetadataCid] = useState('');
   const [activeStep, setActiveStep] = useState(0);
 
+  const theme = useTheme() as Theme;
+  const { setTab } = useContext(MintContext);
+
   const NewNftSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    name: Yup.string().required('Item name is required'),
     description: Yup.string(),
     externalLink: Yup.string().url('Invalid URL'),
     avatar: Yup.mixed().test('required', 'Image is required', (value) => value !== null)
@@ -148,19 +145,36 @@ export default function NftForm() {
   } = methods;
 
   const { name, description, externalLink, avatar, properties, levels, stats, boosts } = watch();
-
-  useEffect(() => {
-    if (account && accessToken) {
-      getContractsByAccount(accessToken, 50, account.toLowerCase()).then((res) => {
-        console.log(
-          res.data?.data?.filter((collection: any) => collection.collectionType === 'expandable')
-        );
-        setCollections(
-          res.data?.data?.filter((collection: any) => collection.collectionType === 'expandable')
-        );
-      });
+  const nftDetails: AddingNFTDetailsProps[] = [
+    {
+      title: 'Properties',
+      description: 'Textual traits that show up as rectangles',
+      Dialog: NewPropertiesDialog,
+      items: properties,
+      ItemRenderer: Property
+    },
+    {
+      title: 'Levels',
+      description: 'Numerical traits that show as a progress bar',
+      Dialog: NewLevelsDialog,
+      items: levels,
+      ItemRenderer: LevelProgress
+    },
+    {
+      title: 'Stats',
+      description: 'Numerical traits that just show as numbers',
+      Dialog: NewStatsDialog,
+      items: stats,
+      ItemRenderer: StatNumber
+    },
+    {
+      title: 'Boots',
+      description: 'Number or percentage boosts that show up as a circular boost',
+      Dialog: NewBoostsDialog,
+      items: boosts,
+      ItemRenderer: CircularBoost
     }
-  }, [account, accessToken]);
+  ];
 
   function uploadFileToW3AuthGateway(
     ipfsGateway: string,
@@ -307,7 +321,7 @@ export default function NftForm() {
             if (signer) {
               try {
                 const contract = connectRWContract(
-                  contractAddr || '',
+                  selectedContractAddr || '',
                   SIMPLIFIED_ERC721_ABI,
                   signer
                 );
@@ -358,8 +372,8 @@ export default function NftForm() {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={8}>
-          <Card sx={{ p: 3 }}>
+        <Grid item xs={12} md={9}>
+          <Stack sx={{ p: 3 }}>
             <RHFUploadMultiFile
               name="avatar"
               accept="image/*"
@@ -367,216 +381,26 @@ export default function NftForm() {
               onDrop={handleDrop}
               onRemove={() => {}}
             />
-            <Stack spacing={2}>
-              <NftTextField
-                name="name"
-                label="Name"
-                size="small"
-                required={true}
-                placeholder="Item name"
-                autoComplete="off"
-              />
-              <NftTextField
-                name="externalLink"
-                label="External Link"
-                description="We will include a link on this item's detail page, so that users can click to learn more about it. You are welcome to link to your own webpage with more details."
-                size="small"
-                placeholder="https://your-gallery.com/item-name"
-                autoComplete="off"
-              />
-              <NftTextField
-                name="description"
-                label="Description"
-                description="The description will be included on the item's detail page underneath its image."
-                size="small"
-                multiline
-                minRows={4}
-                placeholder="Provide a detailed description of your item."
-                autoComplete="off"
-              />
-              <Stack spacing={1}>
+            <Section title="Item details">
+              <Stack spacing={2}>
+                {TEXT_FIELDS.map((props, index) => (
+                  <NftTextField key={index} size="small" autoComplete="off" {...props} />
+                ))}
                 <Stack>
-                  <Stack direction="row" alignItems="center" justifyContent="space-between">
-                    <Stack>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <Iconify icon="bxs:tag" rotate={2} />
-                        <Typography variant="subtitle1">Properties</Typography>
-                      </Stack>
-                      <Typography variant="caption">
-                        Textual traits that show up as rectangles
-                      </Typography>
-                    </Stack>
-
-                    <Button
-                      sx={{ borderColor: '#15B2E5' }}
-                      onClick={() => {
-                        setOpenDialogProperties(true);
-                      }}
-                      variant="outlined"
-                    >
-                      Add Properties
-                    </Button>
-                  </Stack>
-
-                  <Stack sx={{ mt: 1 }}>
-                    <Grid container spacing={2}>
-                      {properties.map((property, index) => (
-                        <Grid key={index} item xs={6} sm={4} md={3}>
-                          <Property {...property} />
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </Stack>
+                  {nftDetails.map((props, index) => (
+                    <AddingNFTDetails key={index} {...props} />
+                  ))}
                 </Stack>
-
-                <NewPropertiesDialog
-                  openDialogProperties={openDialogProperties}
-                  // properties={properties}
-                  // setProperties={setProperties}
-                  setOpenDialogProperties={setOpenDialogProperties}
-                />
-
-                <Stack>
-                  <Stack direction="row" alignItems="center" justifyContent="space-between">
-                    <Stack>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <Iconify icon="bxs:star" />
-                        <Typography variant="subtitle1">Levels</Typography>
-                      </Stack>
-                      <Typography variant="caption">
-                        Numerical traits that show as a progress bar
-                      </Typography>
-                    </Stack>
-
-                    <Button
-                      variant="outlined"
-                      sx={{ borderColor: '#15B2E5' }}
-                      onClick={() => {
-                        setOpenDialogLevels(true);
-                      }}
-                    >
-                      Add Levels
-                    </Button>
-                  </Stack>
-
-                  <Stack spacing={1} sx={{ mt: 1 }}>
-                    {levels.map((level, index) => (
-                      <LevelProgress key={level.levelType + index} {...level} />
-                    ))}
-                  </Stack>
-                </Stack>
-
-                <NewLevelsDialog
-                  openDialogLevels={openDialogLevels}
-                  setOpenDialogLevels={setOpenDialogLevels}
-                />
-
-                <Stack>
-                  <Stack direction="row" alignItems="center" justifyContent="space-between">
-                    <Stack>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <Iconify icon="ion:stats-chart" />
-                        <Typography variant="subtitle1">Stats</Typography>
-                      </Stack>
-                      <Typography variant="caption">
-                        Numerical traits that just show as numbers
-                      </Typography>
-                    </Stack>
-
-                    <Button
-                      variant="outlined"
-                      sx={{ borderColor: '#15B2E5' }}
-                      onClick={() => {
-                        setOpenDialogStats(true);
-                      }}
-                    >
-                      Add Stats
-                    </Button>
-                  </Stack>
-
-                  <Stack sx={{ mt: 1 }}>
-                    <Grid container spacing={1}>
-                      {stats.map((stat, index) => (
-                        <Grid key={stat.statType + index} item xs={6}>
-                          <StatNumber {...stat} />
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </Stack>
-                </Stack>
-
-                <NewStatsDialog
-                  openDialogStats={openDialogStats}
-                  setOpenDialogStats={setOpenDialogStats}
-                />
-
-                <Stack>
-                  <Stack direction="row" alignItems="center" justifyContent="space-between">
-                    <Stack>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <Iconify icon="ic:baseline-flash-on" />
-                        <Typography variant="subtitle1">Boosts</Typography>
-                      </Stack>
-                      <Typography variant="caption">
-                        Number or percentage boosts that show up as a circular boost
-                      </Typography>
-                    </Stack>
-
-                    <Button
-                      variant="outlined"
-                      sx={{ borderColor: '#15B2E5' }}
-                      onClick={() => {
-                        setOpenDialogBoosts(true);
-                      }}
-                    >
-                      Add Boosts
-                    </Button>
-                  </Stack>
-
-                  <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-                    {boosts.map((boost, index) => (
-                      <CircularBoost key={boost.boostType + index} {...boost} />
-                    ))}
-                  </Stack>
-                </Stack>
-                <NewBoostsDialog
-                  openDialogBoosts={openDialogBoosts}
-                  setOpenDialogBoosts={setOpenDialogBoosts}
-                />
               </Stack>
-            </Stack>
+            </Section>
 
-            <Typography variant="subtitle1">Choose Collection</Typography>
-            <Grid container sx={{ mt: 1 }} spacing={1}>
-              <Grid item xs={3}>
-                <Button
-                  variant="outlined"
-                  sx={{ borderColor: '#15B2E5', p: 2, aspectRatio: '1/1' }}
-                  fullWidth
-                >
-                  <Stack alignItems="center">
-                    <Icon icon="fluent:add-circle-16-filled" width="32" />
-                    <Typography variant="subtitle1">Create</Typography>
-                    <Typography variant="caption">ERC-721</Typography>
-                  </Stack>
-                </Button>
-              </Grid>
-              {collections.map((collection) => (
-                <Grid
-                  item
-                  xs={3}
-                  key={collection.id}
-                  onClick={() => {
-                    setContractAddr(collection.contractAddress);
-                  }}
-                >
-                  <CollectionInfo
-                    contractAddr={collection.contractAddress}
-                    chainId={collection.chainId}
-                  />
-                </Grid>
-              ))}
-            </Grid>
+            <Section title={defaultContractAddr ? 'Selected Collection' : 'Choose your collection'}>
+              <AvailableCollections
+                defaultContractAddr={defaultContractAddr}
+                selectedContractAddr={selectedContractAddr}
+                setSelectedContractAddr={setSelectedContractAddr}
+              />
+            </Section>
 
             <NftCreationStatusContext.Provider
               value={{
@@ -600,24 +424,9 @@ export default function NftForm() {
                 <NftCreationStatus />
               </Box>
             </NftCreationStatusContext.Provider>
-
-            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                color="info"
-                loading={isSubmitting}
-                sx={{
-                  backgroundColor: '#1A90FF',
-                  display: mintingState === 'success' ? 'none' : 'block'
-                }}
-              >
-                {mintingState === 'error' ? 'Try Again' : 'Mint NFT'}
-              </LoadingButton>
-            </Stack>
-          </Card>
+          </Stack>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <Card sx={{ py: 2, px: 2 }}>
             <Box sx={{ mb: 5 }}>
               <Image
@@ -633,6 +442,55 @@ export default function NftForm() {
               />
             </Box>
           </Card>
+        </Grid>
+        <Grid item xs={12}>
+          <Stack sx={{ mt: 3 }} direction="row" width="100%">
+            <Button
+              variant="contained"
+              sx={{
+                py: '11px',
+                mr: '20px',
+                flex: 1,
+                maxWidth: '200px',
+                boxShadow: theme.customShadows.z12,
+                backgroundColor: theme.palette.background.quaternary,
+                '&:hover': {
+                  backgroundColor: theme.palette.background.quinary
+                }
+              }}
+              onClick={() => {
+                setTab('General');
+              }}
+            >
+              <Typography
+                variant="buttonLarge"
+                color="text.primary"
+                sx={{ textTransform: 'capitalize' }}
+              >
+                Back
+              </Typography>
+            </Button>
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              color="info"
+              loading={isSubmitting}
+              sx={{
+                py: '11px',
+                flex: 1,
+                maxWidth: '200px',
+                backgroundColor: theme.palette.primary.main,
+                display: mintingState === 'success' ? 'none' : 'block',
+                '&:hover': {
+                  backgroundColor: theme.palette.primary.dark
+                }
+              }}
+            >
+              <Typography variant="buttonLarge" sx={{ textTransform: 'capitalize' }}>
+                {mintingState === 'error' ? 'Try Again' : 'Mint NFT'}
+              </Typography>
+            </LoadingButton>
+          </Stack>
         </Grid>
       </Grid>
     </FormProvider>

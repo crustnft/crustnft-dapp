@@ -22,6 +22,7 @@ interface IProviderInfo {
 
 type Web3ContextProps = {
   active: boolean;
+  activationTried: boolean;
   library: Web3Provider | undefined;
   account: string | undefined;
   provider: any;
@@ -86,6 +87,7 @@ export const networkParams: any = {
 
 const initialContext: Web3ContextProps = {
   active: false,
+  activationTried: false,
   library: undefined,
   account: undefined,
   provider: undefined,
@@ -121,6 +123,7 @@ export const Web3Context = createContext(initialContext);
 
 export function Web3ContextProvider({ children }: { children: React.ReactNode }) {
   const [active, setActive] = useState(false);
+  const [activationTried, setActivationTried] = useState(false);
   const [library, setLibrary] = useState<Web3Provider | undefined>(undefined);
   const [account, setAccount] = useState<string | undefined>(undefined);
   const [provider, setProvider] = useState<any>(undefined);
@@ -156,6 +159,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
       setConnectedChainId(network.chainId);
       setActive(true);
       setPending(false);
+      setActivationTried(true);
     } catch (error) {
       // setError(error);
     }
@@ -199,7 +203,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     refreshState();
 
     setPending(false);
-  }, [web3Modal, logOutAuth]);
+  }, [logOutAuth, provider, web3Modal]);
 
   useEffect(() => {
     if (!connectedChainId) return;
@@ -218,6 +222,10 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: toHex(chainId) }]
       });
+
+      const chain = getChainByChainId(chainId);
+      if (!chain) return;
+      onNetworkChange(chain);
     } catch (switchError: any) {
       if (switchError.code === 4902) {
         try {
@@ -225,6 +233,9 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
             method: 'wallet_addEthereumChain',
             params: [networkParams[toHex(chainId)]]
           });
+          const chain = getChainByChainId(chainId);
+          if (!chain) return;
+          onNetworkChange(chain);
         } catch (error) {
           // setError(error);
         }
@@ -287,6 +298,7 @@ export function Web3ContextProvider({ children }: { children: React.ReactNode })
     <Web3Context.Provider
       value={{
         active,
+        activationTried,
         library,
         account,
         provider,
